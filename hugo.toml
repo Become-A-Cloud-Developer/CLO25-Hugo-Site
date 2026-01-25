@@ -1,0 +1,50 @@
+baseURL = "https://cloud-dev-25.educ8.se/"
+languageCode = "en-us"
+title = "Cloud Developers CLO25"
+theme = "docdock"
+
+# Required for DocDock search functionality
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+# DocDock theme parameters
+[params]
+  # Theme style: "flex" (default) or "original"
+  themeStyle = "flex"
+
+  # Show edit link to GitHub
+  # editURL = "https://github.com/YOUR_USERNAME/YOUR_REPO/edit/main/content/"
+
+  # Search settings
+  search = true
+
+  # Custom CSS/JS (optional)
+  # customCSS = ["css/custom.css"]
+  # customJS = ["js/custom.js"]
+
+# Program and course taxonomy
+[params.program]
+  id = "CLO"
+  name = "Cloud Developers"
+
+[params.courses]
+  BCD = "Basic Cloud Development"
+
+# Menu configuration
+[menu]
+  [[menu.shortcuts]]
+    name = "<i class='fa fa-comment'></i> Feedback"
+    url = "#"
+    weight = 10
+
+# Markup settings for code highlighting
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
+
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

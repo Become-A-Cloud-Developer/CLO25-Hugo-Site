@@ -1,0 +1,19 @@
+{{ $header := print "_header." .Lang }}
+{{ $found := false }}
+{{ range .Site.Pages }}
+  {{ with .File }}
+    {{ if eq .BaseFileName $header }}
+      {{ $.Scratch.Set "headerContent" $.Content }}
+      {{ $found = true }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ if $found }}
+  {{ .Scratch.Get "headerContent" }}
+{{ else }}
+  {{ if .Site.GetPage "page" "_header.md" }}
+    {{(.Site.GetPage "page" "_header.md").Content}}
+  {{ else }}
+    <a class="baselink" href="{{.Site.BaseURL}}">{{.Site.Title}}</a>
+  {{ end }}
+{{ end }}

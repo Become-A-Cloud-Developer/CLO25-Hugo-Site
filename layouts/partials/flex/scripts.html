@@ -1,0 +1,44 @@
+<script src="{{"js/jquery-2.x.min.js" | relURL}}"></script>
+<script type="text/javascript">
+    {{if hugo.IsMultilingual}}
+        var baseurl = "{{.Site.BaseURL}}{{.Site.LanguagePrefix}}";
+    {{else}}
+        var baseurl = "{{.Site.BaseURL}}";
+    {{end}}
+</script>
+<script src="{{"js/clipboard.min.js" | relURL}}"></script>
+<script src="{{"js/featherlight.min.js" | relURL}}"></script>
+{{if eq .Site.Params.highlightClientSide true}}
+<script src="{{"js/highlight.pack.js" | relURL}}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{{end}}
+<script type="text/javascript" src="{{"js/lunr.min.js" | relURL}}"></script>
+<script type="text/javascript" src="{{"js/auto-complete.js" | relURL}}"></script>
+<script type="text/javascript" src="{{"js/search.js" | relURL}}"></script>
+<script src="{{(printf "theme-%s/script.js" (.Site.Params.themeStyle| default "flex")) | relURL}}"></script>
+
+<!-- Override menu collapse behavior to keep active section expanded -->
+<script type="text/javascript">
+jQuery(document).ready(function() {
+    // Remove the default click handler and add our custom one
+    jQuery('#sidebar .category-icon').off('click').on('click', function() {
+        var menuItem = jQuery(this).parent().parent();
+
+        // If this section contains the active page, don't allow collapse
+        if (menuItem.hasClass('parent') || menuItem.hasClass('active')) {
+            return false;
+        }
+
+        // Otherwise, toggle as normal
+        jQuery(this).toggleClass("fa-angle-down fa-angle-right");
+        menuItem.children('ul').toggle();
+        return false;
+    });
+});
+</script>
+
+<!-- Mermaid diagram support -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+    mermaid.initialize({ startOnLoad: true });
+</script>
