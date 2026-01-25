@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Private and Public Networks</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PRIVATE AND<br>
+                    PUBLIC<br>
+                    NETWORKS
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Address Space Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Address Space Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>IPv4 provides approximately <span class="highlight">4.3 billion</span> unique addresses—insufficient for modern device proliferation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rather than require globally unique addresses for every device, standards define <span class="highlight">private ranges</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Private addresses communicate within local networks but cannot route across the public internet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>This preserves public addresses for systems needing <span class="highlight">global reachability</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Private Networks -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Private Networks</h2>
+
+                <div class="fragment info-box">
+                    <p>Use <span class="highlight">non-routable</span> IP addresses for internal communication (RFC 1918)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">10.0.0.0/8</span>: ~16 million addresses for large organizations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">172.16.0.0/12</span>: ~1 million addresses for medium networks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">192.168.0.0/16</span>: 65,536 addresses common in home/small office</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>These ranges can be reused across organizations without conflict</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: How Private Networks Operate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How Private Networks Operate</h2>
+
+                <div class="fragment info-box">
+                    <p>Devices receive private IPs (e.g., 192.168.1.10, 192.168.1.20) and communicate directly</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NAT (Network Address Translation)</span> rewrites source addresses when traffic leaves the network</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multiple devices share a single public IP—external systems see only the router's address</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Router maintains translation table mapping internal devices to connections</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Public Networks -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Public Networks</h2>
+
+                <div class="fragment info-box">
+                    <p>Use <span class="highlight">globally unique, routable</span> IP addresses assigned by ISPs/cloud providers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Static public IPs</span>: Remain constant; ideal for servers with DNS records</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dynamic public IPs</span>: May change on reconnection; common for residential connections</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Any system with internet connectivity can potentially reach public addresses</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Connectivity and Exposure -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Connectivity and Exposure</h2>
+
+                <div class="fragment info-box">
+                    <p>Public IPs are globally reachable—enables services but requires robust security</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls</span> filter incoming connections, allowing only specific ports/protocols</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Network Security Groups</span> define rules before traffic reaches resources</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DMZ (Demilitarized Zone)</span>: Public-facing systems isolated from internal network</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Choosing Between Private and Public -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Choosing Between Private and Public</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Public IP</span>: Web servers, jump boxes, API gateways—must accept external connections</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Private IP</span>: Databases, application servers, internal file servers—no direct internet access needed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common pattern: Load balancer with public IP distributes to private backend servers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Only expose what must be public; everything else operates on private networks</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Private networks provide isolation and address conservation while public networks enable global connectivity—most architectures combine both with NAT and firewalls at the boundary</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

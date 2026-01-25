@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Uppdrag - CM Corp - IPL25</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="swedish-tech-slides.css">
+
+    <style>
+        /* Custom styles for this presentation */
+
+        /* Example image inside info-box */
+        .example-box {
+            padding: var(--space-sm) var(--space-md);
+        }
+
+        .mockup-image {
+            max-height: 525px;
+            width: auto;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .mockup-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Lightbox modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .lightbox-close:hover {
+            opacity: 1;
+        }
+
+        /* Numbered bullet slide variant */
+        .numbered-bullet-slide {
+            padding: var(--space-xl);
+            height: 100vh;
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        .numbered-bullet-slide .slide-header {
+            color: var(--swedish-yellow);
+            font-size: 3.6em;
+            margin-bottom: var(--space-lg);
+            border-left: 4px solid var(--swedish-yellow);
+            padding-left: var(--space-md);
+        }
+
+        .numbered-bullet-slide .numbered-box {
+            background: rgba(254, 204, 0, 0.1);
+            border-left: 4px solid var(--swedish-yellow);
+            padding: var(--space-md);
+            margin-bottom: 15px;
+        }
+
+        .numbered-bullet-slide .numbered-box h3 {
+            color: var(--swedish-yellow);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            text-transform: none;
+        }
+
+        .numbered-bullet-slide .numbered-box p {
+            font-size: 1.3em;
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>CM CORP</span>
+                </div>
+
+                <h1 class="main-title">
+                    UPPDRAG
+                </h1>
+
+                <p class="subtitle">Grattis till ert första projektledaruppdrag på CM Corp</p>
+                <p class="course-info">Server • Nätverk • IT-Säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Business Demand -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Uppdrag (Business Demand)</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">The Marketing Department</span> requests the creation of a simple, user-friendly <span class="highlight">website</span> to promote an upcoming webinar.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The site must include information about the event and a <span class="highlight">signup form</span> for invitees to register their participation.</p>
+                </div>
+
+                <div class="fragment info-box example-box">
+                    <img src="webinar-mockup.png" alt="Webinar registration page example" class="mockup-image">
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Business Needs -->
+            <section class="numbered-bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Uppdrag (Business Needs)</h2>
+
+                <div class="fragment numbered-box">
+                    <h3>1. Webinar Information Display</h3>
+                    <p>A dedicated webpage outlining the webinar topic, date, time, agenda, speaker profiles, and any other details.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>2. Signup Form Integration</h3>
+                    <p>A functional registration form to collect attendee information such as name, email address, company, and job title. The form should have data validation to ensure accuracy and completeness.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>3. Scalability</h3>
+                    <p>The infrastructure should handle expected traffic spikes, especially as the webinar date approaches.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>4. Timely Deployment</h3>
+                    <p>The website must be live by Christmas to align with the marketing campaign schedule.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Lightbox modal -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Enlarged view" id="lightbox-img">
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const mockupImage = document.querySelector('.mockup-image');
+
+        if (mockupImage) {
+            mockupImage.addEventListener('click', function(e) {
+                e.stopPropagation();
+                lightboxImg.src = this.src;
+                lightbox.classList.add('active');
+            });
+        }
+
+        lightbox.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

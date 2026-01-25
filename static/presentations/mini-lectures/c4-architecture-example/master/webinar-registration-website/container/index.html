@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../style.css" rel="stylesheet">
+    <link href="./../../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../../modal.js"></script>
+    <script type="text/javascript" src="../../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="">Home</a><a href="../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li><a href="../" class="">Info</a></li>
+            <li><a href="../context/" class="">Context views</a></li>
+            <li class="is-active"><a href="./" class="is-active">Container views</a></li>
+            <li><a href="../component/flask-application/" class="">Component views</a></li>
+            <li><a href="../deployment/" class="">Deployment views</a></li>
+            <li><a href="../dependencies/" class="">Dependencies</a></li>
+            <li><a href="../decisions/" class="">Decisions</a></li>
+            <li><a href="../sections/" class="">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <figure style="width: min(100%, 758px);" id="C2-Containers-Full">
+            <div><object type="image/svg+xml" data="../../svg/C2-Containers-Full.svg" style="width: 100%; height: auto;"></object></div>
+            <figcaption><a onclick="openSvgModal('C2-Containers-Full-modal', 'C2-Containers-Full-svg')">Webinar Registration Website - Containers<br>Container diagram showing the complete system</a></figcaption>
+          </figure>
+          <div class="modal" id="C2-Containers-Full-modal">
+            <div class="modal-background" onclick="closeModal('C2-Containers-Full-modal')"></div>
+            <div class="modal-content">
+              <div class="box">
+                <div id="C2-Containers-Full-svg" class="modal-box-content"><object type="image/svg+xml" data="../../svg/C2-Containers-Full.svg" style="width: 100%; height: auto;"></object></div>
+                <div class="has-text-centered">Webinar Registration Website - Containers [<a href="../../svg/C2-Containers-Full.svg" target="_blank">svg</a>|<a href="../../png/C2-Containers-Full.png" target="_blank">png</a>|<a href="../../puml/C2-Containers-Full.puml" target="_blank">puml</a>]</div>
+              </div>
+            </div>
+<button class="modal-close is-large" aria-label="close" onclick="closeModal('C2-Containers-Full-modal')"></button></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agil Mjukvaruutveckling och Driftsättning - IPL25</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>IPL</span>
+                </div>
+
+                <h1 class="main-title">
+                    AGIL<br>
+                    MJUKVARU-<br>
+                    UTVECKLING OCH<br>
+                    DRIFTSÄTTNING
+                </h1>
+
+                <p class="subtitle">Deployment på Azure</p>
+                <p class="course-info">25 YHP • 5 veckor • VT 2026</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Profile Card Slide (Instructor) -->
+            <section class="profile-card-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h2 class="slide-header">Vem är jag?</h2>
+
+                <div class="card-container">
+                    <div class="profile-card">
+                        <div class="profile-image">
+                            <img src="lars-appel.jpg" alt="Lars Appel">
+                        </div>
+                        <h3 class="profile-name">Lars Appel</h3>
+                        <p class="profile-roles">
+                            Utvecklare, Teamledare,<br>
+                            <span class="highlight">Projektledare</span>, Teknikchef,<br>
+                            Testledare, Solution Architect,<br>
+                            Business Analyst, <span class="highlight">Projektledare</span>,<br>
+                            Cloud Evangelist, Projektledare,<br>
+                            <span class="highlight">Projektledare</span>, Lärare ...
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 3: Profile Card Slide (Students) -->
+            <section class="profile-card-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h2 class="slide-header">Vem är du?</h2>
+
+                <div class="card-container">
+                    <div class="profile-card">
+                        <div class="question-mark">?</div>
+                        <p class="question-text">Presentera dig själv</p>
+                    </div>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 4: Bullet Slide - Course Structure -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kursens Upplägg</h2>
+
+                <div class="fragment info-box">
+                    <p>Vi ska <span class="highlight">steg-för-steg</span> bygga en <span class="highlight">webbapplikation med Python/Flask</span> och samtidigt följa en <span class="highlight">agil</span> utvecklingsmetodik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vi kommer att ha <span class="highlight">sprintar</span> på 1 vecka, som avslutas varje fredag med en <span class="highlight">demo</span>. (Demon redovisas gruppvis)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kursen är mycket <span class="highlight">praktiskt orienterad</span>. Fokus är på att faktiskt kunna <span class="highlight">utveckla och driftsätta</span> en fungerande applikation.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Alla praktiska <span class="highlight">övningar</span> genomförs lokalt på din dator och på molnplattformen <span class="highlight">Azure</span>.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ni kommer att få ett <span class="highlight">projektledaruppdrag</span>, som ska lösas under kursens gång.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Bullet Slide - DevOps Concepts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">DevOps - Inner & Outer Loop</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DevOps</span> handlar om att bygga, testa, driftsätta och övervaka mjukvara - i en <span class="highlight">kontinuerlig cykel</span>.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inner Loop:</span> Din lokala utvecklingsmiljö - snabb iteration, testa kod direkt på din maskin.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Outer Loop:</span> CI/CD pipeline - automatiserad testning, byggning och driftsättning till Azure.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vi börjar med <span class="highlight">Inner Loop</span> (vecka 1) och bygger ut till full <span class="highlight">Outer Loop</span> (vecka 3).</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Bullet Slide - Development Environment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Utvecklingsmiljön</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Jira</span> - Projekthantering med Scrum boards, user stories och sprintar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GitHub</span> - Versionshantering, Pull Requests och kodgranskning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">VS Code</span> - Kodeditor med Python- och Flask-stöd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure</span> - Molnplattform för Container Apps och SQL Database</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Timeline Slide -->
+            <section class="timeline-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vecka för Vecka</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item fragment" data-fragment-index="1">
+                        <div class="timeline-week">1</div>
+                        <div class="timeline-label">Setup</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="2">
+                        <div class="timeline-week">2</div>
+                        <div class="timeline-label">Arkitektur</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="3">
+                        <div class="timeline-week">3</div>
+                        <div class="timeline-label">CI/CD</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="4">
+                        <div class="timeline-week">4</div>
+                        <div class="timeline-label">Auth/z</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="5">
+                        <div class="timeline-week">5</div>
+                        <div class="timeline-label">Inlämning</div>
+                    </div>
+                </div>
+
+                <div class="description-container">
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="1">
+                        <p><span class="highlight">Vecka 1 - Setup:</span> Jira-projekt, GitHub-repo, lokal utvecklingsmiljö. Flask Hello World-applikation på din laptop.</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="2">
+                        <p><span class="highlight">Vecka 2 - Arkitektur:</span> Bygg ut Flask-appen till en riktig trelagrers-applikation med presentations-, affärslogik- och datalager.</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="3">
+                        <p><span class="highlight">Vecka 3 - CI/CD:</span> GitHub Actions pipeline för automatiserad testning och driftsättning vid varje push.</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="4">
+                        <p><span class="highlight">Vecka 4 - Auth/z:</span> Autentisering och auktorisering i applikationen. Säker hantering av användare och behörigheter.</p>
+                    </div>
+                    <div class="fragment fade-in description-box" data-fragment-index="5">
+                        <p><span class="highlight">Vecka 5 - Inlämning:</span> Konsolidering av projekt och skrivande av inlämningsuppgift.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

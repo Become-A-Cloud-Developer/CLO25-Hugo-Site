@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>What is Persistence?</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    WHAT IS<br>
+                    PERSISTENCE?
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is Persistence? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What is Persistence?</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Persistence</span> is the ability of a system to retain data over time</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Essential for applications that require <span class="highlight">data storage and retrieval</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Data survives beyond the lifespan of the process that created it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Foundation for stateful applications, databases, and long-term storage systems</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Types of Persistence -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Types of Persistence</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Volatile Storage:</span> Temporary storage (e.g., RAM) where data is lost when power is off</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Non-Volatile Storage:</span> Permanent storage (e.g., HDD, SSD) where data persists even after power loss</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Modern systems combine both: volatile for speed, non-volatile for durability</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Understanding the trade-offs between performance and durability is essential for system design</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Persistence in Computing -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Persistence in Computing</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databases:</span> Store structured data for easy access and manipulation (PostgreSQL, MySQL)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">File Systems:</span> Manage files on disk for long-term storage with hierarchical organization</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Key-Value Stores:</span> Provide fast access to data using keys (e.g., Redis, Memcached)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each approach offers different trade-offs in terms of structure, performance, and query capabilities</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Importance of Persistence -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Importance of Persistence</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Data Continuity:</span> Ensures information survives system restarts and failures</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Recovery:</span> Enables restoration of state after crashes or unexpected shutdowns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Business Operations:</span> Supports transactions, audit trails, and compliance requirements</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">User Experience:</span> Preserves user data, preferences, and application state</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Persistence in Cloud Environments -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Persistence in Cloud Environments</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Object Storage:</span> Scalable storage for unstructured data (AWS S3, Azure Blob Storage)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Block Storage:</span> Used for databases and applications requiring direct disk access (AWS EBS, Azure Disk Storage)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Database Services:</span> Managed services for structured data (Amazon RDS, Azure SQL)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cloud providers handle replication, backups, and high availability automatically</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Challenges of Persistence -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Challenges of Persistence</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Data Consistency:</span> Ensuring accurate and reliable data across distributed systems</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scalability:</span> Handling increasing data volume without degrading performance</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Latency:</span> Minimizing delays in data retrieval while maintaining durability</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The CAP theorem describes trade-offs between Consistency, Availability, and Partition tolerance</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Benefits of Persistence -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Benefits of Persistence</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reliable Storage:</span> Data remains intact and accessible when needed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Historical Analysis:</span> Enables tracking trends, patterns, and historical data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Disaster Recovery:</span> Facilitates backups and restoration after failures</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Foundation for compliance, auditing, and regulatory requirements</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💾</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Persistence is a core component of modern computing. Understanding storage types and technologies ensures efficient and reliable systems.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

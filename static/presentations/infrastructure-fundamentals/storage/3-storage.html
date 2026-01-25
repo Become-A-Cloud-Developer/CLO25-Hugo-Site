@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Storage</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    STORAGE
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is Storage? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What is Storage?</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Storage</span> refers to saving and accessing data for future use</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Critical for applications, systems, and <span class="highlight">data-driven operations</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Distinct from databases: storage provides the underlying infrastructure, databases add structure and query capabilities</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Foundation of the <span class="highlight">persistence layer</span> in any system architecture</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Block Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Block Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Divides data into <span class="highlight">fixed-sized blocks</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each block has a unique address, accessed independently</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Used for <span class="highlight">databases and applications</span> requiring direct disk access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: AWS EBS, Azure Disk Storage, local SSDs/HDDs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Protocols: <span class="highlight">iSCSI</span>, Fibre Channel, NVMe</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: File Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">File Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Organizes data in a <span class="highlight">hierarchical structure</span> with files and folders</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ideal for <span class="highlight">shared access</span> across multiple systems</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Network-attached storage (NAS) provides centralized file services</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Protocols: <span class="highlight">NFS</span> (Unix/Linux), <span class="highlight">SMB/CIFS</span> (Windows)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: Azure Files, Amazon EFS, traditional NAS appliances</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Object Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Object Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Stores data as <span class="highlight">objects with metadata</span> and unique IDs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No hierarchical folder structure - flat namespace with buckets/containers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Suitable for <span class="highlight">unstructured data</span> at massive scale</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Accessed via <span class="highlight">HTTP/S APIs</span> (REST)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: AWS S3, <span class="highlight">Azure Blob Storage</span>, Google Cloud Storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Storage in Cloud Environments -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Storage in Cloud Environments</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cloud Storage Services:</span> Provide scalable and managed solutions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: Google Cloud Storage, Amazon S3, Azure Blob Storage</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hybrid Storage:</span> Combines on-premises and cloud storage for flexibility</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pay-per-use pricing with multiple tiers (hot, cool, archive)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Key Storage Concepts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Storage Concepts</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Capacity:</span> The total amount of data storage available (GB, TB, PB)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Throughput:</span> Amount of data transferred per second (MB/s, GB/s)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Latency:</span> The time it takes to access stored data (ms, μs)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Redundancy:</span> Ensures data availability during hardware failures (RAID, replication)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Challenges and Benefits -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Challenges and Benefits</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scalability:</span> Meeting growing data demands without downtime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Security:</span> Protecting sensitive information with encryption and access controls</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Performance:</span> Balancing speed and resource usage for workload requirements</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Benefits:</span> Disaster recovery, accessibility across devices, support for analytics</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Practical Applications -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Practical Applications</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Data lakes:</span> Big data analysis and machine learning workloads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Media storage:</span> Video streaming platforms, image repositories</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Backup and archival:</span> Long-term data retention and compliance</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application data:</span> VM disks, container volumes, database storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💿</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Storage is a foundational component in IT infrastructure. Choosing the right storage type enhances performance, scalability, and reliability.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

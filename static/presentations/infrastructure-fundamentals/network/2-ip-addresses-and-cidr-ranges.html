@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>IP Addresses and CIDR Ranges</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    IP ADDRESSES<br>
+                    AND<br>
+                    CIDR RANGES
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: IP Addresses as Device Identifiers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IP Addresses as Device Identifiers</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">IP address</span> uniquely identifies a device on a network, enabling precise routing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Without this identification system, networks could not deliver packets to intended destinations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>IP addresses come in two formats: <span class="highlight">IPv4</span> (32-bit) and <span class="highlight">IPv6</span> (128-bit)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Addresses are categorized as <span class="highlight">public</span> (globally unique) or <span class="highlight">private</span> (local network only)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: IPv4 Addresses -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IPv4 Addresses</h2>
+
+                <div class="fragment info-box">
+                    <p>Four decimal numbers separated by dots: <span class="highlight">192.168.1.1</span> (each octet: 0-255)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>32 bits total providing approximately <span class="highlight">4.3 billion</span> possible addresses</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Private ranges (RFC 1918): <span class="highlight">10.0.0.0/8</span>, <span class="highlight">172.16.0.0/12</span>, <span class="highlight">192.168.0.0/16</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Address exhaustion drove NAT adoption and IPv6 development</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: IPv6 Addresses -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IPv6 Addresses</h2>
+
+                <div class="fragment info-box">
+                    <p>Eight groups of four hexadecimal digits: <span class="highlight">2001:0db8:85a3:0000:0000:8a2e:0370:7334</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>128 bits providing approximately <span class="highlight">340 undecillion</span> addresses—effectively unlimited</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Notation shortcuts: omit leading zeros, replace consecutive zero groups with <span class="highlight">::</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Many networks operate <span class="highlight">dual-stack</span> (IPv4 + IPv6) during transition</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: CIDR Notation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CIDR Notation</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CIDR</span> (Classless Inter-Domain Routing) replaced rigid class-based allocation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Written as IP/prefix: <span class="highlight">192.168.1.0/24</span> — prefix bits define network, remaining bits identify hosts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">/24</span> = 256 addresses (254 usable); <span class="highlight">/32</span> = single address; <span class="highlight">/0</span> = all addresses</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enables flexible network sizing—allocate exactly what you need</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Subnet Masks and Subnetting -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Subnet Masks and Subnetting</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Subnet mask</span> represents CIDR in dotted decimal: /24 = <span class="highlight">255.255.255.0</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common sizes: /24 (254 hosts), /25 (126), /26 (62), /27 (30), /28 (14)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Subnets</span> divide address space for security isolation and reduced broadcast domains</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Devices use subnet mask to determine if destination is local or requires routing</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">IP addresses identify devices while CIDR enables flexible network organization—understanding both is fundamental to designing and managing network infrastructure</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

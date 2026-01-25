@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../../style.css" rel="stylesheet">
+    <link href="./../../../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../../../modal.js"></script>
+    <script type="text/javascript" src="../../../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../../" class="">Home</a><a href="../../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li><a href="../../" class="">Info</a></li>
+            <li><a href="../../context/" class="">Context views</a></li>
+            <li><a href="../../container/" class="">Container views</a></li>
+            <li><a href="../../component/flask-application/" class="">Component views</a></li>
+            <li><a href="../../deployment/" class="">Deployment views</a></li>
+            <li><a href="../../dependencies/" class="">Dependencies</a></li>
+            <li><a href="../../decisions/" class="">Decisions</a></li>
+            <li class="is-active"><a href="../" class="is-active">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <div><h1>Containers (C2)</h1>
+<h2>Containers (C4 Model Level 2)</h2>
+<p>This document zooms into the Webinar Registration Website system to show the high-level technical building blocks (containers) and how they interact.</p>
+<blockquote>
+ <p><strong>C4 "Container"</strong> = A separately deployable/runnable unit (VM, application, database), NOT a Docker container.</p>
+</blockquote>
+<h3>Container Diagram</h3>
+<p>
+ <div>
+  <figure style="width: min(100%, 758px);" id="C2-Containers-Full">
+   <div>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 758 1467" zoomAndPan="magnify">
+     <title>Webinar Registration Website - Containers</title><defs />
+     <g>
+      <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="338.707" x="202.6465" y="22.9951">Webinar Registration Website - Containers</text></g><!--cluster WebinarRegistrationWebsite_boundary-->
+      <g class="cluster" data-entity="WebinarRegistrationWebsite_boundary" data-source-line="1575" data-uid="ent0005" id="cluster_WebinarRegistrationWebsite_boundary">
+       <rect fill="none" height="1031" rx="2.5" ry="2.5" style="stroke:#444444;stroke-width:1;stroke-dasharray:7,7;" width="528" x="224" y="271.2969" /><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="271.6016" x="352.1992" y="288.1484">Webinar Registration Website</text><text fill="#444444" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.4551" x="458.2725" y="303.0605">[system]</text>
+      </g>
+      <!--cluster group_1-->
+      <g class="cluster" data-entity="group_1" data-source-line="1575" data-uid="ent0006" id="cluster_group_1">
+       <rect fill="none" height="733" rx="2.5" ry="2.5" style="stroke:#CCCCCC;stroke-width:1;stroke-dasharray:7,7;" width="366" x="361" y="545.2969" /><text fill="#CCCCCC" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.4531" x="502.2734" y="562.1484">Back-end</text>
+      </g>
+      <!--cluster group_2-->
+      <g class="cluster" data-entity="group_2" data-source-line="1575" data-uid="ent0011" id="cluster_group_2">
+       <rect fill="none" height="154" rx="2.5" ry="2.5" style="stroke:#CCCCCC;stroke-width:1;stroke-dasharray:7,7;" width="480" x="248" y="330.2969" /><text fill="#CCCCCC" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="89.1875" x="443.4063" y="347.1484">Front-end</text>
+      </g>
+      <!--entity WebinarRegistrationWebsite.FlaskApplication-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.FlaskApplication" data-source-line="71" data-uid="ent0007" id="entity_WebinarRegistrationWebsite.FlaskApplication">
+       <a href="../../component/flask-application/" target="_top" title="../../component/flask-application/" xlink:actuate="onRequest" xlink:href="../../component/flask-application/" xlink:show="new" xlink:title="../../component/flask-application/" xlink:type="simple">
+        <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="204.0234" x="434" y="962.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="47.375" x="458.5117" y="987.1484">Flask</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="505.8867" y="987.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="102.0547" x="511.457" y="987.1484">Application</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="109.3242" x="481.3496" y="1002.0605">[Python/Gunicorn]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="533.7866" y="1017.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56.6631" x="444" y="1034.1826">Handles</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="500.6631" y="1034.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="505.1133" y="1034.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="586.1943" y="1034.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3789" x="590.6445" y="1034.1826">logic,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45.8555" x="491.3799" y="1050.4795">serves</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="537.2354" y="1050.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38.958" x="541.6855" y="1050.4795">HTML</text>
+       </a>
+      </g>
+      <!--entity WebinarRegistrationWebsite.PostgreSQLDatabase-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.PostgreSQLDatabase" data-source-line="75" data-uid="ent0008" id="entity_WebinarRegistrationWebsite.PostgreSQLDatabase">
+       <path d="M428,1162.2969 C428,1152.2969 536.0625,1152.2969 536.0625,1152.2969 C536.0625,1152.2969 644.125,1152.2969 644.125,1162.2969 L644.125,1252.7813 C644.125,1262.7813 536.0625,1262.7813 536.0625,1262.7813 C536.0625,1262.7813 428,1262.7813 428,1252.7813 L428,1162.2969" fill="#438DD5" style="stroke:#3C7FC0;stroke-width:0.5;" /><path d="M428,1162.2969 C428,1172.2969 536.0625,1172.2969 536.0625,1172.2969 C536.0625,1172.2969 644.125,1172.2969 644.125,1162.2969" fill="none" style="stroke:#3C7FC0;stroke-width:0.5;" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.4063" x="438" y="1191.1484">PostgreSQL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="543.4063" y="1191.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="85.1484" x="548.9766" y="1191.1484">Database</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="59.9648" x="467.2236" y="1206.0605">[Managed</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="527.1885" y="1206.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="73.8984" x="531.0029" y="1206.0605">PostgreSQL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="533.8374" y="1221.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.6045" x="453.0024" y="1238.1826">Stores</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="497.6069" y="1238.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="502.0571" y="1238.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="583.1382" y="1238.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.5342" x="587.5884" y="1238.1826">data</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.373" x="494.876" y="1254.4795">persistently</text>
+      </g>
+      <!--entity WebinarRegistrationWebsite.BastionHost-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.BastionHost" data-source-line="71" data-uid="ent0009" id="entity_WebinarRegistrationWebsite.BastionHost">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="206.5117" x="503.5" y="582.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="549.1777" y="607.1484">Bastion</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="617.209" y="607.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="41.5547" x="622.7793" y="607.1484">Host</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48.6035" x="531.6475" y="622.0605">[Ubuntu</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="580.251" y="622.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="38.168" x="584.0654" y="622.0605">24.04,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="622.2334" y="622.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8164" x="626.0479" y="622.0605">Fail2ban]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="604.5308" y="637.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48.4395" x="513.5" y="654.1826">Secure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="561.9395" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="566.3896" y="654.1826">SSH</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="594.6904" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.0166" x="599.1406" y="654.1826">entry</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="636.1572" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35.7041" x="640.6074" y="654.1826">point</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="676.3115" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="680.7617" y="654.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="530.3677" y="670.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="631.519" y="670.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="635.9692" y="670.4795">access</text>
+      </g>
+      <!--entity WebinarRegistrationWebsite.ReverseProxy-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.ReverseProxy" data-source-line="71" data-uid="ent0010" id="entity_WebinarRegistrationWebsite.ReverseProxy">
+       <a href="../../component/reverse-proxy/" target="_top" title="../../component/reverse-proxy/" xlink:actuate="onRequest" xlink:href="../../component/reverse-proxy/" xlink:show="new" xlink:title="../../component/reverse-proxy/" xlink:type="simple">
+        <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="208.7813" x="377.5" y="772.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="72.7188" x="417.0664" y="797.1484">Reverse</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="489.7852" y="797.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.3594" x="495.3555" y="797.1484">Proxy</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="41.7598" x="429.7773" y="812.0605">[nginx,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="471.5371" y="812.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="58.6523" x="475.3516" y="812.0605">OpenSSL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="479.6655" y="827.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.5732" x="387.5" y="844.1826">SSL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="413.0732" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.9932" x="417.5234" y="844.1826">offloading</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="487.5166" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="491.9668" y="844.1826">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="518.3057" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.5254" x="522.7559" y="844.1826">request</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.5713" x="444.105" y="860.4795">forwarding</text>
+       </a>
+      </g>
+      <!--entity WebinarRegistrationWebsite.WebBrowser-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.WebBrowser" data-source-line="71" data-uid="ent0012" id="entity_WebinarRegistrationWebsite.WebBrowser">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="200.25" x="264" y="367.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="304.3008" y="392.1484">Web</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="344.2539" y="392.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="74.125" x="349.8242" y="392.1484">Browser</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8281" x="290.1299" y="407.0605">[Chrome,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="345.958" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45.0352" x="349.7725" y="407.0605">Firefox,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="394.8076" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.498" x="398.6221" y="407.0605">Safari]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.8999" y="422.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.7637" x="274" y="439.1826">Renders</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="331.7637" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.4082" x="336.2139" y="439.1826">HTML,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="379.6221" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.1777" x="384.0723" y="439.1826">JavaScript</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="334.9561" y="455.4795">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.2949" y="455.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.5488" x="365.7451" y="455.4795">CSS</text>
+      </g>
+      <!--entity WebinarRegistrationWebsite.Terminal-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite.Terminal" data-source-line="71" data-uid="ent0013" id="entity_WebinarRegistrationWebsite.Terminal">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="212.8623" x="499.5" y="367.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="566.189" y="392.1484">Terminal</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="556.8823" y="407.0605">[Azure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="595.9937" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="599.8081" y="407.0605">CLI,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="622.2261" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="626.0405" y="407.0605">SSH]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.7061" y="422.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.2725" x="509.5" y="439.1826">Command-line</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="611.7725" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62.4395" x="616.2227" y="439.1826">interface</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="678.6621" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="683.1123" y="439.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="529.543" y="455.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="630.6943" y="455.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="635.1445" y="455.4795">access</text>
+      </g>
+      <!--entity EventAttendee-->
+      <g class="entity" data-entity="EventAttendee" data-source-line="374" data-uid="ent0002" id="entity_EventAttendee">
+       <rect fill="#08427B" height="135.5156" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="214.127" x="7" y="52.2969" /><image height="48" width="48" x="90.0635" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="62.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.25" x="44.1143" y="125.1484">Event</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="95.3643" y="125.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.0781" x="100.9346" y="125.1484">Attendee</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="111.8384" y="141.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.3457" x="17" y="158.2139">Primary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="71.3457" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="75.7959" y="158.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="111.8828" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="116.333" y="158.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="121.3848" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.5918" x="125.835" y="158.2139">registers</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="187.4268" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="191.877" y="158.2139">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="38.1606" y="174.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="64.4995" y="174.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.2246" x="68.9497" y="174.5107">attends</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.1743" y="174.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="126.6245" y="174.5107">webinars</text>
+      </g>
+      <!--entity MarketingAdmin-->
+      <g class="entity" data-entity="MarketingAdmin" data-source-line="374" data-uid="ent0003" id="entity_MarketingAdmin">
+       <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="215.9453" x="256" y="44.2969" /><image height="48" width="48" x="339.9727" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="92.0781" x="286.457" y="117.1484">Marketing</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="378.5352" y="117.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57.3828" x="384.1055" y="117.1484">Admin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.7476" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="266" y="150.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="342.9932" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="347.4434" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="383.5303" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="387.9805" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="393.0322" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.4629" x="397.4824" y="150.2139">manages</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="294.916" y="166.5107">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="358.2578" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="362.708" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="389.0469" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39.5322" x="393.4971" y="166.5107">views</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88.375" x="319.7852" y="182.8076">registrations</text>
+      </g>
+      <!--entity SysAdmin-->
+      <g class="entity" data-entity="SysAdmin" data-source-line="374" data-uid="ent0004" id="entity_SysAdmin">
+       <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="205.9033" x="507" y="44.2969" /><image height="48" width="48" x="585.9517" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="88.8594" x="565.522" y="117.1484">SysAdmin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="607.7266" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="517" y="150.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="593.9932" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="598.4434" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="634.5303" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="638.9805" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="644.0322" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.4209" x="648.4824" y="150.2139">deploys</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="560.0049" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="586.3438" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.1045" x="590.7939" y="166.5107">maintains</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="562.0181" y="182.8076">infrastructure</text>
+      </g>
+      <!--link EventAttendee to WebinarRegistrationWebsite.WebBrowser-->
+      <g class="link" data-entity-1="EventAttendee" data-entity-2="WebinarRegistrationWebsite.WebBrowser" data-source-line="1688" data-uid="lnk14" id="link_EventAttendee_WebinarRegistrationWebsite.WebBrowser">
+       <path d="M170.73,188.3469 C216.69,242.6669 275.2326,311.8796 316.7426,360.9396" fill="none" id="EventAttendee-to-WebinarRegistrationWebsite.WebBrowser" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="321.91,367.0469,319.0328,359.0019,314.4524,362.8774,321.91,367.0469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="266.0283" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.4316" x="226" y="252.4043">[Mouse,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="273.4316" y="252.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="60.9785" x="277.2461" y="252.4043">keyboard]</text>
+      </g>
+      <!--link MarketingAdmin to WebinarRegistrationWebsite.WebBrowser-->
+      <g class="link" data-entity-1="MarketingAdmin" data-entity-2="WebinarRegistrationWebsite.WebBrowser" data-source-line="1688" data-uid="lnk15" id="link_MarketingAdmin_WebinarRegistrationWebsite.WebBrowser">
+       <path d="M364,196.6269 C364,250.1469 364,312.5169 364,359.1269" fill="none" id="MarketingAdmin-to-WebinarRegistrationWebsite.WebBrowser" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="364,367.1269,367,359.1269,361,359.1269,364,367.1269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="405.0283" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.4316" x="365" y="252.4043">[Mouse,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="412.4316" y="252.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="60.9785" x="416.2461" y="252.4043">keyboard]</text>
+      </g>
+      <!--link SysAdmin to WebinarRegistrationWebsite.Terminal-->
+      <g class="link" data-entity-1="SysAdmin" data-entity-2="WebinarRegistrationWebsite.Terminal" data-source-line="1688" data-uid="lnk16" id="link_SysAdmin_WebinarRegistrationWebsite.Terminal">
+       <path d="M608.98,196.6269 C608.26,250.1469 607.4081,312.5176 606.7781,359.1276" fill="none" id="SysAdmin-to-WebinarRegistrationWebsite.Terminal" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="606.67,367.1269,609.7778,359.1682,603.7784,359.0871,606.67,367.1269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="627.2061" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="66.5801" x="610" y="252.4043">[Keyboard]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.WebBrowser to WebinarRegistrationWebsite.ReverseProxy-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.WebBrowser" data-entity-2="WebinarRegistrationWebsite.ReverseProxy" data-source-line="1688" data-uid="lnk17" id="link_WebinarRegistrationWebsite.WebBrowser_WebinarRegistrationWebsite.ReverseProxy">
+       <path d="M357.89,468.7769 C353.15,523.2769 351.15,612.2269 377,683.2969 C388.91,716.0469 406.2333,741.3717 427.3833,765.9617" fill="none" id="WebinarRegistrationWebsite.WebBrowser-to-WebinarRegistrationWebsite.ReverseProxy" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="432.6,772.0269,429.6578,764.0055,425.1089,767.918,432.6,772.0269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43.8516" x="378" y="630.4355">HTTPS</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="421.8516" y="630.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="426.0293" y="630.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8477" x="394.2656" y="644.4043">[HTTPS/443]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.Terminal to WebinarRegistrationWebsite.BastionHost-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.Terminal" data-entity-2="WebinarRegistrationWebsite.BastionHost" data-source-line="1688" data-uid="lnk18" id="link_WebinarRegistrationWebsite.Terminal_WebinarRegistrationWebsite.BastionHost">
+       <path d="M606.23,468.4669 C606.39,502.6369 606.5726,539.857 606.7326,574.047" fill="none" id="WebinarRegistrationWebsite.Terminal-to-WebinarRegistrationWebsite.BastionHost" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="606.77,582.0469,609.7325,574.0329,603.7326,574.061,606.77,582.0469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="62.2676" x="616.8359" y="512.4355">Connects</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="679.1035" y="512.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="13.9805" x="683.2813" y="512.4355">to</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="608" y="526.4043">[Azure</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="647.1113" y="526.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="650.9258" y="526.4043">CLI,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="673.3438" y="526.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="677.1582" y="526.4043">SSH]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.BastionHost to WebinarRegistrationWebsite.ReverseProxy-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.BastionHost" data-entity-2="WebinarRegistrationWebsite.ReverseProxy" data-source-line="1688" data-uid="lnk19" id="link_WebinarRegistrationWebsite.BastionHost_WebinarRegistrationWebsite.ReverseProxy">
+       <path d="M573.83,683.6869 C555.68,710.9869 537.6786,738.0545 519.5386,765.3445" fill="none" id="WebinarRegistrationWebsite.BastionHost-to-WebinarRegistrationWebsite.ReverseProxy" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="515.11,772.0069,522.037,767.0052,517.0402,763.6838,515.11,772.0069" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="565.8027" y="725.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="553" y="739.4043">[SSH/22]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.BastionHost to WebinarRegistrationWebsite.FlaskApplication-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.BastionHost" data-entity-2="WebinarRegistrationWebsite.FlaskApplication" data-source-line="1688" data-uid="lnk20" id="link_WebinarRegistrationWebsite.BastionHost_WebinarRegistrationWebsite.FlaskApplication">
+       <path d="M630.99,683.3169 C657.26,745.1269 690.47,852.4069 649,932.2969 C643.2,943.4769 640.8584,947.9376 631.5284,956.6776" fill="none" id="WebinarRegistrationWebsite.BastionHost-to-WebinarRegistrationWebsite.FlaskApplication" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="625.69,962.1469,633.5794,958.8671,629.4775,954.4882,625.69,962.1469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="682.8027" y="820.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="670" y="834.4043">[SSH/22]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.ReverseProxy to WebinarRegistrationWebsite.FlaskApplication-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.ReverseProxy" data-entity-2="WebinarRegistrationWebsite.FlaskApplication" data-source-line="1688" data-uid="lnk21" id="link_WebinarRegistrationWebsite.ReverseProxy_WebinarRegistrationWebsite.FlaskApplication">
+       <path d="M496.33,873.6869 C504.17,900.9869 511.6511,927.0279 519.4911,954.3179" fill="none" id="WebinarRegistrationWebsite.ReverseProxy-to-WebinarRegistrationWebsite.FlaskApplication" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="521.7,962.0069,522.3744,953.4895,516.6077,955.1462,521.7,962.0069" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="63.1934" x="514" y="915.4355">Forwards</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="577.1934" y="915.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="581.3711" y="915.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8652" x="539.9277" y="929.4043">[HTTP/5001]</text>
+      </g>
+      <!--link WebinarRegistrationWebsite.FlaskApplication to WebinarRegistrationWebsite.PostgreSQLDatabase-->
+      <g class="link" data-entity-1="WebinarRegistrationWebsite.FlaskApplication" data-entity-2="WebinarRegistrationWebsite.PostgreSQLDatabase" data-source-line="1688" data-uid="lnk22" id="link_WebinarRegistrationWebsite.FlaskApplication_WebinarRegistrationWebsite.PostgreSQLDatabase">
+       <path d="M536,1063.3669 C536,1090.5469 536,1116.2869 536,1144.1569" fill="none" id="WebinarRegistrationWebsite.FlaskApplication-to-WebinarRegistrationWebsite.PostgreSQLDatabase" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="536,1152.1569,539,1144.1569,533,1144.1569,536,1152.1569" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.7266" x="537" y="1105.4355">Reads/writes</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="624.7266" y="1105.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="30.5215" x="628.9043" y="1105.4355">data</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="113.1621" x="541.6318" y="1119.4043">[PostgreSQL/5432]</text>
+      </g>
+      <g class="legend" data-source-line="1492">
+       <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1326.2969" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="434.2617" y="1339.292">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="497.0566" y="1339.292">&nbsp;</text><rect fill="#08427B" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1342.5938" /><text fill="#073B6F" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1355.5889">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1355.5889">&nbsp;</text><image height="12" width="12" x="450.8662" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAApklEQVR4XmPgcKpmQMfRjcsb/CoWNqCLgzCGwH80gC6Pwjl17RG6+v9T1h47gFPD95+/0dX/33v2DootKBriW1Y2oGvQjesPxKkBhDuW7D8AUxzfunIiujwKRzWyO8ksdXIxjG+XPaNBNqgNuw3IzkAHIL+haNh67MZndEXooGXh3kVwDeiS2MCtx6/BtoA1/P7zF10eA5y69hihAYQNkyY24MMwdQBvKDvWFDAX9QAAAABJRU5ErkJggg==" y="1346.8906" /><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.9883" x="471.7666" y="1355.5889">person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="524.2051" y="1355.5889">&nbsp;</text><rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1358.8906" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1371.8857">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1371.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.3359" x="455.3164" y="1371.8857">container</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="526.1025" y="1371.8857">&nbsp;</text><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1375.1875" /><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1388.1826">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1388.1826">&nbsp;</text><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="121.7686" x="455.3164" y="1388.1826">system boundary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="581.5352" y="1388.1826">&nbsp;</text><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1391.4844" /><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1404.4795">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1404.4795">&nbsp;</text><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.7051" x="455.3164" y="1404.4795">boundary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="526.4717" y="1404.4795">&nbsp;</text><rect fill="#66622E" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1407.7813" /><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1420.7764">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1420.7764">&nbsp;</text><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="136.5684" x="455.3164" y="1420.7764">Back-end boundary</text><text fill="#CCCCCC" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="123.4668" x="596.335" y="1421.7197">(last back color, dashed)</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="719.8018" y="1420.7764">&nbsp;</text><rect fill="#66622E" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1424.0781" /><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1437.0732">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1437.0732">&nbsp;</text><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="139.3164" x="455.3164" y="1437.0732">Front-end boundary</text><text fill="#CCCCCC" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="123.4668" x="599.083" y="1438.0166">(last back color, dashed)</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="722.5498" y="1437.0732">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1326.2969" y2="1326.2969" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1342.5938" y2="1342.5938" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1358.8906" y2="1358.8906" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1375.1875" y2="1375.1875" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1391.4844" y2="1391.4844" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1407.7813" y2="1407.7813" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1424.0781" y2="1424.0781" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1440.375" y2="1440.375" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="434.2617" y1="1326.2969" y2="1440.375" /><line style="stroke:none;stroke-width:1;" x1="727" x2="727" y1="1326.2969" y2="1440.375" />
+      </g>
+     </g>
+    </svg>
+   </div>
+   <figcaption>
+    <a onclick="openSvgModal('C2-Containers-Full-modal', 'C2-Containers-Full-svg')">C2-Containers-Full</a>
+   </figcaption>
+  </figure>
+  <div class="modal" id="C2-Containers-Full-modal">
+   <div class="modal-background" onclick="closeModal('C2-Containers-Full-modal')"></div>
+   <div class="modal-content">
+    <div class="box">
+     <div id="C2-Containers-Full-svg" class="modal-box-content">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 758 1467" zoomAndPan="magnify">
+       <title>Webinar Registration Website - Containers</title><defs />
+       <g>
+        <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="338.707" x="202.6465" y="22.9951">Webinar Registration Website - Containers</text></g><!--cluster WebinarRegistrationWebsite_boundary-->
+        <g class="cluster" data-entity="WebinarRegistrationWebsite_boundary" data-source-line="1575" data-uid="ent0005" id="cluster_WebinarRegistrationWebsite_boundary">
+         <rect fill="none" height="1031" rx="2.5" ry="2.5" style="stroke:#444444;stroke-width:1;stroke-dasharray:7,7;" width="528" x="224" y="271.2969" /><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="271.6016" x="352.1992" y="288.1484">Webinar Registration Website</text><text fill="#444444" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.4551" x="458.2725" y="303.0605">[system]</text>
+        </g>
+        <!--cluster group_1-->
+        <g class="cluster" data-entity="group_1" data-source-line="1575" data-uid="ent0006" id="cluster_group_1">
+         <rect fill="none" height="733" rx="2.5" ry="2.5" style="stroke:#CCCCCC;stroke-width:1;stroke-dasharray:7,7;" width="366" x="361" y="545.2969" /><text fill="#CCCCCC" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.4531" x="502.2734" y="562.1484">Back-end</text>
+        </g>
+        <!--cluster group_2-->
+        <g class="cluster" data-entity="group_2" data-source-line="1575" data-uid="ent0011" id="cluster_group_2">
+         <rect fill="none" height="154" rx="2.5" ry="2.5" style="stroke:#CCCCCC;stroke-width:1;stroke-dasharray:7,7;" width="480" x="248" y="330.2969" /><text fill="#CCCCCC" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="89.1875" x="443.4063" y="347.1484">Front-end</text>
+        </g>
+        <!--entity WebinarRegistrationWebsite.FlaskApplication-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.FlaskApplication" data-source-line="71" data-uid="ent0007" id="entity_WebinarRegistrationWebsite.FlaskApplication">
+         <a href="../../component/flask-application/" target="_top" title="../../component/flask-application/" xlink:actuate="onRequest" xlink:href="../../component/flask-application/" xlink:show="new" xlink:title="../../component/flask-application/" xlink:type="simple">
+          <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="204.0234" x="434" y="962.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="47.375" x="458.5117" y="987.1484">Flask</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="505.8867" y="987.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="102.0547" x="511.457" y="987.1484">Application</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="109.3242" x="481.3496" y="1002.0605">[Python/Gunicorn]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="533.7866" y="1017.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56.6631" x="444" y="1034.1826">Handles</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="500.6631" y="1034.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="505.1133" y="1034.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="586.1943" y="1034.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3789" x="590.6445" y="1034.1826">logic,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45.8555" x="491.3799" y="1050.4795">serves</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="537.2354" y="1050.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38.958" x="541.6855" y="1050.4795">HTML</text>
+         </a>
+        </g>
+        <!--entity WebinarRegistrationWebsite.PostgreSQLDatabase-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.PostgreSQLDatabase" data-source-line="75" data-uid="ent0008" id="entity_WebinarRegistrationWebsite.PostgreSQLDatabase">
+         <path d="M428,1162.2969 C428,1152.2969 536.0625,1152.2969 536.0625,1152.2969 C536.0625,1152.2969 644.125,1152.2969 644.125,1162.2969 L644.125,1252.7813 C644.125,1262.7813 536.0625,1262.7813 536.0625,1262.7813 C536.0625,1262.7813 428,1262.7813 428,1252.7813 L428,1162.2969" fill="#438DD5" style="stroke:#3C7FC0;stroke-width:0.5;" /><path d="M428,1162.2969 C428,1172.2969 536.0625,1172.2969 536.0625,1172.2969 C536.0625,1172.2969 644.125,1172.2969 644.125,1162.2969" fill="none" style="stroke:#3C7FC0;stroke-width:0.5;" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.4063" x="438" y="1191.1484">PostgreSQL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="543.4063" y="1191.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="85.1484" x="548.9766" y="1191.1484">Database</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="59.9648" x="467.2236" y="1206.0605">[Managed</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="527.1885" y="1206.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="73.8984" x="531.0029" y="1206.0605">PostgreSQL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="533.8374" y="1221.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.6045" x="453.0024" y="1238.1826">Stores</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="497.6069" y="1238.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="502.0571" y="1238.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="583.1382" y="1238.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.5342" x="587.5884" y="1238.1826">data</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.373" x="494.876" y="1254.4795">persistently</text>
+        </g>
+        <!--entity WebinarRegistrationWebsite.BastionHost-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.BastionHost" data-source-line="71" data-uid="ent0009" id="entity_WebinarRegistrationWebsite.BastionHost">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="206.5117" x="503.5" y="582.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="549.1777" y="607.1484">Bastion</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="617.209" y="607.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="41.5547" x="622.7793" y="607.1484">Host</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48.6035" x="531.6475" y="622.0605">[Ubuntu</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="580.251" y="622.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="38.168" x="584.0654" y="622.0605">24.04,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="622.2334" y="622.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8164" x="626.0479" y="622.0605">Fail2ban]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="604.5308" y="637.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48.4395" x="513.5" y="654.1826">Secure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="561.9395" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="566.3896" y="654.1826">SSH</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="594.6904" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.0166" x="599.1406" y="654.1826">entry</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="636.1572" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35.7041" x="640.6074" y="654.1826">point</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="676.3115" y="654.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="680.7617" y="654.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="530.3677" y="670.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="631.519" y="670.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="635.9692" y="670.4795">access</text>
+        </g>
+        <!--entity WebinarRegistrationWebsite.ReverseProxy-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.ReverseProxy" data-source-line="71" data-uid="ent0010" id="entity_WebinarRegistrationWebsite.ReverseProxy">
+         <a href="../../component/reverse-proxy/" target="_top" title="../../component/reverse-proxy/" xlink:actuate="onRequest" xlink:href="../../component/reverse-proxy/" xlink:show="new" xlink:title="../../component/reverse-proxy/" xlink:type="simple">
+          <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="208.7813" x="377.5" y="772.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="72.7188" x="417.0664" y="797.1484">Reverse</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="489.7852" y="797.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.3594" x="495.3555" y="797.1484">Proxy</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="41.7598" x="429.7773" y="812.0605">[nginx,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="471.5371" y="812.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="58.6523" x="475.3516" y="812.0605">OpenSSL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="479.6655" y="827.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.5732" x="387.5" y="844.1826">SSL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="413.0732" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.9932" x="417.5234" y="844.1826">offloading</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="487.5166" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="491.9668" y="844.1826">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="518.3057" y="844.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.5254" x="522.7559" y="844.1826">request</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.5713" x="444.105" y="860.4795">forwarding</text>
+         </a>
+        </g>
+        <!--entity WebinarRegistrationWebsite.WebBrowser-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.WebBrowser" data-source-line="71" data-uid="ent0012" id="entity_WebinarRegistrationWebsite.WebBrowser">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="200.25" x="264" y="367.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="304.3008" y="392.1484">Web</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="344.2539" y="392.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="74.125" x="349.8242" y="392.1484">Browser</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8281" x="290.1299" y="407.0605">[Chrome,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="345.958" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45.0352" x="349.7725" y="407.0605">Firefox,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="394.8076" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.498" x="398.6221" y="407.0605">Safari]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.8999" y="422.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.7637" x="274" y="439.1826">Renders</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="331.7637" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.4082" x="336.2139" y="439.1826">HTML,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="379.6221" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.1777" x="384.0723" y="439.1826">JavaScript</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="334.9561" y="455.4795">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.2949" y="455.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.5488" x="365.7451" y="455.4795">CSS</text>
+        </g>
+        <!--entity WebinarRegistrationWebsite.Terminal-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite.Terminal" data-source-line="71" data-uid="ent0013" id="entity_WebinarRegistrationWebsite.Terminal">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="212.8623" x="499.5" y="367.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="566.189" y="392.1484">Terminal</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="556.8823" y="407.0605">[Azure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="595.9937" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="599.8081" y="407.0605">CLI,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="622.2261" y="407.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="626.0405" y="407.0605">SSH]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.7061" y="422.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.2725" x="509.5" y="439.1826">Command-line</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="611.7725" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62.4395" x="616.2227" y="439.1826">interface</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="678.6621" y="439.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="683.1123" y="439.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="529.543" y="455.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="630.6943" y="455.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="635.1445" y="455.4795">access</text>
+        </g>
+        <!--entity EventAttendee-->
+        <g class="entity" data-entity="EventAttendee" data-source-line="374" data-uid="ent0002" id="entity_EventAttendee">
+         <rect fill="#08427B" height="135.5156" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="214.127" x="7" y="52.2969" /><image height="48" width="48" x="90.0635" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="62.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.25" x="44.1143" y="125.1484">Event</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="95.3643" y="125.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.0781" x="100.9346" y="125.1484">Attendee</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="111.8384" y="141.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.3457" x="17" y="158.2139">Primary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="71.3457" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="75.7959" y="158.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="111.8828" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="116.333" y="158.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="121.3848" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.5918" x="125.835" y="158.2139">registers</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="187.4268" y="158.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="191.877" y="158.2139">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="38.1606" y="174.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="64.4995" y="174.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.2246" x="68.9497" y="174.5107">attends</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.1743" y="174.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="126.6245" y="174.5107">webinars</text>
+        </g>
+        <!--entity MarketingAdmin-->
+        <g class="entity" data-entity="MarketingAdmin" data-source-line="374" data-uid="ent0003" id="entity_MarketingAdmin">
+         <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="215.9453" x="256" y="44.2969" /><image height="48" width="48" x="339.9727" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="92.0781" x="286.457" y="117.1484">Marketing</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="378.5352" y="117.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57.3828" x="384.1055" y="117.1484">Admin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="361.7476" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="266" y="150.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="342.9932" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="347.4434" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="383.5303" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="387.9805" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="393.0322" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.4629" x="397.4824" y="150.2139">manages</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="294.916" y="166.5107">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="358.2578" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="362.708" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="389.0469" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39.5322" x="393.4971" y="166.5107">views</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88.375" x="319.7852" y="182.8076">registrations</text>
+        </g>
+        <!--entity SysAdmin-->
+        <g class="entity" data-entity="SysAdmin" data-source-line="374" data-uid="ent0004" id="entity_SysAdmin">
+         <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="205.9033" x="507" y="44.2969" /><image height="48" width="48" x="585.9517" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="88.8594" x="565.522" y="117.1484">SysAdmin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="607.7266" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="517" y="150.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="593.9932" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="598.4434" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="634.5303" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="638.9805" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="644.0322" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.4209" x="648.4824" y="150.2139">deploys</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="560.0049" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="586.3438" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.1045" x="590.7939" y="166.5107">maintains</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="562.0181" y="182.8076">infrastructure</text>
+        </g>
+        <!--link EventAttendee to WebinarRegistrationWebsite.WebBrowser-->
+        <g class="link" data-entity-1="EventAttendee" data-entity-2="WebinarRegistrationWebsite.WebBrowser" data-source-line="1688" data-uid="lnk14" id="link_EventAttendee_WebinarRegistrationWebsite.WebBrowser">
+         <path d="M170.73,188.3469 C216.69,242.6669 275.2326,311.8796 316.7426,360.9396" fill="none" id="EventAttendee-to-WebinarRegistrationWebsite.WebBrowser" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="321.91,367.0469,319.0328,359.0019,314.4524,362.8774,321.91,367.0469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="266.0283" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.4316" x="226" y="252.4043">[Mouse,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="273.4316" y="252.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="60.9785" x="277.2461" y="252.4043">keyboard]</text>
+        </g>
+        <!--link MarketingAdmin to WebinarRegistrationWebsite.WebBrowser-->
+        <g class="link" data-entity-1="MarketingAdmin" data-entity-2="WebinarRegistrationWebsite.WebBrowser" data-source-line="1688" data-uid="lnk15" id="link_MarketingAdmin_WebinarRegistrationWebsite.WebBrowser">
+         <path d="M364,196.6269 C364,250.1469 364,312.5169 364,359.1269" fill="none" id="MarketingAdmin-to-WebinarRegistrationWebsite.WebBrowser" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="364,367.1269,367,359.1269,361,359.1269,364,367.1269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="405.0283" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.4316" x="365" y="252.4043">[Mouse,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="412.4316" y="252.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="60.9785" x="416.2461" y="252.4043">keyboard]</text>
+        </g>
+        <!--link SysAdmin to WebinarRegistrationWebsite.Terminal-->
+        <g class="link" data-entity-1="SysAdmin" data-entity-2="WebinarRegistrationWebsite.Terminal" data-source-line="1688" data-uid="lnk16" id="link_SysAdmin_WebinarRegistrationWebsite.Terminal">
+         <path d="M608.98,196.6269 C608.26,250.1469 607.4081,312.5176 606.7781,359.1276" fill="none" id="SysAdmin-to-WebinarRegistrationWebsite.Terminal" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="606.67,367.1269,609.7778,359.1682,603.7784,359.0871,606.67,367.1269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="32.168" x="627.2061" y="238.4355">Uses</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="66.5801" x="610" y="252.4043">[Keyboard]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.WebBrowser to WebinarRegistrationWebsite.ReverseProxy-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.WebBrowser" data-entity-2="WebinarRegistrationWebsite.ReverseProxy" data-source-line="1688" data-uid="lnk17" id="link_WebinarRegistrationWebsite.WebBrowser_WebinarRegistrationWebsite.ReverseProxy">
+         <path d="M357.89,468.7769 C353.15,523.2769 351.15,612.2269 377,683.2969 C388.91,716.0469 406.2333,741.3717 427.3833,765.9617" fill="none" id="WebinarRegistrationWebsite.WebBrowser-to-WebinarRegistrationWebsite.ReverseProxy" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="432.6,772.0269,429.6578,764.0055,425.1089,767.918,432.6,772.0269" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43.8516" x="378" y="630.4355">HTTPS</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="421.8516" y="630.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="426.0293" y="630.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8477" x="394.2656" y="644.4043">[HTTPS/443]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.Terminal to WebinarRegistrationWebsite.BastionHost-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.Terminal" data-entity-2="WebinarRegistrationWebsite.BastionHost" data-source-line="1688" data-uid="lnk18" id="link_WebinarRegistrationWebsite.Terminal_WebinarRegistrationWebsite.BastionHost">
+         <path d="M606.23,468.4669 C606.39,502.6369 606.5726,539.857 606.7326,574.047" fill="none" id="WebinarRegistrationWebsite.Terminal-to-WebinarRegistrationWebsite.BastionHost" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="606.77,582.0469,609.7325,574.0329,603.7326,574.061,606.77,582.0469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="62.2676" x="616.8359" y="512.4355">Connects</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="679.1035" y="512.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="13.9805" x="683.2813" y="512.4355">to</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="608" y="526.4043">[Azure</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="647.1113" y="526.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="650.9258" y="526.4043">CLI,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="673.3438" y="526.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="677.1582" y="526.4043">SSH]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.BastionHost to WebinarRegistrationWebsite.ReverseProxy-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.BastionHost" data-entity-2="WebinarRegistrationWebsite.ReverseProxy" data-source-line="1688" data-uid="lnk19" id="link_WebinarRegistrationWebsite.BastionHost_WebinarRegistrationWebsite.ReverseProxy">
+         <path d="M573.83,683.6869 C555.68,710.9869 537.6786,738.0545 519.5386,765.3445" fill="none" id="WebinarRegistrationWebsite.BastionHost-to-WebinarRegistrationWebsite.ReverseProxy" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="515.11,772.0069,522.037,767.0052,517.0402,763.6838,515.11,772.0069" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="565.8027" y="725.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="553" y="739.4043">[SSH/22]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.BastionHost to WebinarRegistrationWebsite.FlaskApplication-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.BastionHost" data-entity-2="WebinarRegistrationWebsite.FlaskApplication" data-source-line="1688" data-uid="lnk20" id="link_WebinarRegistrationWebsite.BastionHost_WebinarRegistrationWebsite.FlaskApplication">
+         <path d="M630.99,683.3169 C657.26,745.1269 690.47,852.4069 649,932.2969 C643.2,943.4769 640.8584,947.9376 631.5284,956.6776" fill="none" id="WebinarRegistrationWebsite.BastionHost-to-WebinarRegistrationWebsite.FlaskApplication" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="625.69,962.1469,633.5794,958.8671,629.4775,954.4882,625.69,962.1469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="682.8027" y="820.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="670" y="834.4043">[SSH/22]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.ReverseProxy to WebinarRegistrationWebsite.FlaskApplication-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.ReverseProxy" data-entity-2="WebinarRegistrationWebsite.FlaskApplication" data-source-line="1688" data-uid="lnk21" id="link_WebinarRegistrationWebsite.ReverseProxy_WebinarRegistrationWebsite.FlaskApplication">
+         <path d="M496.33,873.6869 C504.17,900.9869 511.6511,927.0279 519.4911,954.3179" fill="none" id="WebinarRegistrationWebsite.ReverseProxy-to-WebinarRegistrationWebsite.FlaskApplication" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="521.7,962.0069,522.3744,953.4895,516.6077,955.1462,521.7,962.0069" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="63.1934" x="514" y="915.4355">Forwards</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="577.1934" y="915.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="581.3711" y="915.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8652" x="539.9277" y="929.4043">[HTTP/5001]</text>
+        </g>
+        <!--link WebinarRegistrationWebsite.FlaskApplication to WebinarRegistrationWebsite.PostgreSQLDatabase-->
+        <g class="link" data-entity-1="WebinarRegistrationWebsite.FlaskApplication" data-entity-2="WebinarRegistrationWebsite.PostgreSQLDatabase" data-source-line="1688" data-uid="lnk22" id="link_WebinarRegistrationWebsite.FlaskApplication_WebinarRegistrationWebsite.PostgreSQLDatabase">
+         <path d="M536,1063.3669 C536,1090.5469 536,1116.2869 536,1144.1569" fill="none" id="WebinarRegistrationWebsite.FlaskApplication-to-WebinarRegistrationWebsite.PostgreSQLDatabase" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="536,1152.1569,539,1144.1569,533,1144.1569,536,1152.1569" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.7266" x="537" y="1105.4355">Reads/writes</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="624.7266" y="1105.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="30.5215" x="628.9043" y="1105.4355">data</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="113.1621" x="541.6318" y="1119.4043">[PostgreSQL/5432]</text>
+        </g>
+        <g class="legend" data-source-line="1492">
+         <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1326.2969" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="434.2617" y="1339.292">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="497.0566" y="1339.292">&nbsp;</text><rect fill="#08427B" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1342.5938" /><text fill="#073B6F" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1355.5889">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1355.5889">&nbsp;</text><image height="12" width="12" x="450.8662" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAApklEQVR4XmPgcKpmQMfRjcsb/CoWNqCLgzCGwH80gC6Pwjl17RG6+v9T1h47gFPD95+/0dX/33v2DootKBriW1Y2oGvQjesPxKkBhDuW7D8AUxzfunIiujwKRzWyO8ksdXIxjG+XPaNBNqgNuw3IzkAHIL+haNh67MZndEXooGXh3kVwDeiS2MCtx6/BtoA1/P7zF10eA5y69hihAYQNkyY24MMwdQBvKDvWFDAX9QAAAABJRU5ErkJggg==" y="1346.8906" /><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.9883" x="471.7666" y="1355.5889">person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="524.2051" y="1355.5889">&nbsp;</text><rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1358.8906" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1371.8857">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1371.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.3359" x="455.3164" y="1371.8857">container</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="526.1025" y="1371.8857">&nbsp;</text><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1375.1875" /><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1388.1826">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1388.1826">&nbsp;</text><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="121.7686" x="455.3164" y="1388.1826">system boundary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="581.5352" y="1388.1826">&nbsp;</text><rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1391.4844" /><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1404.4795">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1404.4795">&nbsp;</text><text fill="#444444" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.7051" x="455.3164" y="1404.4795">boundary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="526.4717" y="1404.4795">&nbsp;</text><rect fill="#66622E" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1407.7813" /><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1420.7764">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1420.7764">&nbsp;</text><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="136.5684" x="455.3164" y="1420.7764">Back-end boundary</text><text fill="#CCCCCC" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="123.4668" x="596.335" y="1421.7197">(last back color, dashed)</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="719.8018" y="1420.7764">&nbsp;</text><rect fill="#66622E" height="16.2969" style="stroke:none;stroke-width:1;" width="292.7383" x="434.2617" y="1424.0781" /><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="438.7119" y="1437.0732">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.416" y="1437.0732">&nbsp;</text><text fill="#CCCCCC" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="139.3164" x="455.3164" y="1437.0732">Front-end boundary</text><text fill="#CCCCCC" font-family="sans-serif" font-size="10" lengthAdjust="spacing" textLength="123.4668" x="599.083" y="1438.0166">(last back color, dashed)</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="722.5498" y="1437.0732">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1326.2969" y2="1326.2969" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1342.5938" y2="1342.5938" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1358.8906" y2="1358.8906" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1375.1875" y2="1375.1875" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1391.4844" y2="1391.4844" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1407.7813" y2="1407.7813" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1424.0781" y2="1424.0781" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="727" y1="1440.375" y2="1440.375" /><line style="stroke:none;stroke-width:1;" x1="434.2617" x2="434.2617" y1="1326.2969" y2="1440.375" /><line style="stroke:none;stroke-width:1;" x1="727" x2="727" y1="1326.2969" y2="1440.375" />
+        </g>
+       </g>
+      </svg>
+     </div>
+     <div class="has-text-centered">
+      C2-Containers-Full [<a href="../../../svg/C2-Containers-Full.svg" target="_blank">svg</a>|<a href="../../../png/C2-Containers-Full.png" target="_blank">png</a>|<a href="../../../puml/C2-Containers-Full.puml" target="_blank">puml</a>]
+     </div>
+    </div>
+   </div>
+   <button class="modal-close is-large" aria-label="close" onclick="closeModal('C2-Containers-Full-modal')"></button>
+  </div>
+ </div>
+</p>
+<h3>Container Inventory</h3>
+<h4>Compute Containers</h4>
+<table>
+ <thead>
+  <tr>
+   <th>Container</th>
+   <th>Technology</th>
+   <th>Purpose</th>
+   <th>Network Location</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>Bastion Host</strong></td>
+   <td>Ubuntu 24.04 LTS</td>
+   <td>Secure SSH entry point; no direct access to app servers from internet</td>
+   <td><code>snet-bastion</code> (10.0.1.0/24), Public IP</td>
+  </tr>
+  <tr>
+   <td><strong>Reverse Proxy</strong></td>
+   <td>nginx on Ubuntu 24.04</td>
+   <td>SSL termination, load balancing (future), security headers</td>
+   <td><code>snet-web</code> (10.0.2.0/24), Public IP</td>
+  </tr>
+  <tr>
+   <td><strong>Flask Application</strong></td>
+   <td>Python 3 + Gunicorn on Ubuntu 24.04</td>
+   <td>Business logic, HTML rendering, REST endpoints</td>
+   <td><code>snet-app</code> (10.0.3.0/24), Private only</td>
+  </tr>
+  <tr>
+   <td><strong>PostgreSQL Database</strong></td>
+   <td>Azure PostgreSQL Flexible Server</td>
+   <td>Persistent data storage</td>
+   <td><code>snet-data</code> (10.0.4.0/24), Private endpoint</td>
+  </tr>
+ </tbody>
+</table>
+<h4>Supporting Infrastructure</h4>
+<table>
+ <thead>
+  <tr>
+   <th>Component</th>
+   <th>Purpose</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>Virtual Network</strong></td>
+   <td><code>vnet-flask-bicep-dev</code> (10.0.0.0/16) - Network isolation</td>
+  </tr>
+  <tr>
+   <td><strong>NSGs</strong></td>
+   <td>Network Security Groups per subnet controlling traffic flow</td>
+  </tr>
+  <tr>
+   <td><strong>ASGs</strong></td>
+   <td>Application Security Groups for role-based rules</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Network Flow</h3>
+<h4>User Traffic (Registration)</h4>
+<pre><code>Internet -&gt; Public IP (pip-proxy) -&gt; nginx:443 -&gt; vm-app:5001 -&gt; PostgreSQL:5432
+</code></pre>
+<h4>Administrative Access</h4>
+<pre><code>Internet -&gt; Public IP (pip-bastion) -&gt; vm-bastion:22 -&gt; (SSH tunnel) -&gt; vm-proxy/vm-app:22
+</code></pre>
+<h4>Security Boundaries</h4>
+<pre><code>+-------------------------------------------------------------------------+
+|  INTERNET                                                                |
++------+-------------------------------------------+----------------------+
+       | SSH:22                                    | HTTPS:443
+       v                                           v
++--------------+                          +--------------+
+| vm-bastion   |                          | vm-proxy     |
+| (jump host)  |                          | (nginx)      |
++------+-------+                          +------+-------+
+       | SSH:22 (internal)                       | HTTP:5001
+       v                                         v
++------------------------------------------------------------------------+
+|  PRIVATE NETWORK                                                        |
+|  +--------------+                          +--------------------------+ |
+|  | vm-app       |-----PostgreSQL:5432-----&gt;| PostgreSQL Flex Server   | |
+|  | (Flask)      |                          | (Azure PaaS)             | |
+|  +--------------+                          +--------------------------+ |
++------------------------------------------------------------------------+
+</code></pre>
+<h3>Container Details</h3>
+<h4>1. Bastion Host (<code>vm-bastion</code>)</h4>
+<p><strong>Purpose</strong>: Secure administrative access without exposing internal VMs</p>
+<table>
+ <thead>
+  <tr>
+   <th>Aspect</th>
+   <th>Detail</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Image</td>
+   <td>Ubuntu 24.04 LTS</td>
+  </tr>
+  <tr>
+   <td>Size</td>
+   <td>Standard_B1s (1 vCPU, 1GB RAM)</td>
+  </tr>
+  <tr>
+   <td>Public IP</td>
+   <td>Yes (<code>pip-bastion</code>)</td>
+  </tr>
+  <tr>
+   <td>Inbound Rules</td>
+   <td>SSH (22) from Internet</td>
+  </tr>
+  <tr>
+   <td>Outbound Rules</td>
+   <td>SSH (22) to internal VMs</td>
+  </tr>
+  <tr>
+   <td>Security</td>
+   <td>Fail2ban (3 strikes, 1 hour ban)</td>
+  </tr>
+ </tbody>
+</table>
+<h4>2. Reverse Proxy (<code>vm-proxy</code>)</h4>
+<p><strong>Purpose</strong>: SSL termination, public endpoint, future load balancing</p>
+<table>
+ <thead>
+  <tr>
+   <th>Aspect</th>
+   <th>Detail</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Image</td>
+   <td>Ubuntu 24.04 LTS</td>
+  </tr>
+  <tr>
+   <td>Size</td>
+   <td>Standard_B1s</td>
+  </tr>
+  <tr>
+   <td>Public IP</td>
+   <td>Yes (<code>pip-proxy</code>)</td>
+  </tr>
+  <tr>
+   <td>Software</td>
+   <td>nginx</td>
+  </tr>
+  <tr>
+   <td>SSL</td>
+   <td>Self-signed certificate (CN=flask-app)</td>
+  </tr>
+  <tr>
+   <td>Inbound Rules</td>
+   <td>HTTPS (443), HTTP (80 -&gt; redirect)</td>
+  </tr>
+  <tr>
+   <td>Outbound Rules</td>
+   <td>HTTP (5001) to app subnet</td>
+  </tr>
+ </tbody>
+</table>
+<p><strong>nginx Configuration</strong>:</p>
+<ul>
+ <li>HTTP -&gt; HTTPS redirect (301)</li>
+ <li>SSL with TLS 1.2/1.3 only</li>
+ <li>Proxy headers (X-Real-IP, X-Forwarded-For, X-Forwarded-Proto)</li>
+ <li>Upstream: <code>http://vm-app:5001</code></li>
+</ul>
+<h4>3. Flask Application (<code>vm-app</code>)</h4>
+<p><strong>Purpose</strong>: Core application logic and data access</p>
+<table>
+ <thead>
+  <tr>
+   <th>Aspect</th>
+   <th>Detail</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Image</td>
+   <td>Ubuntu 24.04 LTS</td>
+  </tr>
+  <tr>
+   <td>Size</td>
+   <td>Standard_B1s</td>
+  </tr>
+  <tr>
+   <td>Public IP</td>
+   <td><strong>No</strong> (security: internal only)</td>
+  </tr>
+  <tr>
+   <td>Runtime</td>
+   <td>Python 3 + Gunicorn WSGI server</td>
+  </tr>
+  <tr>
+   <td>Binding</td>
+   <td><code>0.0.0.0:5001</code></td>
+  </tr>
+  <tr>
+   <td>Service User</td>
+   <td><code>flask-app</code> (system user, no login shell)</td>
+  </tr>
+  <tr>
+   <td>Inbound Rules</td>
+   <td>HTTP (5001) from web subnet only</td>
+  </tr>
+ </tbody>
+</table>
+<p><strong>Key Files on VM</strong>:</p>
+<pre><code>/opt/flask-app/           # Application code
+/opt/flask-app/venv/      # Python virtual environment
+/etc/flask-app/app.env    # DATABASE_URL (chmod 640, root:flask-app)
+/etc/systemd/system/flask-app.service
+</code></pre>
+<h4>4. PostgreSQL Database</h4>
+<p><strong>Purpose</strong>: Persistent storage for registration data</p>
+<table>
+ <thead>
+  <tr>
+   <th>Aspect</th>
+   <th>Detail</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Service</td>
+   <td>Azure Database for PostgreSQL Flexible Server</td>
+  </tr>
+  <tr>
+   <td>SKU</td>
+   <td>Burstable B1ms (1 vCPU, 2GB)</td>
+  </tr>
+  <tr>
+   <td>Version</td>
+   <td>PostgreSQL 16</td>
+  </tr>
+  <tr>
+   <td>Access</td>
+   <td>Private endpoint in <code>snet-data</code></td>
+  </tr>
+  <tr>
+   <td>Database</td>
+   <td><code>flask</code></td>
+  </tr>
+  <tr>
+   <td>SSL</td>
+   <td>Required (<code>sslmode=require</code>)</td>
+  </tr>
+ </tbody>
+</table>
+<blockquote>
+ <p><strong>Note</strong>: This is the only PaaS component. We use managed PostgreSQL for practical reasons (backups, HA, patching) while keeping compute as IaaS for learning purposes.</p>
+</blockquote>
+<h3>Technology Choices</h3>
+<table>
+ <thead>
+  <tr>
+   <th>Decision</th>
+   <th>Choice</th>
+   <th>Rationale</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Web Server</td>
+   <td>nginx</td>
+   <td>Industry standard, excellent reverse proxy, low resource usage</td>
+  </tr>
+  <tr>
+   <td>WSGI Server</td>
+   <td>Gunicorn</td>
+   <td>Production-grade, simple configuration, works well with Flask</td>
+  </tr>
+  <tr>
+   <td>Database</td>
+   <td>PostgreSQL</td>
+   <td>Robust, open source, excellent Python support (psycopg2)</td>
+  </tr>
+  <tr>
+   <td>Process Manager</td>
+   <td>systemd</td>
+   <td>Standard on modern Ubuntu, automatic restarts, logging</td>
+  </tr>
+  <tr>
+   <td>Infrastructure</td>
+   <td>Azure Bicep</td>
+   <td>Declarative IaC, native Azure support, good learning value</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Deployment Pipeline</h3>
+<pre><code>+-------------+    +-------------+    +-------------+
+| provision.sh|---&gt;|cloud-init   |---&gt;| deploy.sh   |
+| (Bicep)     |    |(VMs boot)   |    |(App code)   |
++-------------+    +-------------+    +-------------+
+     |                   |                   |
+     v                   v                   v
+ - VNet, Subnets     - Install nginx     - Copy app files
+ - NSGs, ASGs        - Install Python    - Install deps
+ - VMs               - Create users      - Configure DB URL
+ - PostgreSQL        - Systemd units     - Start service
+</code></pre>
+<h3>Next Level</h3>
+<p>See <a href="../components-(c3)/">Components (C3)</a> for the internal structure of the Flask application.</p></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

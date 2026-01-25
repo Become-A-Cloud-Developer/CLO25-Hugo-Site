@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Uppdrag - CM Corp - ASD - IPL25</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="swedish-tech-slides.css">
+
+    <style>
+        /* Custom styles for this presentation */
+
+        /* Numbered bullet slide variant */
+        .numbered-bullet-slide {
+            padding: var(--space-xl);
+            height: 100vh;
+            display: flex !important;
+            flex-direction: column;
+        }
+
+        .numbered-bullet-slide .slide-header {
+            color: var(--swedish-yellow);
+            font-size: 3.6em;
+            margin-bottom: var(--space-lg);
+            border-left: 4px solid var(--swedish-yellow);
+            padding-left: var(--space-md);
+        }
+
+        .numbered-bullet-slide .numbered-box {
+            background: rgba(254, 204, 0, 0.1);
+            border-left: 4px solid var(--swedish-yellow);
+            padding: var(--space-md);
+            margin-bottom: 15px;
+        }
+
+        .numbered-bullet-slide .numbered-box h3 {
+            color: var(--swedish-yellow);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            text-transform: none;
+        }
+
+        .numbered-bullet-slide .numbered-box p {
+            font-size: 1.3em;
+            margin: 0;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>CM CORP</span>
+                </div>
+
+                <h1 class="main-title">
+                    UPPDRAG
+                </h1>
+
+                <p class="subtitle">Grattis till ert andra projektledaruppdrag på CM Corp</p>
+                <p class="course-info">Agil Mjukvaruutveckling • Driftsättning</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Business Demand -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Uppdrag (Business Demand)</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Webinariet var en succé!</span> Marknadsavdelningen vill nu kunna skicka ut <span class="highlight">nyhetsbrev</span> för att marknadsföra kommande webinarier.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösningen ska innehålla en sida där kunder kan <span class="highlight">registrera sig</span> för att prenumerera på nyhetsbrevet.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vi behöver också ett <span class="highlight">adminområde</span> för att hantera prenumeranter.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Business Needs -->
+            <section class="numbered-bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Uppdrag (Business Needs)</h2>
+
+                <div class="fragment numbered-box">
+                    <h3>1. Lösning</h3>
+                    <p>Nyhetsbrevslösningen ska hostas på Azure och skrivas i Python/Flask.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>2. Registreringsformulär</h3>
+                    <p>Ett funktionellt registreringsformulär för att samla in prenumerantuppgifter som namn, e-postadress, företag och jobbtitel. Formuläret ska ha datavalidering.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>3. Adminområde</h3>
+                    <p>Lösningen ska ge en administratör möjlighet att hantera prenumeranterna.</p>
+                </div>
+
+                <div class="fragment numbered-box">
+                    <h3>4. Snabb driftsättning</h3>
+                    <p>Lösningen ska ha en CI/CD-pipeline med GitHub Actions för att möjliggöra frekventa driftsättningar.</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

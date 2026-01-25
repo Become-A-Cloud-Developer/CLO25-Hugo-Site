@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../../style.css" rel="stylesheet">
+    <link href="./../../../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../../../modal.js"></script>
+    <script type="text/javascript" src="../../../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../../" class="">Home</a><a href="../../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li><a href="../../" class="">Info</a></li>
+            <li><a href="../../context/" class="">Context views</a></li>
+            <li><a href="../../container/" class="">Container views</a></li>
+            <li><a href="../../component/flask-application/" class="">Component views</a></li>
+            <li><a href="../../deployment/" class="">Deployment views</a></li>
+            <li><a href="../../dependencies/" class="">Dependencies</a></li>
+            <li class="is-active"><a href="../" class="is-active">Decisions</a></li>
+            <li><a href="../../sections/" class="">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <div><h1>3. Use Bastion Host for SSH Access</h1>
+<p>Date: 2025-12-15</p>
+<h2>Status</h2>
+<p>Accepted</p>
+<h2>Context</h2>
+<p>We need secure administrative access to internal VMs without exposing them directly to the internet.</p>
+<p>Options considered:</p>
+<ol>
+ <li>Direct SSH access to all VMs (public IPs)</li>
+ <li>VPN gateway</li>
+ <li>Azure Bastion service (PaaS)</li>
+ <li>Self-managed bastion host (jump server)</li>
+</ol>
+<h2>Decision</h2>
+<p>We will use a self-managed bastion host (Ubuntu VM) as an SSH jump server.</p>
+<h2>Consequences</h2>
+<p><strong>Positive:</strong></p>
+<ul>
+ <li>Only one public SSH endpoint exposed</li>
+ <li>Internal VMs have no public IPs (reduced attack surface)</li>
+ <li>Full control over bastion configuration</li>
+ <li>Consistent with IaaS approach</li>
+</ul>
+<p><strong>Negative:</strong></p>
+<ul>
+ <li>Additional VM to maintain</li>
+ <li>Single point of failure for admin access</li>
+ <li>Requires SSH key management</li>
+</ul></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

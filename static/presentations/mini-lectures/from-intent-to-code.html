@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>From Intent to Code: Abstraction Levels in Planning</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>DEVOPS PROJECT MANAGEMENT</span>
+                </div>
+
+                <h1 class="main-title">
+                    FROM INTENT<br>
+                    TO CODE
+                </h1>
+
+                <p class="subtitle">From value proposition to value delivery</p>
+                <p class="course-info">Understanding abstraction levels in software planning</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- It Starts with Intent -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">It Starts with Intent</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Intent is the trigger</span> — a business need, an idea, a request. It can be vague or specific.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Intent is a value proposition:</span> a statement of what value we want to create</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Running systems are value delivery:</span> that value actually reaching users</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Everything in between — documents, diagrams, code — <span class="highlight">transforms proposition into delivery</span></p>
+                </div>
+            </section>
+
+            <!-- Abstraction Levels -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Abstraction Levels</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">1. Business Requirements Document (BRD)</span> — First formalization of intent. Captures the business need in stakeholder language.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">2. Product Requirements Document (PRD)</span> — Translates business need into product specifications: functional/non-functional requirements, user stories, constraints.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">3. Architecture Documentation (C4 Model)</span> — Defines technical design: a hierarchical view that zooms from system context down to code.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>This pattern has gained traction in <span class="highlight">DevOps and the "everything as code" era</span></p>
+                </div>
+            </section>
+
+            <!-- Lenses, Not Phases -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lenses, Not Sequential Phases</h2>
+
+                <div class="fragment info-box">
+                    <p>These abstraction levels are <span class="highlight">lenses on the same system</span>, not waterfall phases</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Teams don't complete one level before starting the next — they <span class="highlight">cut through all levels</span> with minimal scope</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Goal: reach <span class="highlight">running software quickly</span>, then iterate to expand</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A single feature can have its own slice of <span class="highlight">business context, product spec, architecture, and code</span> — all developed together</p>
+                </div>
+            </section>
+
+            <!-- C4 Model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The C4 Model</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Context</span> — Who uses the system and how it fits into its environment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Containers</span> — The major technical building blocks (applications, databases, servers)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Components</span> — The internal structure of each container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Code</span> — The actual implementation</p>
+                </div>
+            </section>
+
+            <!-- Tech Stack & ADRs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tech Stack Decisions</h2>
+
+                <div class="fragment info-box">
+                    <p>Technology stack is typically defined at the <span class="highlight">Context level</span> — an early commitment based on PRD constraints and team capabilities</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Choices are documented in <span class="highlight">Architecture Decision Records (ADRs)</span> and guide all subsequent design</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tech stack decisions are <span class="highlight">pragmatic commitments:</span> proceed with initial choices until concrete evidence proves them inadequate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Endless deliberation over alternatives <span class="highlight">delays progress without adding value</span></p>
+                </div>
+            </section>
+
+            <!-- Probabilistic to Deterministic -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Probabilistic → Deterministic</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Raw intent</span> permits almost unlimited solutions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Business requirements</span> narrow the field. <span class="highlight">Product requirements</span> constrain it further. <span class="highlight">Architecture</span> specifies structure.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Code is deterministic:</span> doing exactly what it specifies, with no remaining ambiguity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>But code is not the destination — <span class="highlight">running software is.</span> Code must be deployed, configured, and operated before it delivers value.</p>
+                </div>
+            </section>
+
+            <!-- Why Intermediate Levels Matter -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Intermediate Levels Matter</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Different Stakeholders, Different Altitudes</span> — Each level enables collaboration between people who think at different altitudes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Progressive Risk Reduction</span> — Each step down reveals risks earlier, where course correction costs less</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Preserving Intent Through Implementation</span> — Higher levels preserve reasoning behind countless micro-decisions</p>
+                </div>
+            </section>
+
+            <!-- The Incompleteness Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Incompleteness Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Intermediate levels are always <span class="highlight">incomplete descriptions</span> of the final system — this is a mathematical certainty</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Planning documents represent <span class="highlight">possibilities, not certainties</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Implementation reveals constraints and opportunities that <span class="highlight">no upfront planning can anticipate</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Plans don't need to be complete to be useful — the value lies in <span class="highlight">direction and context</span>, not exhaustive specification</p>
+                </div>
+            </section>
+
+            <!-- AI as Translation Partner -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">AI as a Translation Partner</h2>
+
+                <div class="fragment info-box">
+                    <p>AI learns relationships between abstraction levels — <span class="highlight">how intent maps to requirements, requirements to architecture, architecture to code</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Given a business need</span> → AI drafts product requirements</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Given requirements</span> → AI proposes architectural structures</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Given code</span> → AI extracts documentation and updates higher-level artifacts</p>
+                </div>
+            </section>
+
+            <!-- Human-AI Complementarity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Complementary Partnership</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Humans excel downward (Abstract → Concrete):</span> taking nebulous objectives and imagining specific features</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">AI excels upward (Concrete → Abstract):</span> identifying patterns, generating documentation, proposing higher-level descriptions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bidirectional flow:</span> Human intent drives downward specification while AI maintains upward coherence</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Together they navigate the hierarchy <span class="highlight">more effectively than either could alone</span></p>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Takeaways</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">1. Intent → Running Systems</span><br>Software projects transform value propositions into value delivery through progressive formalization: BRD → PRD → C4 → Code → Running Software</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">2. Lenses, Not Phases</span><br>Abstraction levels are perspectives you cut through together, not sequential gates. Get to running software fast, then iterate.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">3. Humans Down, AI Up</span><br>Humans drive intent into concrete specifications. AI maintains coherence upward. This complementary partnership enables faster, more aligned delivery.</p>
+                </div>
+            </section>
+
+            <!-- Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

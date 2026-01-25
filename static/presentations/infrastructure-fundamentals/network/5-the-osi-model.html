@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>The OSI Model</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THE<br>
+                    OSI<br>
+                    MODEL
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is the OSI Model? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What is the OSI Model?</h2>
+
+                <div class="fragment info-box">
+                    <p>A conceptual framework organizing network communication into <span class="highlight">seven distinct layers</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each layer handles a specific aspect: physical transmission, routing, reliable delivery, application protocols</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Layers provide services to the layer above and consume services from below</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Separation allows protocols to change without affecting other layers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Layers 1-2: Physical & Data Link -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layers 1-2: Physical & Data Link</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 1 (Physical):</span> Raw bit transmission—electrical signals, cables, fiber optics, wireless radios</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No understanding of addresses or packets; simply transmits/receives bit streams</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 2 (Data Link):</span> Organizes bits into frames; uses <span class="highlight">MAC addresses</span> for local delivery</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switches</span> operate at Layer 2, forwarding frames based on MAC addresses</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Layer 3: Network Layer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layer 3: Network Layer</h2>
+
+                <div class="fragment info-box">
+                    <p>Enables routing across multiple networks using <span class="highlight">IP addresses</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routers</span> operate at Layer 3, consulting routing tables to forward packets</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Handles packet <span class="highlight">fragmentation</span> when data exceeds link capacity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ICMP</span> provides diagnostics (ping, traceroute)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Layer 4: Transport Layer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layer 4: Transport Layer</h2>
+
+                <div class="fragment info-box">
+                    <p>Manages end-to-end communication; uses <span class="highlight">port numbers</span> to identify applications</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">TCP:</span> Connection-oriented, guaranteed delivery, sequence tracking, retransmission</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">UDP:</span> Connectionless, no delivery guarantee, lower latency, less overhead</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Choose TCP when data integrity matters; UDP when speed matters more than occasional loss</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Layers 5-7: Session, Presentation, Application -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layers 5-7: Session, Presentation, Application</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 5 (Session):</span> Manages connection establishment, maintenance, and termination</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 6 (Presentation):</span> Data format translation, encryption/decryption, compression</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 7 (Application):</span> Network services for user applications—<span class="highlight">HTTP, HTTPS, DNS, SSH, SMTP</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Many applications integrate session/presentation directly into application protocols</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Load Balancers: Layer 4 vs Layer 7 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancers: Layer 4 vs Layer 7</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 4 Load Balancer:</span> Routes based on IP addresses and ports; fast, minimal inspection</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 7 Load Balancer:</span> Parses HTTP—routes by URL path, headers, cookies; enables sophisticated rules</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>L7 can route /api/* to API servers, /static/* to CDN; terminate SSL; inspect for threats</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Many deployments use both: L4 distributes to L7 balancers, which route to backends</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">The OSI Model provides a systematic framework for understanding network communication—from physical signals to application protocols—enabling informed decisions about architecture and troubleshooting</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

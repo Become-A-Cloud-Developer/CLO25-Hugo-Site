@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Privata och publika nätverk</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PRIVATA OCH<br>
+                    PUBLIKA<br>
+                    NÄTVERK
+                </h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Address Space Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Adressutrymmesproblemet</h2>
+
+                <div class="fragment info-box">
+                    <p>IPv4 tillhandahåller cirka <span class="highlight">4,3 miljarder</span> unika adresser—otillräckligt för modern enhetsproliferation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Istället för att kräva globalt unika adresser för varje enhet, definierar standarder <span class="highlight">privata intervall</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Privata adresser kommunicerar inom lokala nätverk men kan inte routa över det publika internet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Detta bevarar publika adresser för system som behöver <span class="highlight">global nåbarhet</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Private Networks -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Privata nätverk</h2>
+
+                <div class="fragment info-box">
+                    <p>Använder <span class="highlight">icke-routbara</span> IP-adresser för intern kommunikation (RFC 1918)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">10.0.0.0/8</span>: ~16 miljoner adresser för stora organisationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">172.16.0.0/12</span>: ~1 miljon adresser för medelstora nätverk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">192.168.0.0/16</span>: 65 536 adresser vanliga i hem/små kontor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dessa intervall kan återanvändas över organisationer utan konflikt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: How Private Networks Operate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur privata nätverk fungerar</h2>
+
+                <div class="fragment info-box">
+                    <p>Enheter får privata IP-adresser (t.ex. 192.168.1.10, 192.168.1.20) och kommunicerar direkt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NAT (Network Address Translation)</span> skriver om källadresser när trafik lämnar nätverket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Flera enheter delar en enda publik IP—externa system ser endast routerns adress</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Routern upprätthåller en översättningstabell som mappar interna enheter till anslutningar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Public Networks -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Publika nätverk</h2>
+
+                <div class="fragment info-box">
+                    <p>Använder <span class="highlight">globalt unika, routbara</span> IP-adresser tilldelade av ISP:er/molnleverantörer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Statiska publika IP-adresser</span>: Förblir konstanta; idealiska för servrar med DNS-poster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dynamiska publika IP-adresser</span>: Kan ändras vid återanslutning; vanliga för hemuppkopplingar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vilket system som helst med internetanslutning kan potentiellt nå publika adresser</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Connectivity and Exposure -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Anslutbarhet och exponering</h2>
+
+                <div class="fragment info-box">
+                    <p>Publika IP-adresser är globalt nåbara—möjliggör tjänster men kräver robust säkerhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls</span> filtrerar inkommande anslutningar, tillåter endast specifika portar/protokoll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Network Security Groups</span> definierar regler innan trafik når resurser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DMZ (Demilitarized Zone)</span>: Publikt exponerade system isolerade från det interna nätverket</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Choosing Between Private and Public -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Att välja mellan privat och publikt</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Publik IP</span>: Webbservrar, jump boxes, API-gatewayer—måste acceptera externa anslutningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Privat IP</span>: Databaser, applikationsservrar, interna filservrar—ingen direkt internetåtkomst behövs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanligt mönster: Load balancer med publik IP distribuerar till privata backend-servrar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exponera endast det som måste vara publikt; allt annat opererar på privata nätverk</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Privata nätverk ger isolering och adressbesparing medan publika nätverk möjliggör global anslutbarhet—de flesta arkitekturer kombinerar båda med NAT och firewalls vid gränsen</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

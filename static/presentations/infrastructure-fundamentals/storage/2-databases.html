@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Databases</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DATABASES
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is a Database? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What is a Database?</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">structured collection</span> of data stored electronically</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enables efficient <span class="highlight">storage, retrieval, and management</span> of information</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Provides <span class="highlight">query capabilities</span> (e.g., SQL - Structured Query Language)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Maintains <span class="highlight">data integrity</span> through constraints (primary keys, foreign keys, unique, not null)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Relational Databases -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Relational Databases</h2>
+
+                <div class="fragment info-box">
+                    <p>Use <span class="highlight">tables with rows and columns</span> to organize data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SQL</span> (Structured Query Language) for data manipulation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strong <span class="highlight">ACID guarantees:</span> Atomicity, Consistency, Isolation, Durability</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: <span class="highlight">PostgreSQL</span>, MySQL, SQL Server, Oracle</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Best for structured data with complex relationships and transaction requirements</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: NoSQL Databases -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">NoSQL Databases</h2>
+
+                <div class="fragment info-box">
+                    <p>Designed for <span class="highlight">unstructured or semi-structured data</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Flexible schemas</span> for diverse data types</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Document stores:</span> MongoDB, CouchDB - store JSON-like documents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Key-Value stores:</span> Redis, DynamoDB - simple key-to-value mapping</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optimized for horizontal scaling and high-throughput workloads</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: In-Memory Databases -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">In-Memory Databases</h2>
+
+                <div class="fragment info-box">
+                    <p>Store data in <span class="highlight">RAM for high-speed access</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Significantly faster than disk-based storage (microseconds vs milliseconds)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Examples:</span> Redis, Memcached</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common uses: <span class="highlight">caching</span>, session storage, real-time analytics</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: Higher cost per GB, data persistence requires additional configuration</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Key Concepts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Database Concepts</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Schema:</span> Defines the structure of data in a database (tables, relationships)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Transactions:</span> Ensure data consistency through atomic operations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Indexes:</span> Speed up data retrieval by organizing data for quick access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Replication:</span> Copy data across multiple nodes for availability and read scaling</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Databases in Cloud Environments -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Databases in Cloud Environments</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Managed Databases:</span> Fully managed by cloud providers (Amazon RDS, Azure SQL Database)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Providers handle <span class="highlight">backups, scaling, and maintenance</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Database as a Service (DBaaS):</span> Simplifies deployment and management</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examples: Firebase, Amazon DynamoDB, Azure Cosmos DB</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Challenges and Benefits -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Challenges and Benefits</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scalability Challenge:</span> Adapting to increased data volumes and user demands</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Security Challenge:</span> Protecting data from unauthorized access and breaches</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Performance Challenge:</span> Optimizing queries and managing resource usage</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Benefits:</span> Organized storage, real-time analytics, support for complex workflows</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Practical Applications -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Practical Applications</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">E-commerce platforms:</span> Manage products, customers, orders, and inventory</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Financial systems:</span> Track transactions, accounts, and regulatory compliance</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Social media:</span> Store user profiles, posts, and interactions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">IoT and analytics:</span> Time-series data, sensor readings, real-time dashboards</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">🗄️</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Databases are the backbone of modern data-driven applications. Choosing the right type and technology ensures scalability, performance, and security.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

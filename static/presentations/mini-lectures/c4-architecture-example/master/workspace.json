@@ -1,0 +1,1179 @@
+{
+  "configuration" : {
+    "scope" : "SoftwareSystem"
+  },
+  "description" : "C4 architecture model for the webinar registration system deployed on Azure IaaS",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "deploymentNodes" : [ {
+      "children" : [ {
+        "containerInstances" : [ {
+          "containerId" : "5",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Production",
+          "id" : "45",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.9cc0d808-d5c8-443a-8438-4507b99dc1c4.479996d4-97ab-4410-8b29-fc731dbdeeb8.browserinstance"
+          },
+          "relationships" : [ {
+            "description" : "HTTPS requests",
+            "destinationId" : "58",
+            "id" : "60",
+            "linkedRelationshipId" : "24",
+            "sourceId" : "45",
+            "technology" : "HTTPS/443"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "description" : "User's web browser for accessing the application",
+        "environment" : "Production",
+        "id" : "44",
+        "instances" : "1",
+        "name" : "Web Browser",
+        "properties" : {
+          "structurizr.dsl.identifier" : "production.9cc0d808-d5c8-443a-8438-4507b99dc1c4.479996d4-97ab-4410-8b29-fc731dbdeeb8"
+        },
+        "tags" : "Element,Deployment Node",
+        "technology" : "Chrome, Firefox, Safari"
+      }, {
+        "containerInstances" : [ {
+          "containerId" : "6",
+          "deploymentGroups" : [ "Default" ],
+          "environment" : "Production",
+          "id" : "47",
+          "instanceId" : 1,
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.9cc0d808-d5c8-443a-8438-4507b99dc1c4.31051c47-809b-4e2c-a5c3-89c420a07289.terminalinstance"
+          },
+          "relationships" : [ {
+            "description" : "Connects to",
+            "destinationId" : "53",
+            "id" : "54",
+            "linkedRelationshipId" : "25",
+            "sourceId" : "47",
+            "technology" : "Azure CLI, SSH"
+          } ],
+          "tags" : "Container Instance"
+        } ],
+        "description" : "Command-line interface for administrative tasks",
+        "environment" : "Production",
+        "id" : "46",
+        "instances" : "1",
+        "name" : "Terminal",
+        "properties" : {
+          "structurizr.dsl.identifier" : "production.9cc0d808-d5c8-443a-8438-4507b99dc1c4.31051c47-809b-4e2c-a5c3-89c420a07289"
+        },
+        "tags" : "Element,Deployment Node",
+        "technology" : "Azure CLI, SSH"
+      } ],
+      "description" : "User's local machine",
+      "environment" : "Production",
+      "id" : "43",
+      "instances" : "1",
+      "name" : "User Environment",
+      "properties" : {
+        "structurizr.dsl.identifier" : "production.9cc0d808-d5c8-443a-8438-4507b99dc1c4"
+      },
+      "tags" : "Element,Deployment Node",
+      "technology" : "Desktop/Laptop"
+    }, {
+      "children" : [ {
+        "children" : [ {
+          "children" : [ {
+            "containerInstances" : [ {
+              "containerId" : "7",
+              "deploymentGroups" : [ "Default" ],
+              "environment" : "Production",
+              "id" : "53",
+              "instanceId" : 1,
+              "properties" : {
+                "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.598e631b-8508-4300-88f6-71a89e6fb320.1f41eb98-fa85-4d33-a144-f13c9ae1cedb.bastioninstance"
+              },
+              "relationships" : [ {
+                "description" : "SSH",
+                "destinationId" : "58",
+                "id" : "61",
+                "linkedRelationshipId" : "26",
+                "sourceId" : "53",
+                "technology" : "SSH/22"
+              }, {
+                "description" : "SSH",
+                "destinationId" : "65",
+                "id" : "67",
+                "linkedRelationshipId" : "27",
+                "sourceId" : "53",
+                "technology" : "SSH/22"
+              } ],
+              "tags" : "Container Instance"
+            } ],
+            "description" : "SSH jump server for secure admin access",
+            "environment" : "Production",
+            "id" : "52",
+            "instances" : "1",
+            "name" : "Bastion Host",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.598e631b-8508-4300-88f6-71a89e6fb320.1f41eb98-fa85-4d33-a144-f13c9ae1cedb"
+            },
+            "tags" : "Element,Deployment Node",
+            "technology" : "Azure VM, Ubuntu 24.04 LTS, Standard_B1s"
+          } ],
+          "description" : "snet-bastion",
+          "environment" : "Production",
+          "id" : "50",
+          "infrastructureNodes" : [ {
+            "description" : "Allow SSH from Internet",
+            "environment" : "Production",
+            "id" : "51",
+            "name" : "NSG Bastion",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.598e631b-8508-4300-88f6-71a89e6fb320.nsgbastion"
+            },
+            "tags" : "Element,Infrastructure Node,NSG",
+            "technology" : "Azure NSG"
+          } ],
+          "instances" : "1",
+          "name" : "Bastion Subnet",
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.598e631b-8508-4300-88f6-71a89e6fb320"
+          },
+          "tags" : "Element,Deployment Node",
+          "technology" : "10.0.1.0/24"
+        }, {
+          "children" : [ {
+            "containerInstances" : [ {
+              "containerId" : "8",
+              "deploymentGroups" : [ "Default" ],
+              "environment" : "Production",
+              "id" : "58",
+              "instanceId" : 1,
+              "properties" : {
+                "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.ec153181-8255-4713-8693-e546ff43fa18.9c86a91e-92d7-454e-932f-e3cf096d6b8f.proxyinstance"
+              },
+              "relationships" : [ {
+                "description" : "301 Redirect to HTTPS",
+                "destinationId" : "45",
+                "id" : "59",
+                "linkedRelationshipId" : "39",
+                "sourceId" : "58",
+                "technology" : "HTTP Response"
+              }, {
+                "description" : "Forwards requests",
+                "destinationId" : "65",
+                "id" : "68",
+                "linkedRelationshipId" : "28",
+                "sourceId" : "58",
+                "technology" : "HTTP/5001"
+              } ],
+              "tags" : "Container Instance"
+            } ],
+            "description" : "nginx server for SSL termination",
+            "environment" : "Production",
+            "id" : "57",
+            "instances" : "1",
+            "name" : "Reverse Proxy",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.ec153181-8255-4713-8693-e546ff43fa18.9c86a91e-92d7-454e-932f-e3cf096d6b8f"
+            },
+            "tags" : "Element,Deployment Node",
+            "technology" : "Azure VM, Ubuntu 24.04 LTS, Standard_B1s"
+          } ],
+          "description" : "snet-web",
+          "environment" : "Production",
+          "id" : "55",
+          "infrastructureNodes" : [ {
+            "description" : "Allow HTTP/HTTPS from Internet",
+            "environment" : "Production",
+            "id" : "56",
+            "name" : "NSG Web",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.ec153181-8255-4713-8693-e546ff43fa18.nsgweb"
+            },
+            "tags" : "Element,Infrastructure Node,NSG",
+            "technology" : "Azure NSG"
+          } ],
+          "instances" : "1",
+          "name" : "Web Subnet",
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.ec153181-8255-4713-8693-e546ff43fa18"
+          },
+          "tags" : "Element,Deployment Node",
+          "technology" : "10.0.2.0/24"
+        }, {
+          "children" : [ {
+            "containerInstances" : [ {
+              "containerId" : "12",
+              "deploymentGroups" : [ "Default" ],
+              "environment" : "Production",
+              "id" : "65",
+              "instanceId" : 1,
+              "properties" : {
+                "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.3b06a8cd-9f3c-408e-b5a5-af0a02b5292d.bdeddcb9-e7c9-4369-93bd-e057e6f075db.flaskinstance"
+              },
+              "relationships" : [ {
+                "description" : "Returns HTML",
+                "destinationId" : "45",
+                "id" : "66",
+                "linkedRelationshipId" : "36",
+                "sourceId" : "65",
+                "technology" : "HTTP Response"
+              }, {
+                "description" : "Reads/writes data",
+                "destinationId" : "72",
+                "id" : "73",
+                "linkedRelationshipId" : "29",
+                "sourceId" : "65",
+                "technology" : "PostgreSQL/5432"
+              } ],
+              "tags" : "Container Instance"
+            } ],
+            "description" : "Flask application with Gunicorn",
+            "environment" : "Production",
+            "id" : "64",
+            "instances" : "1",
+            "name" : "Application Server",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.3b06a8cd-9f3c-408e-b5a5-af0a02b5292d.bdeddcb9-e7c9-4369-93bd-e057e6f075db"
+            },
+            "tags" : "Element,Deployment Node",
+            "technology" : "Azure VM, Ubuntu 24.04 LTS, Standard_B1s"
+          } ],
+          "description" : "snet-app",
+          "environment" : "Production",
+          "id" : "62",
+          "infrastructureNodes" : [ {
+            "description" : "Allow HTTP from Web Subnet",
+            "environment" : "Production",
+            "id" : "63",
+            "name" : "NSG App",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.3b06a8cd-9f3c-408e-b5a5-af0a02b5292d.nsgapp"
+            },
+            "tags" : "Element,Infrastructure Node,NSG",
+            "technology" : "Azure NSG"
+          } ],
+          "instances" : "1",
+          "name" : "App Subnet",
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.3b06a8cd-9f3c-408e-b5a5-af0a02b5292d"
+          },
+          "tags" : "Element,Deployment Node",
+          "technology" : "10.0.3.0/24"
+        }, {
+          "children" : [ {
+            "containerInstances" : [ {
+              "containerId" : "17",
+              "deploymentGroups" : [ "Default" ],
+              "environment" : "Production",
+              "id" : "72",
+              "instanceId" : 1,
+              "properties" : {
+                "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.7d8058c6-d207-4a21-a58a-864e7b55de56.d34f0d72-681a-4462-b76f-d756f0fe98ae.databaseinstance"
+              },
+              "tags" : "Container Instance"
+            } ],
+            "description" : "psql-flask-bicep-dev",
+            "environment" : "Production",
+            "id" : "71",
+            "instances" : "1",
+            "name" : "Azure PostgreSQL Flexible Server",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.7d8058c6-d207-4a21-a58a-864e7b55de56.d34f0d72-681a-4462-b76f-d756f0fe98ae"
+            },
+            "tags" : "Element,Deployment Node",
+            "technology" : "Burstable B1ms"
+          } ],
+          "description" : "snet-data",
+          "environment" : "Production",
+          "id" : "69",
+          "infrastructureNodes" : [ {
+            "description" : "Allow PostgreSQL from App Subnet",
+            "environment" : "Production",
+            "id" : "70",
+            "name" : "NSG Data",
+            "properties" : {
+              "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.7d8058c6-d207-4a21-a58a-864e7b55de56.nsgdata"
+            },
+            "tags" : "Element,Infrastructure Node,NSG",
+            "technology" : "Azure NSG"
+          } ],
+          "instances" : "1",
+          "name" : "Data Subnet",
+          "properties" : {
+            "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9.7d8058c6-d207-4a21-a58a-864e7b55de56"
+          },
+          "tags" : "Element,Deployment Node",
+          "technology" : "10.0.4.0/24"
+        } ],
+        "description" : "vnet-flask-bicep-dev",
+        "environment" : "Production",
+        "id" : "49",
+        "instances" : "1",
+        "name" : "Virtual Network",
+        "properties" : {
+          "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b.26ed0992-3c36-4c9b-a5d3-b8d0d82352d9"
+        },
+        "tags" : "Element,Deployment Node",
+        "technology" : "10.0.0.0/16"
+      } ],
+      "description" : "Microsoft Azure public cloud infrastructure",
+      "environment" : "Production",
+      "id" : "48",
+      "instances" : "1",
+      "name" : "Azure Cloud",
+      "properties" : {
+        "structurizr.dsl.identifier" : "production.6b5c9017-b783-4f06-b4b9-0122b9e5525b"
+      },
+      "tags" : "Element,Deployment Node",
+      "technology" : "Azure IaaS"
+    } ],
+    "people" : [ {
+      "description" : "Primary actor - registers for and attends webinars",
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "Event Attendee",
+      "perspectives" : [ {
+        "description" : "Main customer touchpoint, drives webinar attendance",
+        "name" : "Business"
+      }, {
+        "description" : "External user, requires input validation",
+        "name" : "Security"
+      } ],
+      "properties" : {
+        "structurizr.dsl.identifier" : "attendee",
+        "Trust Level" : "External, untrusted",
+        "Actor Type" : "Primary",
+        "Frequency" : "High"
+      },
+      "relationships" : [ {
+        "description" : "Registers for webinars",
+        "destinationId" : "4",
+        "id" : "18",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "5",
+        "id" : "21",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "Mouse, keyboard"
+      } ],
+      "tags" : "Element,Person,Primary Actor"
+    }, {
+      "description" : "Supporting actor - manages webinars and views registrations",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Marketing Admin",
+      "perspectives" : [ {
+        "description" : "Monitors registration success, plans capacity",
+        "name" : "Business"
+      }, {
+        "description" : "Internal user, future: requires authentication",
+        "name" : "Security"
+      } ],
+      "properties" : {
+        "structurizr.dsl.identifier" : "admin",
+        "Trust Level" : "Internal, trusted",
+        "Actor Type" : "Secondary",
+        "Frequency" : "Medium"
+      },
+      "relationships" : [ {
+        "description" : "Views registrations",
+        "destinationId" : "4",
+        "id" : "19",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "5",
+        "id" : "22",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "Mouse, keyboard"
+      } ],
+      "tags" : "Element,Person,Primary Actor"
+    }, {
+      "description" : "Supporting actor - deploys and maintains infrastructure",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "SysAdmin",
+      "perspectives" : [ {
+        "description" : "Ensures system availability and performance",
+        "name" : "Business"
+      }, {
+        "description" : "Privileged access via SSH through bastion host",
+        "name" : "Security"
+      } ],
+      "properties" : {
+        "structurizr.dsl.identifier" : "sysadmin",
+        "Trust Level" : "Internal, privileged",
+        "Actor Type" : "Secondary",
+        "Frequency" : "Low"
+      },
+      "relationships" : [ {
+        "description" : "Deploys and maintains",
+        "destinationId" : "4",
+        "id" : "20",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "SSH"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "6",
+        "id" : "23",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "Keyboard"
+      } ],
+      "tags" : "Element,Person,Secondary Actor"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "description" : "Renders HTML, JavaScript and CSS",
+        "documentation" : { },
+        "group" : "Front-end",
+        "id" : "5",
+        "name" : "Web Browser",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.browser"
+        },
+        "relationships" : [ {
+          "description" : "HTTPS requests",
+          "destinationId" : "8",
+          "id" : "24",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "HTTPS/443"
+        }, {
+          "description" : "HTTP request",
+          "destinationId" : "9",
+          "id" : "37",
+          "sourceId" : "5",
+          "tags" : "Relationship,ComponentLevel",
+          "technology" : "HTTP/80"
+        }, {
+          "description" : "HTTPS request",
+          "destinationId" : "10",
+          "id" : "40",
+          "sourceId" : "5",
+          "tags" : "Relationship,ComponentLevel",
+          "technology" : "HTTPS/443"
+        } ],
+        "tags" : "Element,Container,Client,Primary Client",
+        "technology" : "Chrome, Firefox, Safari"
+      }, {
+        "description" : "Command-line interface for administrative access",
+        "documentation" : { },
+        "group" : "Front-end",
+        "id" : "6",
+        "name" : "Terminal",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.terminal"
+        },
+        "relationships" : [ {
+          "description" : "Connects to",
+          "destinationId" : "7",
+          "id" : "25",
+          "sourceId" : "6",
+          "tags" : "Relationship",
+          "technology" : "Azure CLI, SSH"
+        } ],
+        "tags" : "Element,Container,Client,Secondary Client",
+        "technology" : "Azure CLI, SSH"
+      }, {
+        "description" : "Secure SSH entry point for administrative access",
+        "documentation" : { },
+        "group" : "Back-end",
+        "id" : "7",
+        "name" : "Bastion Host",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.bastion"
+        },
+        "relationships" : [ {
+          "description" : "SSH",
+          "destinationId" : "8",
+          "id" : "26",
+          "sourceId" : "7",
+          "tags" : "Relationship",
+          "technology" : "SSH/22"
+        }, {
+          "description" : "SSH",
+          "destinationId" : "12",
+          "id" : "27",
+          "sourceId" : "7",
+          "tags" : "Relationship",
+          "technology" : "SSH/22"
+        } ],
+        "tags" : "Element,Container,Bastion",
+        "technology" : "Ubuntu 24.04, Fail2ban"
+      }, {
+        "components" : [ {
+          "description" : "Redirects HTTP to HTTPS",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "HTTP Redirect Block",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.proxy.httpredirect"
+          },
+          "relationships" : [ {
+            "description" : "301 Redirect to HTTPS",
+            "destinationId" : "5",
+            "id" : "38",
+            "sourceId" : "9",
+            "tags" : "Relationship,ComponentLevel",
+            "technology" : "HTTP Response"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "nginx server block port 80"
+        }, {
+          "description" : "SSL termination and request handling",
+          "documentation" : { },
+          "id" : "10",
+          "name" : "HTTPS Server Block",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.proxy.httpsserverblock"
+          },
+          "relationships" : [ {
+            "description" : "Uses",
+            "destinationId" : "11",
+            "id" : "41",
+            "sourceId" : "10",
+            "tags" : "Relationship",
+            "technology" : "TLS"
+          }, {
+            "description" : "Forwards to backend",
+            "destinationId" : "12",
+            "id" : "42",
+            "sourceId" : "10",
+            "tags" : "Relationship",
+            "technology" : "HTTP/5001"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "nginx server block port 443"
+        }, {
+          "description" : "TLS/SSL certificate for encryption",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "SSL Certificate",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.proxy.sslcertificate"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Self-signed (OpenSSL)"
+        } ],
+        "description" : "SSL offloading and request forwarding",
+        "documentation" : { },
+        "group" : "Back-end",
+        "id" : "8",
+        "name" : "Reverse Proxy",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.proxy"
+        },
+        "relationships" : [ {
+          "description" : "Forwards requests",
+          "destinationId" : "12",
+          "id" : "28",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "HTTP/5001"
+        }, {
+          "description" : "HTTP requests",
+          "destinationId" : "16",
+          "id" : "30",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "HTTP/5001"
+        }, {
+          "description" : "301 Redirect to HTTPS",
+          "destinationId" : "5",
+          "id" : "39",
+          "linkedRelationshipId" : "38",
+          "sourceId" : "8",
+          "technology" : "HTTP Response"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "nginx, OpenSSL"
+      }, {
+        "components" : [ {
+          "description" : "HTTP request handling, form processing",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "Route Handlers",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.flask.routes"
+          },
+          "relationships" : [ {
+            "description" : "Renders HTML",
+            "destinationId" : "14",
+            "id" : "32",
+            "sourceId" : "13",
+            "tags" : "Relationship",
+            "technology" : "Jinja2 API"
+          }, {
+            "description" : "CRUD operations",
+            "destinationId" : "15",
+            "id" : "33",
+            "sourceId" : "13",
+            "tags" : "Relationship",
+            "technology" : "Python method calls"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Flask @app.route"
+        }, {
+          "description" : "HTML rendering with data binding",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Template Engine",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.flask.templates"
+          },
+          "relationships" : [ {
+            "description" : "Returns HTML",
+            "destinationId" : "5",
+            "id" : "35",
+            "sourceId" : "14",
+            "tags" : "Relationship,FlaskComponent",
+            "technology" : "HTTP Response"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Jinja2"
+        }, {
+          "description" : "Database abstraction, ORM",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Data Models",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.flask.models"
+          },
+          "relationships" : [ {
+            "description" : "SQL queries",
+            "destinationId" : "17",
+            "id" : "34",
+            "sourceId" : "15",
+            "tags" : "Relationship",
+            "technology" : "psycopg2"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "SQLAlchemy"
+        }, {
+          "description" : "Production HTTP server, process management",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "WSGI Server",
+          "properties" : {
+            "structurizr.dsl.identifier" : "webinarsystem.flask.wsgi"
+          },
+          "relationships" : [ {
+            "description" : "Forwards requests",
+            "destinationId" : "13",
+            "id" : "31",
+            "sourceId" : "16",
+            "tags" : "Relationship",
+            "technology" : "WSGI"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Gunicorn"
+        } ],
+        "description" : "Handles registration logic, serves HTML",
+        "documentation" : { },
+        "group" : "Back-end",
+        "id" : "12",
+        "name" : "Flask Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.flask"
+        },
+        "relationships" : [ {
+          "description" : "Reads/writes data",
+          "destinationId" : "17",
+          "id" : "29",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "PostgreSQL/5432"
+        }, {
+          "description" : "Returns HTML",
+          "destinationId" : "5",
+          "id" : "36",
+          "linkedRelationshipId" : "35",
+          "sourceId" : "12",
+          "technology" : "HTTP Response"
+        } ],
+        "tags" : "Element,Container,Application",
+        "technology" : "Python/Gunicorn"
+      }, {
+        "description" : "Stores registration data persistently",
+        "documentation" : { },
+        "group" : "Back-end",
+        "id" : "17",
+        "name" : "PostgreSQL Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "webinarsystem.database"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "Managed PostgreSQL"
+      } ],
+      "description" : "Allows attendees to register for webinars and administrators to manage events",
+      "documentation" : {
+        "decisions" : [ {
+          "content" : "# 1. Use Pure IaaS Approach\n\nDate: 2025-12-15\n\n## Status\n\nAccepted\n\n## Context\n\nWe need to choose an infrastructure approach for hosting the webinar registration website on Azure.\n\nOptions considered:\n1. Pure IaaS (Virtual Machines)\n2. PaaS (App Service, Container Apps)\n3. Serverless (Functions)\n\n## Decision\n\nWe will use a pure IaaS approach with self-managed Ubuntu VMs for compute.\n\n## Consequences\n\n**Positive:**\n- Full control over the environment\n- Traditional Linux administration skills applicable\n- No vendor lock-in for compute layer\n- Educational value for understanding infrastructure fundamentals\n\n**Negative:**\n- More operational overhead (patching, monitoring)\n- No built-in auto-scaling\n- Requires more infrastructure knowledge\n\n**Exception:**\n- PostgreSQL will use Azure Flexible Server (PaaS) for practical reasons (managed backups, HA)\n",
+          "date" : "2025-12-15T00:00:00Z",
+          "format" : "Markdown",
+          "id" : "1",
+          "status" : "Accepted",
+          "title" : "Use Pure IaaS Approach"
+        }, {
+          "content" : "# 2. Use Python Flask for Web Application\n\nDate: 2025-12-15\n\n## Status\n\nAccepted\n\n## Context\n\nWe need to select a web framework for the registration application.\n\nOptions considered:\n1. Python Flask\n2. Python Django\n3. Node.js Express\n4. Go with Gin\n\n## Decision\n\nWe will use Python Flask with:\n- Jinja2 for server-side templating\n- SQLAlchemy for database ORM\n- Gunicorn as WSGI production server\n\n## Consequences\n\n**Positive:**\n- Lightweight and simple to understand\n- Excellent documentation and community\n- Easy to deploy on Linux VMs\n- Good integration with PostgreSQL via psycopg2\n\n**Negative:**\n- Synchronous by default (acceptable for expected load)\n- Less built-in features than Django (acceptable for simple app)\n",
+          "date" : "2025-12-15T00:00:00Z",
+          "format" : "Markdown",
+          "id" : "2",
+          "status" : "Accepted",
+          "title" : "Use Python Flask for Web Application"
+        }, {
+          "content" : "# 3. Use Bastion Host for SSH Access\n\nDate: 2025-12-15\n\n## Status\n\nAccepted\n\n## Context\n\nWe need secure administrative access to internal VMs without exposing them directly to the internet.\n\nOptions considered:\n1. Direct SSH access to all VMs (public IPs)\n2. VPN gateway\n3. Azure Bastion service (PaaS)\n4. Self-managed bastion host (jump server)\n\n## Decision\n\nWe will use a self-managed bastion host (Ubuntu VM) as an SSH jump server.\n\n## Consequences\n\n**Positive:**\n- Only one public SSH endpoint exposed\n- Internal VMs have no public IPs (reduced attack surface)\n- Full control over bastion configuration\n- Consistent with IaaS approach\n\n**Negative:**\n- Additional VM to maintain\n- Single point of failure for admin access\n- Requires SSH key management\n",
+          "date" : "2025-12-15T00:00:00Z",
+          "format" : "Markdown",
+          "id" : "3",
+          "status" : "Accepted",
+          "title" : "Use Bastion Host for SSH Access"
+        } ],
+        "sections" : [ {
+          "content" : "# Webinar Registration Website\n\n## Overview\n\nThe Webinar Registration Website is a web application that allows event attendees to register for webinars and marketing administrators to view registrations.\n\nThis documentation accompanies the C4 architecture model and provides detailed explanations of each architectural level.\n\n### Key Features\n\n- **Registration Form**: Public-facing form for webinar signup\n- **Registration List**: Admin view of all registrations\n- **Health Endpoint**: System monitoring capability (`/health`)\n\n### Technology Stack\n\n| Layer | Technology |\n|-------|------------|\n| Frontend | Server-side rendered HTML (Jinja2) |\n| Backend | Python Flask 3.0+ with Gunicorn WSGI |\n| Database | PostgreSQL 16 (Azure Flexible Server) |\n| Web Server | nginx reverse proxy with SSL |\n| Infrastructure | Azure IaaS (Virtual Machines) |\n| IaC | Bicep (declarative) |\n\n### Architecture Levels\n\nThis documentation follows the [C4 model](https://c4model.com/) for visualizing software architecture:\n\n| Level | View | Description |\n|-------|------|-------------|\n| **C1** | System Context | Actors and the system boundary |\n| **C2** | Containers | Technical building blocks (VMs, databases) |\n| **C3** | Components | Internal structure of the Flask application |\n| **Deployment** | Infrastructure | Azure IaaS deployment topology |\n\n### Quick Links\n\n- [System Context (C1)](02-context.md) - Who uses the system?\n- [Containers (C2)](03-containers.md) - What are the main technical components?\n- [Components (C3)](04-components.md) - How does the Flask app work internally?\n- [Deployment](05-deployment.md) - How is it deployed on Azure?\n\n### Architecture Decisions\n\nKey architectural decisions are documented in the ADRs (Architecture Decision Records):\n\n- **ADR-0001**: Use Pure IaaS Approach\n- **ADR-0002**: Use Python Flask for Web Application\n- **ADR-0003**: Use Bastion Host for SSH Access\n\n### Source Code\n\n| Component | Location |\n|-----------|----------|\n| Infrastructure (Bicep) | `infrastructure/` |\n| Flask Application | `application/` |\n| Deployment Scripts | `deploy/` |\n| Cloud-init configs | `infrastructure/cloud-init/` |\n",
+          "filename" : "01-overview.md",
+          "format" : "Markdown",
+          "order" : 1,
+          "title" : ""
+        }, {
+          "content" : "# System Context (C1)\n\n## System Context (C4 Model Level 1)\n\nThis document provides the highest level view of the Webinar Registration Website system, showing how it fits into the broader environment of users and external systems.\n\n### System Context Diagram\n\n![](embed:C1-Context)\n\n### Context Description\n\n#### The System\n\n**Webinar Registration Website** is a web application that:\n\n- Provides a public-facing registration form for upcoming webinars\n- Stores registration data persistently\n- Allows marketing staff to view who has registered\n- Runs entirely on Azure infrastructure (IaaS approach)\n- Includes the web frontend (HTML/CSS/JS rendered in user's browser)\n\n#### Users (Actors)\n\n| Actor | Description | Interaction |\n|-------|-------------|-------------|\n| **Event Attendee** | External users (potential customers, partners) who discover the webinar through marketing channels | Register for webinars via browser (HTTPS) |\n| **Marketing Administrator** | Internal staff responsible for managing webinar events | View registration lists via browser (HTTPS) |\n| **System Administrator** | IT operations staff responsible for infrastructure | Deploy, configure, and maintain via terminal (SSH) |\n\n### Key Architectural Decisions\n\n1. **Pure IaaS Approach**: Traditional infrastructure model using self-managed VMs on Azure\n2. **Python Flask**: Lightweight web framework with Jinja2 templating (SSR) and SQLAlchemy ORM\n3. **PostgreSQL**: Robust open-source relational database, available as PaaS on Azure (Flexible Server)\n4. **SSL/TLS Encryption**: Self-signed certificates for learning environment (Let's Encrypt recommended for production)\n5. **No External Identity Provider**: Simple application without authentication requirements for attendee registration\n\n### Quality Attributes\n\nFrom the PRD, the key non-functional requirements affecting architecture:\n\n| Attribute | Requirement | Impact |\n|-----------|-------------|--------|\n| **Availability** | >=99% uptime during business hours | Single VM design acceptable for MVP |\n| **Response Time** | Pages load < 3 seconds on broadband | Nginx caching, optimized queries |\n| **Capacity** | Support 100 concurrent users | Single app server sufficient |\n| **Security** | HTTPS only, OWASP guidelines | SSL termination at proxy, bastion host for SSH access, private subnets for app/data tiers, NSGs restricting traffic flow |\n\n### Scope Boundary\n\n#### In Scope\n\n- Registration form and data persistence\n- Admin view of registrations\n- HTTPS encryption\n- Basic health monitoring\n\n#### Out of Scope (for this stage)\n\n- User authentication/authorization\n- Email notifications\n- Payment processing\n- Multi-region deployment\n- Auto-scaling\n\n### Next Level\n\nSee [Containers (C2)](03-containers.md) for the technical building blocks that make up this system.\n",
+          "filename" : "02-context.md",
+          "format" : "Markdown",
+          "order" : 2,
+          "title" : ""
+        }, {
+          "content" : "# Containers (C2)\n\n## Containers (C4 Model Level 2)\n\nThis document zooms into the Webinar Registration Website system to show the high-level technical building blocks (containers) and how they interact.\n\n> **C4 \"Container\"** = A separately deployable/runnable unit (VM, application, database), NOT a Docker container.\n\n### Container Diagram\n\n![](embed:C2-Containers-Full)\n\n### Container Inventory\n\n#### Compute Containers\n\n| Container | Technology | Purpose | Network Location |\n|-----------|------------|---------|------------------|\n| **Bastion Host** | Ubuntu 24.04 LTS | Secure SSH entry point; no direct access to app servers from internet | `snet-bastion` (10.0.1.0/24), Public IP |\n| **Reverse Proxy** | nginx on Ubuntu 24.04 | SSL termination, load balancing (future), security headers | `snet-web` (10.0.2.0/24), Public IP |\n| **Flask Application** | Python 3 + Gunicorn on Ubuntu 24.04 | Business logic, HTML rendering, REST endpoints | `snet-app` (10.0.3.0/24), Private only |\n| **PostgreSQL Database** | Azure PostgreSQL Flexible Server | Persistent data storage | `snet-data` (10.0.4.0/24), Private endpoint |\n\n#### Supporting Infrastructure\n\n| Component | Purpose |\n|-----------|---------|\n| **Virtual Network** | `vnet-flask-bicep-dev` (10.0.0.0/16) - Network isolation |\n| **NSGs** | Network Security Groups per subnet controlling traffic flow |\n| **ASGs** | Application Security Groups for role-based rules |\n\n### Network Flow\n\n#### User Traffic (Registration)\n\n```\nInternet -> Public IP (pip-proxy) -> nginx:443 -> vm-app:5001 -> PostgreSQL:5432\n```\n\n#### Administrative Access\n\n```\nInternet -> Public IP (pip-bastion) -> vm-bastion:22 -> (SSH tunnel) -> vm-proxy/vm-app:22\n```\n\n#### Security Boundaries\n\n```\n+-------------------------------------------------------------------------+\n|  INTERNET                                                                |\n+------+-------------------------------------------+----------------------+\n       | SSH:22                                    | HTTPS:443\n       v                                           v\n+--------------+                          +--------------+\n| vm-bastion   |                          | vm-proxy     |\n| (jump host)  |                          | (nginx)      |\n+------+-------+                          +------+-------+\n       | SSH:22 (internal)                       | HTTP:5001\n       v                                         v\n+------------------------------------------------------------------------+\n|  PRIVATE NETWORK                                                        |\n|  +--------------+                          +--------------------------+ |\n|  | vm-app       |-----PostgreSQL:5432----->| PostgreSQL Flex Server   | |\n|  | (Flask)      |                          | (Azure PaaS)             | |\n|  +--------------+                          +--------------------------+ |\n+------------------------------------------------------------------------+\n```\n\n### Container Details\n\n#### 1. Bastion Host (`vm-bastion`)\n\n**Purpose**: Secure administrative access without exposing internal VMs\n\n| Aspect | Detail |\n|--------|--------|\n| Image | Ubuntu 24.04 LTS |\n| Size | Standard_B1s (1 vCPU, 1GB RAM) |\n| Public IP | Yes (`pip-bastion`) |\n| Inbound Rules | SSH (22) from Internet |\n| Outbound Rules | SSH (22) to internal VMs |\n| Security | Fail2ban (3 strikes, 1 hour ban) |\n\n#### 2. Reverse Proxy (`vm-proxy`)\n\n**Purpose**: SSL termination, public endpoint, future load balancing\n\n| Aspect | Detail |\n|--------|--------|\n| Image | Ubuntu 24.04 LTS |\n| Size | Standard_B1s |\n| Public IP | Yes (`pip-proxy`) |\n| Software | nginx |\n| SSL | Self-signed certificate (CN=flask-app) |\n| Inbound Rules | HTTPS (443), HTTP (80 -> redirect) |\n| Outbound Rules | HTTP (5001) to app subnet |\n\n**nginx Configuration**:\n\n- HTTP -> HTTPS redirect (301)\n- SSL with TLS 1.2/1.3 only\n- Proxy headers (X-Real-IP, X-Forwarded-For, X-Forwarded-Proto)\n- Upstream: `http://vm-app:5001`\n\n#### 3. Flask Application (`vm-app`)\n\n**Purpose**: Core application logic and data access\n\n| Aspect | Detail |\n|--------|--------|\n| Image | Ubuntu 24.04 LTS |\n| Size | Standard_B1s |\n| Public IP | **No** (security: internal only) |\n| Runtime | Python 3 + Gunicorn WSGI server |\n| Binding | `0.0.0.0:5001` |\n| Service User | `flask-app` (system user, no login shell) |\n| Inbound Rules | HTTP (5001) from web subnet only |\n\n**Key Files on VM**:\n\n```\n/opt/flask-app/           # Application code\n/opt/flask-app/venv/      # Python virtual environment\n/etc/flask-app/app.env    # DATABASE_URL (chmod 640, root:flask-app)\n/etc/systemd/system/flask-app.service\n```\n\n#### 4. PostgreSQL Database\n\n**Purpose**: Persistent storage for registration data\n\n| Aspect | Detail |\n|--------|--------|\n| Service | Azure Database for PostgreSQL Flexible Server |\n| SKU | Burstable B1ms (1 vCPU, 2GB) |\n| Version | PostgreSQL 16 |\n| Access | Private endpoint in `snet-data` |\n| Database | `flask` |\n| SSL | Required (`sslmode=require`) |\n\n> **Note**: This is the only PaaS component. We use managed PostgreSQL for practical reasons (backups, HA, patching) while keeping compute as IaaS for learning purposes.\n\n### Technology Choices\n\n| Decision | Choice | Rationale |\n|----------|--------|-----------|\n| Web Server | nginx | Industry standard, excellent reverse proxy, low resource usage |\n| WSGI Server | Gunicorn | Production-grade, simple configuration, works well with Flask |\n| Database | PostgreSQL | Robust, open source, excellent Python support (psycopg2) |\n| Process Manager | systemd | Standard on modern Ubuntu, automatic restarts, logging |\n| Infrastructure | Azure Bicep | Declarative IaC, native Azure support, good learning value |\n\n### Deployment Pipeline\n\n```\n+-------------+    +-------------+    +-------------+\n| provision.sh|--->|cloud-init   |--->| deploy.sh   |\n| (Bicep)     |    |(VMs boot)   |    |(App code)   |\n+-------------+    +-------------+    +-------------+\n     |                   |                   |\n     v                   v                   v\n - VNet, Subnets     - Install nginx     - Copy app files\n - NSGs, ASGs        - Install Python    - Install deps\n - VMs               - Create users      - Configure DB URL\n - PostgreSQL        - Systemd units     - Start service\n```\n\n### Next Level\n\nSee [Components (C3)](04-components.md) for the internal structure of the Flask application.\n",
+          "filename" : "03-containers.md",
+          "format" : "Markdown",
+          "order" : 3,
+          "title" : ""
+        }, {
+          "content" : "# Components (C3)\n\n## Components (C4 Model Level 3)\n\nThis document zooms into the Flask Application container to show its internal structure and how components collaborate to fulfill the system's responsibilities.\n\n> **Note**: For a simple Flask application like this one, a component diagram may be more detailed than strictly necessary. We include it here for educational completeness.\n\n### Flask Application Components\n\n![](embed:C3-Components)\n\n### Reverse Proxy Components\n\nThe nginx reverse proxy also has internal components worth understanding:\n\n![](embed:C3-Components-Proxy)\n\n### Component Inventory\n\n#### Application Components\n\n| Component | Technology | Responsibility | Source |\n|-----------|------------|----------------|--------|\n| **Route Handlers** | Flask routes | Handle HTTP requests, process forms, return responses | `app.py` |\n| **Template Engine** | Jinja2 | Render dynamic HTML pages | Inline in `app.py` |\n| **Data Models** | SQLAlchemy | Object-relational mapping, database schema | `app.py` (Entry class) |\n| **WSGI Server** | Gunicorn | Production HTTP server, worker processes | `wsgi.py` |\n\n### Component Details\n\n#### 1. Route Handlers\n\nThe application exposes three HTTP endpoints:\n\n| Route | Method | Purpose | Response |\n|-------|--------|---------|----------|\n| `/` | GET | Display registration form + recent entries | HTML page |\n| `/` | POST | Process new registration | Redirect to GET `/` |\n| `/entries` | GET | List all entries as JSON | JSON array |\n| `/health` | GET | Health check for monitoring | `{\"status\": \"ok\"}` |\n\n**Code Structure** (`application/app.py`):\n\n```python\n@app.route('/', methods=['GET', 'POST'])\ndef index():\n    # POST: Create new entry\n    # GET: Render form with recent entries\n\n@app.route('/entries')\ndef list_entries():\n    # Return all entries as JSON\n\n@app.route('/health')\ndef health():\n    # Health check endpoint\n```\n\n#### 2. Template Engine\n\nUses Jinja2 (Flask's default) with inline template definition:\n\n**Template Variables**:\n\n| Variable | Source | Purpose |\n|----------|--------|---------|\n| `entries` | Query result | List of recent Entry objects |\n| `count` | `Entry.query.count()` | Total number of registrations |\n| `db_type` | Environment check | Shows \"PostgreSQL\" or \"SQLite\" |\n\n**Template Features Used**:\n\n- `{% for entry in entries %}` - Iteration\n- `{{ entry.value }}` - Variable interpolation\n- `{{ entry.created_at.strftime() }}` - Method calls\n- `{% else %}` - Empty state handling\n\n#### 3. Data Models\n\nSingle model representing a registration entry:\n\n```python\nclass Entry(db.Model):\n    __tablename__ = 'entries'\n\n    id = db.Column(db.Integer, primary_key=True)\n    value = db.Column(db.Text, nullable=False)     # Registrant info\n    created_at = db.Column(db.DateTime, default=datetime.utcnow)\n```\n\n**Database Operations**:\n\n| Operation | Code Pattern | SQL Equivalent |\n|-----------|--------------|----------------|\n| Create | `db.session.add(entry)` | INSERT INTO entries... |\n| Read all | `Entry.query.all()` | SELECT * FROM entries |\n| Read recent | `Entry.query.order_by(...).limit(10)` | SELECT ... ORDER BY ... LIMIT 10 |\n| Count | `Entry.query.count()` | SELECT COUNT(*) FROM entries |\n\n#### 4. WSGI Server\n\n**Entry Point** (`application/wsgi.py`):\n\n```python\nfrom app import app\n\nif __name__ == '__main__':\n    app.run()\n```\n\n**Gunicorn Configuration** (via systemd unit):\n\n```bash\ngunicorn --bind 0.0.0.0:5001 wsgi:app\n```\n\n| Setting | Value | Purpose |\n|---------|-------|---------|\n| `--bind` | `0.0.0.0:5001` | Listen on all interfaces, port 5001 |\n| Workers | 1 (default) | Single worker sufficient for small load |\n| Module | `wsgi:app` | Import `app` object from `wsgi.py` |\n\n### Data Flow\n\n#### Registration Flow (Happy Path)\n\n```\n1. User submits form\n   POST / {value: \"John Doe\"}\n        |\n        v\n2. Route handler receives request\n   @app.route('/', methods=['POST'])\n        |\n        v\n3. Create Entry object\n   entry = Entry(value=\"John Doe\")\n        |\n        v\n4. Persist to database\n   db.session.add(entry)\n   db.session.commit()\n        |\n        v\n5. Redirect to GET /\n   return redirect(url_for('index'))\n        |\n        v\n6. Query recent entries\n   Entry.query.order_by(created_at.desc()).limit(10)\n        |\n        v\n7. Render template with data\n   render_template_string(INDEX_TEMPLATE, entries=entries, ...)\n        |\n        v\n8. Return HTML to user\n```\n\n#### Request/Response Cycle\n\n```\n+---------+     +---------+     +---------+     +---------+\n| Browser |---->| nginx   |---->|Gunicorn |---->| Flask   |\n+---------+     +---------+     +---------+     +---------+\n                                                     |\n                    +--------------------------------+\n                    v\n              +---------+     +---------+\n              | Model   |---->|PostgreSQL|\n              +---------+     +---------+\n```\n\n### Dependencies\n\n#### Python Packages (`application/requirements.txt`)\n\n| Package | Purpose |\n|---------|---------|\n| `Flask` | Web framework |\n| `Flask-SQLAlchemy` | ORM integration |\n| `gunicorn` | Production WSGI server |\n| `psycopg2-binary` | PostgreSQL driver |\n\n#### External Dependencies\n\n| Dependency | Source | Purpose |\n|------------|--------|---------|\n| `DATABASE_URL` | `/etc/flask-app/app.env` | PostgreSQL connection string |\n| PostgreSQL | Azure PaaS | Data persistence |\n| nginx | vm-proxy | Reverse proxy, SSL |\n\n### Future Evolution\n\nFor a production-ready application, this simple structure would evolve:\n\n| Current | Production Evolution |\n|---------|---------------------|\n| Inline templates | Separate `templates/` directory |\n| Single `app.py` | Blueprint-based modular structure |\n| Inline models | Separate `models.py` |\n| No validation | Form validation (WTForms) |\n| No auth | Flask-Login + session management |\n| Single model | Multiple models with relationships |\n\n### Next Level\n\nSee [Deployment](05-deployment.md) for how this system is deployed on Azure infrastructure.\n",
+          "filename" : "04-components.md",
+          "format" : "Markdown",
+          "order" : 4,
+          "title" : ""
+        }, {
+          "content" : "# Deployment\n\n## Azure IaaS Deployment Architecture\n\nThis document shows how the Webinar Registration Website is deployed on Azure infrastructure using a pure IaaS approach.\n\n### Deployment Diagram\n\n![](embed:Deployment)\n\n### Infrastructure Overview\n\n#### Network Topology\n\n| Subnet | CIDR | NSG | Purpose |\n|--------|------|-----|---------|\n| `snet-bastion` | 10.0.1.0/24 | `nsg-bastion` | SSH jump host (public access) |\n| `snet-web` | 10.0.2.0/24 | `nsg-web` | Reverse proxy (public access) |\n| `snet-app` | 10.0.3.0/24 | `nsg-app` | Application server (internal only) |\n| `snet-data` | 10.0.4.0/24 | `nsg-data` | PostgreSQL database (internal only) |\n\n#### Virtual Machines\n\n| VM | Subnet | Public IP | Size | Purpose |\n|----|--------|-----------|------|---------|\n| `vm-bastion` | snet-bastion | Yes | Standard_B1s | SSH jump server |\n| `vm-proxy` | snet-web | Yes | Standard_B1s | nginx reverse proxy |\n| `vm-app` | snet-app | No | Standard_B1s | Flask application |\n\n#### Managed Services\n\n| Service | SKU | Purpose |\n|---------|-----|---------|\n| PostgreSQL Flexible Server | Burstable B1ms | Database (the only PaaS component) |\n\n### Security Architecture\n\n#### Network Security Groups (NSGs)\n\nEach subnet has an NSG controlling inbound/outbound traffic:\n\n**nsg-bastion**:\n- Allow SSH (22) from Internet\n- Deny all other inbound\n\n**nsg-web**:\n- Allow HTTP (80) from Internet\n- Allow HTTPS (443) from Internet\n- Allow SSH (22) from asg-bastion\n- Deny all other inbound\n\n**nsg-app**:\n- Allow HTTP (5001) from asg-proxy\n- Allow SSH (22) from asg-bastion\n- Deny all other inbound\n\n**nsg-data**:\n- Allow PostgreSQL (5432) from snet-app\n- Deny all other inbound\n\n#### Application Security Groups (ASGs)\n\nASGs provide role-based security rules:\n\n| ASG | Members | Purpose |\n|-----|---------|---------|\n| `asg-bastion` | vm-bastion | Source for SSH to internal VMs |\n| `asg-proxy` | vm-proxy | Source for HTTP to app server |\n| `asg-app` | vm-app | Target for application traffic |\n\n### Deployment Process\n\n#### Infrastructure Provisioning\n\n```bash\n# One-command deployment\n./deploy-all.sh\n\n# Or step-by-step:\n./infrastructure/provision.sh      # Deploy Bicep (15-20 min)\n./scripts/wait-for-postgresql.sh   # Wait for DB ready\n./scripts/wait-for-vms-cloud-init.sh  # Wait for VMs configured\n./deploy/deploy.sh                 # Deploy application\n./scripts/verification-tests.sh    # Run tests\n```\n\n#### Cloud-init Configuration\n\nEach VM is configured automatically via cloud-init:\n\n| VM | Cloud-init | Key Configuration |\n|----|------------|-------------------|\n| vm-bastion | `bastion.yaml` | fail2ban, SSH hardening |\n| vm-proxy | `proxy.yaml` | nginx, self-signed SSL cert |\n| vm-app | `app.yaml` | Python venv, systemd service, flask-app user |\n\n#### Application Deployment\n\nThe Flask application is deployed via SSH through the bastion:\n\n```\n1. SCP files to vm-app via bastion jump\n2. Install Python dependencies in virtualenv\n3. Configure DATABASE_URL in /etc/flask-app/app.env\n4. Start flask-app systemd service\n```\n\n### Cost Estimate\n\n| Resource | SKU | Monthly Cost |\n|----------|-----|--------------|\n| 3x VMs | Standard_B1s | ~$21 ($7 each) |\n| PostgreSQL | Burstable B1ms | ~$12 |\n| Public IPs | 2x Static | ~$8 |\n| Storage | 3x 30GB | ~$3 |\n| **Total** | | **~$44/month** |\n\n### Naming Conventions\n\nFollowing Azure Cloud Adoption Framework (CAF):\n\n| Resource Type | Pattern | Example |\n|---------------|---------|---------|\n| Resource Group | `rg-{project}-{env}` | `rg-flask-bicep-dev` |\n| Virtual Network | `vnet-{project}-{env}` | `vnet-flask-bicep-dev` |\n| Subnet | `snet-{tier}` | `snet-bastion` |\n| NSG | `nsg-{tier}` | `nsg-web` |\n| VM | `vm-{role}` | `vm-proxy` |\n| PostgreSQL | `psql-{project}-{env}` | `psql-flask-bicep-dev` |\n\n### Infrastructure as Code\n\nAll infrastructure is defined in Bicep:\n\n```\ninfrastructure/\n├── main.bicep              # Entry point\n└── modules/\n    ├── network.bicep       # VNet, subnets, NSGs, ASGs\n    ├── bastion.bicep       # Jump host VM\n    ├── proxy.bicep         # Reverse proxy VM\n    ├── app.bicep           # Application VM\n    └── database.bicep      # PostgreSQL + private DNS\n```\n\n### Related Documentation\n\n- [Overview](01-overview.md) - Project overview\n- [System Context](02-context.md) - C1 diagram\n- [Containers](03-containers.md) - C2 diagram\n- [Components](04-components.md) - C3 diagram\n",
+          "filename" : "05-deployment.md",
+          "format" : "Markdown",
+          "order" : 5,
+          "title" : ""
+        } ]
+      },
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "Webinar Registration Website",
+      "properties" : {
+        "structurizr.dsl.identifier" : "webinarsystem"
+      },
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "Webinar Registration Website",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlICJXZWJpbmFyIFJlZ2lzdHJhdGlvbiBXZWJzaXRlIiAiQzQgYXJjaGl0ZWN0dXJlIG1vZGVsIGZvciB0aGUgd2ViaW5hciByZWdpc3RyYXRpb24gc3lzdGVtIGRlcGxveWVkIG9uIEF6dXJlIElhYVMiIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCiAgICAKICAgIGNvbmZpZ3VyYXRpb24gewogICAgICAgIHNjb3BlIHNvZnR3YXJlc3lzdGVtCiAgICB9CgogICAgbW9kZWwgewogICAgICAgICMgQWN0b3JzCiAgICAgICAgYXR0ZW5kZWUgPSBwZXJzb24gIkV2ZW50IEF0dGVuZGVlIiAiUHJpbWFyeSBhY3RvciAtIHJlZ2lzdGVycyBmb3IgYW5kIGF0dGVuZHMgd2ViaW5hcnMiIHsKICAgICAgICAgICAgdGFncyAiUHJpbWFyeSBBY3RvciIKICAgICAgICAgICAgcHJvcGVydGllcyB7CiAgICAgICAgICAgICAgICAiQWN0b3IgVHlwZSIgIlByaW1hcnkiCiAgICAgICAgICAgICAgICAiRnJlcXVlbmN5IiAiSGlnaCIKICAgICAgICAgICAgICAgICJUcnVzdCBMZXZlbCIgIkV4dGVybmFsLCB1bnRydXN0ZWQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgcGVyc3BlY3RpdmVzIHsKICAgICAgICAgICAgICAgICJCdXNpbmVzcyIgIk1haW4gY3VzdG9tZXIgdG91Y2hwb2ludCwgZHJpdmVzIHdlYmluYXIgYXR0ZW5kYW5jZSIKICAgICAgICAgICAgICAgICJTZWN1cml0eSIgIkV4dGVybmFsIHVzZXIsIHJlcXVpcmVzIGlucHV0IHZhbGlkYXRpb24iCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICAgICAgYWRtaW4gPSBwZXJzb24gIk1hcmtldGluZyBBZG1pbiIgIlN1cHBvcnRpbmcgYWN0b3IgLSBtYW5hZ2VzIHdlYmluYXJzIGFuZCB2aWV3cyByZWdpc3RyYXRpb25zIiB7CiAgICAgICAgICAgIHRhZ3MgIlByaW1hcnkgQWN0b3IiCiAgICAgICAgICAgIHByb3BlcnRpZXMgewogICAgICAgICAgICAgICAgIkFjdG9yIFR5cGUiICJTZWNvbmRhcnkiCiAgICAgICAgICAgICAgICAiRnJlcXVlbmN5IiAiTWVkaXVtIgogICAgICAgICAgICAgICAgIlRydXN0IExldmVsIiAiSW50ZXJuYWwsIHRydXN0ZWQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgcGVyc3BlY3RpdmVzIHsKICAgICAgICAgICAgICAgICJCdXNpbmVzcyIgIk1vbml0b3JzIHJlZ2lzdHJhdGlvbiBzdWNjZXNzLCBwbGFucyBjYXBhY2l0eSIKICAgICAgICAgICAgICAgICJTZWN1cml0eSIgIkludGVybmFsIHVzZXIsIGZ1dHVyZTogcmVxdWlyZXMgYXV0aGVudGljYXRpb24iCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICAgICAgc3lzYWRtaW4gPSBwZXJzb24gIlN5c0FkbWluIiAiU3VwcG9ydGluZyBhY3RvciAtIGRlcGxveXMgYW5kIG1haW50YWlucyBpbmZyYXN0cnVjdHVyZSIgewogICAgICAgICAgICB0YWdzICJTZWNvbmRhcnkgQWN0b3IiCiAgICAgICAgICAgIHByb3BlcnRpZXMgewogICAgICAgICAgICAgICAgIkFjdG9yIFR5cGUiICJTZWNvbmRhcnkiCiAgICAgICAgICAgICAgICAiRnJlcXVlbmN5IiAiTG93IgogICAgICAgICAgICAgICAgIlRydXN0IExldmVsIiAiSW50ZXJuYWwsIHByaXZpbGVnZWQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgcGVyc3BlY3RpdmVzIHsKICAgICAgICAgICAgICAgICJCdXNpbmVzcyIgIkVuc3VyZXMgc3lzdGVtIGF2YWlsYWJpbGl0eSBhbmQgcGVyZm9ybWFuY2UiCiAgICAgICAgICAgICAgICAiU2VjdXJpdHkiICJQcml2aWxlZ2VkIGFjY2VzcyB2aWEgU1NIIHRocm91Z2ggYmFzdGlvbiBob3N0IgogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICAjIFRoZSBTeXN0ZW0KICAgICAgICB3ZWJpbmFyU3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIldlYmluYXIgUmVnaXN0cmF0aW9uIFdlYnNpdGUiICJBbGxvd3MgYXR0ZW5kZWVzIHRvIHJlZ2lzdGVyIGZvciB3ZWJpbmFycyBhbmQgYWRtaW5pc3RyYXRvcnMgdG8gbWFuYWdlIGV2ZW50cyIgewogICAgICAgICAgICAKICAgICAgICAgICAgIWRvY3MgZG9jcwogICAgICAgICAgICAhYWRycyBhZHJzCiAgICAgICAgICAgIAogICAgICAgICAgICAjIENsaWVudC1zaWRlIENvbnRhaW5lcnMKICAgICAgICAgICAgZ3JvdXAgIkZyb250LWVuZCIgewogICAgICAgICAgICAgICAgYnJvd3NlciA9IGNvbnRhaW5lciAiV2ViIEJyb3dzZXIiICJSZW5kZXJzIEhUTUwsIEphdmFTY3JpcHQgYW5kIENTUyIgIkNocm9tZSwgRmlyZWZveCwgU2FmYXJpIiB7CiAgICAgICAgICAgICAgICAgICAgdGFncyAiQ2xpZW50IiAiUHJpbWFyeSBDbGllbnQiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIHRlcm1pbmFsID0gY29udGFpbmVyICJUZXJtaW5hbCIgIkNvbW1hbmQtbGluZSBpbnRlcmZhY2UgZm9yIGFkbWluaXN0cmF0aXZlIGFjY2VzcyIgIkF6dXJlIENMSSwgU1NIIiB7CiAgICAgICAgICAgICAgICAgICAgdGFncyAiQ2xpZW50IiAiU2Vjb25kYXJ5IENsaWVudCIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgIyBTZXJ2ZXItc2lkZSBDb250YWluZXJzCiAgICAgICAgICAgIGdyb3VwICJCYWNrLWVuZCIgewogICAgICAgICAgICAgICAgYmFzdGlvbiA9IGNvbnRhaW5lciAiQmFzdGlvbiBIb3N0IiAiU2VjdXJlIFNTSCBlbnRyeSBwb2ludCBmb3IgYWRtaW5pc3RyYXRpdmUgYWNjZXNzIiAiVWJ1bnR1IDI0LjA0LCBGYWlsMmJhbiIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIkJhc3Rpb24iCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIHByb3h5ID0gY29udGFpbmVyICJSZXZlcnNlIFByb3h5IiAiU1NMIG9mZmxvYWRpbmcgYW5kIHJlcXVlc3QgZm9yd2FyZGluZyIgIm5naW54LCBPcGVuU1NMIiB7CiAgICAgICAgICAgICAgICAgICAgIyBDb21wb25lbnRzCiAgICAgICAgICAgICAgICAgICAgaHR0cFJlZGlyZWN0ID0gY29tcG9uZW50ICJIVFRQIFJlZGlyZWN0IEJsb2NrIiAiUmVkaXJlY3RzIEhUVFAgdG8gSFRUUFMiICJuZ2lueCBzZXJ2ZXIgYmxvY2sgcG9ydCA4MCIKICAgICAgICAgICAgICAgICAgICBodHRwc1NlcnZlckJsb2NrID0gY29tcG9uZW50ICJIVFRQUyBTZXJ2ZXIgQmxvY2siICJTU0wgdGVybWluYXRpb24gYW5kIHJlcXVlc3QgaGFuZGxpbmciICJuZ2lueCBzZXJ2ZXIgYmxvY2sgcG9ydCA0NDMiCiAgICAgICAgICAgICAgICAgICAgc3NsQ2VydGlmaWNhdGUgPSBjb21wb25lbnQgIlNTTCBDZXJ0aWZpY2F0ZSIgIlRMUy9TU0wgY2VydGlmaWNhdGUgZm9yIGVuY3J5cHRpb24iICJTZWxmLXNpZ25lZCAoT3BlblNTTCkiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGZsYXNrID0gY29udGFpbmVyICJGbGFzayBBcHBsaWNhdGlvbiIgIkhhbmRsZXMgcmVnaXN0cmF0aW9uIGxvZ2ljLCBzZXJ2ZXMgSFRNTCIgIlB5dGhvbi9HdW5pY29ybiIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFwcGxpY2F0aW9uIgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICMgQ29tcG9uZW50cwogICAgICAgICAgICAgICAgICAgIHJvdXRlcyA9IGNvbXBvbmVudCAiUm91dGUgSGFuZGxlcnMiICJIVFRQIHJlcXVlc3QgaGFuZGxpbmcsIGZvcm0gcHJvY2Vzc2luZyIgIkZsYXNrIEBhcHAucm91dGUiCiAgICAgICAgICAgICAgICAgICAgdGVtcGxhdGVzID0gY29tcG9uZW50ICJUZW1wbGF0ZSBFbmdpbmUiICJIVE1MIHJlbmRlcmluZyB3aXRoIGRhdGEgYmluZGluZyIgIkppbmphMiIKICAgICAgICAgICAgICAgICAgICBtb2RlbHMgPSBjb21wb25lbnQgIkRhdGEgTW9kZWxzIiAiRGF0YWJhc2UgYWJzdHJhY3Rpb24sIE9STSIgIlNRTEFsY2hlbXkiCiAgICAgICAgICAgICAgICAgICAgd3NnaSA9IGNvbXBvbmVudCAiV1NHSSBTZXJ2ZXIiICJQcm9kdWN0aW9uIEhUVFAgc2VydmVyLCBwcm9jZXNzIG1hbmFnZW1lbnQiICJHdW5pY29ybiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgZGF0YWJhc2UgPSBjb250YWluZXIgIlBvc3RncmVTUUwgRGF0YWJhc2UiICJTdG9yZXMgcmVnaXN0cmF0aW9uIGRhdGEgcGVyc2lzdGVudGx5IiAiTWFuYWdlZCBQb3N0Z3JlU1FMIiB7CiAgICAgICAgICAgICAgICAgICAgdGFncyAiRGF0YWJhc2UiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgICMgUmVsYXRpb25zaGlwcyAtIENvbnRleHQgTGV2ZWwKICAgICAgICBhdHRlbmRlZSAtPiB3ZWJpbmFyU3lzdGVtICJSZWdpc3RlcnMgZm9yIHdlYmluYXJzIiAiSFRUUFMiCiAgICAgICAgYWRtaW4gLT4gd2ViaW5hclN5c3RlbSAiVmlld3MgcmVnaXN0cmF0aW9ucyIgIkhUVFBTIgogICAgICAgIHN5c2FkbWluIC0+IHdlYmluYXJTeXN0ZW0gIkRlcGxveXMgYW5kIG1haW50YWlucyIgIlNTSCIKCiAgICAgICAgIyBSZWxhdGlvbnNoaXBzIC0gQ29udGFpbmVyIExldmVsCiAgICAgICAgYXR0ZW5kZWUgLT4gd2ViaW5hclN5c3RlbS5icm93c2VyICJVc2VzIiAiTW91c2UsIGtleWJvYXJkIgogICAgICAgIGFkbWluIC0+IHdlYmluYXJTeXN0ZW0uYnJvd3NlciAiVXNlcyIgIk1vdXNlLCBrZXlib2FyZCIKICAgICAgICBzeXNhZG1pbiAtPiB3ZWJpbmFyU3lzdGVtLnRlcm1pbmFsICJVc2VzIiAiS2V5Ym9hcmQiCiAgICAgICAgCiAgICAgICAgd2ViaW5hclN5c3RlbS5icm93c2VyIC0+IHdlYmluYXJTeXN0ZW0ucHJveHkgIkhUVFBTIHJlcXVlc3RzIiAiSFRUUFMvNDQzIgogICAgICAgIHdlYmluYXJTeXN0ZW0udGVybWluYWwgLT4gd2ViaW5hclN5c3RlbS5iYXN0aW9uICJDb25uZWN0cyB0byIgIkF6dXJlIENMSSwgU1NIIgoKICAgICAgICB3ZWJpbmFyU3lzdGVtLmJhc3Rpb24gLT4gd2ViaW5hclN5c3RlbS5wcm94eSAiU1NIIiAiU1NILzIyIgogICAgICAgIHdlYmluYXJTeXN0ZW0uYmFzdGlvbiAtPiB3ZWJpbmFyU3lzdGVtLmZsYXNrICJTU0giICJTU0gvMjIiCiAgICAgICAgd2ViaW5hclN5c3RlbS5wcm94eSAtPiB3ZWJpbmFyU3lzdGVtLmZsYXNrICJGb3J3YXJkcyByZXF1ZXN0cyIgIkhUVFAvNTAwMSIKICAgICAgICB3ZWJpbmFyU3lzdGVtLmZsYXNrIC0+IHdlYmluYXJTeXN0ZW0uZGF0YWJhc2UgIlJlYWRzL3dyaXRlcyBkYXRhIiAiUG9zdGdyZVNRTC81NDMyIgoKICAgICAgICAjIFJlbGF0aW9uc2hpcHMgLSBDb21wb25lbnQgTGV2ZWwgKEZsYXNrKQogICAgICAgIHdlYmluYXJTeXN0ZW0ucHJveHkgLT4gd2ViaW5hclN5c3RlbS5mbGFzay53c2dpICJIVFRQIHJlcXVlc3RzIiAiSFRUUC81MDAxIgogICAgICAgIHdlYmluYXJTeXN0ZW0uZmxhc2sud3NnaSAtPiB3ZWJpbmFyU3lzdGVtLmZsYXNrLnJvdXRlcyAiRm9yd2FyZHMgcmVxdWVzdHMiICJXU0dJIgogICAgICAgIHdlYmluYXJTeXN0ZW0uZmxhc2sucm91dGVzIC0+IHdlYmluYXJTeXN0ZW0uZmxhc2sudGVtcGxhdGVzICJSZW5kZXJzIEhUTUwiICJKaW5qYTIgQVBJIgogICAgICAgIHdlYmluYXJTeXN0ZW0uZmxhc2sucm91dGVzIC0+IHdlYmluYXJTeXN0ZW0uZmxhc2subW9kZWxzICJDUlVEIG9wZXJhdGlvbnMiICJQeXRob24gbWV0aG9kIGNhbGxzIgogICAgICAgIHdlYmluYXJTeXN0ZW0uZmxhc2subW9kZWxzIC0+IHdlYmluYXJTeXN0ZW0uZGF0YWJhc2UgIlNRTCBxdWVyaWVzIiAicHN5Y29wZzIiCiAgICAgICAgd2ViaW5hclN5c3RlbS5mbGFzay50ZW1wbGF0ZXMgLT4gd2ViaW5hclN5c3RlbS5icm93c2VyICJSZXR1cm5zIEhUTUwiICJIVFRQIFJlc3BvbnNlIiB7CiAgICAgICAgICAgIHRhZ3MgIkZsYXNrQ29tcG9uZW50IgogICAgICAgIH0KCiAgICAgICAgIyBSZWxhdGlvbnNoaXBzIC0gQ29tcG9uZW50IExldmVsIChQcm94eSkKICAgICAgICB3ZWJpbmFyU3lzdGVtLmJyb3dzZXIgLT4gd2ViaW5hclN5c3RlbS5wcm94eS5odHRwUmVkaXJlY3QgIkhUVFAgcmVxdWVzdCIgIkhUVFAvODAiIHsKICAgICAgICAgICAgdGFncyAiQ29tcG9uZW50TGV2ZWwiCiAgICAgICAgfQogICAgICAgIHdlYmluYXJTeXN0ZW0ucHJveHkuaHR0cFJlZGlyZWN0IC0+IHdlYmluYXJTeXN0ZW0uYnJvd3NlciAiMzAxIFJlZGlyZWN0IHRvIEhUVFBTIiAiSFRUUCBSZXNwb25zZSIgewogICAgICAgICAgICB0YWdzICJDb21wb25lbnRMZXZlbCIKICAgICAgICB9CiAgICAgICAgd2ViaW5hclN5c3RlbS5icm93c2VyIC0+IHdlYmluYXJTeXN0ZW0ucHJveHkuaHR0cHNTZXJ2ZXJCbG9jayAiSFRUUFMgcmVxdWVzdCIgIkhUVFBTLzQ0MyIgewogICAgICAgICAgICB0YWdzICJDb21wb25lbnRMZXZlbCIKICAgICAgICB9CiAgICAgICAgd2ViaW5hclN5c3RlbS5wcm94eS5odHRwc1NlcnZlckJsb2NrIC0+IHdlYmluYXJTeXN0ZW0ucHJveHkuc3NsQ2VydGlmaWNhdGUgIlVzZXMiICJUTFMiCiAgICAgICAgd2ViaW5hclN5c3RlbS5wcm94eS5odHRwc1NlcnZlckJsb2NrIC0+IHdlYmluYXJTeXN0ZW0uZmxhc2sgIkZvcndhcmRzIHRvIGJhY2tlbmQiICJIVFRQLzUwMDEiCgogICAgICAgICMgRGVwbG95bWVudCAtIEF6dXJlIElhYVMKICAgICAgICBwcm9kdWN0aW9uID0gZGVwbG95bWVudEVudmlyb25tZW50ICJQcm9kdWN0aW9uIiB7CiAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJVc2VyIEVudmlyb25tZW50IiAiVXNlcidzIGxvY2FsIG1hY2hpbmUiICJEZXNrdG9wL0xhcHRvcCIgewogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIldlYiBCcm93c2VyIiAiVXNlcidzIHdlYiBicm93c2VyIGZvciBhY2Nlc3NpbmcgdGhlIGFwcGxpY2F0aW9uIiAiQ2hyb21lLCBGaXJlZm94LCBTYWZhcmkiIHsKICAgICAgICAgICAgICAgICAgICBicm93c2VySW5zdGFuY2UgPSBjb250YWluZXJJbnN0YW5jZSB3ZWJpbmFyU3lzdGVtLmJyb3dzZXIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJUZXJtaW5hbCIgIkNvbW1hbmQtbGluZSBpbnRlcmZhY2UgZm9yIGFkbWluaXN0cmF0aXZlIHRhc2tzIiAiQXp1cmUgQ0xJLCBTU0giIHsKICAgICAgICAgICAgICAgICAgICB0ZXJtaW5hbEluc3RhbmNlID0gY29udGFpbmVySW5zdGFuY2Ugd2ViaW5hclN5c3RlbS50ZXJtaW5hbAogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgICAgIAogICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiQXp1cmUgQ2xvdWQiICJNaWNyb3NvZnQgQXp1cmUgcHVibGljIGNsb3VkIGluZnJhc3RydWN0dXJlIiAiQXp1cmUgSWFhUyIgewogICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlZpcnR1YWwgTmV0d29yayIgInZuZXQtZmxhc2stYmljZXAtZGV2IiAiMTAuMC4wLjAvMTYiIHsKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiQmFzdGlvbiBTdWJuZXQiICJzbmV0LWJhc3Rpb24iICIxMC4wLjEuMC8yNCIgewogICAgICAgICAgICAgICAgICAgICAgICBuc2dCYXN0aW9uID0gaW5mcmFzdHJ1Y3R1cmVOb2RlICJOU0cgQmFzdGlvbiIgIkFsbG93IFNTSCBmcm9tIEludGVybmV0IiAiQXp1cmUgTlNHIiB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJOU0ciCiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIkJhc3Rpb24gSG9zdCIgIlNTSCBqdW1wIHNlcnZlciBmb3Igc2VjdXJlIGFkbWluIGFjY2VzcyIgIkF6dXJlIFZNLCBVYnVudHUgMjQuMDQgTFRTLCBTdGFuZGFyZF9CMXMiIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJhc3Rpb25JbnN0YW5jZSA9IGNvbnRhaW5lckluc3RhbmNlIHdlYmluYXJTeXN0ZW0uYmFzdGlvbgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBkZXBsb3ltZW50Tm9kZSAiV2ViIFN1Ym5ldCIgInNuZXQtd2ViIiAiMTAuMC4yLjAvMjQiIHsKICAgICAgICAgICAgICAgICAgICAgICAgbnNnV2ViID0gaW5mcmFzdHJ1Y3R1cmVOb2RlICJOU0cgV2ViIiAiQWxsb3cgSFRUUC9IVFRQUyBmcm9tIEludGVybmV0IiAiQXp1cmUgTlNHIiB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJOU0ciCiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIlJldmVyc2UgUHJveHkiICJuZ2lueCBzZXJ2ZXIgZm9yIFNTTCB0ZXJtaW5hdGlvbiIgIkF6dXJlIFZNLCBVYnVudHUgMjQuMDQgTFRTLCBTdGFuZGFyZF9CMXMiIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHByb3h5SW5zdGFuY2UgPSBjb250YWluZXJJbnN0YW5jZSB3ZWJpbmFyU3lzdGVtLnByb3h5CiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJBcHAgU3VibmV0IiAic25ldC1hcHAiICIxMC4wLjMuMC8yNCIgewogICAgICAgICAgICAgICAgICAgICAgICBuc2dBcHAgPSBpbmZyYXN0cnVjdHVyZU5vZGUgIk5TRyBBcHAiICJBbGxvdyBIVFRQIGZyb20gV2ViIFN1Ym5ldCIgIkF6dXJlIE5TRyIgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiTlNHIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJBcHBsaWNhdGlvbiBTZXJ2ZXIiICJGbGFzayBhcHBsaWNhdGlvbiB3aXRoIEd1bmljb3JuIiAiQXp1cmUgVk0sIFVidW50dSAyNC4wNCBMVFMsIFN0YW5kYXJkX0IxcyIgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgZmxhc2tJbnN0YW5jZSA9IGNvbnRhaW5lckluc3RhbmNlIHdlYmluYXJTeXN0ZW0uZmxhc2sKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICAgICAgZGVwbG95bWVudE5vZGUgIkRhdGEgU3VibmV0IiAic25ldC1kYXRhIiAiMTAuMC40LjAvMjQiIHsKICAgICAgICAgICAgICAgICAgICAgICAgbnNnRGF0YSA9IGluZnJhc3RydWN0dXJlTm9kZSAiTlNHIERhdGEiICJBbGxvdyBQb3N0Z3JlU1FMIGZyb20gQXBwIFN1Ym5ldCIgIkF6dXJlIE5TRyIgewogICAgICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiTlNHIgogICAgICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAgICAgICAgIGRlcGxveW1lbnROb2RlICJBenVyZSBQb3N0Z3JlU1FMIEZsZXhpYmxlIFNlcnZlciIgInBzcWwtZmxhc2stYmljZXAtZGV2IiAiQnVyc3RhYmxlIEIxbXMiIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGRhdGFiYXNlSW5zdGFuY2UgPSBjb250YWluZXJJbnN0YW5jZSB3ZWJpbmFyU3lzdGVtLmRhdGFiYXNlCiAgICAgICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CgogICAgdmlld3MgewogICAgICAgICMgQzEgLSBTeXN0ZW0gQ29udGV4dAogICAgICAgIHN5c3RlbUNvbnRleHQgd2ViaW5hclN5c3RlbSAiQzEtQ29udGV4dCIgIlN5c3RlbSBDb250ZXh0IGRpYWdyYW0gc2hvd2luZyBhY3RvcnMgYW5kIHRoZSBzeXN0ZW0iIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHIKICAgICAgICB9CgogICAgICAgICMgQzIgLSBDb250YWluZXIgKGZ1bGwgdmlldyB3aXRoIGFsbCBhY3RvcnMpCiAgICAgICAgY29udGFpbmVyIHdlYmluYXJTeXN0ZW0gIkMyLUNvbnRhaW5lcnMtRnVsbCIgIkNvbnRhaW5lciBkaWFncmFtIHNob3dpbmcgdGhlIGNvbXBsZXRlIHN5c3RlbSIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgZXhjbHVkZSByZWxhdGlvbnNoaXAudGFnPT1Db21wb25lbnRMZXZlbAogICAgICAgICAgICBleGNsdWRlIHJlbGF0aW9uc2hpcC50YWc9PUZsYXNrQ29tcG9uZW50CiAgICAgICAgfQoKICAgICAgICAjIEMzIC0gQ29tcG9uZW50IChGbGFzayBBcHBsaWNhdGlvbikKICAgICAgICBjb21wb25lbnQgd2ViaW5hclN5c3RlbS5mbGFzayAiQzMtQ29tcG9uZW50cyIgIkNvbXBvbmVudCBkaWFncmFtIHNob3dpbmcgRmxhc2sgYXBwbGljYXRpb24gaW50ZXJuYWxzIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBpbmNsdWRlIGF0dGVuZGVlCiAgICAgICAgICAgIGluY2x1ZGUgd2ViaW5hclN5c3RlbS5icm93c2VyCiAgICAgICAgICAgIGluY2x1ZGUgd2ViaW5hclN5c3RlbS5wcm94eQogICAgICAgIH0KCiAgICAgICAgIyBDMyAtIENvbXBvbmVudCAoUmV2ZXJzZSBQcm94eSB6b29tKQogICAgICAgIGNvbXBvbmVudCB3ZWJpbmFyU3lzdGVtLnByb3h5ICJDMy1Db21wb25lbnRzLVByb3h5IiAiQ29tcG9uZW50IGRpYWdyYW0gc2hvd2luZyBuZ2lueCBpbnRlcm5hbHMiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGluY2x1ZGUgYXR0ZW5kZWUKICAgICAgICAgICAgaW5jbHVkZSB3ZWJpbmFyU3lzdGVtLmJyb3dzZXIKICAgICAgICAgICAgaW5jbHVkZSB3ZWJpbmFyU3lzdGVtLmZsYXNrCiAgICAgICAgICAgIGluY2x1ZGUgd2ViaW5hclN5c3RlbS5kYXRhYmFzZQogICAgICAgICAgICBleGNsdWRlIHJlbGF0aW9uc2hpcC50YWc9PUZsYXNrQ29tcG9uZW50CiAgICAgICAgfQoKICAgICAgICAjIERlcGxveW1lbnQKICAgICAgICBkZXBsb3ltZW50IHdlYmluYXJTeXN0ZW0gcHJvZHVjdGlvbiAiRGVwbG95bWVudCIgIkF6dXJlIElhYVMgZGVwbG95bWVudCBhcmNoaXRlY3R1cmUiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGV4Y2x1ZGUgcmVsYXRpb25zaGlwLnRhZz09Rmxhc2tDb21wb25lbnQKICAgICAgICAgICAgZXhjbHVkZSByZWxhdGlvbnNoaXAudGFnPT1Db21wb25lbnRMZXZlbAogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiUGVyc29uIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBQZXJzb24KICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzA4NDI3QgogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlByaW1hcnkgQWN0b3IiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzA4NDI3QgogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlNlY29uZGFyeSBBY3RvciIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNWM1YzVjCiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiVGVydGlhcnkgQWN0b3IiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzg1QkJGMAogICAgICAgICAgICAgICAgY29sb3IgIzAwMDAwMAogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlNvZnR3YXJlIFN5c3RlbSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNDM4REQ1CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29udGFpbmVyIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM0MzhERDUKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJDb21wb25lbnQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzg1QkJGMAogICAgICAgICAgICAgICAgY29sb3IgIzAwMDAwMAogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkRhdGFiYXNlIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBDeWxpbmRlcgogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNDM4REQ1CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQmFzdGlvbiIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjOTk5OTk5CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ2xpZW50IiB7CiAgICAgICAgICAgICAgICBzaGFwZSBSb3VuZGVkQm94CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM4NUJCRjAKICAgICAgICAgICAgICAgIGNvbG9yICMwMDAwMDAKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJQcmltYXJ5IENsaWVudCIgewogICAgICAgICAgICAgICAgc2hhcGUgUm91bmRlZEJveAogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDg0MjdCCiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiU2Vjb25kYXJ5IENsaWVudCIgewogICAgICAgICAgICAgICAgc2hhcGUgUm91bmRlZEJveAogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNWM1YzVjCiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiTlNHIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNmZmZmZmYKICAgICAgICAgICAgICAgIGNvbG9yICNjYzAwMDAKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgdGhlbWUgZGVmYXVsdAogICAgfQoKfQ=="
+  },
+  "views" : {
+    "componentViews" : [ {
+      "containerId" : "12",
+      "description" : "Component diagram showing Flask application internals",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "C3-Components",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "21"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "39"
+      } ]
+    }, {
+      "containerId" : "8",
+      "description" : "Component diagram showing nginx internals",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "C3-Components-Proxy",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "21"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "38"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "tag" : "Primary Actor"
+        }, {
+          "background" : "#5c5c5c",
+          "color" : "#ffffff",
+          "tag" : "Secondary Actor"
+        }, {
+          "background" : "#85bbf0",
+          "color" : "#000000",
+          "tag" : "Tertiary Actor"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "Software System"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "Container"
+        }, {
+          "background" : "#85bbf0",
+          "color" : "#000000",
+          "tag" : "Component"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "Bastion"
+        }, {
+          "background" : "#85bbf0",
+          "color" : "#000000",
+          "shape" : "RoundedBox",
+          "tag" : "Client"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "tag" : "Primary Client"
+        }, {
+          "background" : "#5c5c5c",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "tag" : "Secondary Client"
+        }, {
+          "background" : "#ffffff",
+          "color" : "#cc0000",
+          "tag" : "NSG"
+        } ]
+      },
+      "terminology" : { },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ]
+    },
+    "containerViews" : [ {
+      "description" : "Container diagram showing the complete system",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "C2-Containers-Full",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "deploymentViews" : [ {
+      "description" : "Azure IaaS deployment architecture",
+      "elements" : [ {
+        "id" : "43",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "44",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "45",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "46",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "47",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "48",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "49",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "50",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "51",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "52",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "53",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "55",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "56",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "57",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "58",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "62",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "63",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "64",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "65",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "69",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "70",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "71",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "72",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "environment" : "Production",
+      "key" : "Deployment",
+      "order" : 5,
+      "relationships" : [ {
+        "id" : "54"
+      }, {
+        "id" : "60"
+      }, {
+        "id" : "61"
+      }, {
+        "id" : "67"
+      }, {
+        "id" : "68"
+      }, {
+        "id" : "73"
+      } ],
+      "softwareSystemId" : "4"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "System Context diagram showing actors and the system",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "C1-Context",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "18"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20"
+      } ],
+      "softwareSystemId" : "4"
+    } ]
+  }
+}

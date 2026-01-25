@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>IP-adresser och CIDR-intervall</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    IP-ADRESSER<br>
+                    OCH<br>
+                    CIDR-INTERVALL
+                </h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: IP Addresses as Device Identifiers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IP-adresser som enhetsidentifierare</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">IP-adress</span> identifierar unikt en enhet på ett nätverk och möjliggör exakt routing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utan detta identifieringssystem skulle nätverk inte kunna leverera paket till avsedda destinationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>IP-adresser finns i två format: <span class="highlight">IPv4</span> (32-bitars) och <span class="highlight">IPv6</span> (128-bitars)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Adresser kategoriseras som <span class="highlight">publika</span> (globalt unika) eller <span class="highlight">privata</span> (endast lokalt nätverk)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: IPv4 Addresses -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IPv4-adresser</h2>
+
+                <div class="fragment info-box">
+                    <p>Fyra decimaltal separerade med punkter: <span class="highlight">192.168.1.1</span> (varje oktett: 0-255)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>32 bitar totalt ger cirka <span class="highlight">4,3 miljarder</span> möjliga adresser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Privata intervall (RFC 1918): <span class="highlight">10.0.0.0/8</span>, <span class="highlight">172.16.0.0/12</span>, <span class="highlight">192.168.0.0/16</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Adressbrist drev fram användningen av NAT och utvecklingen av IPv6</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: IPv6 Addresses -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IPv6-adresser</h2>
+
+                <div class="fragment info-box">
+                    <p>Åtta grupper med fyra hexadecimala siffror: <span class="highlight">2001:0db8:85a3:0000:0000:8a2e:0370:7334</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>128 bitar ger cirka <span class="highlight">340 undeciljoner</span> adresser—effektivt obegränsat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Notationsgenvägar: utelämna inledande nollor, ersätt på varandra följande nollgrupper med <span class="highlight">::</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Många nätverk kör <span class="highlight">dual-stack</span> (IPv4 + IPv6) under övergången</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: CIDR Notation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CIDR-notation</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CIDR</span> (Classless Inter-Domain Routing) ersatte stela klassbaserade tilldelningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skrivs som IP/prefix: <span class="highlight">192.168.1.0/24</span> — prefixbitar definierar nätverk, återstående bitar identifierar värdar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">/24</span> = 256 adresser (254 användbara); <span class="highlight">/32</span> = en enskild adress; <span class="highlight">/0</span> = alla adresser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Möjliggör flexibel nätverksstorlek—tilldela exakt vad du behöver</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Subnet Masks and Subnetting -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Subnet mask och subnetting</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Subnet mask</span> representerar CIDR i decimalpunktsnotation: /24 = <span class="highlight">255.255.255.0</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanliga storlekar: /24 (254 värdar), /25 (126), /26 (62), /27 (30), /28 (14)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Subnät</span> delar upp adressutrymmet för säkerhetsisolering och minskade broadcast-domäner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enheter använder subnet mask för att avgöra om destinationen är lokal eller kräver routing</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">IP-adresser identifierar enheter medan CIDR möjliggör flexibel nätverksorganisation—förståelse för båda är grundläggande för att designa och hantera nätverksinfrastruktur</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

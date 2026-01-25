@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../style.css" rel="stylesheet">
+    <link href="./../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../modal.js"></script>
+    <script type="text/javascript" src="../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../" class="">Home</a><a href="../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="./" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li class="is-active"><a href="./" class="is-active">Info</a></li>
+            <li><a href="context/" class="">Context views</a></li>
+            <li><a href="container/" class="">Container views</a></li>
+            <li><a href="component/flask-application/" class="">Component views</a></li>
+            <li><a href="deployment/" class="">Deployment views</a></li>
+            <li><a href="dependencies/" class="">Dependencies</a></li>
+            <li><a href="decisions/" class="">Decisions</a></li>
+            <li><a href="sections/" class="">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <div><h1>Webinar Registration Website</h1>
+<h2>Overview</h2>
+<p>The Webinar Registration Website is a web application that allows event attendees to register for webinars and marketing administrators to view registrations.</p>
+<p>This documentation accompanies the C4 architecture model and provides detailed explanations of each architectural level.</p>
+<h3>Key Features</h3>
+<ul>
+ <li><strong>Registration Form</strong>: Public-facing form for webinar signup</li>
+ <li><strong>Registration List</strong>: Admin view of all registrations</li>
+ <li><strong>Health Endpoint</strong>: System monitoring capability (<code>/health</code>)</li>
+</ul>
+<h3>Technology Stack</h3>
+<table>
+ <thead>
+  <tr>
+   <th>Layer</th>
+   <th>Technology</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Frontend</td>
+   <td>Server-side rendered HTML (Jinja2)</td>
+  </tr>
+  <tr>
+   <td>Backend</td>
+   <td>Python Flask 3.0+ with Gunicorn WSGI</td>
+  </tr>
+  <tr>
+   <td>Database</td>
+   <td>PostgreSQL 16 (Azure Flexible Server)</td>
+  </tr>
+  <tr>
+   <td>Web Server</td>
+   <td>nginx reverse proxy with SSL</td>
+  </tr>
+  <tr>
+   <td>Infrastructure</td>
+   <td>Azure IaaS (Virtual Machines)</td>
+  </tr>
+  <tr>
+   <td>IaC</td>
+   <td>Bicep (declarative)</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Architecture Levels</h3>
+<p>This documentation follows the <a href="https://c4model.com/" target="blank">C4 model</a> for visualizing software architecture:</p>
+<table>
+ <thead>
+  <tr>
+   <th>Level</th>
+   <th>View</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>C1</strong></td>
+   <td>System Context</td>
+   <td>Actors and the system boundary</td>
+  </tr>
+  <tr>
+   <td><strong>C2</strong></td>
+   <td>Containers</td>
+   <td>Technical building blocks (VMs, databases)</td>
+  </tr>
+  <tr>
+   <td><strong>C3</strong></td>
+   <td>Components</td>
+   <td>Internal structure of the Flask application</td>
+  </tr>
+  <tr>
+   <td><strong>Deployment</strong></td>
+   <td>Infrastructure</td>
+   <td>Azure IaaS deployment topology</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Quick Links</h3>
+<ul>
+ <li><a href="sections/system-context-(c1)/">System Context (C1)</a> - Who uses the system?</li>
+ <li><a href="sections/containers-(c2)/">Containers (C2)</a> - What are the main technical components?</li>
+ <li><a href="sections/components-(c3)/">Components (C3)</a> - How does the Flask app work internally?</li>
+ <li><a href="sections/deployment/">Deployment</a> - How is it deployed on Azure?</li>
+</ul>
+<h3>Architecture Decisions</h3>
+<p>Key architectural decisions are documented in the ADRs (Architecture Decision Records):</p>
+<ul>
+ <li><strong>ADR-0001</strong>: Use Pure IaaS Approach</li>
+ <li><strong>ADR-0002</strong>: Use Python Flask for Web Application</li>
+ <li><strong>ADR-0003</strong>: Use Bastion Host for SSH Access</li>
+</ul>
+<h3>Source Code</h3>
+<table>
+ <thead>
+  <tr>
+   <th>Component</th>
+   <th>Location</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Infrastructure (Bicep)</td>
+   <td><code>infrastructure/</code></td>
+  </tr>
+  <tr>
+   <td>Flask Application</td>
+   <td><code>application/</code></td>
+  </tr>
+  <tr>
+   <td>Deployment Scripts</td>
+   <td><code>deploy/</code></td>
+  </tr>
+  <tr>
+   <td>Cloud-init configs</td>
+   <td><code>infrastructure/cloud-init/</code></td>
+  </tr>
+ </tbody>
+</table></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

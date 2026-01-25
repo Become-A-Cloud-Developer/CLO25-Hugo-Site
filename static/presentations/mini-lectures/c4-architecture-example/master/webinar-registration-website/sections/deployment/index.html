@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../../style.css" rel="stylesheet">
+    <link href="./../../../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../../../modal.js"></script>
+    <script type="text/javascript" src="../../../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../../" class="">Home</a><a href="../../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li><a href="../../" class="">Info</a></li>
+            <li><a href="../../context/" class="">Context views</a></li>
+            <li><a href="../../container/" class="">Container views</a></li>
+            <li><a href="../../component/flask-application/" class="">Component views</a></li>
+            <li><a href="../../deployment/" class="">Deployment views</a></li>
+            <li><a href="../../dependencies/" class="">Dependencies</a></li>
+            <li><a href="../../decisions/" class="">Decisions</a></li>
+            <li class="is-active"><a href="../" class="is-active">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <div><h1>Deployment</h1>
+<h2>Azure IaaS Deployment Architecture</h2>
+<p>This document shows how the Webinar Registration Website is deployed on Azure infrastructure using a pure IaaS approach.</p>
+<h3>Deployment Diagram</h3>
+<p>
+ <div>
+  <figure style="width: min(100%, 800px);" id="Deployment">
+   <div>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 800 2304" zoomAndPan="magnify">
+     <title>Webinar Registration Website - Deployment - Production</title><defs />
+     <g>
+      <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="450.3379" x="167.8311" y="22.9951">Webinar Registration Website - Deployment - Production</text></g><!--cluster Production.UserEnvironment-->
+      <g class="cluster" data-entity="Production.UserEnvironment" data-source-line="103" data-uid="ent0002" id="cluster_Production.UserEnvironment">
+       <rect fill="#FFFFFF" height="333" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="566" x="228" y="44.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="161.8984" x="430.0508" y="61.1484">User Environment</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104.2148" x="458.8926" y="76.0605">[Desktop/Laptop]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="508.7749" y="91.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144.7373" x="438.6313" y="108.1826">User's local machine</text>
+      </g>
+      <!--cluster Production.UserEnvironment.WebBrowser-->
+      <g class="cluster" data-entity="Production.UserEnvironment.WebBrowser" data-source-line="103" data-uid="ent0003" id="cluster_Production.UserEnvironment.WebBrowser">
+       <rect fill="#FFFFFF" height="217" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="250" x="520" y="136.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="119.6484" x="585.1758" y="153.1484">Web Browser</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="147.9902" x="571.0049" y="168.0605">[Chrome, Firefox, Safari]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="642.7749" y="183.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="234.1992" x="527.9004" y="200.1826">User's web browser for accessing</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.6514" x="592.6743" y="216.4795">the application</text>
+      </g>
+      <!--cluster Production.UserEnvironment.Terminal-->
+      <g class="cluster" data-entity="Production.UserEnvironment.Terminal" data-source-line="103" data-uid="ent0005" id="cluster_Production.UserEnvironment.Terminal">
+       <rect fill="#FFFFFF" height="217" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="244" x="252" y="136.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="334.2578" y="153.1484">Terminal</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="98.0977" x="324.9512" y="168.0605">[Azure CLI, SSH]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="371.7749" y="183.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="192.8623" x="277.5688" y="200.1826">Command-line interface for</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.3652" x="302.8174" y="216.4795">administrative tasks</text>
+      </g>
+      <!--cluster Production.AzureCloud-->
+      <g class="cluster" data-entity="Production.AzureCloud" data-source-line="103" data-uid="ent0007" id="cluster_Production.AzureCloud">
+       <rect fill="#FFFFFF" height="1766" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="684" x="7" y="438.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="108.4609" x="294.7695" y="455.1484">Azure Cloud</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="73.4707" x="312.2646" y="470.0605">[Azure IaaS]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="485.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="197.8184" x="250.0908" y="502.1826">Microsoft Azure public cloud</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="301.0664" y="518.4795">infrastructure</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork" data-source-line="103" data-uid="ent0008" id="cluster_Production.AzureCloud.VirtualNetwork">
+       <rect fill="#FFFFFF" height="1634" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="636" x="31" y="546.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="142.8438" x="277.5781" y="563.1484">Virtual Network</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="309.8535" y="578.0605">[10.0.0.0/16]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="593.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.9736" x="277.5132" y="610.1826">vnet-flask-bicep-dev</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.BastionSubnet-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet" data-source-line="103" data-uid="ent0009" id="cluster_Production.AzureCloud.VirtualNetwork.BastionSubnet">
+       <rect fill="#FFFFFF" height="347" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="500" x="56" y="638.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="137.8594" x="237.0703" y="655.1484">Bastion Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="266.8535" y="670.0605">[10.0.1.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="303.7749" y="685.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86.8984" x="262.5508" y="702.1826">snet-bastion</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost" data-source-line="103" data-uid="ent0011" id="cluster_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost">
+       <rect fill="#FFFFFF" height="231" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="256" x="276" y="730.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="115.1563" x="346.4219" y="747.1484">Bastion Host</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="313.7656" y="762.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="360.1982" y="776.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="401.7749" y="791.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="240.1191" x="283.9404" y="808.1514">SSH jump server for secure admin</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="380.4126" y="824.4482">access</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.WebSubnet-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet" data-source-line="103" data-uid="ent0013" id="cluster_Production.AzureCloud.VirtualNetwork.WebSubnet">
+       <rect fill="#FFFFFF" height="331" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="485" x="60" y="1046.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="109.7813" x="247.6094" y="1063.1484">Web Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="263.3535" y="1078.0605">[10.0.2.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="300.2749" y="1093.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.2715" x="270.3643" y="1110.1826">snet-web</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy" data-source-line="103" data-uid="ent0015" id="cluster_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy">
+       <rect fill="#FFFFFF" height="215" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="243" x="278" y="1138.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="129.6484" x="334.6758" y="1155.1484">Reverse Proxy</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="309.2656" y="1170.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="355.6982" y="1184.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.2749" y="1199.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="227.4043" x="285.7979" y="1216.1514">nginx server for SSL termination</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.AppSubnet-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet" data-source-line="103" data-uid="ent0017" id="cluster_Production.AzureCloud.VirtualNetwork.AppSubnet">
+       <rect fill="#FFFFFF" height="331" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="467" x="119" y="1438.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.1172" x="299.9414" y="1455.1484">App Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="313.3535" y="1470.0605">[10.0.3.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="350.2749" y="1485.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.6738" x="321.6631" y="1502.1826">snet-app</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer" data-source-line="103" data-uid="ent0019" id="cluster_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer">
+       <rect fill="#FFFFFF" height="215" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="236" x="326" y="1530.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="167.0625" x="360.4688" y="1547.1484">Application Server</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="353.7656" y="1562.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="400.1982" y="1576.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.7749" y="1591.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="219.5771" x="334.2114" y="1608.1514">Flask application with Gunicorn</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.DataSubnet-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet" data-source-line="103" data-uid="ent0021" id="cluster_Production.AzureCloud.VirtualNetwork.DataSubnet">
+       <rect fill="#FFFFFF" height="326" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="588" x="55" y="1830.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="112.3516" x="292.8242" y="1847.1484">Data Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="309.8535" y="1862.0605">[10.0.4.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="1877.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.8555" x="315.5723" y="1894.1826">snet-data</text>
+      </g>
+      <!--cluster Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer-->
+      <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer" data-source-line="103" data-uid="ent0023" id="cluster_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer">
+       <rect fill="#FFFFFF" height="210" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="320" x="299" y="1922.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="304.2422" x="306.8789" y="1939.1484">Azure PostgreSQL Flexible Server</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104.4023" x="406.7988" y="1954.0605">[Burstable B1ms]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="456.7749" y="1969.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="140.6699" x="388.665" y="1986.1826">psql-flask-bicep-dev</text>
+      </g>
+      <!--entity Production.UserEnvironment.WebBrowser.WebBrowser_1-->
+      <g class="entity" data-entity="Production.UserEnvironment.WebBrowser.WebBrowser_1" data-source-line="71" data-uid="ent0004" id="entity_Production.UserEnvironment.WebBrowser.WebBrowser_1">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="200.25" x="536" y="236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="576.3008" y="261.1484">Web</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="616.2539" y="261.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="74.125" x="621.8242" y="261.1484">Browser</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8281" x="562.1299" y="276.0605">[Chrome,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="617.958" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45.0352" x="621.7725" y="276.0605">Firefox,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="666.8076" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.498" x="670.6221" y="276.0605">Safari]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="633.8999" y="291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.7637" x="546" y="308.1826">Renders</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.7637" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.4082" x="608.2139" y="308.1826">HTML,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="651.6221" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.1777" x="656.0723" y="308.1826">JavaScript</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="606.9561" y="324.4795">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="633.2949" y="324.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.5488" x="637.7451" y="324.4795">CSS</text>
+      </g>
+      <!--entity Production.UserEnvironment.Terminal.Terminal_1-->
+      <g class="entity" data-entity="Production.UserEnvironment.Terminal.Terminal_1" data-source-line="71" data-uid="ent0006" id="entity_Production.UserEnvironment.Terminal.Terminal_1">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="212.8623" x="267.5" y="236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="334.189" y="261.1484">Terminal</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="324.8823" y="276.0605">[Azure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="363.9937" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="367.8081" y="276.0605">CLI,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="390.2261" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="394.0405" y="276.0605">SSH]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="371.7061" y="291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.2725" x="277.5" y="308.1826">Command-line</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="379.7725" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62.4395" x="384.2227" y="308.1826">interface</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.6621" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="451.1123" y="308.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="297.543" y="324.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="398.6943" y="324.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="403.1445" y="324.4795">access</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion" data-source-line="103" data-uid="ent0010" id="entity_Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion">
+       <rect fill="#FFFFFF" height="85.1875" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="187.7471" x="72" y="852.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="110.0493" y="877.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="148.0962" y="877.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="153.6665" y="877.1484">Bastion</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="129.1235" y="892.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="168.2349" y="892.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="172.0493" y="892.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="163.6484" y="907.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="82" y="924.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="119.3721" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="123.8223" y="924.1826">SSH</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="152.123" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="156.5732" y="924.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="189.4609" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55.8359" x="193.9111" y="924.1826">Internet</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-source-line="71" data-uid="ent0012" id="entity_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="206.5117" x="296.5" y="844.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="342.1777" y="869.1484">Bastion</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="410.209" y="869.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="41.5547" x="415.7793" y="869.1484">Host</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48.6035" x="324.6475" y="884.0605">[Ubuntu</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="373.251" y="884.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="38.168" x="377.0654" y="884.0605">24.04,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="415.2334" y="884.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8164" x="419.0479" y="884.0605">Fail2ban]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.5308" y="899.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48.4395" x="306.5" y="916.1826">Secure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="354.9395" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="359.3896" y="916.1826">SSH</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="387.6904" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.0166" x="392.1406" y="916.1826">entry</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="429.1572" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35.7041" x="433.6074" y="916.1826">point</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="469.3115" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="473.7617" y="916.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="323.3677" y="932.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="424.519" y="932.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="428.9692" y="932.4795">access</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb" data-source-line="103" data-uid="ent0014" id="entity_Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb">
+       <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="184.9102" x="75.5" y="1236.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="126.1699" y="1261.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="164.2168" y="1261.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="169.7871" y="1261.1484">Web</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="131.2051" y="1276.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="170.3164" y="1276.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="174.1309" y="1276.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="165.73" y="1291.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="85.5" y="1308.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.8721" y="1308.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85.75" x="127.3223" y="1308.1826">HTTP/HTTPS</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="213.0723" y="1308.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="217.5225" y="1308.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55.8359" x="140.0371" y="1324.4795">Internet</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="71" data-uid="ent0016" id="entity_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="208.7813" x="295.5" y="1236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="72.7188" x="335.0664" y="1261.1484">Reverse</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="407.7852" y="1261.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.3594" x="413.3555" y="1261.1484">Proxy</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="41.7598" x="347.7773" y="1276.0605">[nginx,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="389.5371" y="1276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="58.6523" x="393.3516" y="1276.0605">OpenSSL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.6655" y="1291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.5732" x="305.5" y="1308.1826">SSL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="331.0732" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.9932" x="335.5234" y="1308.1826">offloading</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="405.5166" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="409.9668" y="1308.1826">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="436.3057" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.5254" x="440.7559" y="1308.1826">request</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.5713" x="362.105" y="1324.4795">forwarding</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp" data-source-line="103" data-uid="ent0018" id="entity_Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp">
+       <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="171.0264" x="135.5" y="1628.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="181.5601" y="1653.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="219.6069" y="1653.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="35.2891" x="225.1772" y="1653.1484">App</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="184.2632" y="1668.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="223.3745" y="1668.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="227.189" y="1668.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="218.7881" y="1683.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="145.5" y="1700.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="182.8721" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0732" x="187.3223" y="1700.1826">HTTP</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="223.3955" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="227.8457" y="1700.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="260.7334" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.3428" x="265.1836" y="1700.1826">Web</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49.6221" x="196.2021" y="1716.4795">Subnet</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="71" data-uid="ent0020" id="entity_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+       <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="204.0234" x="342" y="1628.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="47.375" x="366.5117" y="1653.1484">Flask</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="413.8867" y="1653.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="102.0547" x="419.457" y="1653.1484">Application</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="109.3242" x="389.3496" y="1668.0605">[Python/Gunicorn]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.7866" y="1683.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56.6631" x="352" y="1700.1826">Handles</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="408.6631" y="1700.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="413.1133" y="1700.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="494.1943" y="1700.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3789" x="498.6445" y="1700.1826">logic,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45.8555" x="399.3799" y="1716.4795">serves</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="445.2354" y="1716.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38.958" x="449.6855" y="1716.4795">HTML</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData" data-source-line="103" data-uid="ent0022" id="entity_Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData">
+       <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="211.7139" x="71" y="2010.7969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="133.7866" y="2035.6484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="171.8335" y="2035.6484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="42.5234" x="177.4038" y="2035.6484">Data</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="140.1069" y="2050.5605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="179.2183" y="2050.5605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="183.0327" y="2050.5605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="174.6318" y="2066.3857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="81" y="2082.6826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="118.3721" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80.7529" x="122.8223" y="2082.6826">PostgreSQL</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="203.5752" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="208.0254" y="2082.6826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="240.9131" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="245.3633" y="2082.6826">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49.6221" x="152.0459" y="2098.9795">Subnet</text>
+      </g>
+      <!--entity Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1-->
+      <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" data-source-line="75" data-uid="ent0024" id="entity_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1">
+       <path d="M336,2016.2969 C336,2006.2969 444.0625,2006.2969 444.0625,2006.2969 C444.0625,2006.2969 552.125,2006.2969 552.125,2016.2969 L552.125,2106.7813 C552.125,2116.7813 444.0625,2116.7813 444.0625,2116.7813 C444.0625,2116.7813 336,2116.7813 336,2106.7813 L336,2016.2969" fill="#438DD5" style="stroke:#3C7FC0;stroke-width:0.5;" /><path d="M336,2016.2969 C336,2026.2969 444.0625,2026.2969 444.0625,2026.2969 C444.0625,2026.2969 552.125,2026.2969 552.125,2016.2969" fill="none" style="stroke:#3C7FC0;stroke-width:0.5;" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.4063" x="346" y="2045.1484">PostgreSQL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="451.4063" y="2045.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="85.1484" x="456.9766" y="2045.1484">Database</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="59.9648" x="375.2236" y="2060.0605">[Managed</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="435.1885" y="2060.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="73.8984" x="439.0029" y="2060.0605">PostgreSQL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.8374" y="2075.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.6045" x="361.0024" y="2092.1826">Stores</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="405.6069" y="2092.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="410.0571" y="2092.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="491.1382" y="2092.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.5342" x="495.5884" y="2092.1826">data</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.373" x="402.876" y="2108.4795">persistently</text>
+      </g>
+      <!--link Production.UserEnvironment.Terminal.Terminal_1 to Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-->
+      <g class="link" data-entity-1="Production.UserEnvironment.Terminal.Terminal_1" data-entity-2="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-source-line="1688" data-uid="lnk25" id="link_Production.UserEnvironment.Terminal.Terminal_1_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1">
+       <path d="M376.13,337.3869 C381.01,451.1669 392.6272,721.9242 397.5172,835.9542" fill="none" id="Production.UserEnvironment.Terminal.Terminal_1-to-Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="397.86,843.9469,400.5145,835.8257,394.52,836.0828,397.86,843.9469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="62.2676" x="388.8359" y="405.4355">Connects</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="451.1035" y="405.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="13.9805" x="455.2813" y="405.4355">to</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="380" y="419.4043">[Azure</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="419.1113" y="419.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="422.9258" y="419.4043">CLI,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="445.3438" y="419.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="449.1582" y="419.4043">SSH]</text>
+      </g>
+      <!--link Production.UserEnvironment.WebBrowser.WebBrowser_1 to Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+      <g class="link" data-entity-1="Production.UserEnvironment.WebBrowser.WebBrowser_1" data-entity-2="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="1688" data-uid="lnk26" id="link_Production.UserEnvironment.WebBrowser.WebBrowser_1_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+       <path d="M631.74,337.3869 C620.9,453.7469 588.19,752.6569 520,993.2969 C495.05,1081.3569 455.1236,1171.5712 427.9236,1228.8112" fill="none" id="Production.UserEnvironment.WebBrowser.WebBrowser_1-to-Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="424.49,1236.0369,430.6332,1230.0988,425.214,1227.5236,424.49,1236.0369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43.8516" x="622" y="892.4355">HTTPS</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="665.8516" y="892.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="670.0293" y="892.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8477" x="638.2656" y="906.4043">[HTTPS/443]</text>
+      </g>
+      <!--link Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1 to Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+      <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-entity-2="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="1688" data-uid="lnk27" id="link_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+       <path d="M400,945.5869 C400,1020.4369 400,1153.1369 400,1227.9969" fill="none" id="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-to-Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="400,1235.9969,403,1227.9969,397,1227.9969,400,1235.9969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="413.8027" y="1013.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="401" y="1027.4043">[SSH/22]</text>
+      </g>
+      <!--link Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1 to Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+      <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-entity-2="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="1688" data-uid="lnk28" id="link_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+       <path d="M455.74,945.5069 C480.17,970.7169 506.53,1003.3669 521,1038.2969 C586.5,1196.4169 583.44,1254.4469 550,1422.2969 C535.04,1497.4169 501.2649,1571.0213 475.1449,1621.1813" fill="none" id="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-to-Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="471.45,1628.2769,477.8058,1622.5669,472.4841,1619.7957,471.45,1628.2769" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="586.8027" y="1284.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="574" y="1298.4043">[SSH/22]</text>
+      </g>
+      <!--link Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1 to Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+      <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-entity-2="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="1688" data-uid="lnk29" id="link_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+       <path d="M405.62,1337.5869 C414.06,1412.4369 429.0437,1545.1872 437.4837,1620.0472" fill="none" id="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-to-Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="438.38,1627.9969,440.4648,1619.7111,434.5026,1620.3833,438.38,1627.9969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="63.1934" x="415" y="1405.4355">Forwards</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="478.1934" y="1405.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="482.3711" y="1405.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8652" x="440.9277" y="1419.4043">[HTTP/5001]</text>
+      </g>
+      <!--link Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1 to Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1-->
+      <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-entity-2="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" data-source-line="1688" data-uid="lnk30" id="link_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1">
+       <path d="M444,1729.5369 C444,1801.0569 444,1924.4069 444,1998.2369" fill="none" id="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-to-Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="444,2006.2369,447,1998.2369,441,1998.2369,444,2006.2369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.7266" x="445" y="1797.4355">Reads/writes</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="532.7266" y="1797.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="30.5215" x="536.9043" y="1797.4355">data</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="113.1621" x="449.6318" y="1811.4043">[PostgreSQL/5432]</text>
+      </g>
+      <g class="legend" data-source-line="1492">
+       <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2228.2969" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="672.709" y="2241.292">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="735.5039" y="2241.292">&nbsp;</text><rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2244.5938" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="677.1592" y="2257.5889">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="684.8633" y="2257.5889">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.3359" x="693.7637" y="2257.5889">container</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="764.5498" y="2257.5889">&nbsp;</text><rect fill="#FFFFFF" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2260.8906" /><text fill="#A2A2A2" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="677.1592" y="2273.8857">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="684.8633" y="2273.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34.9385" x="693.7637" y="2273.8857">node</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="733.1523" y="2273.8857">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2228.2969" y2="2228.2969" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2244.5938" y2="2244.5938" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2260.8906" y2="2260.8906" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2277.1875" y2="2277.1875" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="672.709" y1="2228.2969" y2="2277.1875" /><line style="stroke:none;stroke-width:1;" x1="769" x2="769" y1="2228.2969" y2="2277.1875" />
+      </g>
+     </g>
+    </svg>
+   </div>
+   <figcaption>
+    <a onclick="openSvgModal('Deployment-modal', 'Deployment-svg')">Deployment</a>
+   </figcaption>
+  </figure>
+  <div class="modal" id="Deployment-modal">
+   <div class="modal-background" onclick="closeModal('Deployment-modal')"></div>
+   <div class="modal-content">
+    <div class="box">
+     <div id="Deployment-svg" class="modal-box-content">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 800 2304" zoomAndPan="magnify">
+       <title>Webinar Registration Website - Deployment - Production</title><defs />
+       <g>
+        <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="450.3379" x="167.8311" y="22.9951">Webinar Registration Website - Deployment - Production</text></g><!--cluster Production.UserEnvironment-->
+        <g class="cluster" data-entity="Production.UserEnvironment" data-source-line="103" data-uid="ent0002" id="cluster_Production.UserEnvironment">
+         <rect fill="#FFFFFF" height="333" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="566" x="228" y="44.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="161.8984" x="430.0508" y="61.1484">User Environment</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104.2148" x="458.8926" y="76.0605">[Desktop/Laptop]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="508.7749" y="91.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144.7373" x="438.6313" y="108.1826">User's local machine</text>
+        </g>
+        <!--cluster Production.UserEnvironment.WebBrowser-->
+        <g class="cluster" data-entity="Production.UserEnvironment.WebBrowser" data-source-line="103" data-uid="ent0003" id="cluster_Production.UserEnvironment.WebBrowser">
+         <rect fill="#FFFFFF" height="217" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="250" x="520" y="136.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="119.6484" x="585.1758" y="153.1484">Web Browser</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="147.9902" x="571.0049" y="168.0605">[Chrome, Firefox, Safari]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="642.7749" y="183.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="234.1992" x="527.9004" y="200.1826">User's web browser for accessing</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.6514" x="592.6743" y="216.4795">the application</text>
+        </g>
+        <!--cluster Production.UserEnvironment.Terminal-->
+        <g class="cluster" data-entity="Production.UserEnvironment.Terminal" data-source-line="103" data-uid="ent0005" id="cluster_Production.UserEnvironment.Terminal">
+         <rect fill="#FFFFFF" height="217" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="244" x="252" y="136.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="334.2578" y="153.1484">Terminal</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="98.0977" x="324.9512" y="168.0605">[Azure CLI, SSH]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="371.7749" y="183.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="192.8623" x="277.5688" y="200.1826">Command-line interface for</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.3652" x="302.8174" y="216.4795">administrative tasks</text>
+        </g>
+        <!--cluster Production.AzureCloud-->
+        <g class="cluster" data-entity="Production.AzureCloud" data-source-line="103" data-uid="ent0007" id="cluster_Production.AzureCloud">
+         <rect fill="#FFFFFF" height="1766" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="684" x="7" y="438.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="108.4609" x="294.7695" y="455.1484">Azure Cloud</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="73.4707" x="312.2646" y="470.0605">[Azure IaaS]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="485.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="197.8184" x="250.0908" y="502.1826">Microsoft Azure public cloud</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="301.0664" y="518.4795">infrastructure</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork" data-source-line="103" data-uid="ent0008" id="cluster_Production.AzureCloud.VirtualNetwork">
+         <rect fill="#FFFFFF" height="1634" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="636" x="31" y="546.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="142.8438" x="277.5781" y="563.1484">Virtual Network</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="309.8535" y="578.0605">[10.0.0.0/16]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="593.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.9736" x="277.5132" y="610.1826">vnet-flask-bicep-dev</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.BastionSubnet-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet" data-source-line="103" data-uid="ent0009" id="cluster_Production.AzureCloud.VirtualNetwork.BastionSubnet">
+         <rect fill="#FFFFFF" height="347" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="500" x="56" y="638.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="137.8594" x="237.0703" y="655.1484">Bastion Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="266.8535" y="670.0605">[10.0.1.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="303.7749" y="685.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86.8984" x="262.5508" y="702.1826">snet-bastion</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost" data-source-line="103" data-uid="ent0011" id="cluster_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost">
+         <rect fill="#FFFFFF" height="231" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="256" x="276" y="730.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="115.1563" x="346.4219" y="747.1484">Bastion Host</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="313.7656" y="762.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="360.1982" y="776.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="401.7749" y="791.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="240.1191" x="283.9404" y="808.1514">SSH jump server for secure admin</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="380.4126" y="824.4482">access</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.WebSubnet-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet" data-source-line="103" data-uid="ent0013" id="cluster_Production.AzureCloud.VirtualNetwork.WebSubnet">
+         <rect fill="#FFFFFF" height="331" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="485" x="60" y="1046.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="109.7813" x="247.6094" y="1063.1484">Web Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="263.3535" y="1078.0605">[10.0.2.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="300.2749" y="1093.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.2715" x="270.3643" y="1110.1826">snet-web</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy" data-source-line="103" data-uid="ent0015" id="cluster_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy">
+         <rect fill="#FFFFFF" height="215" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="243" x="278" y="1138.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="129.6484" x="334.6758" y="1155.1484">Reverse Proxy</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="309.2656" y="1170.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="355.6982" y="1184.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.2749" y="1199.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="227.4043" x="285.7979" y="1216.1514">nginx server for SSL termination</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.AppSubnet-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet" data-source-line="103" data-uid="ent0017" id="cluster_Production.AzureCloud.VirtualNetwork.AppSubnet">
+         <rect fill="#FFFFFF" height="331" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="467" x="119" y="1438.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.1172" x="299.9414" y="1455.1484">App Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="313.3535" y="1470.0605">[10.0.3.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="350.2749" y="1485.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.6738" x="321.6631" y="1502.1826">snet-app</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer" data-source-line="103" data-uid="ent0019" id="cluster_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer">
+         <rect fill="#FFFFFF" height="215" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="236" x="326" y="1530.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="167.0625" x="360.4688" y="1547.1484">Application Server</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="180.4688" x="353.7656" y="1562.0605">[Azure VM, Ubuntu 24.04 LTS,</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="87.6035" x="400.1982" y="1576.0293">Standard_B1s]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.7749" y="1591.8545">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="219.5771" x="334.2114" y="1608.1514">Flask application with Gunicorn</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.DataSubnet-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet" data-source-line="103" data-uid="ent0021" id="cluster_Production.AzureCloud.VirtualNetwork.DataSubnet">
+         <rect fill="#FFFFFF" height="326" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="588" x="55" y="1830.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="112.3516" x="292.8242" y="1847.1484">Data Subnet</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="78.293" x="309.8535" y="1862.0605">[10.0.4.0/24]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="346.7749" y="1877.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.8555" x="315.5723" y="1894.1826">snet-data</text>
+        </g>
+        <!--cluster Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer-->
+        <g class="cluster" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer" data-source-line="103" data-uid="ent0023" id="cluster_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer">
+         <rect fill="#FFFFFF" height="210" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:1;" width="320" x="299" y="1922.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="304.2422" x="306.8789" y="1939.1484">Azure PostgreSQL Flexible Server</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104.4023" x="406.7988" y="1954.0605">[Burstable B1ms]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="456.7749" y="1969.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="140.6699" x="388.665" y="1986.1826">psql-flask-bicep-dev</text>
+        </g>
+        <!--entity Production.UserEnvironment.WebBrowser.WebBrowser_1-->
+        <g class="entity" data-entity="Production.UserEnvironment.WebBrowser.WebBrowser_1" data-source-line="71" data-uid="ent0004" id="entity_Production.UserEnvironment.WebBrowser.WebBrowser_1">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="200.25" x="536" y="236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="576.3008" y="261.1484">Web</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="616.2539" y="261.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="74.125" x="621.8242" y="261.1484">Browser</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8281" x="562.1299" y="276.0605">[Chrome,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="617.958" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="45.0352" x="621.7725" y="276.0605">Firefox,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="666.8076" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.498" x="670.6221" y="276.0605">Safari]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="633.8999" y="291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.7637" x="546" y="308.1826">Renders</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.7637" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43.4082" x="608.2139" y="308.1826">HTML,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="651.6221" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.1777" x="656.0723" y="308.1826">JavaScript</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="606.9561" y="324.4795">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="633.2949" y="324.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.5488" x="637.7451" y="324.4795">CSS</text>
+        </g>
+        <!--entity Production.UserEnvironment.Terminal.Terminal_1-->
+        <g class="entity" data-entity="Production.UserEnvironment.Terminal.Terminal_1" data-source-line="71" data-uid="ent0006" id="entity_Production.UserEnvironment.Terminal.Terminal_1">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="212.8623" x="267.5" y="236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="79.4844" x="334.189" y="261.1484">Terminal</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="324.8823" y="276.0605">[Azure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="363.9937" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="367.8081" y="276.0605">CLI,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="390.2261" y="276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="394.0405" y="276.0605">SSH]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="371.7061" y="291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.2725" x="277.5" y="308.1826">Command-line</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="379.7725" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62.4395" x="384.2227" y="308.1826">interface</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="446.6621" y="308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="451.1123" y="308.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="297.543" y="324.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="398.6943" y="324.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="403.1445" y="324.4795">access</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion" data-source-line="103" data-uid="ent0010" id="entity_Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion">
+         <rect fill="#FFFFFF" height="85.1875" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="187.7471" x="72" y="852.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="110.0493" y="877.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="148.0962" y="877.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="153.6665" y="877.1484">Bastion</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="129.1235" y="892.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="168.2349" y="892.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="172.0493" y="892.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="163.6484" y="907.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="82" y="924.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="119.3721" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="123.8223" y="924.1826">SSH</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="152.123" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="156.5732" y="924.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="189.4609" y="924.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55.8359" x="193.9111" y="924.1826">Internet</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-source-line="71" data-uid="ent0012" id="entity_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="206.5117" x="296.5" y="844.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="68.0313" x="342.1777" y="869.1484">Bastion</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="410.209" y="869.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="41.5547" x="415.7793" y="869.1484">Host</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48.6035" x="324.6475" y="884.0605">[Ubuntu</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="373.251" y="884.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="38.168" x="377.0654" y="884.0605">24.04,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="415.2334" y="884.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="55.8164" x="419.0479" y="884.0605">Fail2ban]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.5308" y="899.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48.4395" x="306.5" y="916.1826">Secure</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="354.9395" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28.3008" x="359.3896" y="916.1826">SSH</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="387.6904" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.0166" x="392.1406" y="916.1826">entry</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="429.1572" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="35.7041" x="433.6074" y="916.1826">point</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="469.3115" y="916.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="473.7617" y="916.1826">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1514" x="323.3677" y="932.4795">administrative</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="424.519" y="932.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.1748" x="428.9692" y="932.4795">access</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb" data-source-line="103" data-uid="ent0014" id="entity_Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb">
+         <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="184.9102" x="75.5" y="1236.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="126.1699" y="1261.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="164.2168" y="1261.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39.9531" x="169.7871" y="1261.1484">Web</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="131.2051" y="1276.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="170.3164" y="1276.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="174.1309" y="1276.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="165.73" y="1291.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="85.5" y="1308.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.8721" y="1308.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85.75" x="127.3223" y="1308.1826">HTTP/HTTPS</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="213.0723" y="1308.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="217.5225" y="1308.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55.8359" x="140.0371" y="1324.4795">Internet</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="71" data-uid="ent0016" id="entity_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="208.7813" x="295.5" y="1236.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="72.7188" x="335.0664" y="1261.1484">Reverse</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="407.7852" y="1261.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.3594" x="413.3555" y="1261.1484">Proxy</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="41.7598" x="347.7773" y="1276.0605">[nginx,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="389.5371" y="1276.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="58.6523" x="393.3516" y="1276.0605">OpenSSL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="397.6655" y="1291.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25.5732" x="305.5" y="1308.1826">SSL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="331.0732" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.9932" x="335.5234" y="1308.1826">offloading</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="405.5166" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="409.9668" y="1308.1826">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="436.3057" y="1308.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.5254" x="440.7559" y="1308.1826">request</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.5713" x="362.105" y="1324.4795">forwarding</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp" data-source-line="103" data-uid="ent0018" id="entity_Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp">
+         <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="171.0264" x="135.5" y="1628.2969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="181.5601" y="1653.1484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="219.6069" y="1653.1484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="35.2891" x="225.1772" y="1653.1484">App</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="184.2632" y="1668.0605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="223.3745" y="1668.0605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="227.189" y="1668.0605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="218.7881" y="1683.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="145.5" y="1700.1826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="182.8721" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0732" x="187.3223" y="1700.1826">HTTP</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="223.3955" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="227.8457" y="1700.1826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="260.7334" y="1700.1826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.3428" x="265.1836" y="1700.1826">Web</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49.6221" x="196.2021" y="1716.4795">Subnet</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="71" data-uid="ent0020" id="entity_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+         <rect fill="#438DD5" height="101.4844" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="204.0234" x="342" y="1628.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="47.375" x="366.5117" y="1653.1484">Flask</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="413.8867" y="1653.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="102.0547" x="419.457" y="1653.1484">Application</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="109.3242" x="389.3496" y="1668.0605">[Python/Gunicorn]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.7866" y="1683.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56.6631" x="352" y="1700.1826">Handles</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="408.6631" y="1700.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="413.1133" y="1700.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="494.1943" y="1700.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3789" x="498.6445" y="1700.1826">logic,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45.8555" x="399.3799" y="1716.4795">serves</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="445.2354" y="1716.4795">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38.958" x="449.6855" y="1716.4795">HTML</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData" data-source-line="103" data-uid="ent0022" id="entity_Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData">
+         <rect fill="#FFFFFF" height="101.4844" rx="2.5" ry="2.5" style="stroke:#A2A2A2;stroke-width:0.5;" width="211.7139" x="71" y="2010.7969" /><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="38.0469" x="133.7866" y="2035.6484">NSG</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="171.8335" y="2035.6484">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="42.5234" x="177.4038" y="2035.6484">Data</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="39.1113" x="140.1069" y="2050.5605">[Azure</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="3.8145" x="179.2183" y="2050.5605">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="30.5742" x="183.0327" y="2050.5605">NSG]</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="174.6318" y="2066.3857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37.3721" x="81" y="2082.6826">Allow</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="118.3721" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80.7529" x="122.8223" y="2082.6826">PostgreSQL</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="203.5752" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32.8877" x="208.0254" y="2082.6826">from</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="240.9131" y="2082.6826">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="245.3633" y="2082.6826">App</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49.6221" x="152.0459" y="2098.9795">Subnet</text>
+        </g>
+        <!--entity Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1-->
+        <g class="entity" data-entity="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" data-source-line="75" data-uid="ent0024" id="entity_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1">
+         <path d="M336,2016.2969 C336,2006.2969 444.0625,2006.2969 444.0625,2006.2969 C444.0625,2006.2969 552.125,2006.2969 552.125,2016.2969 L552.125,2106.7813 C552.125,2116.7813 444.0625,2116.7813 444.0625,2116.7813 C444.0625,2116.7813 336,2116.7813 336,2106.7813 L336,2016.2969" fill="#438DD5" style="stroke:#3C7FC0;stroke-width:0.5;" /><path d="M336,2016.2969 C336,2026.2969 444.0625,2026.2969 444.0625,2026.2969 C444.0625,2026.2969 552.125,2026.2969 552.125,2016.2969" fill="none" style="stroke:#3C7FC0;stroke-width:0.5;" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="105.4063" x="346" y="2045.1484">PostgreSQL</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="451.4063" y="2045.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="85.1484" x="456.9766" y="2045.1484">Database</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="59.9648" x="375.2236" y="2060.0605">[Managed</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="435.1885" y="2060.0605">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="73.8984" x="439.0029" y="2060.0605">PostgreSQL]</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="441.8374" y="2075.8857">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.6045" x="361.0024" y="2092.1826">Stores</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="405.6069" y="2092.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.0811" x="410.0571" y="2092.1826">registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="491.1382" y="2092.1826">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.5342" x="495.5884" y="2092.1826">data</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.373" x="402.876" y="2108.4795">persistently</text>
+        </g>
+        <!--link Production.UserEnvironment.Terminal.Terminal_1 to Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-->
+        <g class="link" data-entity-1="Production.UserEnvironment.Terminal.Terminal_1" data-entity-2="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-source-line="1688" data-uid="lnk25" id="link_Production.UserEnvironment.Terminal.Terminal_1_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1">
+         <path d="M376.13,337.3869 C381.01,451.1669 392.6272,721.9242 397.5172,835.9542" fill="none" id="Production.UserEnvironment.Terminal.Terminal_1-to-Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="397.86,843.9469,400.5145,835.8257,394.52,836.0828,397.86,843.9469" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="62.2676" x="388.8359" y="405.4355">Connects</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="451.1035" y="405.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="13.9805" x="455.2813" y="405.4355">to</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39.1113" x="380" y="419.4043">[Azure</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="419.1113" y="419.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="22.418" x="422.9258" y="419.4043">CLI,</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="3.8145" x="445.3438" y="419.4043">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="28.9395" x="449.1582" y="419.4043">SSH]</text>
+        </g>
+        <!--link Production.UserEnvironment.WebBrowser.WebBrowser_1 to Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+        <g class="link" data-entity-1="Production.UserEnvironment.WebBrowser.WebBrowser_1" data-entity-2="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="1688" data-uid="lnk26" id="link_Production.UserEnvironment.WebBrowser.WebBrowser_1_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+         <path d="M631.74,337.3869 C620.9,453.7469 588.19,752.6569 520,993.2969 C495.05,1081.3569 455.1236,1171.5712 427.9236,1228.8112" fill="none" id="Production.UserEnvironment.WebBrowser.WebBrowser_1-to-Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="424.49,1236.0369,430.6332,1230.0988,425.214,1227.5236,424.49,1236.0369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="43.8516" x="622" y="892.4355">HTTPS</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="665.8516" y="892.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="670.0293" y="892.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8477" x="638.2656" y="906.4043">[HTTPS/443]</text>
+        </g>
+        <!--link Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1 to Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-->
+        <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-entity-2="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-source-line="1688" data-uid="lnk27" id="link_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1">
+         <path d="M400,945.5869 C400,1020.4369 400,1153.1369 400,1227.9969" fill="none" id="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-to-Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="400,1235.9969,403,1227.9969,397,1227.9969,400,1235.9969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="413.8027" y="1013.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="401" y="1027.4043">[SSH/22]</text>
+        </g>
+        <!--link Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1 to Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+        <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1" data-entity-2="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="1688" data-uid="lnk28" id="link_Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+         <path d="M455.74,945.5069 C480.17,970.7169 506.53,1003.3669 521,1038.2969 C586.5,1196.4169 583.44,1254.4469 550,1422.2969 C535.04,1497.4169 501.2649,1571.0213 475.1449,1621.1813" fill="none" id="Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1-to-Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="471.45,1628.2769,477.8058,1622.5669,472.4841,1619.7957,471.45,1628.2769" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="27.3281" x="586.8027" y="1284.4355">SSH</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52.9336" x="574" y="1298.4043">[SSH/22]</text>
+        </g>
+        <!--link Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1 to Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-->
+        <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1" data-entity-2="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-source-line="1688" data-uid="lnk29" id="link_Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1">
+         <path d="M405.62,1337.5869 C414.06,1412.4369 429.0437,1545.1872 437.4837,1620.0472" fill="none" id="Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1-to-Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="438.38,1627.9969,440.4648,1619.7111,434.5026,1620.3833,438.38,1627.9969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="63.1934" x="415" y="1405.4355">Forwards</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="478.1934" y="1405.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="59.3496" x="482.3711" y="1405.4355">requests</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="74.8652" x="440.9277" y="1419.4043">[HTTP/5001]</text>
+        </g>
+        <!--link Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1 to Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1-->
+        <g class="link" data-entity-1="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1" data-entity-2="Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" data-source-line="1688" data-uid="lnk30" id="link_Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1_Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1">
+         <path d="M444,1729.5369 C444,1801.0569 444,1924.4069 444,1998.2369" fill="none" id="Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1-to-Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="444,2006.2369,447,1998.2369,441,1998.2369,444,2006.2369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.7266" x="445" y="1797.4355">Reads/writes</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="532.7266" y="1797.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="30.5215" x="536.9043" y="1797.4355">data</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="113.1621" x="449.6318" y="1811.4043">[PostgreSQL/5432]</text>
+        </g>
+        <g class="legend" data-source-line="1492">
+         <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2228.2969" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="672.709" y="2241.292">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="735.5039" y="2241.292">&nbsp;</text><rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2244.5938" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="677.1592" y="2257.5889">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="684.8633" y="2257.5889">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66.3359" x="693.7637" y="2257.5889">container</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="764.5498" y="2257.5889">&nbsp;</text><rect fill="#FFFFFF" height="16.2969" style="stroke:none;stroke-width:1;" width="96.291" x="672.709" y="2260.8906" /><text fill="#A2A2A2" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="677.1592" y="2273.8857">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="684.8633" y="2273.8857">&nbsp;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34.9385" x="693.7637" y="2273.8857">node</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="733.1523" y="2273.8857">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2228.2969" y2="2228.2969" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2244.5938" y2="2244.5938" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2260.8906" y2="2260.8906" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="769" y1="2277.1875" y2="2277.1875" /><line style="stroke:none;stroke-width:1;" x1="672.709" x2="672.709" y1="2228.2969" y2="2277.1875" /><line style="stroke:none;stroke-width:1;" x1="769" x2="769" y1="2228.2969" y2="2277.1875" />
+        </g>
+       </g>
+      </svg>
+     </div>
+     <div class="has-text-centered">
+      Deployment [<a href="../../../svg/Deployment.svg" target="_blank">svg</a>|<a href="../../../png/Deployment.png" target="_blank">png</a>|<a href="../../../puml/Deployment.puml" target="_blank">puml</a>]
+     </div>
+    </div>
+   </div>
+   <button class="modal-close is-large" aria-label="close" onclick="closeModal('Deployment-modal')"></button>
+  </div>
+ </div>
+</p>
+<h3>Infrastructure Overview</h3>
+<h4>Network Topology</h4>
+<table>
+ <thead>
+  <tr>
+   <th>Subnet</th>
+   <th>CIDR</th>
+   <th>NSG</th>
+   <th>Purpose</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><code>snet-bastion</code></td>
+   <td>10.0.1.0/24</td>
+   <td><code>nsg-bastion</code></td>
+   <td>SSH jump host (public access)</td>
+  </tr>
+  <tr>
+   <td><code>snet-web</code></td>
+   <td>10.0.2.0/24</td>
+   <td><code>nsg-web</code></td>
+   <td>Reverse proxy (public access)</td>
+  </tr>
+  <tr>
+   <td><code>snet-app</code></td>
+   <td>10.0.3.0/24</td>
+   <td><code>nsg-app</code></td>
+   <td>Application server (internal only)</td>
+  </tr>
+  <tr>
+   <td><code>snet-data</code></td>
+   <td>10.0.4.0/24</td>
+   <td><code>nsg-data</code></td>
+   <td>PostgreSQL database (internal only)</td>
+  </tr>
+ </tbody>
+</table>
+<h4>Virtual Machines</h4>
+<table>
+ <thead>
+  <tr>
+   <th>VM</th>
+   <th>Subnet</th>
+   <th>Public IP</th>
+   <th>Size</th>
+   <th>Purpose</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><code>vm-bastion</code></td>
+   <td>snet-bastion</td>
+   <td>Yes</td>
+   <td>Standard_B1s</td>
+   <td>SSH jump server</td>
+  </tr>
+  <tr>
+   <td><code>vm-proxy</code></td>
+   <td>snet-web</td>
+   <td>Yes</td>
+   <td>Standard_B1s</td>
+   <td>nginx reverse proxy</td>
+  </tr>
+  <tr>
+   <td><code>vm-app</code></td>
+   <td>snet-app</td>
+   <td>No</td>
+   <td>Standard_B1s</td>
+   <td>Flask application</td>
+  </tr>
+ </tbody>
+</table>
+<h4>Managed Services</h4>
+<table>
+ <thead>
+  <tr>
+   <th>Service</th>
+   <th>SKU</th>
+   <th>Purpose</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>PostgreSQL Flexible Server</td>
+   <td>Burstable B1ms</td>
+   <td>Database (the only PaaS component)</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Security Architecture</h3>
+<h4>Network Security Groups (NSGs)</h4>
+<p>Each subnet has an NSG controlling inbound/outbound traffic:</p>
+<p><strong>nsg-bastion</strong>:</p>
+<ul>
+ <li>Allow SSH (22) from Internet</li>
+ <li>Deny all other inbound</li>
+</ul>
+<p><strong>nsg-web</strong>:</p>
+<ul>
+ <li>Allow HTTP (80) from Internet</li>
+ <li>Allow HTTPS (443) from Internet</li>
+ <li>Allow SSH (22) from asg-bastion</li>
+ <li>Deny all other inbound</li>
+</ul>
+<p><strong>nsg-app</strong>:</p>
+<ul>
+ <li>Allow HTTP (5001) from asg-proxy</li>
+ <li>Allow SSH (22) from asg-bastion</li>
+ <li>Deny all other inbound</li>
+</ul>
+<p><strong>nsg-data</strong>:</p>
+<ul>
+ <li>Allow PostgreSQL (5432) from snet-app</li>
+ <li>Deny all other inbound</li>
+</ul>
+<h4>Application Security Groups (ASGs)</h4>
+<p>ASGs provide role-based security rules:</p>
+<table>
+ <thead>
+  <tr>
+   <th>ASG</th>
+   <th>Members</th>
+   <th>Purpose</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><code>asg-bastion</code></td>
+   <td>vm-bastion</td>
+   <td>Source for SSH to internal VMs</td>
+  </tr>
+  <tr>
+   <td><code>asg-proxy</code></td>
+   <td>vm-proxy</td>
+   <td>Source for HTTP to app server</td>
+  </tr>
+  <tr>
+   <td><code>asg-app</code></td>
+   <td>vm-app</td>
+   <td>Target for application traffic</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Deployment Process</h3>
+<h4>Infrastructure Provisioning</h4>
+<pre><code class="language-bash"># One-command deployment
+./deploy-all.sh
+
+# Or step-by-step:
+./infrastructure/provision.sh      # Deploy Bicep (15-20 min)
+./scripts/wait-for-postgresql.sh   # Wait for DB ready
+./scripts/wait-for-vms-cloud-init.sh  # Wait for VMs configured
+./deploy/deploy.sh                 # Deploy application
+./scripts/verification-tests.sh    # Run tests
+</code></pre>
+<h4>Cloud-init Configuration</h4>
+<p>Each VM is configured automatically via cloud-init:</p>
+<table>
+ <thead>
+  <tr>
+   <th>VM</th>
+   <th>Cloud-init</th>
+   <th>Key Configuration</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>vm-bastion</td>
+   <td><code>bastion.yaml</code></td>
+   <td>fail2ban, SSH hardening</td>
+  </tr>
+  <tr>
+   <td>vm-proxy</td>
+   <td><code>proxy.yaml</code></td>
+   <td>nginx, self-signed SSL cert</td>
+  </tr>
+  <tr>
+   <td>vm-app</td>
+   <td><code>app.yaml</code></td>
+   <td>Python venv, systemd service, flask-app user</td>
+  </tr>
+ </tbody>
+</table>
+<h4>Application Deployment</h4>
+<p>The Flask application is deployed via SSH through the bastion:</p>
+<pre><code>1. SCP files to vm-app via bastion jump
+2. Install Python dependencies in virtualenv
+3. Configure DATABASE_URL in /etc/flask-app/app.env
+4. Start flask-app systemd service
+</code></pre>
+<h3>Cost Estimate</h3>
+<table>
+ <thead>
+  <tr>
+   <th>Resource</th>
+   <th>SKU</th>
+   <th>Monthly Cost</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>3x VMs</td>
+   <td>Standard_B1s</td>
+   <td>~$21 ($7 each)</td>
+  </tr>
+  <tr>
+   <td>PostgreSQL</td>
+   <td>Burstable B1ms</td>
+   <td>~$12</td>
+  </tr>
+  <tr>
+   <td>Public IPs</td>
+   <td>2x Static</td>
+   <td>~$8</td>
+  </tr>
+  <tr>
+   <td>Storage</td>
+   <td>3x 30GB</td>
+   <td>~$3</td>
+  </tr>
+  <tr>
+   <td><strong>Total</strong></td>
+   <td></td>
+   <td><strong>~$44/month</strong></td>
+  </tr>
+ </tbody>
+</table>
+<h3>Naming Conventions</h3>
+<p>Following Azure Cloud Adoption Framework (CAF):</p>
+<table>
+ <thead>
+  <tr>
+   <th>Resource Type</th>
+   <th>Pattern</th>
+   <th>Example</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td>Resource Group</td>
+   <td><code>rg-{project}-{env}</code></td>
+   <td><code>rg-flask-bicep-dev</code></td>
+  </tr>
+  <tr>
+   <td>Virtual Network</td>
+   <td><code>vnet-{project}-{env}</code></td>
+   <td><code>vnet-flask-bicep-dev</code></td>
+  </tr>
+  <tr>
+   <td>Subnet</td>
+   <td><code>snet-{tier}</code></td>
+   <td><code>snet-bastion</code></td>
+  </tr>
+  <tr>
+   <td>NSG</td>
+   <td><code>nsg-{tier}</code></td>
+   <td><code>nsg-web</code></td>
+  </tr>
+  <tr>
+   <td>VM</td>
+   <td><code>vm-{role}</code></td>
+   <td><code>vm-proxy</code></td>
+  </tr>
+  <tr>
+   <td>PostgreSQL</td>
+   <td><code>psql-{project}-{env}</code></td>
+   <td><code>psql-flask-bicep-dev</code></td>
+  </tr>
+ </tbody>
+</table>
+<h3>Infrastructure as Code</h3>
+<p>All infrastructure is defined in Bicep:</p>
+<pre><code>infrastructure/
+├── main.bicep              # Entry point
+└── modules/
+    ├── network.bicep       # VNet, subnets, NSGs, ASGs
+    ├── bastion.bicep       # Jump host VM
+    ├── proxy.bicep         # Reverse proxy VM
+    ├── app.bicep           # Application VM
+    └── database.bicep      # PostgreSQL + private DNS
+</code></pre>
+<h3>Related Documentation</h3>
+<ul>
+ <li><a href="../../">Overview</a> - Project overview</li>
+ <li><a href="../system-context-(c1)/">System Context</a> - C1 diagram</li>
+ <li><a href="../containers-(c2)/">Containers</a> - C2 diagram</li>
+ <li><a href="../components-(c3)/">Components</a> - C3 diagram</li>
+</ul></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

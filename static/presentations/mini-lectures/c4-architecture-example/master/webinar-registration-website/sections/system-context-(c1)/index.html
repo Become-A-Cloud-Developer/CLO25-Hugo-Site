@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webinar Registration Website | Webinar Registration Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" rel="stylesheet">
+    <link href="../../../../style.css" rel="stylesheet">
+    <link href="./../../../style-branding.css" rel="stylesheet">
+    <script type="text/javascript" src="../../../../modal.js"></script>
+    <script type="text/javascript" src="../../../../svg-modal.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/dist/svg-pan-zoom.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" src="../../../../header.js"></script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand has-site-branding"><a href="../../../" class="navbar-item"><span class="has-text-weight-semibold has-site-branding">Webinar Registration Website</span></a></div>
+      <div class="navbar-menu has-site-branding">
+        <div class="navbar-end">
+          <div class="navbar-item"><input class="input is-small is-rounded" id="search" type="search" size="30" maxlength="50" placeholder="Search..." onkeyup="redirect(event, value, '../../../search/')"></div>
+          <div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link has-site-branding">master</a>
+            <div class="navbar-dropdown is-right"><a href="../../../../master/" class="navbar-item">master</a>
+              <hr class="navbar-divider">
+              <div class="navbar-item has-text-grey-light"><span>v</span><span>0.0.0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="site-layout" id="site">
+      <aside class="menu p-3">
+        <p class="menu-label">General</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../../" class="">Home</a><a href="../../../software-systems/" class="">Software Systems</a></li>
+        </ul>
+        <p class="menu-label">Software systems</p>
+        <ul class="menu-list has-site-branding">
+          <li><a href="../../" class="is-active">Webinar Registration Website</a></li>
+        </ul>
+      </aside>
+      <div class="container is-fluid">
+        <h1 class="title mt-3">Webinar Registration Website</h1>
+        <h2 class="subtitle">Allows attendees to register for webinars and administrators to manage events</h2>
+        <div class="tabs mt-3">
+          <ul class="is-flex-wrap-wrap is-flex-shrink-1 is-flex-grow-0">
+            <li><a href="../../" class="">Info</a></li>
+            <li><a href="../../context/" class="">Context views</a></li>
+            <li><a href="../../container/" class="">Container views</a></li>
+            <li><a href="../../component/flask-application/" class="">Component views</a></li>
+            <li><a href="../../deployment/" class="">Deployment views</a></li>
+            <li><a href="../../dependencies/" class="">Dependencies</a></li>
+            <li><a href="../../decisions/" class="">Decisions</a></li>
+            <li class="is-active"><a href="../" class="is-active">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="content p-3">
+          <div><h1>System Context (C1)</h1>
+<h2>System Context (C4 Model Level 1)</h2>
+<p>This document provides the highest level view of the Webinar Registration Website system, showing how it fits into the broader environment of users and external systems.</p>
+<h3>System Context Diagram</h3>
+<p>
+ <div>
+  <figure style="width: min(100%, 638px);" id="C1-Context">
+   <div>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 638 654" zoomAndPan="magnify">
+     <title>Webinar Registration Website - System Context</title><defs />
+     <g>
+      <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="378.1709" x="123.3247" y="22.9951">Webinar Registration Website - System Context</text></g><!--entity EventAttendee-->
+      <g class="entity" data-entity="EventAttendee" data-source-line="374" data-uid="ent0002" id="entity_EventAttendee">
+       <rect fill="#08427B" height="135.5156" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="214.127" x="8" y="44.2969" /><image height="48" width="48" x="91.0635" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.25" x="45.1143" y="117.1484">Event</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="96.3643" y="117.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.0781" x="101.9346" y="117.1484">Attendee</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.8384" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.3457" x="18" y="150.2139">Primary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="72.3457" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="76.7959" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.8828" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="117.333" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.3848" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.5918" x="126.835" y="150.2139">registers</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="188.4268" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="192.877" y="150.2139">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="39.1606" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="65.4995" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.2246" x="69.9497" y="166.5107">attends</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="123.1743" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="127.6245" y="166.5107">webinars</text>
+      </g>
+      <!--entity MarketingAdmin-->
+      <g class="entity" data-entity="MarketingAdmin" data-source-line="374" data-uid="ent0003" id="entity_MarketingAdmin">
+       <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="215.9453" x="7" y="215.2969" /><image height="48" width="48" x="90.9727" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="225.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="92.0781" x="37.457" y="288.1484">Marketing</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="129.5352" y="288.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57.3828" x="135.1055" y="288.1484">Admin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.7476" y="304.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="17" y="321.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="93.9932" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="98.4434" y="321.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="134.5303" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="138.9805" y="321.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="144.0322" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.4629" x="148.4824" y="321.2139">manages</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="45.916" y="337.5107">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="109.2578" y="337.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="113.708" y="337.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="140.0469" y="337.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39.5322" x="144.4971" y="337.5107">views</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88.375" x="70.7852" y="353.8076">registrations</text>
+      </g>
+      <!--entity SysAdmin-->
+      <g class="entity" data-entity="SysAdmin" data-source-line="374" data-uid="ent0004" id="entity_SysAdmin">
+       <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="205.9033" x="12" y="402.2969" /><image height="48" width="48" x="90.9517" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="412.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="88.8594" x="70.522" y="475.1484">SysAdmin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.7266" y="491.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="22" y="508.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="98.9932" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="103.4434" y="508.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="139.5303" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="143.9805" y="508.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="149.0322" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.4209" x="153.4824" y="508.2139">deploys</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="65.0049" y="524.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="91.3438" y="524.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.1045" x="95.7939" y="524.5107">maintains</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="67.0181" y="540.8076">infrastructure</text>
+      </g>
+      <!--entity WebinarRegistrationWebsite-->
+      <g class="entity" data-entity="WebinarRegistrationWebsite" data-source-line="393" data-uid="ent0005" id="entity_WebinarRegistrationWebsite">
+       <a href="../../container/" target="_top" title="../../container/" xlink:actuate="onRequest" xlink:href="../../container/" xlink:show="new" xlink:title="../../container/" xlink:type="simple">
+        <rect fill="#1168BD" height="138.7344" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="216.8203" x="416" y="221.7969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="75.5156" x="428.125" y="246.6484">Webinar</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="503.6406" y="246.6484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="111.4844" x="509.2109" y="246.6484">Registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="73.4609" x="487.6797" y="265.2734">Website</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="522.1851" y="282.042">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.666" x="426" y="298.3389">Allows</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="470.666" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.4512" x="475.1162" y="298.3389">attendees</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="545.5674" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14.0547" x="550.0176" y="298.3389">to</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="564.0723" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.2979" x="568.5225" y="298.3389">register</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="465.4946" y="314.6357">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="484.7446" y="314.6357">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="489.1948" y="314.6357">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="552.5366" y="314.6357">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="556.9868" y="314.6357">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.9785" x="433.3589" y="330.9326">administrators</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="535.3374" y="330.9326">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14.0547" x="539.7876" y="330.9326">to</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="553.8423" y="330.9326">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.1689" x="558.2925" y="330.9326">manage</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.168" x="500.8262" y="347.2295">events</text>
+       </a>
+      </g>
+      <!--link EventAttendee to WebinarRegistrationWebsite-->
+      <g class="link" data-entity-1="EventAttendee" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk6" id="link_EventAttendee_WebinarRegistrationWebsite">
+       <path d="M222,158.8569 C281.66,185.0669 348.6555,214.4996 408.5755,240.8196" fill="none" id="EventAttendee-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.9,244.0369,409.782,238.0729,407.369,243.5663,415.9,244.0369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="64.1602" x="276" y="145.4355">Registers</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="340.1602" y="145.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3828" x="344.3379" y="145.4355">for</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="61.6289" x="289.0459" y="159.4043">webinars</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.9004" x="295.9102" y="173.373">[HTTPS]</text>
+      </g>
+      <!--link MarketingAdmin to WebinarRegistrationWebsite-->
+      <g class="link" data-entity-1="MarketingAdmin" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk7" id="link_MarketingAdmin_WebinarRegistrationWebsite">
+       <path d="M223.07,291.2969 C282.49,291.2969 348.2,291.2969 407.73,291.2969" fill="none" id="MarketingAdmin-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.73,291.2969,407.73,288.2969,407.73,294.2969,415.73,291.2969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="39.7676" x="254" y="274.4355">Views</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="293.7676" y="274.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.4336" x="297.9453" y="274.4355">registrations</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.9004" x="295.7393" y="288.4043">[HTTPS]</text>
+      </g>
+      <!--link SysAdmin to WebinarRegistrationWebsite-->
+      <g class="link" data-entity-1="SysAdmin" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk8" id="link_SysAdmin_WebinarRegistrationWebsite">
+       <path d="M218.04,431.4669 C278.28,403.8269 347.1889,372.2031 408.4089,344.1131" fill="none" id="SysAdmin-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.68,340.7769,407.1578,341.3865,409.66,346.8398,415.68,340.7769" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="54.0117" x="278" y="326.4355">Deploys</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="332.0117" y="326.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="25.2305" x="336.1895" y="326.4355">and</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="66.8906" x="286.2646" y="340.4043">maintains</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="33.6211" x="302.8994" y="354.373">[SSH]</text>
+      </g>
+      <g class="legend" data-source-line="1492">
+       <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="578.1094" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="513.4268" y="591.1045">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="576.2217" y="591.1045">&nbsp;</text><rect fill="#08427B" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="594.4063" /><text fill="#073B6F" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="517.877" y="607.4014">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="525.5811" y="607.4014">&nbsp;</text><image height="12" width="12" x="530.0313" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAApklEQVR4XmPgcKpmQMfRjcsb/CoWNqCLgzCGwH80gC6Pwjl17RG6+v9T1h47gFPD95+/0dX/33v2DootKBriW1Y2oGvQjesPxKkBhDuW7D8AUxzfunIiujwKRzWyO8ksdXIxjG+XPaNBNqgNuw3IzkAHIL+haNh67MZndEXooGXh3kVwDeiS2MCtx6/BtoA1/P7zF10eA5y69hihAYQNkyY24MMwdQBvKDvWFDAX9QAAAABJRU5ErkJggg==" y="598.7031" /><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.9883" x="550.9316" y="607.4014">person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.3701" y="607.4014">&nbsp;</text><rect fill="#1168BD" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="610.7031" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="517.877" y="623.6982">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="525.5811" y="623.6982">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50.6133" x="534.4814" y="623.6982">system</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="589.5449" y="623.6982">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="578.1094" y2="578.1094" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="594.4063" y2="594.4063" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="610.7031" y2="610.7031" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="627" y2="627" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="513.4268" y1="578.1094" y2="627" /><line style="stroke:none;stroke-width:1;" x1="607.8203" x2="607.8203" y1="578.1094" y2="627" />
+      </g>
+     </g>
+    </svg>
+   </div>
+   <figcaption>
+    <a onclick="openSvgModal('C1-Context-modal', 'C1-Context-svg')">C1-Context</a>
+   </figcaption>
+  </figure>
+  <div class="modal" id="C1-Context-modal">
+   <div class="modal-background" onclick="closeModal('C1-Context-modal')"></div>
+   <div class="modal-content">
+    <div class="box">
+     <div id="C1-Context-svg" class="modal-box-content">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" preserveAspectRatio="meet" version="1.1" viewBox="0 0 638 654" zoomAndPan="magnify">
+       <title>Webinar Registration Website - System Context</title><defs />
+       <g>
+        <g class="title" data-source-line="2"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="378.1709" x="123.3247" y="22.9951">Webinar Registration Website - System Context</text></g><!--entity EventAttendee-->
+        <g class="entity" data-entity="EventAttendee" data-source-line="374" data-uid="ent0002" id="entity_EventAttendee">
+         <rect fill="#08427B" height="135.5156" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="214.127" x="8" y="44.2969" /><image height="48" width="48" x="91.0635" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="54.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="51.25" x="45.1143" y="117.1484">Event</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="96.3643" y="117.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="83.0781" x="101.9346" y="117.1484">Attendee</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.8384" y="133.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.3457" x="18" y="150.2139">Primary</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="72.3457" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="76.7959" y="150.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.8828" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="117.333" y="150.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="122.3848" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61.5918" x="126.835" y="150.2139">registers</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="188.4268" y="150.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="192.877" y="150.2139">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="39.1606" y="166.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="65.4995" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.2246" x="69.9497" y="166.5107">attends</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="123.1743" y="166.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="127.6245" y="166.5107">webinars</text>
+        </g>
+        <!--entity MarketingAdmin-->
+        <g class="entity" data-entity="MarketingAdmin" data-source-line="374" data-uid="ent0003" id="entity_MarketingAdmin">
+         <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="215.9453" x="7" y="215.2969" /><image height="48" width="48" x="90.9727" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="225.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="92.0781" x="37.457" y="288.1484">Marketing</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="129.5352" y="288.1484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="57.3828" x="135.1055" y="288.1484">Admin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.7476" y="304.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="17" y="321.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="93.9932" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="98.4434" y="321.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="134.5303" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="138.9805" y="321.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="144.0322" y="321.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64.4629" x="148.4824" y="321.2139">manages</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="45.916" y="337.5107">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="109.2578" y="337.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="113.708" y="337.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="140.0469" y="337.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39.5322" x="144.4971" y="337.5107">views</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88.375" x="70.7852" y="353.8076">registrations</text>
+        </g>
+        <!--entity SysAdmin-->
+        <g class="entity" data-entity="SysAdmin" data-source-line="374" data-uid="ent0004" id="entity_SysAdmin">
+         <rect fill="#08427B" height="151.8125" rx="2.5" ry="2.5" style="stroke:#073B6F;stroke-width:0.5;" width="205.9033" x="12" y="402.2969" /><image height="48" width="48" x="90.9517" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAACMElEQVR4Xu2YvUrFQBCFb+kj+Ai+gq3Y2PgA+gCCtZ2V2AhqaSNiqY1gYWMjaCvXykoEKy21sLCNfELgMscksz8mWfDAB3Kuye7sTmYnmcwtbU9KRozSECOVla3T6uTqvrqZPlcPT68/XNw+VtvH19XC+sGe/f9UxIhl8/Cy+vj8qrpEYIsbR1N7fSxihDK/urvMKoeKHbH3ikGMEJi8Z9WbtH92lxyEGCHErLwVqWfvG4IYXkiBXGIn7f29iOGBAe0kUkTVsmN4EcMD255bdgwvYnigFOYW54cdx4MYHlIqT5Niy6oYHuzgORRbUsXwYAfPoV4DeHl7t+MnK/Y8EMMDzVlu9foQ5y6jFAU7hhcxvOSsRLH5D2J4KbqVqMlxoK3tnEevPogRAiuXUpFiD69ZxIghZidSV75GjFiYkGc3KMEpOW8RIxXed0kNJsrOAO0ypTfnxGvEKA0xSkMMD3zfIedJFQ4hCPlUwrX1daQWbURseonRBhNue1D5rc53JkVQwN9c21Wt+D20JxLjN7hpztahSwTi3RExLDlbhhCxm55PkWLMkrvrDBW73rUTYtSQu/aGQ4h0snNzBdD1wPWptrZDDBjL6tfiebBzbA2AUjg2NT3QYkBbrR9KTS/9YoC9eAxqeu0UI/eH21yiu7VzLSqApnIqxn8Af6TiA3A/A9Bn5+lV0xcMMWDoJs6qrakTo4a6OwZxqLa97YkxC1HzMkMzNQRtE3cFUAJilMY3OGTNL0NDLqIAAAAASUVORK5CYII=" y="412.2969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="88.8594" x="70.522" y="475.1484">SysAdmin</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="112.7266" y="491.917">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76.9932" x="22" y="508.2139">Supporting</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="98.9932" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.0869" x="103.4434" y="508.2139">actor</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="139.5303" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="5.0518" x="143.9805" y="508.2139">-</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="149.0322" y="508.2139">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.4209" x="153.4824" y="508.2139">deploys</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="65.0049" y="524.5107">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="91.3438" y="524.5107">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="69.1045" x="95.7939" y="524.5107">maintains</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.8672" x="67.0181" y="540.8076">infrastructure</text>
+        </g>
+        <!--entity WebinarRegistrationWebsite-->
+        <g class="entity" data-entity="WebinarRegistrationWebsite" data-source-line="393" data-uid="ent0005" id="entity_WebinarRegistrationWebsite">
+         <a href="../../container/" target="_top" title="../../container/" xlink:actuate="onRequest" xlink:href="../../container/" xlink:show="new" xlink:title="../../container/" xlink:type="simple">
+          <rect fill="#1168BD" height="138.7344" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="216.8203" x="416" y="221.7969" /><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="75.5156" x="428.125" y="246.6484">Webinar</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="5.5703" x="503.6406" y="246.6484">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="111.4844" x="509.2109" y="246.6484">Registration</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="73.4609" x="487.6797" y="265.2734">Website</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="522.1851" y="282.042">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="44.666" x="426" y="298.3389">Allows</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="470.666" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.4512" x="475.1162" y="298.3389">attendees</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="545.5674" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14.0547" x="550.0176" y="298.3389">to</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="564.0723" y="298.3389">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54.2979" x="568.5225" y="298.3389">register</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="19.25" x="465.4946" y="314.6357">for</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="484.7446" y="314.6357">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63.3418" x="489.1948" y="314.6357">webinars</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="552.5366" y="314.6357">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="26.3389" x="556.9868" y="314.6357">and</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.9785" x="433.3589" y="330.9326">administrators</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="535.3374" y="330.9326">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14.0547" x="539.7876" y="330.9326">to</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="553.8423" y="330.9326">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.1689" x="558.2925" y="330.9326">manage</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.168" x="500.8262" y="347.2295">events</text>
+         </a>
+        </g>
+        <!--link EventAttendee to WebinarRegistrationWebsite-->
+        <g class="link" data-entity-1="EventAttendee" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk6" id="link_EventAttendee_WebinarRegistrationWebsite">
+         <path d="M222,158.8569 C281.66,185.0669 348.6555,214.4996 408.5755,240.8196" fill="none" id="EventAttendee-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.9,244.0369,409.782,238.0729,407.369,243.5663,415.9,244.0369" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="64.1602" x="276" y="145.4355">Registers</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="340.1602" y="145.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3828" x="344.3379" y="145.4355">for</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="61.6289" x="289.0459" y="159.4043">webinars</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.9004" x="295.9102" y="173.373">[HTTPS]</text>
+        </g>
+        <!--link MarketingAdmin to WebinarRegistrationWebsite-->
+        <g class="link" data-entity-1="MarketingAdmin" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk7" id="link_MarketingAdmin_WebinarRegistrationWebsite">
+         <path d="M223.07,291.2969 C282.49,291.2969 348.2,291.2969 407.73,291.2969" fill="none" id="MarketingAdmin-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.73,291.2969,407.73,288.2969,407.73,294.2969,415.73,291.2969" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="39.7676" x="254" y="274.4355">Views</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="293.7676" y="274.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="87.4336" x="297.9453" y="274.4355">registrations</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="47.9004" x="295.7393" y="288.4043">[HTTPS]</text>
+        </g>
+        <!--link SysAdmin to WebinarRegistrationWebsite-->
+        <g class="link" data-entity-1="SysAdmin" data-entity-2="WebinarRegistrationWebsite" data-source-line="1688" data-uid="lnk8" id="link_SysAdmin_WebinarRegistrationWebsite">
+         <path d="M218.04,431.4669 C278.28,403.8269 347.1889,372.2031 408.4089,344.1131" fill="none" id="SysAdmin-to-WebinarRegistrationWebsite" style="stroke:#666666;stroke-width:1;" /><polygon fill="#666666" points="415.68,340.7769,407.1578,341.3865,409.66,346.8398,415.68,340.7769" style="stroke:#666666;stroke-width:1;" /><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="54.0117" x="278" y="326.4355">Deploys</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="4.1777" x="332.0117" y="326.4355">&nbsp;</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="25.2305" x="336.1895" y="326.4355">and</text><text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="66.8906" x="286.2646" y="340.4043">maintains</text><text fill="#666666" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="33.6211" x="302.8994" y="354.373">[SSH]</text>
+        </g>
+        <g class="legend" data-source-line="1492">
+         <rect fill="none" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="578.1094" /><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="57.9209" x="513.4268" y="591.1045">Legend</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="576.2217" y="591.1045">&nbsp;</text><rect fill="#08427B" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="594.4063" /><text fill="#073B6F" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="517.877" y="607.4014">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="525.5811" y="607.4014">&nbsp;</text><image height="12" width="12" x="530.0313" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAApklEQVR4XmPgcKpmQMfRjcsb/CoWNqCLgzCGwH80gC6Pwjl17RG6+v9T1h47gFPD95+/0dX/33v2DootKBriW1Y2oGvQjesPxKkBhDuW7D8AUxzfunIiujwKRzWyO8ksdXIxjG+XPaNBNqgNuw3IzkAHIL+haNh67MZndEXooGXh3kVwDeiS2MCtx6/BtoA1/P7zF10eA5y69hihAYQNkyY24MMwdQBvKDvWFDAX9QAAAABJRU5ErkJggg==" y="598.7031" /><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.9883" x="550.9316" y="607.4014">person</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="603.3701" y="607.4014">&nbsp;</text><rect fill="#1168BD" height="16.2969" style="stroke:none;stroke-width:1;" width="94.3936" x="513.4268" y="610.7031" /><text fill="#3C7FC0" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="7.7041" x="517.877" y="623.6982">▯</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="525.5811" y="623.6982">&nbsp;</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50.6133" x="534.4814" y="623.6982">system</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4.4502" x="589.5449" y="623.6982">&nbsp;</text><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="578.1094" y2="578.1094" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="594.4063" y2="594.4063" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="610.7031" y2="610.7031" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="607.8203" y1="627" y2="627" /><line style="stroke:none;stroke-width:1;" x1="513.4268" x2="513.4268" y1="578.1094" y2="627" /><line style="stroke:none;stroke-width:1;" x1="607.8203" x2="607.8203" y1="578.1094" y2="627" />
+        </g>
+       </g>
+      </svg>
+     </div>
+     <div class="has-text-centered">
+      C1-Context [<a href="../../../svg/C1-Context.svg" target="_blank">svg</a>|<a href="../../../png/C1-Context.png" target="_blank">png</a>|<a href="../../../puml/C1-Context.puml" target="_blank">puml</a>]
+     </div>
+    </div>
+   </div>
+   <button class="modal-close is-large" aria-label="close" onclick="closeModal('C1-Context-modal')"></button>
+  </div>
+ </div>
+</p>
+<h3>Context Description</h3>
+<h4>The System</h4>
+<p><strong>Webinar Registration Website</strong> is a web application that:</p>
+<ul>
+ <li>Provides a public-facing registration form for upcoming webinars</li>
+ <li>Stores registration data persistently</li>
+ <li>Allows marketing staff to view who has registered</li>
+ <li>Runs entirely on Azure infrastructure (IaaS approach)</li>
+ <li>Includes the web frontend (HTML/CSS/JS rendered in user's browser)</li>
+</ul>
+<h4>Users (Actors)</h4>
+<table>
+ <thead>
+  <tr>
+   <th>Actor</th>
+   <th>Description</th>
+   <th>Interaction</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>Event Attendee</strong></td>
+   <td>External users (potential customers, partners) who discover the webinar through marketing channels</td>
+   <td>Register for webinars via browser (HTTPS)</td>
+  </tr>
+  <tr>
+   <td><strong>Marketing Administrator</strong></td>
+   <td>Internal staff responsible for managing webinar events</td>
+   <td>View registration lists via browser (HTTPS)</td>
+  </tr>
+  <tr>
+   <td><strong>System Administrator</strong></td>
+   <td>IT operations staff responsible for infrastructure</td>
+   <td>Deploy, configure, and maintain via terminal (SSH)</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Key Architectural Decisions</h3>
+<ol>
+ <li><strong>Pure IaaS Approach</strong>: Traditional infrastructure model using self-managed VMs on Azure</li>
+ <li><strong>Python Flask</strong>: Lightweight web framework with Jinja2 templating (SSR) and SQLAlchemy ORM</li>
+ <li><strong>PostgreSQL</strong>: Robust open-source relational database, available as PaaS on Azure (Flexible Server)</li>
+ <li><strong>SSL/TLS Encryption</strong>: Self-signed certificates for learning environment (Let's Encrypt recommended for production)</li>
+ <li><strong>No External Identity Provider</strong>: Simple application without authentication requirements for attendee registration</li>
+</ol>
+<h3>Quality Attributes</h3>
+<p>From the PRD, the key non-functional requirements affecting architecture:</p>
+<table>
+ <thead>
+  <tr>
+   <th>Attribute</th>
+   <th>Requirement</th>
+   <th>Impact</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><strong>Availability</strong></td>
+   <td>&gt;=99% uptime during business hours</td>
+   <td>Single VM design acceptable for MVP</td>
+  </tr>
+  <tr>
+   <td><strong>Response Time</strong></td>
+   <td>Pages load &lt; 3 seconds on broadband</td>
+   <td>Nginx caching, optimized queries</td>
+  </tr>
+  <tr>
+   <td><strong>Capacity</strong></td>
+   <td>Support 100 concurrent users</td>
+   <td>Single app server sufficient</td>
+  </tr>
+  <tr>
+   <td><strong>Security</strong></td>
+   <td>HTTPS only, OWASP guidelines</td>
+   <td>SSL termination at proxy, bastion host for SSH access, private subnets for app/data tiers, NSGs restricting traffic flow</td>
+  </tr>
+ </tbody>
+</table>
+<h3>Scope Boundary</h3>
+<h4>In Scope</h4>
+<ul>
+ <li>Registration form and data persistence</li>
+ <li>Admin view of registrations</li>
+ <li>HTTPS encryption</li>
+ <li>Basic health monitoring</li>
+</ul>
+<h4>Out of Scope (for this stage)</h4>
+<ul>
+ <li>User authentication/authorization</li>
+ <li>Email notifications</li>
+ <li>Payment processing</li>
+ <li>Multi-region deployment</li>
+ <li>Auto-scaling</li>
+</ul>
+<h3>Next Level</h3>
+<p>See <a href="../containers-(c2)/">Containers (C2)</a> for the technical building blocks that make up this system.</p></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="../../../../reformat-mermaid.js"></script>
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.esm.min.mjs';</script>
+  </body>
+</html>

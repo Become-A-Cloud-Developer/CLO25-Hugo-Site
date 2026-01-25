@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Implementation Strategies - DevOps PM IPL25</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>IPL25</span>
+                </div>
+
+                <h1 class="main-title">
+                    IMPLEMENTATION<br>
+                    STRATEGIES
+                </h1>
+
+                <p class="subtitle">Designing Feedback Loops Under Uncertainty</p>
+                <p class="course-info">DevOps Project Management • 2025</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- The Key Reframe -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Key Reframe</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Stop asking:</span> "How do we build this system?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Start asking:</span> "What do we need to learn, and how do we learn it efficiently?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Development must begin before complete information exists. Attempting to resolve all uncertainty through upfront analysis does not work—complex interactions only emerge during implementation.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The alternative: design <span class="highlight">feedback loops</span>—build strategic pieces of the system to answer specific questions and produce evidence for decision-making.</p>
+                </div>
+            </section>
+
+            <!-- MVP Strategy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Minimum Viable Product</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Core question:</span> Do users value this solution?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The smallest set of functionality that provides <span class="highlight">genuine value</span>. Emphasis on "viable"—users can adopt it for real work, not a demo or prototype.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ruthless prioritization: features excluded not because they lack value, but because they can be deferred. Reach users quickly, then let feedback guide development.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trade-off:</span> Ships with known limitations—lower code quality, minimal error handling. Investing in polish before validating core assumptions wastes effort.</p>
+                </div>
+            </section>
+
+            <!-- Walking Skeleton Strategy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Walking Skeleton</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Core question:</span> Does our architecture work end-to-end?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A thin but complete slice through all system layers: UI → business logic → data persistence. Just enough code to prove the <span class="highlight">plumbing works</span>.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reveals integration problems early: authentication, serialization, network config, database connections—all become concrete when cost of fixing is minimal.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trade-off:</span> Minimal user value initially. Users cannot evaluate meaningfully until several iterations flesh out the skeleton with real functionality.</p>
+                </div>
+            </section>
+
+            <!-- Rapid Prototyping Strategy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rapid Prototyping</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Core question:</span> Is this approach worth pursuing?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Quick, disposable experiments—explicitly NOT production code. Exist to answer questions, then be discarded. If failure is cheap, teams explore more options.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Critical discipline:</span> Never evolve prototypes into production code. Extract lessons learned and rebuild with production standards.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trade-off:</span> Prototypes answering too many questions become complex and time-consuming, losing the advantage of rapid experimentation.</p>
+                </div>
+            </section>
+
+            <!-- Spike Strategy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Spike Investigation</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Core question:</span> Is this specific approach feasible?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Time-boxed investigation of a specific technical question. Produces <span class="highlight">knowledge</span>—a recommendation, code sample, or feasibility decision—not a demonstration.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Time-boxing is essential:</span> Fixed duration, then stop regardless of whether definitive answer reached. If time proves insufficient, the problem is more complex than anticipated.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trade-off:</span> Without time-boxing, investigations consume arbitrary time pursuing diminishing returns.</p>
+                </div>
+            </section>
+
+            <!-- Strategy Selection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Match Strategy to Uncertainty</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">MVP</span> → User value uncertain → Weeks to months → User adoption and feedback</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Walking Skeleton</span> → Architecture uncertain → Days to weeks → Validated technical foundation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rapid Prototyping</span> → Design options need evaluation → Hours to days → Design validation or rejection</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Spike</span> → Specific technical question → Hours to days → Technical decision</p>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Takeaways</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reframe implementation as learning.</span> Ask "what do we need to learn?" rather than "how do we build this?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Combine strategies across project phases.</span> Spikes → Walking Skeleton → MVP increments addresses different uncertainties at appropriate times.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Never evolve prototypes into production code.</span> Extract lessons and rebuild with production standards.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Wrong strategy wastes effort.</span> Validating architecture for a product users may not want is as wasteful as building features on a foundation that cannot scale.</p>
+                </div>
+            </section>
+
+            <!-- Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

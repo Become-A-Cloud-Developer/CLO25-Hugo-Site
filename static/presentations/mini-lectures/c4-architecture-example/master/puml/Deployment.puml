@@ -1,0 +1,69 @@
+@startuml
+set separator none
+title Webinar Registration Website - Deployment - Production
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Deployment>
+
+Deployment_Node(Production.UserEnvironment, "User Environment", $type="Desktop/Laptop", $descr="User's local machine", $tags="", $link="") {
+  Deployment_Node(Production.UserEnvironment.WebBrowser, "Web Browser", $type="Chrome, Firefox, Safari", $descr="User's web browser for accessing the application", $tags="", $link="") {
+    Container(Production.UserEnvironment.WebBrowser.WebBrowser_1, "Web Browser", $techn="Chrome, Firefox, Safari", $descr="Renders HTML, JavaScript and CSS", $tags="", $link="")
+  }
+
+  Deployment_Node(Production.UserEnvironment.Terminal, "Terminal", $type="Azure CLI, SSH", $descr="Command-line interface for administrative tasks", $tags="", $link="") {
+    Container(Production.UserEnvironment.Terminal.Terminal_1, "Terminal", $techn="Azure CLI, SSH", $descr="Command-line interface for administrative access", $tags="", $link="")
+  }
+
+}
+
+Deployment_Node(Production.AzureCloud, "Azure Cloud", $type="Azure IaaS", $descr="Microsoft Azure public cloud infrastructure", $tags="", $link="") {
+  Deployment_Node(Production.AzureCloud.VirtualNetwork, "Virtual Network", $type="10.0.0.0/16", $descr="vnet-flask-bicep-dev", $tags="", $link="") {
+    Deployment_Node(Production.AzureCloud.VirtualNetwork.BastionSubnet, "Bastion Subnet", $type="10.0.1.0/24", $descr="snet-bastion", $tags="", $link="") {
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.BastionSubnet.NSGBastion, "NSG Bastion", $type="Azure NSG", $descr="Allow SSH from Internet", $tags="", $link="")
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost, "Bastion Host", $type="Azure VM, Ubuntu 24.04 LTS, Standard_B1s", $descr="SSH jump server for secure admin access", $tags="", $link="") {
+        Container(Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1, "Bastion Host", $techn="Ubuntu 24.04, Fail2ban", $descr="Secure SSH entry point for administrative access", $tags="", $link="")
+      }
+
+    }
+
+    Deployment_Node(Production.AzureCloud.VirtualNetwork.WebSubnet, "Web Subnet", $type="10.0.2.0/24", $descr="snet-web", $tags="", $link="") {
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.WebSubnet.NSGWeb, "NSG Web", $type="Azure NSG", $descr="Allow HTTP/HTTPS from Internet", $tags="", $link="")
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy, "Reverse Proxy", $type="Azure VM, Ubuntu 24.04 LTS, Standard_B1s", $descr="nginx server for SSL termination", $tags="", $link="") {
+        Container(Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1, "Reverse Proxy", $techn="nginx, OpenSSL", $descr="SSL offloading and request forwarding", $tags="", $link="")
+      }
+
+    }
+
+    Deployment_Node(Production.AzureCloud.VirtualNetwork.AppSubnet, "App Subnet", $type="10.0.3.0/24", $descr="snet-app", $tags="", $link="") {
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.AppSubnet.NSGApp, "NSG App", $type="Azure NSG", $descr="Allow HTTP from Web Subnet", $tags="", $link="")
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer, "Application Server", $type="Azure VM, Ubuntu 24.04 LTS, Standard_B1s", $descr="Flask application with Gunicorn", $tags="", $link="") {
+        Container(Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1, "Flask Application", $techn="Python/Gunicorn", $descr="Handles registration logic, serves HTML", $tags="", $link="")
+      }
+
+    }
+
+    Deployment_Node(Production.AzureCloud.VirtualNetwork.DataSubnet, "Data Subnet", $type="10.0.4.0/24", $descr="snet-data", $tags="", $link="") {
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.DataSubnet.NSGData, "NSG Data", $type="Azure NSG", $descr="Allow PostgreSQL from App Subnet", $tags="", $link="")
+      Deployment_Node(Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer, "Azure PostgreSQL Flexible Server", $type="Burstable B1ms", $descr="psql-flask-bicep-dev", $tags="", $link="") {
+        ContainerDb(Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1, "PostgreSQL Database", $techn="Managed PostgreSQL", $descr="Stores registration data persistently", $tags="", $link="")
+      }
+
+    }
+
+  }
+
+}
+
+Rel(Production.UserEnvironment.Terminal.Terminal_1, Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1, "Connects to", $techn="Azure CLI, SSH", $tags="", $link="")
+Rel(Production.UserEnvironment.WebBrowser.WebBrowser_1, Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1, "HTTPS requests", $techn="HTTPS/443", $tags="", $link="")
+Rel(Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1, Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1, "SSH", $techn="SSH/22", $tags="", $link="")
+Rel(Production.AzureCloud.VirtualNetwork.BastionSubnet.BastionHost.BastionHost_1, Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1, "SSH", $techn="SSH/22", $tags="", $link="")
+Rel(Production.AzureCloud.VirtualNetwork.WebSubnet.ReverseProxy.ReverseProxy_1, Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1, "Forwards requests", $techn="HTTP/5001", $tags="", $link="")
+Rel(Production.AzureCloud.VirtualNetwork.AppSubnet.ApplicationServer.FlaskApplication_1, Production.AzureCloud.VirtualNetwork.DataSubnet.AzurePostgreSQLFlexibleServer.PostgreSQLDatabase_1, "Reads/writes data", $techn="PostgreSQL/5432", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

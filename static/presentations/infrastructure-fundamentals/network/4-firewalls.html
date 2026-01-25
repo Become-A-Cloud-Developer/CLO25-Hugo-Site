@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Firewalls</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">FIREWALLS</h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is a Firewall? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What is a Firewall?</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">firewall</span> acts as a barrier between trusted internal networks and untrusted external ones</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Examines each packet crossing the network boundary and decides to <span class="highlight">permit or block</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Decisions follow <span class="highlight">rules</span> defined by administrators based on packet attributes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>If no rule matches, a <span class="highlight">default policy</span> determines the outcome (typically "deny all")</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Five-Tuple -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Five-Tuple</h2>
+
+                <div class="fragment info-box">
+                    <p>Firewall rules commonly match on five packet attributes (the <span class="highlight">five-tuple</span>):</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Source IP address:</span> The originating system's network address</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Destination IP address:</span> The target system's network address</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Source/Destination ports:</span> Identify the service (e.g., 443 for HTTPS)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Protocol:</span> Transport protocol—typically <span class="highlight">TCP</span> or <span class="highlight">UDP</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Ports and Services -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Ports and Services</h2>
+
+                <div class="fragment info-box">
+                    <p>Network services listen on specific <span class="highlight">ports</span>—numeric identifiers directing traffic to applications</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 22:</span> SSH (secure remote access)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 80/443:</span> HTTP/HTTPS (web traffic)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 3306:</span> MySQL; <span class="highlight">Port 5432:</span> PostgreSQL</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Port-based filtering grants or denies access to entire services</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Firewall Architectures -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Firewall Architectures</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Packet-Filtering:</span> Examines packets individually; fast but no connection awareness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Stateful Inspection:</span> Tracks connection state; validates traffic belongs to established sessions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Next-Generation (NGFW):</span> Application-layer awareness, deep packet inspection, threat detection</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Most modern firewalls operate <span class="highlight">statefully</span> by default for meaningful security</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Firewall Rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Firewall Rules</h2>
+
+                <div class="fragment info-box">
+                    <p>Rules specify: <span class="highlight">Direction</span> (inbound/outbound), <span class="highlight">Source/Destination</span>, <span class="highlight">Port/Protocol</span>, <span class="highlight">Action</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rules process <span class="highlight">in order</span>—first match wins, then processing stops</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common pattern: specific allow rules first, then broader deny rules, default deny last</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Example: Allow SSH from management IPs → Deny SSH from all → Allow HTTP/HTTPS → Default Deny</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Azure Network Security Groups -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Azure Network Security Groups</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NSGs</span> provide stateful packet filtering for VMs and subnets in Azure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rules include <span class="highlight">priority numbers</span>—lower values execute first</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Service Tags</span> represent Azure service IP ranges without specifying exact addresses</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Security Groups</span> enable rules based on workload function, not just IPs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Firewalls control traffic by evaluating packets against defined rules—effective configuration requires specific rules, appropriate defaults, and defense in depth across network layers</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

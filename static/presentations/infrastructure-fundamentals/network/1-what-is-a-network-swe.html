@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Vad är ett nätverk?</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    VAD ÄR<br>
+                    ETT<br>
+                    NÄTVERK?
+                </h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Network Concept -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Nätverkskonceptet</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">nätverk</span> ansluter datorenheter (noder) för att möjliggöra datautbyte och resursdelning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Data färdas i diskreta enheter som kallas <span class="highlight">paket</span> som innehåller nyttolast och routinginformation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">LAN</span> (Local Area Network): enheter inom en byggnad/campus; <span class="highlight">WAN</span> (Wide Area Network): täcker städer/kontinenter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Internet är ett globalt nätverk av sammankopplade nätverk som använder standardiserade protokoll</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Key Network Components -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Viktiga nätverkskomponenter</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routers:</span> Dirigerar data mellan nätverk med hjälp av IP-adresser; bestämmer optimala paketvägar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switches:</span> Hanterar data inom lokala nätverk baserat på MAC-adresser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls:</span> Övervakar och kontrollerar trafik med hjälp av säkerhetsregler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Wireless Access Points:</span> Bryggar trådlösa enheter till kabelansluten infrastruktur</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Load Balancers & Reverse Proxies:</span> Distribuerar trafik och förbättrar prestanda</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Network Topologies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Nätverkstopologier</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bus:</span> Delad kommunikationslinje; kostnadseffektiv men begränsad feltolerans</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Star:</span> Enheter ansluter till central hubb; isolerar fel effektivt (dominerar moderna LAN)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ring:</span> Cirkulär anslutning; förutsägbar prestanda men sårbar för avbrott</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mesh:</span> Flera redundanta vägar; maximerar tillförlitlighet men kräver mer infrastruktur</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Network Abstraction Layers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Nätverksabstraktionslager</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fysiskt lager:</span> Påtaglig infrastruktur—kablar, nätverkskort, switches, routers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Virtuella nätverk:</span> VLANs skapar logiska segment på delad fysisk infrastruktur</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Molnnätverk:</span> Azure VNets/AWS VPCs tillhandahåller isolerade miljöer via mjukvarudefinierad nätverksteknik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Serverlös nätverksteknik:</span> Plattformen hanterar anslutning, lastbalansering och skalning automatiskt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Core Network Functions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Grundläggande nätverksfunktioner</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Anslutning & routing:</span> Etablerar vägar; routers vidarebefordrar paket hopp-för-hopp mot destinationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switching & segmentering:</span> Switches vidarebefordrar inom LAN; VLANs isolerar trafik för säkerhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Protokollstyrd kommunikation:</span> TCP/IP-sviten ger grunden; HTTP, DNS, SSH bygger på toppen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trafikhantering:</span> Load balancers distribuerar förfrågningar; reverse proxies hanterar SSL-terminering och cachning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Network Security Mechanisms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Nätverkssäkerhetsmekanismer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls:</span> Filtrerar trafik baserat på IP-adresser, portar och protokoll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Network Security Groups:</span> Molnbaserad filtrering på gränssnitts-/subnätsnivå</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">IDS/IPS:</span> Övervakar för misstänkta mönster; varnar eller blockerar aktivt hot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kryptering (TLS/VPNs):</span> Skyddar data under överföring; skapar säkra tunnlar genom opålitliga nätverk</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Nätverk tillhandahåller infrastrukturen som möjliggör kommunikation mellan enheter—att förstå routing, protokoll och säkerhetsmekanismer möjliggör välgrundade arkitekturbeslut</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

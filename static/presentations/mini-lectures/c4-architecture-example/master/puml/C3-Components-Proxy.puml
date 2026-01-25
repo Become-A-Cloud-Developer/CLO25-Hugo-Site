@@ -1,0 +1,32 @@
+@startuml
+set separator none
+title Webinar Registration Website - Reverse Proxy - Components
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Component>
+
+Person(EventAttendee, "Event Attendee", $descr="Primary actor - registers for and attends webinars", $tags="", $link="")
+Container(WebinarRegistrationWebsite.WebBrowser, "Web Browser", $techn="Chrome, Firefox, Safari", $descr="Renders HTML, JavaScript and CSS", $tags="", $link="")
+Container(WebinarRegistrationWebsite.FlaskApplication, "Flask Application", $techn="Python/Gunicorn", $descr="Handles registration logic, serves HTML", $tags="", $link="")
+ContainerDb(WebinarRegistrationWebsite.PostgreSQLDatabase, "PostgreSQL Database", $techn="Managed PostgreSQL", $descr="Stores registration data persistently", $tags="", $link="")
+
+Container_Boundary("WebinarRegistrationWebsite.ReverseProxy_boundary", "Reverse Proxy", $tags="") {
+  Component(WebinarRegistrationWebsite.ReverseProxy.HTTPSServerBlock, "HTTPS Server Block", $techn="nginx server block port 443", $descr="SSL termination and request handling", $tags="", $link="")
+  Component(WebinarRegistrationWebsite.ReverseProxy.SSLCertificate, "SSL Certificate", $techn="Self-signed (OpenSSL)", $descr="TLS/SSL certificate for encryption", $tags="", $link="")
+  Component(WebinarRegistrationWebsite.ReverseProxy.HTTPRedirectBlock, "HTTP Redirect Block", $techn="nginx server block port 80", $descr="Redirects HTTP to HTTPS", $tags="", $link="")
+}
+
+Rel(EventAttendee, WebinarRegistrationWebsite.WebBrowser, "Uses", $techn="Mouse, keyboard", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication, WebinarRegistrationWebsite.PostgreSQLDatabase, "Reads/writes data", $techn="PostgreSQL/5432", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.WebBrowser, WebinarRegistrationWebsite.ReverseProxy.HTTPRedirectBlock, "HTTP request", $techn="HTTP/80", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy.HTTPRedirectBlock, WebinarRegistrationWebsite.WebBrowser, "301 Redirect to HTTPS", $techn="HTTP Response", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.WebBrowser, WebinarRegistrationWebsite.ReverseProxy.HTTPSServerBlock, "HTTPS request", $techn="HTTPS/443", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy.HTTPSServerBlock, WebinarRegistrationWebsite.ReverseProxy.SSLCertificate, "Uses", $techn="TLS", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy.HTTPSServerBlock, WebinarRegistrationWebsite.FlaskApplication, "Forwards to backend", $techn="HTTP/5001", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

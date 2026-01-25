@@ -1,0 +1,20 @@
+@startuml
+set separator none
+title Webinar Registration Website - System Context
+
+left to right direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+Person(EventAttendee, "Event Attendee", $descr="Primary actor - registers for and attends webinars", $tags="", $link="")
+Person(MarketingAdmin, "Marketing Admin", $descr="Supporting actor - manages webinars and views registrations", $tags="", $link="")
+Person(SysAdmin, "SysAdmin", $descr="Supporting actor - deploys and maintains infrastructure", $tags="", $link="")
+System(WebinarRegistrationWebsite, "Webinar Registration Website", $descr="Allows attendees to register for webinars and administrators to manage events", $tags="", $link="")
+
+Rel(EventAttendee, WebinarRegistrationWebsite, "Registers for webinars", $techn="HTTPS", $tags="", $link="")
+Rel(MarketingAdmin, WebinarRegistrationWebsite, "Views registrations", $techn="HTTPS", $tags="", $link="")
+Rel(SysAdmin, WebinarRegistrationWebsite, "Deploys and maintains", $techn="SSH", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

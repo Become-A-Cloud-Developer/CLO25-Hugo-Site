@@ -1,0 +1,43 @@
+@startuml
+set separator none
+title Webinar Registration Website - Containers
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+Person(EventAttendee, "Event Attendee", $descr="Primary actor - registers for and attends webinars", $tags="", $link="")
+Person(MarketingAdmin, "Marketing Admin", $descr="Supporting actor - manages webinars and views registrations", $tags="", $link="")
+Person(SysAdmin, "SysAdmin", $descr="Supporting actor - deploys and maintains infrastructure", $tags="", $link="")
+
+System_Boundary("WebinarRegistrationWebsite_boundary", "Webinar Registration Website", $tags="") {
+  AddBoundaryTag("Back-end", $borderColor="#cccccc", $fontColor="#cccccc", $borderStyle="dashed")
+  Boundary(group_1, "Back-end", $tags="Back-end") {
+    Container(WebinarRegistrationWebsite.FlaskApplication, "Flask Application", $techn="Python/Gunicorn", $descr="Handles registration logic, serves HTML", $tags="", $link="")
+    ContainerDb(WebinarRegistrationWebsite.PostgreSQLDatabase, "PostgreSQL Database", $techn="Managed PostgreSQL", $descr="Stores registration data persistently", $tags="", $link="")
+    Container(WebinarRegistrationWebsite.BastionHost, "Bastion Host", $techn="Ubuntu 24.04, Fail2ban", $descr="Secure SSH entry point for administrative access", $tags="", $link="")
+    Container(WebinarRegistrationWebsite.ReverseProxy, "Reverse Proxy", $techn="nginx, OpenSSL", $descr="SSL offloading and request forwarding", $tags="", $link="")
+  }
+
+  AddBoundaryTag("Front-end", $borderColor="#cccccc", $fontColor="#cccccc", $borderStyle="dashed")
+  Boundary(group_2, "Front-end", $tags="Front-end") {
+    Container(WebinarRegistrationWebsite.WebBrowser, "Web Browser", $techn="Chrome, Firefox, Safari", $descr="Renders HTML, JavaScript and CSS", $tags="", $link="")
+    Container(WebinarRegistrationWebsite.Terminal, "Terminal", $techn="Azure CLI, SSH", $descr="Command-line interface for administrative access", $tags="", $link="")
+  }
+
+}
+
+Rel(EventAttendee, WebinarRegistrationWebsite.WebBrowser, "Uses", $techn="Mouse, keyboard", $tags="", $link="")
+Rel(MarketingAdmin, WebinarRegistrationWebsite.WebBrowser, "Uses", $techn="Mouse, keyboard", $tags="", $link="")
+Rel(SysAdmin, WebinarRegistrationWebsite.Terminal, "Uses", $techn="Keyboard", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.WebBrowser, WebinarRegistrationWebsite.ReverseProxy, "HTTPS requests", $techn="HTTPS/443", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.Terminal, WebinarRegistrationWebsite.BastionHost, "Connects to", $techn="Azure CLI, SSH", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.BastionHost, WebinarRegistrationWebsite.ReverseProxy, "SSH", $techn="SSH/22", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.BastionHost, WebinarRegistrationWebsite.FlaskApplication, "SSH", $techn="SSH/22", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy, WebinarRegistrationWebsite.FlaskApplication, "Forwards requests", $techn="HTTP/5001", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication, WebinarRegistrationWebsite.PostgreSQLDatabase, "Reads/writes data", $techn="PostgreSQL/5432", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Vad är Persistens?</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    VAD ÄR<br>
+                    PERSISTENS?
+                </h1>
+
+                <p class="subtitle">Infrastruktur Grunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Vad är persistens? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är Persistens?</h2>
+
+                <div class="fragment info-box">
+                    <p>Data som lagras över tid på ett <span class="highlight">permanent lagringsmedium</span> (non-volatile)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klarar <span class="highlight">strömavbrott</span> - data finns kvar när systemet startas om</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Data finns kvar även efter att <span class="highlight">applikationen som skapat det</span> inte finns kvar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Grundläggande för stateful-applikationer, databaser och långtidslagring</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Medium för persistens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Medium för Persistens</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">HDD</span> - Hard Disk Drives (magnetskiva)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SSD</span> - Solid State Disk (flash-minne, inga rörliga delar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Optiska Medium</span> - CD, DVD för arkivering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Magnetband</span> - Oftast för backup och långtidslagring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Molnlagring</span> - Amazon S3, Azure Blob Storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Typer av persistens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Typer av Persistens</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Block Storage:</span> För filsystem. Hårddiskar eller SAN (iSCSI)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">File Storage:</span> Hanterar filer och kataloger likt ett filsystem. NAS (SMB, CIFS, NFS)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Object Storage:</span> För objekt, likt filer, men utan hierarki i kataloger. (HTTP/S)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databaser:</span> Lagrar strukturerad data för enkel åtkomst och manipulation</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Persistens i molnet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Persistens i Molnmiljöer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Object Storage:</span> Skalbar lagring för ostrukturerad data (AWS S3, Azure Blob Storage)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Block Storage:</span> Används för databaser och applikationer (AWS EBS, Azure Disk Storage)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databastjänster:</span> Hanterade tjänster för strukturerad data (Amazon RDS, Azure SQL)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Molnleverantörer hanterar replikering, backuper och hög tillgänglighet automatiskt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Utmaningar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Utmaningar med Persistens</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Datakonsistens:</span> Säkerställa korrekt och tillförlitlig data i distribuerade system</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Skalbarhet:</span> Hantera ökande datavolymer utan prestandaförsämring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Latens:</span> Minimera fördröjningar vid datahämtning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CAP-teoremet beskriver avvägningar mellan Consistency, Availability och Partition tolerance</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Fördelar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Fördelar med Persistens</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Tillförlitlig lagring:</span> Data förblir intakt och tillgänglig när det behövs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Historisk analys:</span> Möjliggör spårning av trender, mönster och historisk data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Katastrofåterställning:</span> Underlättar backuper och återställning efter fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Grund för efterlevnad, revision och regulatoriska krav</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💾</div>
+                    <p class="big-text">Sammanfattning</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Persistens är en kärnkomponent i modern IT. Förståelse för lagringstyper och teknologier säkerställer effektiva och tillförlitliga system.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

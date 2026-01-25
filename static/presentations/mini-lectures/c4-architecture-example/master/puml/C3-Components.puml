@@ -1,0 +1,35 @@
+@startuml
+set separator none
+title Webinar Registration Website - Flask Application - Components
+
+top to bottom direction
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Component>
+
+Person(EventAttendee, "Event Attendee", $descr="Primary actor - registers for and attends webinars", $tags="", $link="")
+Container(WebinarRegistrationWebsite.WebBrowser, "Web Browser", $techn="Chrome, Firefox, Safari", $descr="Renders HTML, JavaScript and CSS", $tags="", $link="")
+Container(WebinarRegistrationWebsite.ReverseProxy, "Reverse Proxy", $techn="nginx, OpenSSL", $descr="SSL offloading and request forwarding", $tags="", $link="")
+ContainerDb(WebinarRegistrationWebsite.PostgreSQLDatabase, "PostgreSQL Database", $techn="Managed PostgreSQL", $descr="Stores registration data persistently", $tags="", $link="")
+
+Container_Boundary("WebinarRegistrationWebsite.FlaskApplication_boundary", "Flask Application", $tags="") {
+  Component(WebinarRegistrationWebsite.FlaskApplication.RouteHandlers, "Route Handlers", $techn="Flask @app.route", $descr="HTTP request handling, form processing", $tags="", $link="")
+  Component(WebinarRegistrationWebsite.FlaskApplication.TemplateEngine, "Template Engine", $techn="Jinja2", $descr="HTML rendering with data binding", $tags="", $link="")
+  Component(WebinarRegistrationWebsite.FlaskApplication.DataModels, "Data Models", $techn="SQLAlchemy", $descr="Database abstraction, ORM", $tags="", $link="")
+  Component(WebinarRegistrationWebsite.FlaskApplication.WSGIServer, "WSGI Server", $techn="Gunicorn", $descr="Production HTTP server, process management", $tags="", $link="")
+}
+
+Rel(EventAttendee, WebinarRegistrationWebsite.WebBrowser, "Uses", $techn="Mouse, keyboard", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.WebBrowser, WebinarRegistrationWebsite.ReverseProxy, "HTTPS requests", $techn="HTTPS/443", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy, WebinarRegistrationWebsite.FlaskApplication.WSGIServer, "HTTP requests", $techn="HTTP/5001", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication.WSGIServer, WebinarRegistrationWebsite.FlaskApplication.RouteHandlers, "Forwards requests", $techn="WSGI", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication.RouteHandlers, WebinarRegistrationWebsite.FlaskApplication.TemplateEngine, "Renders HTML", $techn="Jinja2 API", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication.RouteHandlers, WebinarRegistrationWebsite.FlaskApplication.DataModels, "CRUD operations", $techn="Python method calls", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication.DataModels, WebinarRegistrationWebsite.PostgreSQLDatabase, "SQL queries", $techn="psycopg2", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.FlaskApplication.TemplateEngine, WebinarRegistrationWebsite.WebBrowser, "Returns HTML", $techn="HTTP Response", $tags="", $link="")
+Rel(WebinarRegistrationWebsite.ReverseProxy, WebinarRegistrationWebsite.WebBrowser, "301 Redirect to HTTPS", $techn="HTTP Response", $tags="", $link="")
+
+SHOW_LEGEND(true)
+@enduml

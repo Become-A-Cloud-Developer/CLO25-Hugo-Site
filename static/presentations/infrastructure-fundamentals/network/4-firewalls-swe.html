@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Brandväggar</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">BRANDVÄGGAR</h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is a Firewall? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är en brandvägg?</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">firewall</span> fungerar som en barriär mellan betrodda interna nätverk och obetrodda externa</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Granskar varje paket som korsar nätverksgränsen och beslutar att <span class="highlight">tillåta eller blockera</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Beslut följer <span class="highlight">regler</span> som definieras av administratörer baserat på paketattribut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Om ingen regel matchar avgör en <span class="highlight">standardpolicy</span> resultatet (vanligtvis "neka alla")</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Five-Tuple -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Five-tupeln</h2>
+
+                <div class="fragment info-box">
+                    <p>Brandväggsregler matchar vanligtvis fem paketattribut (<span class="highlight">five-tuple</span>):</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Käll-IP-adress:</span> Det ursprungliga systemets nätverksadress</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Destinations-IP-adress:</span> Målsystemets nätverksadress</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Käll-/destinationsportar:</span> Identifierar tjänsten (t.ex. 443 för HTTPS)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Protokoll:</span> Transportprotokoll—vanligtvis <span class="highlight">TCP</span> eller <span class="highlight">UDP</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Ports and Services -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Portar och tjänster</h2>
+
+                <div class="fragment info-box">
+                    <p>Nätverkstjänster lyssnar på specifika <span class="highlight">portar</span>—numeriska identifierare som dirigerar trafik till applikationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 22:</span> SSH (säker fjärråtkomst)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 80/443:</span> HTTP/HTTPS (webbtrafik)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Port 3306:</span> MySQL; <span class="highlight">Port 5432:</span> PostgreSQL</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Portbaserad filtrering beviljar eller nekar åtkomst till hela tjänster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Firewall Architectures -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Brandväggsarkitekturer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Paketfiltrering:</span> Granskar paket individuellt; snabbt men ingen anslutningsmedvetenhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Stateful Inspection:</span> Spårar anslutningstillstånd; validerar att trafik tillhör etablerade sessioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Nästa generations (NGFW):</span> Applikationslagermedvetenhet, djup paketinspektion, hotdetektering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>De flesta moderna brandväggar arbetar <span class="highlight">statefully</span> som standard för meningsfull säkerhet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Firewall Rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Brandväggsregler</h2>
+
+                <div class="fragment info-box">
+                    <p>Regler specificerar: <span class="highlight">Riktning</span> (inkommande/utgående), <span class="highlight">Källa/destination</span>, <span class="highlight">Port/protokoll</span>, <span class="highlight">Åtgärd</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Regler bearbetas <span class="highlight">i ordning</span>—första matchningen vinner, sedan stoppar bearbetningen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanligt mönster: specifika tillåt-regler först, sedan bredare neka-regler, standardnekande sist</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: Tillåt SSH från hanterings-IP → Neka SSH från alla → Tillåt HTTP/HTTPS → Standardnekande</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Azure Network Security Groups -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Azure Network Security Groups</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NSG</span> tillhandahåller stateful paketfiltrering för virtuella datorer och subnät i Azure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Regler inkluderar <span class="highlight">prioritetsnummer</span>—lägre värden körs först</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Service Tags</span> representerar Azure-tjänsters IP-intervall utan att ange exakta adresser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Security Groups</span> möjliggör regler baserade på arbetsbelastningsfunktion, inte bara IP-adresser</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Brandväggar kontrollerar trafik genom att utvärdera paket mot definierade regler—effektiv konfiguration kräver specifika regler, lämpliga standardinställningar och djupgående försvar över nätverkslager</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

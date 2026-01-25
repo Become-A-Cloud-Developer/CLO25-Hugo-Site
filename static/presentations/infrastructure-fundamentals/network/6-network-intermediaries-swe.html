@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Nätverksförmedlare</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    NÄTVERKS-<br>
+                    FÖRMEDLARE
+                </h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What are Network Intermediaries? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är nätverksförmedlare?</h2>
+
+                <div class="fragment info-box">
+                    <p>Enheter eller tjänster placerade <span class="highlight">mellan klienter och servrar</span> för att hantera trafikflöde</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utför routing, lastdistribution, säkerhetsfiltrering, caching och infrastrukturabstraktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Möjliggör funktioner som enskilda klienter/servrar inte kan koordinera själva</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Grundläggande komponenter i produktionsnätverksarkitektur</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Proxy Servers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Proxy-servrar</h2>
+
+                <div class="fragment info-box">
+                    <p>Förmedlar mellan klienter och <span class="highlight">externa</span> servrar (utgående trafik)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klientförfrågningar går först till proxy; proxy vidarebefordrar till målet och återger svaret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Funktioner:</span> Tillgångspolicyhantering, innehållsfiltrering, caching, loggning, anonymitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienter konfigurerar explicit för att använda proxyn; externa servrar ser proxy-IP, inte klient-IP</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Reverse Proxies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Reverse Proxies</h2>
+
+                <div class="fragment info-box">
+                    <p>Sitter framför <span class="highlight">backend-servrar</span> och fångar upp inkommande klientförfrågningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fungerar <span class="highlight">transparent</span>—klienter tror att de ansluter direkt till servern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Funktioner:</span> Fördragsdistribution, SSL/TLS-terminering, caching, säkerhetsfiltrering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ger stabilt gränssnitt medan backend-infrastrukturen ändras (lägga till/ta bort servrar)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Load Balancers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancers</h2>
+
+                <div class="fragment info-box">
+                    <p>Distribuerar inkommande trafik över flera servrar för <span class="highlight">prestanda och tillgänglighet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 4:</span> Routar baserat på IP/port; snabb, minimal inspektion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 7:</span> Routar baserat på HTTP-innehåll (URL, headers, cookies); möjliggör sofistikerade regler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Om en server misslyckas routar load balancern till återstående friska servrar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Load Balancing Algorithms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancing-algoritmer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Round-robin:</span> Cirkulerar genom servrar sekventiellt; enkelt, fungerar när servrar är likvärdiga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Least connections:</span> Routar till server med minst aktiva anslutningar; hanterar varierande bearbetningstider</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">IP hash:</span> Samma klient-IP når alltid samma server; stödjer sessionspersistens</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Weighted:</span> Tilldelar olika vikter baserat på serverkapacitet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Bastion Hosts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Bastion Hosts</h2>
+
+                <div class="fragment info-box">
+                    <p>Ger kontrollerad åtkomst till servrar inom ett <span class="highlight">privat nätverk</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sitter i <span class="highlight">DMZ</span>—mellan publikt internet och internt nätverk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Administratörer ansluter först till bastion, sedan till interna servrar därifrån</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Härdad:</span> Minimal mjukvara, strikta brandväggsregler, loggning, multifaktorautentisering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Bastion:</span> Hanterad tjänst som tillhandahåller webbläsarbaserad SSH/RDP utan att exponera VM:ar publikt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Nätverksförmedlare—proxies, reverse proxies, load balancers och bastion hosts—tillhandahåller väsentliga funktioner för säker, högpresterande och tillförlitlig infrastruktur</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

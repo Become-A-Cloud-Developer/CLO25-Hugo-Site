@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>What is a Network?</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    WHAT IS<br>
+                    A<br>
+                    NETWORK?
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Network Concept -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Network Concept</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">network</span> connects computing devices (nodes) to enable data exchange and resource sharing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Data travels in discrete units called <span class="highlight">packets</span> containing payload and routing information</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">LAN</span> (Local Area Network): devices within a building/campus; <span class="highlight">WAN</span> (Wide Area Network): spans cities/continents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The internet is a global network of interconnected networks using standardized protocols</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Key Network Components -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Network Components</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routers:</span> Direct data between networks using IP addresses; determine optimal packet paths</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switches:</span> Manage data within local networks based on MAC addresses</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls:</span> Monitor and control traffic using security rules</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Wireless Access Points:</span> Bridge wireless devices to wired infrastructure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Load Balancers & Reverse Proxies:</span> Distribute traffic and enhance performance</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Network Topologies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Network Topologies</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bus:</span> Shared communication line; cost-effective but limited fault tolerance</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Star:</span> Devices connect to central hub; isolates faults effectively (dominates modern LANs)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ring:</span> Circular connection; predictable performance but vulnerable to breaks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mesh:</span> Multiple redundant paths; maximizes reliability but requires more infrastructure</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Network Abstraction Layers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Network Abstraction Layers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Physical Layer:</span> Tangible infrastructure—cables, NICs, switches, routers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Virtual Networks:</span> VLANs create logical segments on shared physical infrastructure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cloud Networks:</span> Azure VNets/AWS VPCs provide isolated environments via software-defined networking</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Serverless Networking:</span> Platform handles connectivity, load balancing, and scaling automatically</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Core Network Functions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Core Network Functions</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Connectivity & Routing:</span> Establishes paths; routers forward packets hop-by-hop toward destinations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switching & Segmentation:</span> Switches forward within LANs; VLANs isolate traffic for security</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Protocol-Governed Communication:</span> TCP/IP suite provides foundation; HTTP, DNS, SSH build on top</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Traffic Management:</span> Load balancers distribute requests; reverse proxies handle SSL termination and caching</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Network Security Mechanisms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Network Security Mechanisms</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Firewalls:</span> Filter traffic based on IP addresses, ports, and protocols</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Network Security Groups:</span> Cloud-native filtering at interface/subnet level</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">IDS/IPS:</span> Monitor for suspicious patterns; alert or actively block threats</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Encryption (TLS/VPNs):</span> Protect data in transit; create secure tunnels through untrusted networks</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Networks provide the infrastructure enabling communication between devices—understanding routing, protocols, and security mechanisms enables informed architecture decisions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

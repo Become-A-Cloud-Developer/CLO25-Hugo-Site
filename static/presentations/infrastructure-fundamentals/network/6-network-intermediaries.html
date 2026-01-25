@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Network Intermediaries</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    NETWORK<br>
+                    INTERMEDIARIES
+                </h1>
+
+                <p class="subtitle">Infrastructure Fundamentals</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What are Network Intermediaries? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What are Network Intermediaries?</h2>
+
+                <div class="fragment info-box">
+                    <p>Devices or services positioned <span class="highlight">between clients and servers</span> to manage traffic flow</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Perform routing, load distribution, security filtering, caching, and infrastructure abstraction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enable capabilities that individual clients/servers cannot coordinate alone</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fundamental components of production network architecture</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Proxy Servers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Proxy Servers</h2>
+
+                <div class="fragment info-box">
+                    <p>Mediates between clients and <span class="highlight">external</span> servers (outbound traffic)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Client requests go to proxy first; proxy forwards to target and relays response</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Functions:</span> Access policy enforcement, content filtering, caching, logging, anonymity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Clients explicitly configure to use the proxy; external servers see proxy IP, not client IP</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Reverse Proxies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Reverse Proxies</h2>
+
+                <div class="fragment info-box">
+                    <p>Sits in front of <span class="highlight">backend servers</span>, intercepting inbound client requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Operates <span class="highlight">transparently</span>—clients believe they're connecting directly to the server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Functions:</span> Request distribution, SSL/TLS termination, caching, security filtering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Provides stable interface while backend infrastructure changes (add/remove servers)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Load Balancers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancers</h2>
+
+                <div class="fragment info-box">
+                    <p>Distribute incoming traffic across multiple servers for <span class="highlight">performance and availability</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 4:</span> Routes based on IP/port; fast, minimal inspection</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 7:</span> Routes based on HTTP content (URL, headers, cookies); enables sophisticated rules</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>If one server fails, load balancer routes to remaining healthy servers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Load Balancing Algorithms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancing Algorithms</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Round-robin:</span> Cycles through servers sequentially; simple, works when servers are equal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Least connections:</span> Routes to server with fewest active connections; handles variable processing times</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">IP hash:</span> Same client IP always reaches same server; supports session persistence</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Weighted:</span> Assigns different weights based on server capacity</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Bastion Hosts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Bastion Hosts</h2>
+
+                <div class="fragment info-box">
+                    <p>Provides controlled access to servers within a <span class="highlight">private network</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sits in <span class="highlight">DMZ</span>—between public internet and internal network</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Administrators connect to bastion first, then to internal servers from there</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hardened:</span> Minimal software, strict firewall rules, logging, multi-factor authentication</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Bastion:</span> Managed service providing browser-based SSH/RDP without exposing VMs publicly</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Key Takeaway</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Network intermediaries—proxies, reverse proxies, load balancers, and bastion hosts—provide essential capabilities for secure, performant, and reliable infrastructure</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OSI-modellen</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OSI-<br>
+                    MODELLEN
+                </h1>
+
+                <p class="subtitle">Infrastrukturgrunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: What is the OSI Model? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är OSI-modellen?</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett konceptuellt ramverk som organiserar nätverkskommunikation i <span class="highlight">sju distinkta lager</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje lager hanterar en specifik aspekt: fysisk överföring, routing, pålitlig leverans, applikationsprotokoll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lagren tillhandahåller tjänster till lagret ovanför och konsumerar tjänster från lagret nedanför</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Separationen tillåter protokoll att ändras utan att påverka andra lager</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Layers 1-2: Physical & Data Link -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lager 1-2: Physical & Data Link</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lager 1 (Physical):</span> Rå bitöverföring—elektriska signaler, kablar, fiberoptik, trådlösa radios</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen förståelse för adresser eller paket; överför/tar endast emot bitströmmar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lager 2 (Data Link):</span> Organiserar bitar i ramar; använder <span class="highlight">MAC addresses</span> för lokal leverans</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Switches</span> arbetar på lager 2, vidarebefordrar ramar baserat på MAC addresses</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Layer 3: Network Layer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lager 3: Network Layer</h2>
+
+                <div class="fragment info-box">
+                    <p>Möjliggör routing över flera nätverk med hjälp av <span class="highlight">IP addresses</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routers</span> arbetar på lager 3, konsulterar routing-tabeller för att vidarebefordra paket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hanterar paket <span class="highlight">fragmentering</span> när data överstiger länkkapaciteten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ICMP</span> tillhandahåller diagnostik (ping, traceroute)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Layer 4: Transport Layer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lager 4: Transport Layer</h2>
+
+                <div class="fragment info-box">
+                    <p>Hanterar end-to-end kommunikation; använder <span class="highlight">portnummer</span> för att identifiera applikationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">TCP:</span> Anslutningsorienterad, garanterad leverans, sekvenshantering, återöverföring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">UDP:</span> Anslutningslös, ingen leveransgaranti, lägre latens, mindre overhead</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj TCP när dataintegritet är viktig; UDP när hastighet är viktigare än enstaka förlust</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Layers 5-7: Session, Presentation, Application -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lager 5-7: Session, Presentation, Application</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lager 5 (Session):</span> Hanterar anslutningsetablering, underhåll och avslut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lager 6 (Presentation):</span> Dataformatöversättning, kryptering/dekryptering, komprimering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lager 7 (Application):</span> Nätverkstjänster för användarapplikationer—<span class="highlight">HTTP, HTTPS, DNS, SSH, SMTP</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Många applikationer integrerar session/presentation direkt i applikationsprotokoll</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Load Balancers: Layer 4 vs Layer 7 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Load Balancers: Layer 4 vs Layer 7</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 4 Load Balancer:</span> Routar baserat på IP addresses och portar; snabb, minimal inspektion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layer 7 Load Balancer:</span> Parsar HTTP—routar efter URL-sökväg, headers, cookies; möjliggör sofistikerade regler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>L7 kan routa /api/* till API-servrar, /static/* till CDN; terminera SSL; inspektera för hot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Många distributioner använder båda: L4 distribuerar till L7 balancers, som routar till backends</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💡</div>
+                    <p class="big-text">Viktig insikt</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">OSI-modellen tillhandahåller ett systematiskt ramverk för att förstå nätverkskommunikation—från fysiska signaler till applikationsprotokoll—vilket möjliggör välgrundade beslut om arkitektur och felsökning</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

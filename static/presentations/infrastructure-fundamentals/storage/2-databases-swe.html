@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Databaser</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DATABASER
+                </h1>
+
+                <p class="subtitle">Infrastruktur Grunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Vad är en Databas? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är en Databas?</h2>
+
+                <div class="fragment info-box">
+                    <p>Lagrar <span class="highlight">strukturerad data</span> (ex. tabeller, dokument, tidsserier)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Gör det möjligt att <span class="highlight">söka i data</span> (ex. SQL - Structured Query Language)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Upprätthåller <span class="highlight">dataintegritet</span> (ex. Primary keys, foreign keys, not null, unique)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hanterar relationer mellan data (1->n, n->n)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Relationsdatabaser -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Relationsdatabaser</h2>
+
+                <div class="fragment info-box">
+                    <p>Använder <span class="highlight">tabeller med rader och kolumner</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SQL</span> (Structured Query Language) för datamanipulation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Starka <span class="highlight">ACID-garantier:</span> Atomicity, Consistency, Isolation, Durability</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: <span class="highlight">PostgreSQL</span>, MySQL, SQL Server, Oracle</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bäst för strukturerad data med komplexa relationer och transaktionskrav</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: NoSQL-databaser -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">NoSQL-databaser</h2>
+
+                <div class="fragment info-box">
+                    <p>Designade för <span class="highlight">semistrukturerad data</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Flexibla scheman</span> för olika datatyper</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dokumentdatabaser:</span> MongoDB, CouchDB - lagrar JSON-liknande dokument</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Key-Value stores:</span> Redis, DynamoDB - enkel nyckel-till-värde-mappning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optimerade för horisontell skalning och hög genomströmning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: In-Memory-databaser -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">In-Memory-databaser</h2>
+
+                <div class="fragment info-box">
+                    <p>Lagrar data i <span class="highlight">RAM för snabb åtkomst</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Betydligt snabbare än diskbaserad lagring (mikrosekunder vs millisekunder)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Exempel:</span> Redis, Memcached</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanliga användningsområden: <span class="highlight">caching</span>, sessionshantering, realtidsanalys</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Tidsseriedatabaser -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tidsseriedatabaser</h2>
+
+                <div class="fragment info-box">
+                    <p>Speciellt designade för att hantera <span class="highlight">tidsstämplad data</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optimerade för <span class="highlight">loggar, mätvärden och sensordata</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: InfluxDB, TimescaleDB, Prometheus</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Använder effektiv komprimering för tidsseriemönster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Nyckelkoncept -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Nyckelkoncept</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databas:</span> Logisk container för data - innehåller data och metadata</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Schema:</span> Logisk struktur - definierar tabeller och relationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databasinstans:</span> Den körande processen - själva programmet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Index:</span> Snabbar upp datahämtning genom organiserad dataåtkomst</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Databaser i molnmiljöer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Databaser i Molnmiljöer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Managed Databases:</span> Fullt hanterade av molnleverantörer (Amazon RDS, Azure SQL Database)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Leverantörer hanterar <span class="highlight">backuper, skalning och underhåll</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Database as a Service (DBaaS):</span> Förenklar driftsättning och hantering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: Firebase, Amazon DynamoDB, Azure Cosmos DB</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">🗄️</div>
+                    <p class="big-text">Sammanfattning</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Databaser är ryggraden i moderna datadrivna applikationer. Att välja rätt typ och teknologi säkerställer skalbarhet, prestanda och säkerhet.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
