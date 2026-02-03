@@ -20,12 +20,27 @@
 <!-- Override menu collapse behavior to keep active section expanded -->
 <script type="text/javascript">
 jQuery(document).ready(function() {
+    // Get the current page URL
+    var currentUrl = window.location.href;
+
+    // Find the current page in the menu and mark it and its ancestors
+    jQuery('#sidebar li[data-nav-id]').each(function() {
+        var navId = jQuery(this).attr('data-nav-id');
+        // Check if this is the current page or an ancestor of it
+        if (currentUrl.indexOf(navId) === 0 || navId.indexOf(currentUrl) === 0) {
+            jQuery(this).addClass('active-path');
+        }
+    });
+
+    // Also mark all ancestors of items that contain the current page
+    jQuery('#sidebar li.active-path').parents('li[data-nav-id]').addClass('active-path');
+
     // Remove the default click handler and add our custom one
     jQuery('#sidebar .category-icon').off('click').on('click', function() {
         var menuItem = jQuery(this).parent().parent();
 
         // If this section contains the active page, don't allow collapse
-        if (menuItem.hasClass('parent') || menuItem.hasClass('active')) {
+        if (menuItem.hasClass('active-path')) {
             return false;
         }
 
