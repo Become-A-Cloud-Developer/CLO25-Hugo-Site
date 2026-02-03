@@ -8,9 +8,9 @@ date = 2025-08-10
 draft = false
 +++
 
-[Watch the presentation](/presentations/infrastructure-fundamentals/iac/1-arm-and-bicep.html)
+[Watch the presentation]({{< relref "arm-and-bicep-slides.md" >}})
 
-[Se presentationen på svenska](/presentations/infrastructure-fundamentals/iac/1-arm-and-bicep-swe.html)
+[Se presentationen på svenska]({{< relref "arm-and-bicep-slides-swe.md" >}})
 
 <!-- Listen to the article -->
 
