@@ -3,7 +3,7 @@ title = "ARM & Bicep"
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
-weight = 1
+weight = 2
 date = 2025-08-10
 draft = false
 +++
