@@ -1,0 +1,180 @@
++++
+title = "1. Hello World"
+program = "CLO"
+cohort = "25"
+courses = ["BCD"]
+weight = 1
+draft = false
++++
+
+# Hello World MVC Application
+
+## Goal
+
+Create a basic ASP.NET Core MVC application, run it locally, and prepare it for version control with Git.
+
+## Learning Objectives
+
+By the end of this exercise, you will:
+
+- Create a new ASP.NET Core MVC project
+- Understand the basic project structure of an MVC application
+- Run a web application locally
+- Initialize Git for version control
+- Publish your code to GitHub
+
+## Step-by-Step Instructions
+
+### Step 1: Create a New ASP.NET Core MVC Application
+
+1. Open a terminal or command prompt
+2. Navigate to your desired project location
+3. Run the following command to create a new MVC application:
+
+```bash
+dotnet new mvc -n CloudSoft
+```
+
+> **Information**
+>
+> - The `dotnet new mvc` command creates a new ASP.NET Core MVC project
+> - The `-n CloudSoft` parameter sets the project name to "CloudSoft"
+> - This creates a folder structure with Controllers, Models, and Views folders
+
+4. Navigate to the newly created project folder:
+
+```bash
+cd CloudSoft
+```
+
+### Step 2: Explore the Project Structure
+
+Take a moment to explore the generated project structure:
+
+- **Controllers/** - Contains controller classes that handle HTTP requests
+- **Models/** - Contains data model classes
+- **Views/** - Contains Razor view files (.cshtml) for rendering HTML
+- **wwwroot/** - Contains static files (CSS, JavaScript, images)
+- **Program.cs** - The application entry point
+- **CloudSoft.csproj** - The project file with dependencies and configuration
+
+> **Information**
+>
+> The MVC (Model-View-Controller) pattern separates an application into three main components:
+> - **Models**: Data and business logic
+> - **Views**: User interface (UI)
+> - **Controllers**: Handle user input and responses
+
+### Step 3: Run the Application Locally
+
+1. Start the application:
+
+```bash
+dotnet run
+```
+
+2. Open a web browser and navigate to:
+
+```
+https://localhost:7240
+```
+
+or
+
+```
+http://localhost:5000
+```
+
+(Note: The exact port numbers may vary)
+
+> **Verification Step:**
+>
+> You should see the default ASP.NET Core welcome page with links to resources and documentation.
+
+### Step 4: Initialize Git for Version Control
+
+1. Create a .gitignore file to exclude unnecessary files from version control:
+
+```bash
+dotnet new gitignore
+```
+
+2. Initialize a new Git repository:
+
+```bash
+git init
+```
+
+3. Add all files to the Git staging area:
+
+```bash
+git add .
+```
+
+4. Create your first commit:
+
+```bash
+git commit -m "Initial commit: Create ASP.NET Core MVC application"
+```
+
+> **Information**
+>
+> - Git tracks changes to your codebase
+> - The .gitignore file prevents unnecessary files (like build artifacts) from being tracked
+> - Each commit represents a snapshot of your code at a specific point in time
+
+### Step 5: Publish to GitHub
+
+1. Create a new repository on GitHub:
+   - Go to [GitHub](https://github.com)
+   - Click the "+" icon in the top right and select "New repository"
+   - Name your repository (e.g., "CloudSoft")
+   - Do not initialize with a README, .gitignore, or license
+   - Click "Create repository"
+
+2. Link your local repository to GitHub and push your code:
+
+```bash
+git remote add origin https://github.com/YourUsername/CloudSoft.git
+git branch -M main
+git push -u origin main
+```
+
+> **Information**
+>
+> - Replace "YourUsername" with your actual GitHub username
+> - This establishes a connection between your local repository and GitHub
+> - The `-u` flag sets up tracking, which simplifies future pushes
+
+## Final Tests
+
+### Test 1: Verify Your Web Application
+
+1. Ensure your application is running:
+
+```bash
+dotnet run
+```
+
+2. Open a browser and navigate to the application URL
+3. Verify the homepage loads correctly
+
+**Expected Result**:
+- The application runs without errors
+- The welcome page appears in your browser
+- You can navigate to the Privacy page using the link in the header
+
+### Test 2: Verify Your GitHub Repository
+
+1. Go to your GitHub account
+2. Navigate to your new repository
+3. Verify that your code has been pushed successfully
+
+**Expected Result**:
+- All project files are visible in your GitHub repository
+- You can see your commit message
+- The repository structure matches your local project
+
+## Exercise Complete!
+
+Congratulations!

@@ -1,5 +1,5 @@
 +++
-title = "Creating a Virtual Network with Enhanced Security"
+title = "2. Creating a Virtual Network with Enhanced Security"
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
