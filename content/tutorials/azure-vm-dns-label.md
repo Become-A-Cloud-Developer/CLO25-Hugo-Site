@@ -3,7 +3,7 @@ title = "Configure Azure VM DNS Labels"
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
-weight = 1
+weight = 2
 +++
 
 ## Goal
