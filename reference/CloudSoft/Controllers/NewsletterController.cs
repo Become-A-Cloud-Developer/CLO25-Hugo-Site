@@ -49,4 +49,17 @@ public class NewsletterController : Controller
     {
         return View(_subscribers);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Unsubscribe(string email)
+    {
+        var subscriber = _subscribers.FirstOrDefault(s => s.Email == email);
+        if (subscriber != null)
+        {
+            _subscribers.Remove(subscriber);
+            TempData["SuccessMessage"] = $"Successfully unsubscribed {email} from the newsletter.";
+        }
+        return RedirectToAction(nameof(Subscribers));
+    }
 }
