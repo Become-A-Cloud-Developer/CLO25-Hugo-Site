@@ -1,9 +1,9 @@
 +++
-title = "14. Azure Blob Storage for Images"
+title = "15. Azure Blob Storage for Images"
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
-weight = 3
+weight = 4
 draft = false
 +++
 
