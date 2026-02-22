@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CloudSoft.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Services.UnitTests/Services.UnitTests.csproj" />
+  </Folder>
+</Solution>
