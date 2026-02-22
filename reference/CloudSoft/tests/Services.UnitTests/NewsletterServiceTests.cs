@@ -1,4 +1,5 @@
 using CloudSoft.Models;
+using CloudSoft.Repositories;
 using CloudSoft.Services;
 
 namespace CloudSoft.Services.UnitTests;
@@ -9,7 +10,8 @@ public class NewsletterServiceTests
 
     public NewsletterServiceTests()
     {
-        _sut = new NewsletterService();
+        var repository = new InMemorySubscriberRepository();
+        _sut = new NewsletterService(repository);
     }
 
     [Fact]
