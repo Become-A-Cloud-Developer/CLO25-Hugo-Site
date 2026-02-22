@@ -20,3 +20,6 @@ Thumbs.db
 node_modules/
 # Structurizr working directory
 .structurizr/
+
+# Student reports (private)
+docs/student-reports/

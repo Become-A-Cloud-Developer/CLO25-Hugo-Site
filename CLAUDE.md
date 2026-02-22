@@ -108,6 +108,10 @@ Automatic deployment via GitHub Actions when pushing to `main` branch.
 - Source: GitHub Actions
 - Custom domain: cloud-dev-25.educ8.se
 
+## Sensitive Data
+
+**NEVER commit or push anything in `docs/student-reports/`.** This directory contains student personal data and is gitignored. Do not stage, commit, or include these files in any git operations.
+
 ## Git Workflow
 
 ### Before Committing
