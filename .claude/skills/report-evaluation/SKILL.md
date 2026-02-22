@@ -1,6 +1,6 @@
 ---
 name: report-evaluation
-version: 1.0.0
+version: 1.1.0
 description: Evaluate student assignment reports using three independent reviewers for consensus grading. Each reviewer reads the PDF and context files independently, then provides section assessments in Swedish. Results compiled with majority voting into GRADING-RESULTS.md. Use when grading prepared student submissions.
 allowed-tools: Read, Write, Edit, Glob, Task, AskUserQuestion, WebFetch
 triggers:
@@ -37,20 +37,22 @@ The status file enables:
 {
   "evaluation_session": {
     "assignment": "Assignment Name",
-    "assignment_folder": "/full/path/to/assignment",
+    "reports_folder": "/full/path/to/student-reports/assignment-N",
+    "assignments_folder": "/full/path/to/assignments/assignment-N",
     "started": "YYYY-MM-DD",
     "last_updated": "YYYY-MM-DD",
     "status": "in_progress|completed",
     "batch_size": 3
   },
   "files": {
-    "grading_results": "GRADING-RESULTS.md",
-    "student_list": "STUDENT-LIST.md",
-    "assignment": "ASSIGNMENT.md",
-    "course_description": "/path/to/COURSE-DESCRIPTION.md",
-    "background": "BACKGROUND.md",
-    "special_considerations": "SPECIAL-CONSIDERATIONS.md",
-    "student_reports_folder": "student-reports/"
+    "grading_results": "[reports_folder]/GRADING-RESULTS.md",
+    "student_list": "[reports_folder]/STUDENT-LIST.md",
+    "assignment_instructions": "[assignments_folder]/assignment-N.md",
+    "grading_criteria": "[assignments_folder]/assignment-N-grading-criteria.md",
+    "course_description": "[found_path]/COURSE-DESCRIPTION.md",
+    "background": "[assignments_folder]/BACKGROUND.md (if exists)",
+    "special_considerations": "[assignments_folder]/SPECIAL-CONSIDERATIONS.md (if exists)",
+    "student_reports_folder": "[reports_folder]/"
   },
   "progress": {
     "total_students": 0,
@@ -79,45 +81,60 @@ The status file enables:
 ### Recovery Behavior
 
 **On skill invocation:**
-1. Check for existing `EVALUATION-STATUS.json` in assignment folder
+1. Check for existing `EVALUATION-STATUS.json` in reports folder
 2. If found: Read status and continue from `next_batch`
 3. If not found: Initialize new session (Step 1)
 
-## Assignment Folder Structure
+## Split Directory Layout
 
-Each assignment folder contains the context needed for evaluation. Most files must be in the assignment folder, but some (like COURSE-DESCRIPTION.md) can be shared in parent folders.
-
-### Required Files in Assignment Folder
-
-| File | Purpose | Search Behavior |
-|------|---------|-----------------|
-| `STUDENT-LIST.md` | Roster with submission status and grades | Assignment folder only |
-| `ASSIGNMENT.md` | The assignment instructions (defines sections to evaluate) | Assignment folder only |
-| `COURSE-DESCRIPTION.md` | Formal course criteria and learning objectives | **Parent folders up to project root** |
-| `BACKGROUND.md` | Project scenario and learning context | Assignment folder only |
-| `SPECIAL-CONSIDERATIONS.md` | Exceptions and adjustments for this assignment | Assignment folder only |
-| `EVALUATION-STATUS.json` | Progress tracking (created/updated by skill) | Assignment folder only |
-| `student-reports/` | Folder containing renamed PDFs | Assignment folder only |
-
-### File Relationships
+This skill uses a **split directory layout** that separates public assignment instructions from private student data:
 
 ```
-project-root/
-├── COURSE-DESCRIPTION.md    # Can live here (shared across assignments)
-└── assignments/
-    ├── COURSE-DESCRIPTION.md    # Or here (shared across assignments)
+docs/
+├── COURSE-DESCRIPTION.md              # Shared course description (parent search)
+├── assignments/
+│   └── assignment-N/
+│       ├── assignment-N.md            # Assignment instructions
+│       ├── assignment-N-grading-criteria.md  # Grading rubric
+│       ├── BACKGROUND.md             # Optional: project context
+│       └── SPECIAL-CONSIDERATIONS.md  # Optional: exceptions
+└── student-reports/                   # GITIGNORED — private student data
+    ├── CLASS-LIST.md                  # Master class roster
     └── assignment-N/
-        ├── COURSE-DESCRIPTION.md    # Or here (assignment-specific)
-        ├── STUDENT-LIST.md          # WHO to evaluate
-        ├── ASSIGNMENT.md            # WHAT to look for (report sections)
-        ├── BACKGROUND.md            # WHY (context, scenario)
-        ├── SPECIAL-CONSIDERATIONS.md # EXCEPTIONS (what's adjusted)
-        ├── GRADING-RESULTS.md       # OUTPUT (created/updated by skill)
-        └── student-reports/
-            └── *.pdf                # Student submissions
+        ├── STUDENT-LIST.md            # Who to evaluate
+        ├── *.pdf                      # Student report PDFs
+        ├── *_source-code.zip          # Student source code (optional)
+        ├── GRADING-RESULTS.md         # OUTPUT (created by skill)
+        └── EVALUATION-STATUS.json     # Progress tracking (created by skill)
 ```
 
-**COURSE-DESCRIPTION.md search order:** Assignment folder → parent folder → grandparent → ... → project root. Uses the first one found.
+### Input: Reports Folder
+
+The skill takes the **reports folder** as input (e.g., `docs/student-reports/assignment-1/`).
+
+### Auto-Discovery Logic
+
+From the reports folder, the skill automatically derives all other paths:
+
+```
+Input:     docs/student-reports/assignment-1/
+Derives:   docs/assignments/assignment-1/      (replace student-reports → assignments)
+Searches:  docs/COURSE-DESCRIPTION.md           (parent search from reports folder)
+```
+
+### File Locations
+
+| File | Location | Required? |
+|------|----------|-----------|
+| `STUDENT-LIST.md` | Reports folder (input) | Yes |
+| `*.pdf` | Reports folder (input) | Yes |
+| `assignment-*.md` | Assignments folder (derived) | Yes |
+| `*grading-criteria*.md` | Assignments folder (derived) | Yes |
+| `COURSE-DESCRIPTION.md` | Parent search from reports folder | Yes |
+| `BACKGROUND.md` | Assignments folder (derived) | No — optional context |
+| `SPECIAL-CONSIDERATIONS.md` | Assignments folder (derived) | No — optional exceptions |
+| `GRADING-RESULTS.md` | Reports folder (output) | Created by skill |
+| `EVALUATION-STATUS.json` | Reports folder (output) | Created by skill |
 
 ## Core Tone Principles
 
@@ -156,7 +173,7 @@ Each student report is evaluated by **three independent subagents in parallel**:
 
 **Before anything else, check if a session already exists.**
 
-1. Look for `EVALUATION-STATUS.json` in the assignment folder
+1. Look for `EVALUATION-STATUS.json` in the reports folder
 2. **If found with status "in_progress":**
    - Display: `Resuming evaluation session from [last_updated]`
    - Display current progress from status file
@@ -184,19 +201,29 @@ Continuing evaluation...
 
 ### Step 0.5: Validate Input Files
 
-**Before starting evaluation, check that all required input files exist.**
+**Before starting evaluation, derive paths and check that all required input files exist.**
 
-**Standard files** - Check in assignment folder only:
+**Path derivation:**
+1. **Reports folder** = input path (e.g., `docs/student-reports/assignment-1/`)
+2. **Assignments folder** = replace `student-reports` with `assignments` in path (e.g., `docs/assignments/assignment-1/`)
+3. **COURSE-DESCRIPTION.md** = parent search upward from reports folder
+
+**Required files — check in assignments folder (derived):**
+1. `assignment-*.md` (assignment instructions — matches pattern like `assignment-1.md`)
+2. `*grading-criteria*.md` (grading rubric — matches pattern like `assignment-1-grading-criteria.md`)
+
+**Required files — check in reports folder (input):**
 1. `STUDENT-LIST.md`
-2. `ASSIGNMENT.md`
-3. `BACKGROUND.md`
-4. `SPECIAL-CONSIDERATIONS.md`
-5. `student-reports/*.pdf` (at least one PDF)
+2. `*.pdf` (at least one student report PDF)
 
-**Parent-searchable files** - Check assignment folder first, then parent folders up to project root:
+**Parent-searchable files** — check reports folder first, then parent folders up to project root:
 1. `COURSE-DESCRIPTION.md` - Search upward until found
 
-**If any files are missing**, display this table to the terminal:
+**Optional files — check in assignments folder (derived):**
+1. `BACKGROUND.md` — context about parallel group work, project scenario
+2. `SPECIAL-CONSIDERATIONS.md` — exceptions, adjustments
+
+**If any required files are missing**, display this table to the terminal:
 
 ```
 ## Missing Input Files
@@ -205,12 +232,18 @@ The following files are required for evaluation:
 
 | File | Status | Search Location | Purpose |
 |------|--------|-----------------|---------|
-| STUDENT-LIST.md | [Found/MISSING] | Assignment folder | Roster with student names, submission status, and grade column |
-| ASSIGNMENT.md | [Found/MISSING] | Assignment folder | Assignment instructions - defines report sections and weights |
+| STUDENT-LIST.md | [Found/MISSING] | Reports folder | Roster with student names, submission status, and grade column |
+| assignment-*.md | [Found: filename / MISSING] | Assignments folder | Assignment instructions |
+| *grading-criteria*.md | [Found: filename / MISSING] | Assignments folder | Grading rubric with criteria and weights |
 | COURSE-DESCRIPTION.md | [Found at: path / MISSING] | Parent folders → root | Formal course learning objectives and G/VG criteria |
-| BACKGROUND.md | [Found/MISSING] | Assignment folder | Project scenario and learning context |
-| SPECIAL-CONSIDERATIONS.md | [Found/MISSING] | Assignment folder | Exceptions and adjustments for this assignment |
-| student-reports/*.pdf | [N found/MISSING] | Assignment folder | Student report PDFs to evaluate |
+| *.pdf | [N found / MISSING] | Reports folder | Student report PDFs to evaluate |
+
+Optional files (not blocking):
+
+| File | Status | Location |
+|------|--------|----------|
+| BACKGROUND.md | [Found/Not found] | Assignments folder |
+| SPECIAL-CONSIDERATIONS.md | [Found/Not found] | Assignments folder |
 ```
 
 Then use **AskUserQuestion** to ask:
@@ -218,18 +251,24 @@ Then use **AskUserQuestion** to ask:
 > "Some required input files are missing. Do you want to continue anyway?"
 > - Options: "Yes, continue with available files" / "No, stop and fix missing files"
 
-**If all files are present**, display a brief confirmation:
+**If all required files are present**, display a brief confirmation:
 
 ```
 ## Input Validation Passed
 
-All required files found in [assignment-folder]:
+Reports folder: [reports_folder]
+Assignments folder: [assignments_folder]
+
+Required files found:
 - STUDENT-LIST.md
-- ASSIGNMENT.md
-- COURSE-DESCRIPTION.md
-- BACKGROUND.md
-- SPECIAL-CONSIDERATIONS.md
-- student-reports/ (N PDFs found)
+- [assignment-file.md]
+- [grading-criteria-file.md]
+- COURSE-DESCRIPTION.md (at [path])
+- [N] PDFs in reports folder
+
+Optional files:
+- BACKGROUND.md: [Found/Not found]
+- SPECIAL-CONSIDERATIONS.md: [Found/Not found]
 
 Proceeding with evaluation...
 ```
@@ -239,24 +278,25 @@ Proceeding with evaluation...
 Read all context files, using the paths determined in Step 0.5:
 
 ```
-[assignment-folder]/ASSIGNMENT.md             # Report structure and sections
-[found-path]/COURSE-DESCRIPTION.md            # Formal G/VG criteria (may be in parent folder)
-[assignment-folder]/BACKGROUND.md             # Project context
-[assignment-folder]/SPECIAL-CONSIDERATIONS.md # Exceptions
+[assignments_folder]/assignment-*.md           # Assignment instructions
+[assignments_folder]/*grading-criteria*.md     # Grading rubric
+[found_path]/COURSE-DESCRIPTION.md             # Formal G/VG criteria (may be in parent folder)
+[assignments_folder]/BACKGROUND.md             # Optional: project context
+[assignments_folder]/SPECIAL-CONSIDERATIONS.md # Optional: exceptions
 ```
 
 **Note:** COURSE-DESCRIPTION.md path comes from the parent folder search in Step 0.5. Pass this resolved path to reviewer subagents.
 
 From these files, extract:
-- **Sections to evaluate** (from ASSIGNMENT.md)
-- **Section weights** (from ASSIGNMENT.md)
+- **Criteria to evaluate** (from grading criteria file)
+- **Criteria weights** (from grading criteria file)
 - **Pass (G) criteria** (from COURSE-DESCRIPTION.md)
 - **Distinction (VG) criteria** (from COURSE-DESCRIPTION.md)
-- **Which sections can earn VG** (from BACKGROUND.md or COURSE-DESCRIPTION.md)
+- **Which criteria can earn VG** (from grading criteria file or COURSE-DESCRIPTION.md)
 
 ### Step 2: Build Student List
 
-Read `[assignment-folder]/STUDENT-LIST.md` and identify:
+Read `[reports_folder]/STUDENT-LIST.md` and identify:
 - Students with "Report Submitted: Yes"
 - Students without a grade in "Betyg" column
 
@@ -264,8 +304,8 @@ Read `[assignment-folder]/STUDENT-LIST.md` and identify:
 
 **For new sessions only** (skip if resuming from existing session):
 
-Create `EVALUATION-STATUS.json` with:
-- Session metadata (assignment name, folder, date, batch_size: 3)
+Create `EVALUATION-STATUS.json` in the **reports folder** with:
+- Session metadata (assignment name, reports folder, assignments folder, date, batch_size: 3)
 - File paths for all context files
 - Progress counters (all starting at 0)
 - Pre-planned batches (groups of 3 students each)
@@ -276,8 +316,9 @@ Create `EVALUATION-STATUS.json` with:
 ```json
 {
   "evaluation_session": {
-    "assignment": "[from ASSIGNMENT.md title]",
-    "assignment_folder": "[full path]",
+    "assignment": "[from assignment instructions title]",
+    "reports_folder": "[full path]",
+    "assignments_folder": "[full path]",
     "started": "[today's date]",
     "last_updated": "[today's date]",
     "status": "in_progress",
@@ -314,10 +355,10 @@ batches = split into groups of max 3 students
 For a batch of N students (max 3), spawn **N × 3 = up to 9 subagents in parallel**.
 
 Each subagent receives the same prompt (see `REVIEWER-PROMPT.md`) instructing them to:
-1. Read all context files from the assignment folder
-2. Read and evaluate the student's PDF
+1. Read all context files from the assignments folder
+2. Read and evaluate the student's PDF from the reports folder
 3. **Follow any code repository links** (GitHub, GitLab, etc.) found in the report
-4. Assess each section defined in ASSIGNMENT.md
+4. Assess each criterion defined in the grading criteria file
 5. Determine overall grade based on COURSE-DESCRIPTION.md criteria
 6. Write feedback in Swedish
 
@@ -340,7 +381,7 @@ Task: Student 3 - Reviewer 3
 Wait for **all subagents in the batch** to complete before proceeding. Each returns:
 - Student name (to match results)
 - Grade (G or VG)
-- Section assessments (term + comment for each section)
+- Criterion assessments (term + comment for each criterion)
 - Feedback (3 sentences in Swedish)
 - Reasoning (brief justification)
 
@@ -364,9 +405,9 @@ If all different: Flag for manual review (split)
 
 After processing all students in the batch:
 
-1. **Append all evaluations** to `GRADING-RESULTS.md` in one write operation
-2. **Update all grades** in `STUDENT-LIST.md` in one edit operation
-3. **Update EVALUATION-STATUS.json** with batch completion
+1. **Append all evaluations** to `GRADING-RESULTS.md` in the reports folder in one write operation
+2. **Update all grades** in `STUDENT-LIST.md` in the reports folder in one edit operation
+3. **Update EVALUATION-STATUS.json** in the reports folder with batch completion
 
 **Status file updates after each batch:**
 ```json
@@ -472,29 +513,31 @@ After all students are evaluated, add **two summary sections** to GRADING-RESULT
 
 #### 5a. Compact Assessment Overview Table
 
-Create a table showing all evaluated students with their grades and section assessments at a glance. This table should:
+Create a table showing all evaluated students with their grades and criterion assessments at a glance. This table should:
 
-1. **Use abbreviated section names** derived from ASSIGNMENT.md (e.g., "Teknisk arkitektur" → "Arkitektur", "Applikationsstack" → "Appstack")
+1. **Use abbreviated criterion names** derived from the grading criteria file
 2. **Include all students** sorted alphabetically by last name
 3. **Show the consensus vote count** (e.g., "3/3", "2/3", or "Override" for instructor adjustments)
-4. **Display section assessments** using the grading scale terms (Okej/Bra/Mycket bra/Utmärkt)
+4. **Display criterion assessments** using the grading scale terms (Okej/Bra/Mycket bra/Utmärkt)
 
 **Template format:**
 
 ```markdown
 ## Sammanfattning
 
-| Student | Betyg | Röster | [Section1] | [Section2] | [Section3] | [Section4] | [Section5] | [Section6] |
-|---------|-------|--------|------------|------------|------------|------------|------------|------------|
-| Lastname, Firstname | VG | 3/3 | Bra | Mycket bra | Bra | Mycket bra | Bra | Mycket bra |
-| ... | ... | ... | ... | ... | ... | ... | ... | ... |
+| Student | Betyg | Röster | [Criterion 1] | [Criterion 2] | [Criterion 3] | ... |
+|---------|-------|--------|----------------|----------------|----------------|-----|
+| Lastname, Firstname | VG | 3/3 | Bra | Mycket bra | Bra | ... |
+| ... | ... | ... | ... | ... | ... | ... |
 ```
+
+**Note:** Column names come from the assignment's grading criteria file. Each assignment may have different criteria names and counts.
 
 **Column guidelines:**
 - **Student**: "Lastname, Firstname" format for easy alphabetical sorting
 - **Betyg**: Final grade (G or VG)
 - **Röster**: Vote count (3/3, 2/3) or "Override" if instructor adjusted
-- **Section columns**: Use the most representative assessment from the three reviewers (majority or most common)
+- **Criterion columns**: Use the most representative assessment from the three reviewers (majority or most common)
 
 #### 5b. Statistics Summary
 
@@ -564,15 +607,15 @@ The summaries should be placed at the **end** of GRADING-RESULTS.md, after all i
 
 | Grade | Swedish | Criteria |
 |-------|---------|----------|
-| G | Godkänt | All sections meet minimum |
-| VG | Väl godkänt | G criteria + VG-eligible sections show deeper understanding |
+| G | Godkänt | All criteria meet minimum |
+| VG | Väl godkänt | G criteria + VG-eligible criteria show deeper understanding |
 
 ## Single Student Evaluation
 
 To evaluate just one student:
 
 ```
-Evaluate the report for [Student Name] in [assignment-folder-path]
+Evaluate the report for [Student Name] in [reports-folder-path]
 Use the three-reviewer method from report-evaluation skill.
 ```
 
@@ -581,7 +624,7 @@ Use the three-reviewer method from report-evaluation skill.
 To evaluate all remaining students:
 
 ```
-Evaluate all ungraded students in [assignment-folder-path]
+Evaluate all ungraded students in [reports-folder-path]
 Use parallel batch mode (3 students per batch, 3 reviewers each).
 Write results to GRADING-RESULTS.md, STUDENT-LIST.md, and EVALUATION-STATUS.json after each batch.
 ```
@@ -594,7 +637,7 @@ Write results to GRADING-RESULTS.md, STUDENT-LIST.md, and EVALUATION-STATUS.json
 
 **Resuming after compaction:**
 ```
-Resume evaluation in [assignment-folder-path]
+Resume evaluation in [reports-folder-path]
 The EVALUATION-STATUS.json will be read automatically.
 ```
 
@@ -621,15 +664,25 @@ Before completing:
 
 ## Privacy Note
 
-GRADING-RESULTS.md and EVALUATION-STATUS.json contain student names and grades. They must be:
+All files in the reports folder (`docs/student-reports/`) are gitignored and contain student names and grades. They must be:
 
-1. Added to `.gitignore`
-2. Never committed to public repositories
-3. Shared only with authorized instructors
+1. Never committed to public repositories
+2. Shared only with authorized instructors
+3. Deleted after course completion
 
 ---
 
 ## Changelog
+
+### 1.1.0 — Split directory layout
+
+- Split layout: reports folder (input) + assignments folder (auto-derived)
+- Auto-discovery: derives assignments folder from reports folder path
+- Flexible file matching: `assignment-*.md` and `*grading-criteria*.md` patterns
+- BACKGROUND.md and SPECIAL-CONSIDERATIONS.md now optional
+- Removed hardcoded EVALUATION-CRITERIA.md (use assignment-specific grading criteria)
+- Outputs (GRADING-RESULTS.md, EVALUATION-STATUS.json) go to reports folder (gitignored)
+- Moved CLASS-LIST.md to `docs/student-reports/CLASS-LIST.md`
 
 ### 1.0.0 — Initial release
 

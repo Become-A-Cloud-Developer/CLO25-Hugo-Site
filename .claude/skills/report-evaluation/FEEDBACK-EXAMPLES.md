@@ -26,7 +26,7 @@ The feedback should feel like something you'd **actually say to the student face
 - Focus on weaknesses
 - Use third-person references
 - Use superlatives like "imponerande" (impressive) - too much praise
-- Use unnecessary capital letters (only for abbreviations like NSG, VNet, SSH)
+- Use unnecessary capital letters (only for abbreviations like API, SDK, MVC)
 - Tell students what they need to do to get a different grade
 - Use "men" statements ("men beskrivningen...", "men endast") - no "but" clauses
 - Use contrast words like "dock", "emellertid", "å andra sidan"
@@ -35,25 +35,25 @@ The feedback should feel like something you'd **actually say to the student face
 
 ## Distinction (VG) Examples
 
-### Example 1: Strong Security Focus
-> "Riktigt snyggt jobbat med C4-modellen och verifieringstesterna - särskilt bra att du testade både vad som fungerar och vad som blockeras. Din riskmatris är genomtänkt och visar att du förstår helheten. Roligt att läsa en rapport med personlig touch som ändå håller tekniskt!"
+### Example 1: Strong Technical Understanding
+> "Riktigt snyggt jobbat med din tekniska dokumentation - du visar tydligt att du förstår hur alla delar hänger ihop och varför. Kul att se hur du motiverar dina designval med tydliga förklaringar. Bra jobbat!"
 
 ### Example 2: Excellent Documentation
-> "Vilken genomarbetad rapport! Du har verkligen förstått hur alla delar hänger ihop och förklarar det på ett sätt som är lätt att följa. Säkerhetsdelen är extra stark med bra motiveringar till varje NSG-regel."
+> "Vilken genomarbetad rapport! Du förklarar komplexa koncept på ett sätt som är lätt att följa och det är tydligt att du har grävt djupare. Snyggt hur du kopplar teori till praktik genom hela rapporten."
 
-### Example 3: Thorough Testing
-> "Kul att se så noggranna tester av hela flödet - från formulär till databas och tillbaka. Din dokumentation av säkerhetskonfigurationen är riktigt bra och visar att du tänkt igenom attackvektorer. Bra jobbat!"
+### Example 3: Thorough Verification
+> "Kul att se så noggranna tester och verifieringar av din lösning - du visar verkligen att allt fungerar som det ska. Din dokumentation är välstrukturerad och visar att du tänkt igenom helheten. Bra jobbat!"
 
-### Example 4: Automation Excellence
-> "Snyggt hur du automatiserat deployment med scripts och cloud-init - det gör lösningen reproducerbar och professionell. Säkerhetsavsnittet är välmotiverat med tydliga förklaringar till varje val. Kul att se ett så genomtänkt upplägg!"
+### Example 4: Strong Implementation
+> "Snyggt hur du byggt upp din lösning steg för steg med tydliga motiveringar till varje val. Din tekniska förståelse lyser igenom i beskrivningarna. Kul att läsa en rapport med personlig touch som ändå håller tekniskt!"
 
 ## Pass (G) Examples - Solid Work
 
 ### Example 1: Complete Solution
-> "Bra jobbat! Du har fått ihop alla delar och visar tydligt hur allt hänger ihop med bra skärmbilder. Speciellt kul att se hur du verifierade att formuläret sparar data hela vägen till databasen."
+> "Bra jobbat! Du har fått ihop alla delar och visar tydligt hur allt hänger ihop med bra skärmbilder. Speciellt kul att se hur du verifierade att din lösning fungerar hela vägen."
 
 ### Example 2: Good Foundation
-> "Fin rapport som visar en fungerande lösning! Arkitekturen är tydligt beskriven och skärmbilderna bekräftar att systemet fungerar. Bra jobbat med att få ihop helheten!"
+> "Fin rapport som visar en fungerande lösning! Din beskrivning är tydlig och skärmbilderna bekräftar att systemet fungerar. Bra jobbat med att få ihop helheten!"
 
 ### Example 3: Clear Explanation
 > "Du förklarar flödet på ett begripligt sätt och det är tydligt att du förstår hur komponenterna samarbetar. Skärmbilderna visar att allt fungerar som det ska. Bra jobbat med att få ihop allt!"
@@ -64,10 +64,10 @@ The feedback should feel like something you'd **actually say to the student face
 > "Du har fått med det som behövs och visar en fungerande lösning. Skärmbilderna bekräftar att systemet fungerar som det ska. Bra jobbat!"
 
 ### Example 2: Functional Demonstration
-> "Bra att du visar att alla delar fungerar med skärmbilder. Rapporten täcker de viktigaste punkterna och visar att du fått systemet att fungera. Tydligt och strukturerat!"
+> "Bra att du visar att alla delar fungerar med skärmbilder. Rapporten täcker de viktigaste punkterna och visar att du fått lösningen att fungera. Tydligt och strukturerat!"
 
 ### Example 3: Honest Effort
-> "Du har lagt ner jobb på att få systemet att fungera och det syns i rapporten. Grunderna är på plats med fungerande formulär och databas. Bra jobbat!"
+> "Du har lagt ner jobb på att få lösningen att fungera och det syns i rapporten. Grunderna är på plats med fungerande komponenter. Bra jobbat!"
 
 ## Phrases to USE
 
@@ -95,7 +95,7 @@ The feedback should feel like something you'd **actually say to the student face
 | "imponerande" / "imponerad" | Too much praise | "snyggt", "kul att se" |
 | "För VG hade det behövts..." | Tells what to do for other grade | Skip - focus on what they did |
 | "Nästa steg vore att..." | Implies incomplete work | Skip - acknowledge what's there |
-| Unnecessary CAPITALS | Looks like shouting | Only use for abbreviations (NSG, SSH) |
+| Unnecessary CAPITALS | Looks like shouting | Only use for abbreviations (API, SDK) |
 | "men beskrivningen..." | Creates negative contrast | Skip the "but" clause entirely |
 | "dock", "emellertid" | Formal contrast words | Skip - don't contrast |
 | "saknar", "saknas" | Describes what's missing | Focus on what IS there |
@@ -107,13 +107,13 @@ The feedback should feel like something you'd **actually say to the student face
 What did the student do well? Be specific.
 
 ❌ "Du har skrivit en bra rapport."
-✓ "Riktigt snyggt jobbat med säkerhetsverifieringen - du testade både vad som tillåts och vad som blockeras."
+✓ "Riktigt snyggt jobbat med din tekniska dokumentation - du visar tydligt hur alla delar hänger ihop."
 
 ### Sentence 2: Achievement
-What stood out? What was particularly impressive?
+What stood out? What was particularly noteworthy?
 
 ❌ "Rapporten visar god förståelse."
-✓ "Din C4-modell är tydlig och visar hur alla komponenter hänger ihop."
+✓ "Din beskrivning av arkitekturen är tydlig och visar att du förstår varför varje komponent behövs."
 
 ### Sentence 3: Recognition
 Warm closing that acknowledges effort.
@@ -125,7 +125,7 @@ Warm closing that acknowledges effort.
 
 ### VG Feedback Should:
 - Mention specific technical achievements
-- Reference security depth or automation
+- Reference depth of understanding or thoroughness
 - Show genuine enthusiasm
 - Acknowledge going beyond requirements
 

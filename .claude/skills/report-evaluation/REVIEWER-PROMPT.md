@@ -5,8 +5,9 @@ This is the exact prompt template to use when spawning reviewer subagents. Each 
 ## Template
 
 Replace placeholders with actual values:
-- `[FOLDER]` - Full path to assignment folder
-- `[COURSE_DESC_PATH]` - Full path to COURSE-DESCRIPTION.md (may be in parent folder)
+- `[REPORTS_FOLDER]` - Full path to reports folder (where PDFs and student data are)
+- `[ASSIGNMENTS_FOLDER]` - Full path to assignments folder (where instructions and criteria are)
+- `[COURSE_DESC_PATH]` - Full resolved path to COURSE-DESCRIPTION.md
 - `[FULL_NAME]` - Student's full name
 - `[FILENAME]` - PDF filename
 
@@ -17,23 +18,26 @@ Evaluate this student report.
 
 Read these files to understand what to evaluate and the grading criteria:
 
-1. [FOLDER]/ASSIGNMENT.md
-   - Defines the report sections students must include
-   - Contains section weights (%)
-   - Describes what each section should contain
+1. [ASSIGNMENTS_FOLDER]/assignment-*.md
+   - The assignment instructions
+   - Describes what each section/criterion should contain
 
-2. [COURSE_DESC_PATH]
+2. [ASSIGNMENTS_FOLDER]/*grading-criteria*.md
+   - Grading rubric with criteria, weights, and G/VG levels
+   - Defines the sections/criteria to assess
+
+3. [COURSE_DESC_PATH]
    - Formal course learning objectives
    - Pass (G) and Distinction (VG) criteria
    - Which objectives this assignment examines
    - Note: This file may be in a parent folder shared across assignments
 
-3. [FOLDER]/BACKGROUND.md
+4. [ASSIGNMENTS_FOLDER]/BACKGROUND.md (if exists — optional)
    - Project scenario and context
    - Learning context (group work, weekly demos, etc.)
    - How this assignment connects to course objectives
 
-4. [FOLDER]/SPECIAL-CONSIDERATIONS.md
+5. [ASSIGNMENTS_FOLDER]/SPECIAL-CONSIDERATIONS.md (if exists — optional)
    - Exceptions and adjustments for this assignment
    - What was NOT required due to constraints
    - How to handle missing components
@@ -41,11 +45,13 @@ Read these files to understand what to evaluate and the grading criteria:
 **Step 2: Read and evaluate the student report**
 
 - Student: [FULL_NAME]
-- File: [FOLDER]/student-reports/[FILENAME]
+- File: [REPORTS_FOLDER]/[FILENAME]
 
-Read the entire PDF and assess each section defined in ASSIGNMENT.md.
+Read the entire PDF and assess each criterion defined in the grading criteria file.
 
-**Step 2b: Follow code repository links (if present)**
+**Step 2b: Follow code repository links and source code**
+
+If a source-code ZIP exists at [REPORTS_FOLDER]/[PREFIX]_source-code.zip, the student's code has been downloaded. Use the GitHub URL from STUDENT-LIST.md to review the repository via WebFetch for supplementary context.
 
 If the report contains links to GitHub, GitLab, or other code repositories/snippets:
 
@@ -65,9 +71,9 @@ This provides a more complete picture of the student's actual implementation, no
 
 **Do NOT penalize** students who don't include code links - this is supplementary context, not a requirement.
 
-**Step 3: Provide section-by-section evaluation**
+**Step 3: Provide criterion-by-criterion evaluation**
 
-For each section in ASSIGNMENT.md, provide:
+For each criterion in the grading criteria file, provide:
 1. Swedish assessment term: Okej / Bra / Mycket bra / Utmärkt
 2. One sentence explanation in Swedish
 
@@ -80,10 +86,10 @@ Assessment scale:
 **Step 4: Determine overall grade**
 
 Based on COURSE-DESCRIPTION.md criteria:
-- Godkänt (G): All sections meet minimum criteria
-- Väl godkänt (VG): G criteria met AND VG-eligible sections show deeper understanding
+- Godkänt (G): All criteria meet minimum requirements
+- Väl godkänt (VG): G criteria met AND VG-eligible criteria show deeper understanding
 
-Check BACKGROUND.md for which sections can earn VG.
+Check the grading criteria file for which criteria can earn VG.
 
 **Step 5: Write feedback**
 
@@ -97,7 +103,7 @@ Tone guidelines:
 - It's okay to use exclamation marks
 - Be specific about what stood out
 
-Avoid (in ALL parts - section comments, Återkoppling, AND Motivering):
+Avoid (in ALL parts - criterion comments, Återkoppling, AND Motivering):
 - Superlatives like "imponerande" (impressive) - too much praise
 - Unnecessary capital letters (only for abbreviations like NSG, SSH)
 - Any mention of VG or other grades ("För VG...", "VG kräver...", "VG-nivå", "VG-kriterierna")
@@ -131,9 +137,9 @@ If any answer is "no", rewrite until all answers are "yes".
 
 | Avsnitt | Bedömning | Kommentar |
 |---------|-----------|-----------|
-| [Section 1 from ASSIGNMENT.md] | [term] | [comment in Swedish] |
-| [Section 2 from ASSIGNMENT.md] | [term] | [comment in Swedish] |
-| [Continue for all sections...] | | |
+| [Criterion 1 from grading criteria] | [term] | [comment in Swedish] |
+| [Criterion 2 from grading criteria] | [term] | [comment in Swedish] |
+| [Continue for all criteria...] | | |
 
 ### Betyg: **[Godkänt/Väl godkänt]**
 
@@ -157,15 +163,16 @@ Evaluate this student report.
 
 Read these files to understand what to evaluate and the grading criteria:
 
-1. /path/to/assignments/assignment-skilltest/ASSIGNMENT.md
-2. /path/to/assignments/COURSE-DESCRIPTION.md  # Found in parent folder
-3. /path/to/assignments/assignment-skilltest/BACKGROUND.md
-4. /path/to/assignments/assignment-skilltest/SPECIAL-CONSIDERATIONS.md
+1. /path/to/docs/assignments/assignment-1/assignment-1.md
+2. /path/to/docs/assignments/assignment-1/assignment-1-grading-criteria.md
+3. /path/to/docs/COURSE-DESCRIPTION.md  # Found in parent folder
+4. /path/to/docs/assignments/assignment-1/BACKGROUND.md  # (if exists)
+5. /path/to/docs/assignments/assignment-1/SPECIAL-CONSIDERATIONS.md  # (if exists)
 
 **Step 2: Read and evaluate the student report**
 
 - Student: Anna Andersson
-- File: /path/to/assignments/assignment-skilltest/student-reports/andersson_anna_rapport.pdf
+- File: /path/to/docs/student-reports/assignment-1/andersson_anna_rapport.pdf
 
 [... rest of template ...]
 ```
@@ -183,7 +190,7 @@ When spawning 3 reviewer subagents for one student:
 
 ```
 # Spawn 3 parallel tasks for single student:
-Task 1: [Full prompt with folder path, student name, and filename]
+Task 1: [Full prompt with folder paths, student name, and filename]
 Task 2: [Identical prompt]
 Task 3: [Identical prompt]
 ```
@@ -192,34 +199,34 @@ Task 3: [Identical prompt]
 
 When evaluating multiple students, spawn all reviewers for a batch in one message:
 
-1. **Batch size** - Maximum 10 students per batch (30 subagents)
+1. **Batch size** - Maximum 3 students per batch (9 subagents)
 2. **Single spawn message** - All Task calls in one message for true parallelism
 3. **Wait for entire batch** - Collect all results before processing
 4. **Match by student name** - Group results by student name for consensus
 
 ```
-# Spawn all reviewers for batch of N students (max 10):
+# Spawn all reviewers for batch of N students (max 3):
 Task: Student 1, Reviewer 1 [prompt with student 1 details]
 Task: Student 1, Reviewer 2 [prompt with student 1 details]
 Task: Student 1, Reviewer 3 [prompt with student 1 details]
 Task: Student 2, Reviewer 1 [prompt with student 2 details]
 Task: Student 2, Reviewer 2 [prompt with student 2 details]
 Task: Student 2, Reviewer 3 [prompt with student 2 details]
-... (up to 30 parallel tasks)
+Task: Student 3, Reviewer 1 [prompt with student 3 details]
+Task: Student 3, Reviewer 2 [prompt with student 3 details]
+Task: Student 3, Reviewer 3 [prompt with student 3 details]
 ```
-
-**Performance benefit:** Processing 10 students in parallel takes roughly the same time as processing 1 student sequentially.
 
 ### Collecting Results
 
 Each subagent returns:
 - **Student name** (for matching in parallel batch processing)
-- Section assessments (term + comment for each section in ASSIGNMENT.md)
+- Criterion assessments (term + comment for each criterion in grading criteria file)
 - Overall grade (G or VG)
 - Feedback (3 sentences in Swedish)
 - Reasoning (brief justification)
 
-**Batch processing note:** When spawning multiple students in parallel (up to 10 students × 3 reviewers = 30 subagents), use the student name in each result to group the 3 reviews for consensus voting.
+**Batch processing note:** When spawning multiple students in parallel (up to 3 students × 3 reviewers = 9 subagents), use the student name in each result to group the 3 reviews for consensus voting.
 
 ### Determining Consensus
 
