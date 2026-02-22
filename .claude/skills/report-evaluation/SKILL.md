@@ -1,6 +1,6 @@
 ---
 name: report-evaluation
-version: 1.1.0
+version: 1.2.0
 description: Evaluate student assignment reports using three independent reviewers for consensus grading. Each reviewer reads the PDF and context files independently, then provides section assessments in Swedish. Results compiled with majority voting into GRADING-RESULTS.md. Use when grading prepared student submissions.
 allowed-tools: Read, Write, Edit, Glob, Task, AskUserQuestion, WebFetch
 triggers:
@@ -140,14 +140,14 @@ Searches:  docs/COURSE-DESCRIPTION.md           (parent search from reports fold
 
 **All feedback must be framed positively.** Never use negative critique.
 
-When writing feedback, imagine you are actually saying this to the student face-to-face. Ask yourself: "Would I actually say this?" If it sounds bureaucratic, rewrite it.
-
 | Principle | Description |
 |-----------|-------------|
-| **Face-to-face test** | The feedback should feel like something you'd actually say to the student in person |
-| **Positive framing** | Frame everything positively - never mention what's missing or lacking |
-| **Genuine enthusiasm** | Show real enthusiasm when something is good ("Riktigt snyggt!", "Kul att se...") |
-| **Natural Swedish** | Use conversational language, not formal report language |
+| **Dry tone** | Minimal adjectives, no exclamation marks, no superlatives, no filler phrases |
+| **Positive framing** | Frame everything positively — never mention what's missing or lacking |
+| **Vague on specifics** | Do not reference specific filenames, code, section names, or error messages from the report — risk of inaccuracy |
+| **Grade signal** | First sentence subtly signals the grade level (VG = "förståelse/resonemang/röd tråd", G = "fungerande/alla delmoment/på plats") |
+| **No name** | Do not address the student by first name in the feedback |
+| **Natural Swedish** | Use conversational language, but keep English tech terms that are used as-is in Swedish (deploy, CI/CD, reverse proxy, IaC, etc.) |
 
 ## Three-Reviewer Method
 
@@ -397,9 +397,21 @@ If all different: Flag for manual review (split)
 ```
 
 **Select best feedback** from the 3 options:
-1. Most warm and encouraging
-2. Most specific to student's work
-3. Most natural Swedish (not bureaucratic)
+1. Driest tone (fewest adjectives, no exclamation marks)
+2. Most vague on specifics (no risky claims about specific files/code/sections)
+3. Clearest grade signal in first sentence (VG = understanding words, G = functional words)
+4. No student first name, no filler phrases like "Bra jobbat!"
+
+**Compile instructor summary** from all 3 reviewers:
+- Unlike student feedback (select best), instructor summaries are **synthesized** — combine the most useful observations from all 3 reviewers into one 3-5 sentence paragraph
+- Cover: strengths, weaknesses, code quality (if reviewed), what to watch for
+- Written in Swedish, candid and direct — this is never shown to students
+- Check each reviewer's "Sources Reviewed" table to verify code was actually reviewed
+
+**Verify code review** from Sources Reviewed tables:
+- Check that at least 2 of 3 reviewers fetched the GitHub repo
+- If no reviewer checked the code, note this in the terminal output
+- The instructor summary should reflect whether the code was actually reviewed
 
 #### 3e. Batch Write Results
 
@@ -673,6 +685,17 @@ All files in the reports folder (`docs/student-reports/`) are gitignored and con
 ---
 
 ## Changelog
+
+### 1.2.0 — Feedback tone and instructor summaries
+
+- Dry feedback tone: no exclamation marks, no superlatives, no filler phrases, no student names
+- Grade-signal vocabulary in first sentence (VG = "förståelse/resonemang/röd tråd", G = "fungerande/alla delmoment/på plats")
+- Vague on specifics: no filenames, code snippets, or section titles in student feedback
+- Tech terminology guide: keep English terms used in Swedish as-is (deploy, CI/CD, IaC, etc.)
+- Added Sources Reviewed table: reviewers must report which URLs they fetched
+- Code review verification: at least 2/3 reviewers must fetch the GitHub repo
+- Added Instructor Summary section: candid per-student assessment in Swedish (strengths, weaknesses, code quality, watch for)
+- Instructor summaries synthesized from all 3 reviewers (not just best pick)
 
 ### 1.1.0 — Split directory layout
 

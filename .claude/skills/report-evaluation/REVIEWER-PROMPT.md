@@ -93,45 +93,72 @@ Check the grading criteria file for which criteria can earn VG.
 
 **Step 5: Write feedback**
 
-Write 3 sentences in Swedish, speaking directly to the student using "du/din".
+Write exactly 3 sentences in Swedish, addressing the student with "du/din". Keep the tone dry — minimal adjectives, no exclamation marks, no superlatives, no filler phrases like "Bra jobbat!".
 
-Tone guidelines:
-- Be warm, encouraging, and genuine
-- Speak like a teacher talking face-to-face
-- Use natural conversational Swedish
-- Avoid bureaucratic or stiff language
-- It's okay to use exclamation marks
-- Be specific about what stood out
+**Do NOT address the student by first name** in the feedback.
 
-Avoid (in ALL parts - criterion comments, Återkoppling, AND Motivering):
-- Superlatives like "imponerande" (impressive) - too much praise
+**Stay vague on specifics.** Do not reference specific filenames, code snippets, section names, error messages, or tools from the report. If you cannot verify a specific claim with 100% certainty, keep it general. It is always better to be vague than to be wrong.
+
+**Tech terminology:** Keep established English tech terms in English (deploy, commit, CI/CD, pipeline, reverse proxy, Infrastructure as Code, SSH, NSG). Do not invent Swedish translations for words that Swedish developers use in English.
+
+**Sentence structure:**
+
+1. **Grade signal** — A vague general statement that subtly reflects the grade level:
+   - For **VG**: Use words like "förståelse", "resonemang", "sammanhängande", "genomtänkt", "röd tråd", "djup"
+   - For **G**: Use words like "fungerande", "alla delmoment", "på plats", "fått ihop", "täcker", "redovisade"
+2. **Observation** — One safe, general observation about the work
+3. **Closing** — A remark that rounds out the picture (not a filler phrase)
+
+The grade signal must be subtle enough that a student would not notice the pattern, but clear enough that the instructor can identify the grade from the first sentence alone.
+
+Avoid (in criterion comments AND Återkoppling — does NOT apply to the Instructor Summary which should be candid):
+- Superlatives like "imponerande" (impressive)
+- Enthusiastic phrases ("Riktigt snyggt!", "Kul att se...", "Vilken genomarbetad...")
 - Unnecessary capital letters (only for abbreviations like NSG, SSH)
-- Any mention of VG or other grades ("För VG...", "VG kräver...", "VG-nivå", "VG-kriterierna")
-- Words like "saknar", "saknas", "men saknar" (missing/lacks) - don't describe what's NOT there
-- "men" statements ("men beskrivningen...", "men endast", "men verifieringen") - no "but" clauses
-- Words like "dock", "emellertid", "å andra sidan" - no contrast/limitation phrases
-- Suggesting "next steps" or improvements
-- Describing what the student DIDN'T do - focus ONLY on what they DID
+- Any mention of VG or other grades
+- Words like "saknar", "saknas" — don't describe what's missing
+- "men" statements — no "but" clauses
+- Contrast words like "dock", "emellertid"
+- Suggesting improvements or "next steps"
+- Describing what the student DIDN'T do
+- Specific filenames, code, section titles, or error messages from the report
+- Student's first name
 
-Structure:
-1. Strength: What the student did well (be specific and enthusiastic)
-2. Achievement: Highlight something that stood out
-3. Recognition: Warm, encouraging closing
+**Tone test:** Before finalizing, verify:
+1. Can the instructor tell the grade from sentence 1 alone?
+2. Would a student notice the G/VG pattern? (they should not)
+3. Are there any specific claims that could be wrong? (there should not be)
+4. Are there exclamation marks or filler phrases? (there should not be)
 
-**Critical tone test:** Before finalizing feedback, ask yourself:
-1. Would I actually say this to the student face-to-face?
-2. Does it sound like a real person, not a template?
-3. Is there genuine warmth in the words?
+**Step 6: Write instructor summary**
 
-If any answer is "no", rewrite until all answers are "yes".
+Write a candid summary for the instructor (not shown to the student). This is the opposite of the dry student feedback — here you should be specific, detailed, and honest about both strengths and weaknesses. The instructor uses this to understand the student going forward in the course.
+
+Write in Swedish. Be direct. You CAN mention weaknesses, gaps, and things the student struggled with.
+
+Cover:
+- **Strengths**: What the student genuinely does well. Be specific — reference actual things from the report and code.
+- **Weaknesses**: Where the student falls short. What's shallow, missing depth, or poorly explained.
+- **Code quality**: If you reviewed the repo, what did the code look like? Well-structured? Messy? Copy-pasted from tutorials?
+- **Watch for**: What the instructor should look for in this student's future assignments. Are they on a good trajectory? Do they need support in a specific area?
+
+Keep it to 3-5 sentences total. Be useful, not exhaustive.
 
 **Return your evaluation in this format:**
 
-**IMPORTANT:** Always include the student's full name exactly as provided - this is required for matching results in parallel batch processing.
+**IMPORTANT:** Always include the student's full name exactly as provided — this is required for matching results in parallel batch processing.
 
 ---
 
 ## [Student Name]
+
+### Sources Reviewed
+
+| Source | URL / Path | Status |
+|--------|------------|--------|
+| Report PDF | [REPORTS_FOLDER]/[FILENAME] | Read in full |
+| GitHub repo | [URL or "No URL found"] | [What was reviewed, e.g., "Reviewed README, Program.cs, deployment scripts" / "Repo not accessible" / "No URL in report"] |
+| Other | [Any additional sources] | [Status] |
 
 ### Bedömning per avsnitt
 
@@ -145,11 +172,11 @@ If any answer is "no", rewrite until all answers are "yes".
 
 ### Återkoppling
 
-[3-sentence feedback in Swedish]
+[3-sentence feedback in Swedish — dry tone, vague on specifics, grade signal in sentence 1]
 
-### Motivering
+### Instructor Summary
 
-[1-2 sentences explaining why the student earned THIS grade. ONLY describe what the student DID - never mention VG, never compare to other grades, never say what is "missing" or "lacking".]
+[3-5 sentences in Swedish. Candid assessment of strengths, weaknesses, code quality, and what to watch for. Be specific — this is not shown to the student.]
 
 ---
 ```
@@ -221,12 +248,15 @@ Task: Student 3, Reviewer 3 [prompt with student 3 details]
 
 Each subagent returns:
 - **Student name** (for matching in parallel batch processing)
+- **Sources reviewed** (table of URLs fetched and what was found — verify code was actually checked)
 - Criterion assessments (term + comment for each criterion in grading criteria file)
 - Overall grade (G or VG)
-- Feedback (3 sentences in Swedish)
-- Reasoning (brief justification)
+- Feedback (3 sentences in Swedish — dry tone)
+- Instructor summary (3-5 sentences in English — candid strengths/weaknesses)
 
 **Batch processing note:** When spawning multiple students in parallel (up to 3 students × 3 reviewers = 9 subagents), use the student name in each result to group the 3 reviews for consensus voting.
+
+**Code review verification:** Check each reviewer's Sources Reviewed table. If a reviewer did not fetch the GitHub repo, note this when reporting results. At least 2 of 3 reviewers should have reviewed the code for the assessment to be considered code-verified.
 
 ### Determining Consensus
 
@@ -248,15 +278,16 @@ else:
 
 From 3 feedback options, select based on:
 
-1. **Warmth** - Does it sound genuinely encouraging?
-2. **Specificity** - Does it mention specific things from the report?
-3. **Natural Swedish** - Does it avoid bureaucratic phrases?
+1. **Driest tone** - Fewest adjectives, no exclamation marks, no filler
+2. **Vagueness on specifics** - No risky claims about specific files, code, sections, or error messages
+3. **Grade signal** - First sentence clearly (but subtly) signals VG or G through word choice
+4. **Natural Swedish** - No invented tech translations, no bureaucratic phrases
 
 Avoid selecting feedback that:
-- Uses formal phrases like "visar på mogen förståelse"
+- Uses enthusiastic phrases ("Riktigt snyggt!", "Kul att se...", "Bra jobbat!")
+- References specific filenames, code snippets, or section titles from the report
+- Addresses the student by first name
+- Uses superlatives like "imponerande"
 - Sounds like a template
-- Is too brief or generic
-- Uses superlatives like "imponerande" (impressive)
-- Uses unnecessary capital letters
 - Tells student what to do for a different grade
 - Suggests improvements or "next steps"

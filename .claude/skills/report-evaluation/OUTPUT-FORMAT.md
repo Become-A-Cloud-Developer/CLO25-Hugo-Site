@@ -37,10 +37,26 @@ Each evaluated student gets this exact structure. The criterion names (Avsnitt c
 
 ### Återkoppling
 
-[3-sentence feedback in Swedish, addressing student with "du/din"]
+[3-sentence feedback in Swedish — dry tone, vague on specifics, grade signal in sentence 1]
+
+### Instructor Summary
+
+[Candid 3-5 sentence assessment in Swedish covering strengths, weaknesses, code quality, and what to watch for. Synthesized from all 3 reviewers. NOT shown to student.]
 
 ---
 ```
+
+### Instructor Summary Guidelines
+
+The instructor summary is compiled by the main agent from all 3 reviewers' instructor summaries. Unlike student feedback (which selects the best single option), the instructor summary should be **synthesized** — combine the most useful observations from all reviewers into one coherent paragraph.
+
+Cover these aspects:
+- **Strengths**: What the student genuinely does well (be specific)
+- **Weaknesses**: Where the student falls short, what lacks depth
+- **Code quality**: What the repo actually looked like (if reviewed)
+- **Watch for**: What the instructor should look for in future assignments
+
+Write in Swedish. Be direct and candid — this section is never shown to students.
 
 ### Example Complete Entry
 
@@ -64,7 +80,11 @@ Each evaluated student gets this exact structure. The criterion names (Avsnitt c
 
 ### Återkoppling
 
-Riktigt snyggt jobbat med din lösning - du visar tydligt att du förstår hur alla delar hänger ihop! Din dokumentation är genomarbetad och lätt att följa. Roligt att läsa en rapport med personlig touch som ändå håller tekniskt.
+Rapporten visar god förståelse för hela kedjan från utveckling till driftsättning. Säkerhet och automation löper som en röd tråd genom arbetet. Det märks att du har tänkt igenom helheten.
+
+### Instructor Summary
+
+Stark teknisk grund — Bicep-mallarna i repot är välstrukturerade med parametrisering, och servicefilen visar att hon förstår processhantering bortom copy-paste. Rapportskrivandet ligger över genomsnittet med genuina reflektioner kring felsökning. Svag punkt är applikationsutvecklingsdelen som stannar på ytan kring MVC utan att koppla till egen kod. Håll koll på om hon fördjupar sig i applikationsarkitektur i kommande uppgifter eller fortsätter luta sig mot infrastruktur som sin styrka.
 
 ---
 ```

@@ -130,7 +130,7 @@ For each validated, accessible repository:
 
 2. **Download ZIP archive:**
    ```bash
-   gh api repos/{owner}/{repo}/zipball -o [reports_folder]/[prefix]_source-code.zip
+   gh api repos/{owner}/{repo}/zipball > [reports_folder]/[prefix]_source-code.zip
    ```
    - Naming convention: `lastname_firstname_source-code.zip` (matches PDF prefix)
 
