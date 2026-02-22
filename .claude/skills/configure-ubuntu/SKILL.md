@@ -1,5 +1,6 @@
 ---
 name: configure-ubuntu
+version: 1.0.0
 description: Ubuntu server configuration via cloud-init and systemd. Use when writing cloud-init YAML, configuring systemd services, setting up nginx, or troubleshooting VM configuration issues.
 ---
 
@@ -238,3 +239,14 @@ Prevention checklist and solutions for:
 - systemd issues (inline comments, permissions)
 - File permission problems
 - SSH and networking issues
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Cloud-init YAML configuration
+- Systemd service setup
+- Nginx configuration
+- VM troubleshooting guides

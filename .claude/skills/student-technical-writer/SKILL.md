@@ -344,3 +344,13 @@ These roles may run on separate infrastructure or coexist on a single machine. S
 ## Summary
 
 A server provides compute resources that process requests and deliver services over a network. The term describes both physical hardware and the software running on it. Servers can be deployed on physical machines, virtual machines, containers, or serverless platforms—each model offering different balances of control, overhead, and operational characteristics. Understanding these options enables selecting the appropriate foundation for an application's requirements.
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Student-facing technical writing style guide
+- Explanatory clarity with professional precision
+- Progressive conceptual-to-practical approach

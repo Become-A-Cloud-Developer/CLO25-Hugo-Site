@@ -1,3 +1,7 @@
+---
+version: 1.0.0
+---
+
 # Reveal.js Swedish Tech Presentation Skill
 
 ## Overview
@@ -353,3 +357,13 @@ Claude Code will:
 - [ ] Info-boxes have yellow background tint
 - [ ] Scaling set to maxScale: 1.0
 - [ ] Resolution set to 1920x1080
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Reveal.js presentation generation with Swedish tech aesthetic
+- Standalone HTML presentations for Hugo static site
+- Quality checklist for formatting and layout

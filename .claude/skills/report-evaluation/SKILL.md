@@ -1,5 +1,6 @@
 ---
 name: report-evaluation
+version: 1.0.0
 description: Evaluate student assignment reports using three independent reviewers for consensus grading. Each reviewer reads the PDF and context files independently, then provides section assessments in Swedish. Results compiled with majority voting into GRADING-RESULTS.md. Use when grading prepared student submissions.
 allowed-tools: Read, Write, Edit, Glob, Task, AskUserQuestion, WebFetch
 triggers:
@@ -625,3 +626,14 @@ GRADING-RESULTS.md and EVALUATION-STATUS.json contain student names and grades. 
 1. Added to `.gitignore`
 2. Never committed to public repositories
 3. Shared only with authorized instructors
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Three independent reviewer consensus grading
+- Section-by-section assessment in Swedish
+- Majority voting compilation into GRADING-RESULTS.md
+- Privacy protection for grading output files

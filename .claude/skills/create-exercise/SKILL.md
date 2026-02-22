@@ -1,5 +1,6 @@
 ---
 name: create-exercise
+version: 1.0.0
 description: Create consistent, high-quality educational programming exercises or tutorials following strict template guidelines. Use this skill whenever you need to create or refine a programming exercise or tutorial for your course. Automatically applies template structure, formatting rules, and quality verification.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, TodoWrite
 triggers:
@@ -213,3 +214,13 @@ Using TEMPLATE.md as reference, plan:
 ## Remember
 
 The student should be able to complete the exercise by following just the **bold text**, but have all the context they need available in the **blockquotes** when they're ready for it. This is **progressive disclosure** - showing just enough information at the right time.
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Exercise template structure with progressive disclosure
+- Formatting rules and quality verification
+- Support for exercises and tutorials

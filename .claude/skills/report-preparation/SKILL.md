@@ -1,6 +1,7 @@
 ---
 name: report-preparation
-description: Process student report submissions from Google Classroom. Renames files with lastname_firstname prefix, converts DOCX to PDF, cross-references against class roster, removes duplicates, and generates submission tracking. Use when processing downloaded student assignment submissions.
+version: 1.1.0
+description: Process student report submissions from Google Classroom. Renames files with lastname_firstname prefix, converts DOCX to PDF, cross-references against class roster, removes duplicates, merges multi-file submissions, and generates submission tracking. Use when processing downloaded student assignment submissions.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task
 triggers:
   - student reports
@@ -196,7 +197,33 @@ For each student with duplicates, spawn subagent to:
 - Look for signs of completeness (conclusions, appendices, proper formatting)
 - If latest looks like an accident (e.g., blank pages, wrong file), choose the complete one
 
-### Step 6: Generate STUDENT-LIST.md
+### Step 6: Merge Multi-file Submissions
+
+Some students submit multiple files (e.g., report + screenshots, or separate PDFs per sub-task). After renaming, detect students with multiple PDFs and merge them into a single file.
+
+```bash
+# Find students with multiple PDFs
+ls *.pdf | sed 's/_.*//' | sort | uniq -c | sort -rn | grep -v "^ *1 "
+```
+
+For each student with multiple PDFs:
+
+1. **Determine logical order** — spawn a subagent to read the files and determine the correct reading order (e.g., development → provisioning → deployment, or report → screenshots)
+2. **Concatenate** using `pdfunite`:
+
+```bash
+pdfunite file1.pdf file2.pdf [file3.pdf ...] lastname_firstname_report.pdf
+```
+
+3. **Verify** the merged PDF was created successfully
+4. **Remove** the individual PDFs
+5. **Record** which files were merged (for STUDENT-LIST.md)
+
+**Non-PDF attachments** (ZIP files, source code archives) are kept as-is alongside the merged PDF. Only PDFs are concatenated.
+
+### Step 7: Generate STUDENT-LIST.md
+
+**Important:** The STUDENT-LIST.md must reflect the final state after merging. Include a **Notes** section documenting multi-file submissions and merges, and a **Files Removed** section listing all deleted files with reasons.
 
 Create tracking file at `assignment-N/STUDENT-LIST.md`:
 
@@ -219,6 +246,17 @@ Create tracking file at `assignment-N/STUDENT-LIST.md`:
 
 - Student Name 1
 - Student Name 2
+
+## Notes
+
+- **Student A:** Also submitted source code ZIP (`prefix_source-code.zip`)
+- **Student B:** Report + screenshots merged into single PDF
+- **Student C:** 3 PDFs (Part 1, Part 2, Part 3) merged into single PDF
+
+## Files Removed
+
+- `original-filename.pdf` — reason (e.g., blank page, failed conversion)
+- `part1.pdf`, `part2.pdf` — merged into `prefix_report.pdf`
 ```
 
 **Without class list:**
@@ -237,9 +275,17 @@ Create tracking file at `assignment-N/STUDENT-LIST.md`:
 - **Unidentified (manual review):** Z
 
 ⚠ No class list available - cannot determine missing submissions.
+
+## Notes
+
+(same format as above)
+
+## Files Removed
+
+(same format as above)
 ```
 
-### Step 7: Report Statistics
+### Step 8: Report Statistics
 
 Display final summary:
 
@@ -249,8 +295,10 @@ Display final summary:
 ✓ Files processed: X
 ✓ Successfully renamed: Y
 ✓ Duplicates removed: Z
+✓ Multi-file submissions merged: N
 ⚠ Unidentified (manual review needed): N
 
+Final state: 1 PDF per student (+ any non-PDF attachments)
 Missing submissions: [list names]
 ```
 
@@ -315,7 +363,28 @@ git status --ignored | grep student-reports
 ## Output
 
 After successful processing:
-1. All PDFs renamed with `lastname_firstname_` prefix
-2. STUDENT-LIST.md created with submission tracking
-3. Statistics displayed in terminal
-4. Unidentified files flagged for manual review
+1. **One PDF per student** — renamed with `lastname_firstname_` prefix, multi-file submissions merged
+2. Non-PDF attachments (ZIP, source code) kept alongside with same prefix
+3. STUDENT-LIST.md created with submission tracking, notes on merges, and list of removed files
+4. Statistics displayed in terminal
+5. Unidentified files flagged for manual review
+
+---
+
+## Changelog
+
+### 1.1.0 — 2026-02-22
+
+- Added Step 6: Merge multi-file submissions into single PDF per student using `pdfunite`
+- Updated STUDENT-LIST.md template with Notes and Files Removed sections
+- Updated statistics output to include merge count and final state summary
+- Updated description to mention multi-file merge capability
+
+### 1.0.0 — Initial release
+
+- DOCX to PDF conversion via AppleScript
+- Parallel name extraction from PDFs using subagents
+- Cross-referencing against CLASS-LIST.md
+- Duplicate detection and removal
+- STUDENT-LIST.md generation
+- Privacy protection checks

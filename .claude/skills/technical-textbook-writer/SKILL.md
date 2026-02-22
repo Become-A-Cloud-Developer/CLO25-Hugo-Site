@@ -143,3 +143,13 @@ The system maintains desired state through a reconciliation loop with complexity
 - **Cloud Native:** CNCF landscape, twelve-factor methodology, service mesh
 - **Security:** Zero-trust architecture, OWASP guidelines, encryption at rest/in transit
 - **Compliance:** SOC 2, ISO 27001, GDPR requirements
+
+---
+
+## Changelog
+
+### 1.0.0 — Initial release
+
+- Formal university textbook writing style guide
+- Expository, objective, third-person voice
+- Software, cloud, and DevOps content focus
