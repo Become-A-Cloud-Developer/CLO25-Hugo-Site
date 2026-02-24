@@ -251,9 +251,10 @@ Familiarize yourself with Data Explorer's query and management capabilities. Dat
 
 6. **Insert** one or two more documents with different categories (e.g., `"tools"`, `"learning"`) to observe how documents distribute across partition key values
 
-7. **Explore** the Mongo Shell (if available) at the bottom of Data Explorer — you can run MongoDB shell commands directly:
+7. **Explore** the Mongo Shell (if available) at the bottom of Data Explorer — you can run MongoDB shell commands directly. First, select the database, then query the collection:
 
    ```text
+   use bookmarks_db
    db.bookmarks.find({ "category": "cloud" })
    ```
 

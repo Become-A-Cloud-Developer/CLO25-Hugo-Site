@@ -52,7 +52,7 @@ Ensure your Cosmos DB account has a database and collection ready to receive the
 
 3. **Open** Data Explorer from the left menu
 
-4. **Create** a new database named `newsletter_db` (if it does not already exist)
+4. **Create** a new database named `cloudsoft` (if it does not already exist)
 
 5. **Create** a new collection with the following settings:
 
@@ -65,14 +65,14 @@ Ensure your Cosmos DB account has a database and collection ready to receive the
 >
 > The shard key `/email` is chosen because email addresses have high cardinality (every subscriber has a unique email) and the application frequently queries by email (for duplicate checking and unsubscribe operations). This ensures efficient single-partition queries for the most common operations.
 >
-> The database and collection names should match what the application expects in its MongoDB configuration. If your existing `appsettings.json` uses different names, either update the settings or create the Cosmos DB resources with matching names.
+> The database and collection names must match what the application expects in its `MongoDbOptions` configuration. Your `appsettings.json` sets `DatabaseName` to `cloudsoft` and `SubscribersCollectionName` to `subscribers`, so the Cosmos DB resources must use these exact names.
 >
 > ⚠ **Common Mistakes**
 >
 > - Creating a collection with a shard key that does not match a field in your documents causes all documents to land in a single null-key partition
 > - The shard key path is case-sensitive — `/email` and `/Email` are different. Check your C# model's `[BsonElement]` attribute to confirm the exact field name
 >
-> ✓ **Quick check:** Data Explorer shows the `newsletter_db` database with an empty `subscribers` collection
+> ✓ **Quick check:** Data Explorer shows the `cloudsoft` database with an empty `subscribers` collection
 
 ### **Step 2:** Update the Connection String Configuration
 
@@ -90,7 +90,8 @@ Replace the local MongoDB connection string with the Cosmos DB connection string
    {
      "MongoDb": {
        "ConnectionString": "mongodb://your-account:your-key@your-account.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000",
-       "DatabaseName": "newsletter_db"
+       "DatabaseName": "cloudsoft",
+       "SubscribersCollectionName": "subscribers"
      }
    }
    ```
@@ -117,39 +118,42 @@ Replace the local MongoDB connection string with the Cosmos DB connection string
 
 ### **Step 3:** Handle Cosmos DB Compatibility Settings
 
-Adjust the MongoDB client configuration to handle differences between native MongoDB and Cosmos DB's MongoDB API. The most important setting is disabling retryable writes, which Cosmos DB does not support in the same way as native MongoDB.
+Verify that the Cosmos DB connection string includes the parameters needed for compatibility with the MongoDB.Driver. In your application, the `MongoClient` is created in `Program.cs` using the connection string directly — no code changes are needed, only connection string parameters.
 
-1. **Open** the file where the `MongoClient` is configured (typically the MongoDB repository or service registration)
+1. **Open** `Program.cs` and **locate** the `MongoClient` registration
 
-2. **Verify** that the `MongoClient` is created using the connection string from configuration:
+2. **Verify** that the existing code creates the client directly from the connection string:
 
-   > `MongoDbSubscriberRepository.cs` or equivalent
+   > `Program.cs`
 
    ```csharp
-   var settings = MongoClientSettings.FromConnectionString(connectionString);
-   settings.RetryWrites = false;
-   var client = new MongoClient(settings);
+   builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
+       var mongoDbOptions = builder.Configuration.GetSection(MongoDbOptions.SectionName).Get<MongoDbOptions>();
+       return new MongoClient(mongoDbOptions?.ConnectionString);
+   });
    ```
 
-3. **Alternatively**, if your existing code creates the client directly from the connection string, **ensure** the connection string includes `retrywrites=false`:
+3. **Confirm** that the connection string from Step 2 includes `retrywrites=false` and `ssl=true`:
 
    ```text
    mongodb://...?ssl=true&retrywrites=false&maxIdleTimeMS=120000
    ```
 
+   Because `new MongoClient(connectionString)` parses these parameters automatically, no code changes are required in `Program.cs` or the repository.
+
 > ℹ **Concept Deep Dive**
 >
-> Cosmos DB's MongoDB API supports most MongoDB operations but has some differences in behavior. The most impactful for this migration is retryable writes — MongoDB 4.2+ enables retryable writes by default, but Cosmos DB does not support the server-side session mechanics that retryable writes require. Setting `RetryWrites = false` in the client settings (or `retrywrites=false` in the connection string) prevents the driver from attempting this unsupported feature.
+> Cosmos DB's MongoDB API supports most MongoDB operations but has some differences in behavior. The most impactful for this migration is retryable writes — MongoDB 4.2+ enables retryable writes by default, but Cosmos DB does not support the server-side session mechanics that retryable writes require. Including `retrywrites=false` in the connection string prevents the driver from attempting this unsupported feature.
 >
 > The `maxIdleTimeMS=120000` parameter sets the maximum idle time for connections in the connection pool. Cosmos DB may close idle connections after a period, so this setting helps the driver manage the pool proactively.
 >
-> If your existing code already creates the `MongoClient` with just the connection string (`new MongoClient(connectionString)`), and the connection string includes `retrywrites=false`, no code changes are needed. This is the power of the repository pattern — the migration is purely configuration.
+> Since your `Program.cs` already creates the `MongoClient` with `new MongoClient(connectionString)`, these connection string parameters are parsed and applied automatically. No code changes are needed — the migration is purely configuration.
 >
 > ⚠ **Common Mistakes**
 >
-> - The MongoDB.Driver defaults to `RetryWrites = true` in newer versions — you must explicitly disable it for Cosmos DB
-> - Setting `ssl=false` causes connection failures — Cosmos DB requires TLS/SSL on all connections
-> - If using `MongoClientSettings`, forgetting to call `FromConnectionString` first means SSL and other connection-string parameters are not applied
+> - The MongoDB.Driver defaults to `RetryWrites = true` in newer versions — `retrywrites=false` in the connection string overrides this
+> - Setting `ssl=false` or omitting `ssl=true` causes connection failures — Cosmos DB requires TLS/SSL on all connections
+> - Forgetting `retrywrites=false` causes write operations to fail with "Command insert failed" errors
 >
 > ✓ **Quick check:** The application starts without MongoDB connection errors in the console output
 
@@ -178,23 +182,51 @@ If your application uses feature flags to toggle between data layer implementati
    > `Program.cs`
 
    ```csharp
-   if (builder.Configuration.GetValue<bool>("FeatureFlags:UseMongoDb"))
+   bool useMongoDb = builder.Configuration.GetValue<bool>("FeatureFlags:UseMongoDb");
+
+   if (useMongoDb)
    {
+       // Configure MongoDB options
+       builder.Services.Configure<MongoDbOptions>(
+           builder.Configuration.GetSection(MongoDbOptions.SectionName));
+
+       // Configure MongoDB client
+       builder.Services.AddSingleton<IMongoClient>(serviceProvider => {
+           var mongoDbOptions = builder.Configuration.GetSection(MongoDbOptions.SectionName).Get<MongoDbOptions>();
+           return new MongoClient(mongoDbOptions?.ConnectionString);
+       });
+
+       // Configure MongoDB collection
+       builder.Services.AddSingleton<IMongoCollection<Subscriber>>(serviceProvider => {
+           var mongoDbOptions = builder.Configuration.GetSection(MongoDbOptions.SectionName).Get<MongoDbOptions>();
+           var mongoClient = serviceProvider.GetRequiredService<IMongoClient>();
+           var database = mongoClient.GetDatabase(mongoDbOptions?.DatabaseName);
+           return database.GetCollection<Subscriber>(mongoDbOptions?.SubscribersCollectionName);
+       });
+
+       // Register MongoDB repository
        builder.Services.AddSingleton<ISubscriberRepository, MongoDbSubscriberRepository>();
+
+       Console.WriteLine("Using MongoDB repository");
    }
    else
    {
+       // Register in-memory repository as fallback
        builder.Services.AddSingleton<ISubscriberRepository, InMemorySubscriberRepository>();
+
+       Console.WriteLine("Using in-memory repository");
    }
    ```
 
+   The important thing to note is that **this code does not change** — it was already written in the previous exercise. The `MongoClient` receives the connection string from `appsettings.json`, so switching from Docker MongoDB to Cosmos DB is handled entirely by the configuration update in Step 2.
+
 > ℹ **Concept Deep Dive**
 >
-> The feature flag pattern allows you to switch between repository implementations without changing code or redeploying. With `UseMongoDb` set to `true`, the dependency injection container provides the `MongoDbSubscriberRepository` — which now connects to Cosmos DB instead of Docker MongoDB. Setting it to `false` falls back to the in-memory implementation for local development without any database dependency.
+> The feature flag pattern allows you to switch between repository implementations without changing code or redeploying. With `UseMongoDb` set to `true`, the dependency injection container registers the full MongoDB service chain: `MongoDbOptions` → `IMongoClient` → `IMongoCollection<Subscriber>` → `MongoDbSubscriberRepository`. The `MongoClient` reads the connection string from configuration, so it now connects to Cosmos DB instead of Docker MongoDB. Setting the flag to `false` falls back to the in-memory implementation for local development without any database dependency.
 >
 > This is the key benefit of the repository pattern in action: the controller and service layer code has no knowledge of whether subscribers are stored in memory, in Docker MongoDB, or in Azure Cosmos DB. The `ISubscriberRepository` interface abstracts away the storage mechanism entirely.
 >
-> ✓ **Quick check:** The application starts with the MongoDB repository active, and the console output shows no errors about missing services or unresolvable dependencies
+> ✓ **Quick check:** The application starts with the console output showing "Using MongoDB repository", and no errors about missing services or unresolvable dependencies
 
 ### **Step 5:** Test the Migration
 
@@ -227,7 +259,7 @@ Verify that all CRUD operations work correctly against the Cosmos DB backend. Te
 6. **Verify in the Azure Portal:**
 
    - **Open** Data Explorer in your Cosmos DB account
-   - **Expand** `newsletter_db` → `subscribers`
+   - **Expand** `cloudsoft` → `subscribers`
    - **Click** on Documents to view stored subscriber data
    - **Confirm** the documents contain the expected fields (email, name, etc.)
    - **Confirm** that unsubscribed entries have been removed (or marked as unsubscribed, depending on your implementation)
@@ -256,7 +288,7 @@ Verify that all CRUD operations work correctly against the Cosmos DB backend. Te
 >
 > **"Connection refused" or timeout errors:** Verify the connection string is correct and your network allows outbound connections on port 10255. Some corporate networks or VPNs block non-standard ports.
 >
-> **"Command insert failed" or write errors:** Ensure `retrywrites=false` is in the connection string or `RetryWrites = false` is set in `MongoClientSettings`.
+> **"Command insert failed" or write errors:** Ensure `retrywrites=false` is included in the connection string in `appsettings.json`.
 >
 > **"Collection doesn't exist" errors:** The MongoDB.Driver may auto-create collections in native MongoDB but may not in Cosmos DB depending on the API version. Create the collection manually in Data Explorer first.
 >
