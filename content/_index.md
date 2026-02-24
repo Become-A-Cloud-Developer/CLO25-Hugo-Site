@@ -2,7 +2,7 @@
 title = "Cloud Developers CLO25"
 program = "CLO"
 cohort = "25"
-courses = ["BCD"]
+courses = ["BCD", "ACD"]
 description = "Cloud development fundamentals for DevOps"
 weight = 1
 +++

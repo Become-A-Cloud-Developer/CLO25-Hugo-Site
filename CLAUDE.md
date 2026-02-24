@@ -31,8 +31,9 @@ The IPL25 project serves as the template for this CLO25 site. It contains:
 | Tag | Full Name |
 |-----|-----------|
 | BCD | Basic Cloud Development |
+| ACD | Advanced Cloud Development |
 
-*Note: BCD is the first of 4 courses in the Cloud Developers program.*
+*Note: BCD and ACD are the first 2 of 4 courses in the Cloud Developers program.*
 
 ### Frontmatter Format
 
@@ -42,6 +43,12 @@ All content files include course taxonomy fields:
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
+```
+
+For hub pages spanning multiple courses:
+
+```toml
+courses = ["BCD", "ACD"]
 ```
 
 ## Hugo Site Structure
@@ -56,7 +63,15 @@ CLO25-Hugo-Site/
 ├── archetypes/
 │   └── default.md                  # Content archetype
 ├── content/
-│   └── _index.md                   # Homepage
+│   ├── _index.md                   # Homepage
+│   ├── getting-started/
+│   │   ├── _index.md               # Course selector hub
+│   │   ├── bcd/_index.md           # BCD getting started
+│   │   └── acd/_index.md           # ACD getting started
+│   └── week-by-week/
+│       ├── _index.md               # Course selector hub
+│       ├── bcd/_index.md           # BCD weekly schedule
+│       └── acd/_index.md           # ACD weekly schedule
 ├── layouts/
 │   ├── partials/
 │   │   ├── custom-head.html        # SEO meta tags
@@ -133,6 +148,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - `main` - Production, auto-deploys to GitHub Pages
 - Feature branches for major changes
 
+## Content Roadmap
+
+See `docs/content-roadmap.md` for the prioritized checklist of content to be created, mapped against the course plan (`docs/course-plan/`). Block 3 (CI/CD, Secret Management, Monitoring) is the most urgent — no content exists and teaching starts Mar 9.
+
 ## Key Files Reference
 
 | File/Directory | Purpose |
@@ -146,6 +165,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 | `layouts/partials/pagination.html` | Hugo v0.148+ pagination fix |
 | `layouts/partials/custom-head.html` | Robots meta |
 | `themes/docdock/` | DocDock theme (git submodule, never edit directly) |
+| `docs/content-roadmap.md` | Prioritized content creation checklist |
+| `docs/course-plan/` | Official course plan and study guide (Swedish) |
 
 ## Resources
 

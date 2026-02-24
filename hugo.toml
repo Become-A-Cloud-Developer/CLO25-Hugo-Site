@@ -29,6 +29,7 @@ theme = "docdock"
 
 [params.courses]
   BCD = "Basic Cloud Development"
+  ACD = "Advanced Cloud Development"
 
 # Menu configuration
 [menu]
