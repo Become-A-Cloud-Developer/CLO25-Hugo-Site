@@ -13,14 +13,14 @@ draft = false
 
 ## Goal
 
-Create an Azure Storage Account, configure a Blob container for public image hosting, upload a hero image, and retrieve the container URL for use in your application's configuration.
+Create an Azure Storage Account, configure a Blob container for public image hosting, upload a hero image, and verify that the blob is publicly accessible.
 
 > **What you'll learn:**
 >
 > - How to create an Azure Storage Account through the Azure Portal
+> - How to enable anonymous access at the account level
 > - How to create a Blob container with anonymous read access for public assets
 > - How to upload files to Azure Blob Storage
-> - How to construct the container URL for application configuration
 > - How to verify blob access from a browser
 > - Key concepts of Azure Blob Storage: accounts, containers, and blobs
 
@@ -30,8 +30,7 @@ Create an Azure Storage Account, configure a Blob container for public image hos
 >
 > - ✓ Active Azure subscription with resource creation permissions
 > - ✓ Familiarity with the Azure Portal
-> - ✓ A hero image file (any `.jpg` or `.png` image, ideally 1920x1080 or similar for a hero section)
-> - ✓ A web browser for verification
+> - ✓ A hero image file (any `.jpg` or `.png` image, ideally 1920×1080 or similar for a hero section)
 
 ## Exercise Steps
 
@@ -41,8 +40,6 @@ Create an Azure Storage Account, configure a Blob container for public image hos
 2. **Create a Blob Container**
 3. **Upload a Hero Image**
 4. **Verify Public Access**
-5. **Configure the Application**
-6. **Test and Verify**
 
 ### **Step 1:** Create a Storage Account
 
@@ -65,9 +62,16 @@ Set up an Azure Storage Account to host your application's static assets. A Stor
    - **Performance**: Select `Standard`
    - **Redundancy**: Select `Locally-redundant storage (LRS)`
 
-6. **Click** Review + Create, then **click** Create
+6. **Click** the **Advanced** tab and configure the following:
 
-7. **Wait** for the deployment to complete (this typically takes 30–60 seconds)
+   - Under **Security**, **check** "Allow enabling anonymous access on individual containers"
+   - Leave all other Advanced settings at their defaults
+
+   > This setting is required for Step 2, where you will configure public read access on the Blob container. If this is not enabled at the account level, the anonymous access dropdown will be greyed out when creating the container.
+
+7. **Click** Review + Create, then **click** Create
+
+8. **Wait** for the deployment to complete (this typically takes 30–60 seconds)
 
 > ℹ **Concept Deep Dive**
 >
@@ -108,7 +112,7 @@ Create a container within your Storage Account to organize and store your image 
 > **Anonymous access levels:**
 >
 > - **Private (no anonymous access)** — Default. All requests must be authenticated with an account key, SAS token, or Azure AD. Use this for sensitive data.
-> - **Blob (anonymous read access for blobs only)** — Anyone with the URL can read individual blobs, but cannot list the blobs in the container. This is ideal for serving public assets like images — users can access `hero.jpg` directly but cannot browse the container to discover other files.
+> - **Blob (anonymous read access for blobs only)** — Anyone with the URL can read individual blobs, but cannot list the blobs in the container. This is ideal for serving public assets like images — users can access `hero.png` directly but cannot browse the container to discover other files.
 > - **Container (anonymous read access for containers and blobs)** — Anyone can read blobs and list all blobs in the container. Avoid this unless you intentionally want the container contents to be discoverable.
 >
 > If the "Anonymous access level" dropdown is greyed out or missing, it means that anonymous access is disabled at the storage account level. To enable it: go to Settings → Configuration in your Storage Account, find "Allow Blob anonymous access", set it to **Enabled**, and save. Then return to create the container.
@@ -131,41 +135,41 @@ Upload your hero image to the Blob container. Once uploaded, the image will be a
 
 3. **Click** "Browse for files" and **select** your hero image file
 
-4. **Rename** the file to `hero.jpg` in the upload dialog (or ensure your file is already named `hero.jpg`)
+4. **Rename** the file to `hero.png` in the upload dialog (or ensure your file is already named `hero.png`)
 
 5. **Click** Upload
 
-6. **Verify** the upload by checking that `hero.jpg` appears in the container's blob list
+6. **Verify** the upload by checking that `hero.png` appears in the container's blob list
 
-7. **Click** on `hero.jpg` to open its properties
+7. **Click** on `hero.png` to open its properties
 
 8. **Copy** the blob URL — it will follow this pattern:
 
    ```text
-   https://{accountname}.blob.core.windows.net/images/hero.jpg
+   https://{accountname}.blob.core.windows.net/images/hero.png
    ```
 
 > ℹ **Concept Deep Dive**
 >
 > Azure Blob Storage URLs follow a deterministic pattern: `https://{account}.blob.core.windows.net/{container}/{blob}`. This predictable URL structure means your application can construct image URLs by simply knowing the storage account name, container name, and file name — no API calls needed to resolve URLs at runtime.
 >
-> When you upload a blob, Azure stores it with metadata including the content type (MIME type). The Portal typically auto-detects the content type based on the file extension (e.g., `image/jpeg` for `.jpg`). Correct content types are important because browsers use them to determine how to handle the response — an incorrect content type could cause the browser to download the image instead of displaying it.
+> When you upload a blob, Azure stores it with metadata including the content type (MIME type). The Portal typically auto-detects the content type based on the file extension (e.g., `image/png` for `.png`). Correct content types are important because browsers use them to determine how to handle the response — an incorrect content type could cause the browser to download the image instead of displaying it.
 >
-> Blob names are case-sensitive in Azure Storage. `hero.jpg` and `Hero.jpg` are treated as two different blobs. Establish a naming convention (lowercase is recommended) and use it consistently across your application code and storage.
+> Blob names are case-sensitive in Azure Storage. `hero.png` and `Hero.jpg` are treated as two different blobs. Establish a naming convention (lowercase is recommended) and use it consistently across your application code and storage.
 >
 > ⚠ **Common Mistakes**
 >
-> - Uploading with a different filename than what the application expects — the CloudSoft application expects `hero.jpg`
+> - Uploading with a different filename than what the application expects — the CloudSoft application expects `hero.png`
 > - Very large images (10+ MB) will slow page loading. For a hero section, optimize the image to 500 KB–2 MB for a good balance between quality and performance
 > - Forgetting to note the full blob URL — you will need the container base URL (without the filename) for the application configuration
 >
-> ✓ **Quick check:** The blob URL displayed in the properties panel matches the pattern `https://{accountname}.blob.core.windows.net/images/hero.jpg`
+> ✓ **Quick check:** The blob URL displayed in the properties panel matches the pattern `https://{accountname}.blob.core.windows.net/images/hero.png`
 
 ### **Step 4:** Verify Public Access
 
 Confirm that the uploaded image is publicly accessible by opening the blob URL directly in a browser. This verification step ensures that the container access level is configured correctly before integrating with your application.
 
-1. **Copy** the full blob URL from the previous step (e.g., `https://cloudsoftyourname.blob.core.windows.net/images/hero.jpg`)
+1. **Copy** the full blob URL from the previous step (e.g., `https://cloudsoftyourname.blob.core.windows.net/images/hero.png`)
 
 2. **Open** a new browser tab (or an incognito/private window for a clean test)
 
@@ -187,136 +191,27 @@ Confirm that the uploaded image is publicly accessible by opening the blob URL d
 >
 > ✓ **Quick check:** The hero image displays correctly in an incognito browser window without any authentication
 
-### **Step 5:** Configure the Application
-
-Update your CloudSoft application's configuration to use the Azure Blob Storage container URL. The application uses the `AzureBlob:ContainerUrl` configuration key to construct image URLs at runtime. By updating this value, the application will serve images from Azure Blob Storage instead of the local file system.
-
-1. **Construct** the container base URL (without the filename):
-
-   ```text
-   https://{accountname}.blob.core.windows.net/images
-   ```
-
-2. **Open** the application's `appsettings.json` file
-
-3. **Locate** the `AzureBlob` configuration section
-
-4. **Update** the `ContainerUrl` value with your actual container URL:
-
-   > `appsettings.json`
-
-   ```json
-   {
-     "AzureBlob": {
-       "ContainerUrl": "https://cloudsoftyourname.blob.core.windows.net/images"
-     }
-   }
-   ```
-
-5. **Set** the `UseAzureStorage` feature flag to `true` to enable Azure Blob Storage:
-
-   > `appsettings.json`
-
-   ```json
-   {
-     "FeatureFlags": {
-       "UseMongoDb": true,
-       "UseAzureStorage": true
-     }
-   }
-   ```
-
-> ℹ **Concept Deep Dive**
->
-> The application uses the **Options Pattern** to bind the `AzureBlob` configuration section to an `AzureBlobOptions` class. At runtime, the `AzureBlobImageService` reads the `ContainerUrl` and appends the image filename to construct the full URL. For example, when the controller requests `hero.jpg`, the service returns `https://cloudsoftyourname.blob.core.windows.net/images/hero.jpg`.
->
-> The **feature flag** (`UseAzureStorage`) controls which `IImageService` implementation is registered in the dependency injection container. When `false`, the application uses `LocalImageService` which serves images from the `wwwroot/images` folder. When `true`, it uses `AzureBlobImageService` which serves images from Azure Blob Storage. This pattern allows you to switch between local and cloud storage without code changes.
->
-> The `ContainerUrl` should not include a trailing slash or a filename — just the base URL up to and including the container name. The service appends the image filename at runtime.
->
-> ⚠ **Common Mistakes**
->
-> - Including a trailing slash in the `ContainerUrl` (e.g., `https://account.blob.core.windows.net/images/`) results in a double slash in the constructed URL
-> - Including the blob name in the `ContainerUrl` (e.g., `https://account.blob.core.windows.net/images/hero.jpg`) means the service will append the filename again
-> - Forgetting to set `UseAzureStorage` to `true` means the application will continue using local storage even though the URL is configured
-> - Using HTTP instead of HTTPS — Azure Blob Storage supports both, but HTTPS should always be used for security
->
-> ✓ **Quick check:** The `ContainerUrl` value ends with the container name (`/images`) and does not include a trailing slash or filename
-
-### **Step 6:** Test and Verify
-
-Confirm that the full integration works by running the application and verifying that the hero image loads from Azure Blob Storage. This end-to-end verification ensures that the infrastructure provisioning, configuration, and application code work together correctly.
-
-1. **Run** the application:
-
-   ```bash
-   dotnet run
-   ```
-
-2. **Check** the console output — you should see:
-
-   ```text
-   Using Azure Blob Storage for images
-   ```
-
-3. **Navigate to** the About page in your browser
-
-4. **Verify** that the hero section displays with the background image
-
-5. **Inspect** the image source to confirm it loads from Azure Blob Storage:
-
-   - Right-click the hero section and select "Inspect" (or press F12)
-   - Look at the `background-image` CSS property on the `.hero-section` element
-   - Confirm the URL points to your Azure Blob Storage (e.g., `https://cloudsoftyourname.blob.core.windows.net/images/hero.jpg`)
-
-6. **Test** with Azure Storage disabled — change `UseAzureStorage` back to `false`, restart the application, and verify it falls back to local storage:
-
-   ```text
-   Using local storage for images
-   ```
-
-> ✓ **Success indicators:**
->
-> - Console output shows "Using Azure Blob Storage for images"
-> - The About page hero section renders with the background image
-> - Browser DevTools confirm the image URL points to Azure Blob Storage
-> - Switching the feature flag to `false` correctly falls back to local storage
->
-> ✓ **Final verification checklist:**
->
-> - ☐ Storage Account created with Standard performance and LRS redundancy
-> - ☐ Blob container `images` created with "Blob" anonymous access level
-> - ☐ `hero.jpg` uploaded and accessible via public URL
-> - ☐ `appsettings.json` updated with correct `ContainerUrl`
-> - ☐ Feature flag `UseAzureStorage` set to `true`
-> - ☐ Application loads hero image from Azure Blob Storage
-
 ## Common Issues
 
 > **If you encounter problems:**
 >
 > **Image not loading (403 Forbidden):** The container access level is set to "Private". Navigate to the container in the Azure Portal, click "Change access level", and select "Blob (anonymous read access for blobs only)".
 >
-> **Image not loading (404 Not Found):** The blob name in the URL does not match the uploaded file name. Blob names are case-sensitive — verify that the file was uploaded as `hero.jpg` (lowercase).
+> **Image not loading (404 Not Found):** The blob name in the URL does not match the uploaded file name. Blob names are case-sensitive — verify that the file was uploaded as `hero.png` (lowercase).
 >
 > **"Allow Blob anonymous access" is disabled:** Navigate to your Storage Account → Settings → Configuration. Set "Allow Blob anonymous access" to **Enabled** and save. Then update the container access level.
 >
-> **Console shows "Using local storage for images":** The `UseAzureStorage` feature flag is `false`. Update it to `true` in `appsettings.json` (or `appsettings.Development.json` if running in development mode).
->
-> **Image URL has double slashes:** The `ContainerUrl` has a trailing slash. Remove it so the URL ends with the container name (e.g., `/images` not `/images/`).
->
-> **Still stuck?** Test the blob URL directly in an incognito browser window first. If the image loads there but not in the application, the issue is in the application configuration. If it does not load in the browser, the issue is in the Azure Storage configuration.
+> **Still stuck?** Test the blob URL directly in an incognito browser window first. If the image does not load in the browser, the issue is in the Azure Storage configuration.
 
 ## Summary
 
-You've successfully provisioned Azure Blob Storage infrastructure for serving application images which:
+You've successfully provisioned Azure Blob Storage infrastructure for serving public images which:
 
 - ✓ Provides a globally accessible, high-availability storage service for static assets
 - ✓ Uses anonymous read access for public image serving without authentication overhead
-- ✓ Integrates with the application through a simple configuration URL
-- ✓ Supports feature flag toggling between local and cloud storage
+- ✓ Follows the deterministic URL pattern `https://{account}.blob.core.windows.net/{container}/{blob}`
 
-> **Key takeaway:** Azure Blob Storage provides a scalable, cost-effective solution for serving static assets from the cloud. The deterministic URL pattern (`https://{account}.blob.core.windows.net/{container}/{blob}`) means your application can construct image URLs from configuration alone — no SDK or API calls needed at runtime. Combined with a feature flag, this gives you a clean separation between local development (fast iteration with local files) and production deployment (globally distributed cloud storage).
+> **Key takeaway:** Azure Blob Storage provides a scalable, cost-effective solution for serving static assets from the cloud. The deterministic URL pattern means your application can construct image URLs from configuration alone — no SDK or API calls needed at runtime. Your container URL (`https://{accountname}.blob.core.windows.net/images`) is what you will use when configuring your application to serve images from Azure Blob Storage.
 
 ## Going Deeper (Optional)
 
@@ -329,4 +224,4 @@ You've successfully provisioned Azure Blob Storage infrastructure for serving ap
 
 ## Done! 🎉
 
-Great job! You've provisioned Azure Blob Storage, uploaded a hero image, and configured your application to serve images from the cloud. This infrastructure foundation enables your application to scale its static asset delivery independently of the web server, a common pattern in cloud-native application architecture.
+Great job! You've provisioned Azure Blob Storage, created a public container, and verified that your hero image is accessible via a public URL. This infrastructure is ready for your application to use — you will configure the application to point to your container URL in the next exercise.

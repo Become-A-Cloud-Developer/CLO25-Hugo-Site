@@ -40,7 +40,7 @@ By the end of this exercise, you will:
 	    /// <summary>
 	    /// Gets the URL for an image based on the specified image name
 	    /// </summary>
-	    /// <param name="imageName">The name of the image (e.g. "hero.jpg")</param>
+	    /// <param name="imageName">The name of the image (e.g. "hero.png")</param>
 	    /// <returns>The full URL to the image</returns>
 	    string GetImageUrl(string imageName);
 	}
@@ -319,7 +319,7 @@ By the end of this exercise, you will:
 	    public IActionResult About()
 	    {
 	        // Get hero image URL from the image service
-	        ViewData["HeroImageUrl"] = _imageService.GetImageUrl("hero.jpg");
+	        ViewData["HeroImageUrl"] = _imageService.GetImageUrl("hero.png");
 	        return View();
 	    }
 	}
@@ -460,7 +460,7 @@ By the end of this exercise, you will:
 mkdir -p wwwroot/images
 
 # Add a placeholder hero image for development (you'll need to provide an actual image)
-# The image should be named hero.jpg
+# The image should be named hero.png
 ```
 
 > **Information**
@@ -468,31 +468,31 @@ mkdir -p wwwroot/images
 > For local development:
 > - Use a small, **optimized image** (~300-500KB)
 > - Place it in the **wwwroot/images** folder
-> - Name it **hero.jpg** to match the code
+> - Name it **hero.png** to match the code
 >
 > For Azure Blob Storage:
 > - Use a **higher resolution** version (1-2MB)
 > - Upload to your **Azure Blob container**
-> - Use the same name **hero.jpg** for consistency
+> - Use the same name **hero.png** for consistency
 
 ## Final Tests
 
 ### Testing Local Image Serving
 
 1. Make sure `UseAzureStorage` is set to `false` in appsettings.Development.json
-2. Place a hero.jpg image in the wwwroot/images folder
+2. Place a hero.png image in the wwwroot/images folder
 3. Run the application and navigate to the About page
 
 **Expected Result**
 
 - The hero section appears with the local image as the background
-- The image URL should be served from your local site (e.g., https://localhost:7240/images/hero.jpg)
+- The image URL should be served from your local site (e.g., https://localhost:7240/images/hero.png)
 - Text should be visible and properly formatted on top of the image
 
 ### Testing Azure Blob Storage (For Production)
 
 1. Create an Azure Storage Account and a blob container for images
-2. Upload hero.jpg to the blob container
+2. Upload hero.png to the blob container
 3. Update the production configuration with the container URL
 4. Set `UseAzureStorage` to `true` in the environment settings
 5. Run the application in production mode
@@ -500,7 +500,7 @@ mkdir -p wwwroot/images
 **Expected Result**
 
 - The hero section loads with the image from Azure Blob Storage
-- The image URL should point to your Azure Blob Storage (e.g., https://{account}.blob.core.windows.net/{container}/hero.jpg)
+- The image URL should point to your Azure Blob Storage (e.g., https://{account}.blob.core.windows.net/{container}/hero.png)
 - The application should use the higher resolution image in production
 
 # Exercise Done!
