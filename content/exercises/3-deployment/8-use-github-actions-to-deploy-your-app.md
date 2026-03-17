@@ -173,6 +173,10 @@ To provision and configure your Azure Linux VM, follow these steps:
 	  - apt-get update
 	  - apt-get install -y aspnetcore-runtime-10.0
 	
+	  # Enable the application service
+	  - systemctl daemon-reload
+	  - systemctl enable GithubActionsDemo.service
+	
 	# Create a service for the application
 	write_files:
 	  - path: /etc/systemd/system/GithubActionsDemo.service
@@ -197,10 +201,6 @@ To provision and configure your Azure Linux VM, follow these steps:
 	    owner: root:root
 	    permissions: '0644'
 	
-	systemd:
-	  units:
-	    - name: GithubActionsDemo.service
-	      enabled: true
 	```
 
 2. **Execute Provisioning Script**: Change the script's permission with `chmod +x provision_vm.sh` and run it to set up your VM.
