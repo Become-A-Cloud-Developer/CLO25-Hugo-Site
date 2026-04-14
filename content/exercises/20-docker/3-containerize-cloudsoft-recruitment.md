@@ -55,7 +55,15 @@ Before writing any Dockerfiles, you need an application to containerize. In this
    dotnet new mvc -n CloudSoft.Web -o exercise-3/CloudSoft.Web
    ```
 
-3. **Replace** the contents of `exercise-3/CloudSoft.Web/Views/Home/Index.cshtml` with:
+3. **Create** a `.gitignore` file for the .NET project:
+
+   ```bash
+   cd exercise-3 && dotnet new gitignore && cd ..
+   ```
+
+   This excludes `bin/`, `obj/`, and other .NET build artifacts from version control.
+
+4. **Replace** the contents of `exercise-3/CloudSoft.Web/Views/Home/Index.cshtml` with:
 
    > `exercise-3/CloudSoft.Web/Views/Home/Index.cshtml`
 
