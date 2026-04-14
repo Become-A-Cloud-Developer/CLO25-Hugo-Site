@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Introduktion till Containers & Docker</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>ACD</span>
+                </div>
+
+                <h1 class="main-title">
+                    INTRODUKTION TILL<br>
+                    CONTAINERS &<br>
+                    DOCKER
+                </h1>
+
+                <p class="subtitle">Från virtuella maskiner till containrar</p>
+                <p class="course-info">Molnapplikationer Fördjupning • 2026</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför behövs containers? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför behövs containers?</h2>
+
+                <div class="fragment info-box">
+                    <p>Appen fungerar lokalt men inte på VM:en — olika <span class="highlight">.NET-versioner</span>, saknade beroenden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Manuell serversetup — installera runtime, konfigurera <span class="highlight">systemd</span>, öppna portar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skalning kräver att <span class="highlight">provisionera och konfigurera</span> en helt ny VM</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Svårt att garantera att dev, test och produktion är <span class="highlight">identiska miljöer</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Från fysisk server till container -->
+            <section class="timeline-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Från fysisk server till container</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item fragment" data-fragment-index="1">
+                        <div class="timeline-week">1</div>
+                        <div class="timeline-label">Fysisk server</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="2">
+                        <div class="timeline-week">2</div>
+                        <div class="timeline-label">Virtuell maskin</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="3">
+                        <div class="timeline-week">3</div>
+                        <div class="timeline-label">Container</div>
+                    </div>
+                </div>
+
+                <div class="description-container">
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="1">
+                        <p><span class="highlight">Fysisk server:</span> En applikation per server. Dyrt, långsamt att provisionera, slöseri med resurser.</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="2">
+                        <p><span class="highlight">Virtuell maskin:</span> Flera isolerade OS på en maskin. Ni känner igen detta från Azure VMs — men varje VM bär ett helt operativsystem.</p>
+                    </div>
+                    <div class="fragment fade-in description-box" data-fragment-index="3">
+                        <p><span class="highlight">Container:</span> Isolerade processer som delar värdkerneln. Megabyte istället för gigabyte, sekunder istället för minuter.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: VM vs Container -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">VM vs Container</h2>
+
+                <div class="fragment info-box">
+                    <p>VM kör ett <span class="highlight">helt operativsystem</span> — container delar <span class="highlight">värdkerneln</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>VM-image: <span class="highlight">gigabyte</span>, starttid <span class="highlight">minuter</span> — container-image: <span class="highlight">megabyte</span>, starttid <span class="highlight">sekunder</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>VM isolerar via <span class="highlight">hypervisor</span> — container isolerar via <span class="highlight">Linux-kerneln</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Vad är en container egentligen? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är en container egentligen?</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Namespaces</span> — isolation. Containern ser sitt eget filsystem, nätverk och processer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cgroups</span> — resursbegränsning. CPU och minne allokeras per container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Union filesystem</span> — lager. Images byggs som staplade read-only lager, containern lägger till ett tunt skrivbart lager</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Image vs Container -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Image vs Container</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Image</span> — en oföränderlig, lagrad mall. Tänk: en <span class="highlight">klass</span> i C#</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Container</span> — en körande instans av en image. Tänk: ett <span class="highlight">objekt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Registry</span> — där images lagras och delas. Docker Hub, <span class="highlight">Azure Container Registry</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Dockerfile — receptet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dockerfile — receptet</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">textfil</span> som beskriver hur en image byggs, steg för steg</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tänk: att <span class="highlight">skriva ner</span> all manuell setup ni gjorde på VM:en — men reproducerbart</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje instruktion skapar ett <span class="highlight">lager</span> som cachas — snabba ombyggnader</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Multi-stage builds</span> — .NET SDK för att kompilera, bara runtime i slutresultatet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Varför containers i molnet? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför containers i molnet?</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Konsistens</span> — samma image körs identiskt i dev, CI och produktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Portabilitet</span> — imagen bär allt den behöver, inga manuella installationssteg</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Densitet</span> — en VM kan köra många containrar istället för en applikation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Immutability</span> — man patchar inte en körande container, man ersätter den med en ny image</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Vad kommer härnäst? -->
+            <section class="timeline-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad kommer härnäst?</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item fragment" data-fragment-index="1">
+                        <div class="timeline-week">1</div>
+                        <div class="timeline-label">Dockerfile</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="2">
+                        <div class="timeline-week">2</div>
+                        <div class="timeline-label">Compose</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="3">
+                        <div class="timeline-week">3</div>
+                        <div class="timeline-label">ACR</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="4">
+                        <div class="timeline-week">4</div>
+                        <div class="timeline-label">ACA</div>
+                    </div>
+                </div>
+
+                <div class="description-container">
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="1">
+                        <p><span class="highlight">Dockerfile:</span> Bygga images för er ASP.NET Core-applikation</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="2">
+                        <p><span class="highlight">Docker Compose:</span> Köra appen + MongoDB tillsammans lokalt</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="3">
+                        <p><span class="highlight">Azure Container Registry:</span> Lagra images i molnet</p>
+                    </div>
+                    <div class="fragment fade-in description-box" data-fragment-index="4">
+                        <p><span class="highlight">Azure Container Apps:</span> Deploya containrar utan att hantera servrar</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

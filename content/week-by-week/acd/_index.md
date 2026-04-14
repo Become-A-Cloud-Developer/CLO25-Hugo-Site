@@ -9,10 +9,6 @@ weight = 2
 
 # ACD Weekly Schedule
 
-Advanced Cloud Development - week-by-week learning materials.
-
-{{% notice info %}}
-This course is upcoming. Weekly materials will be added as the course progresses.
-{{% /notice %}}
+Advanced Cloud Development — week-by-week learning materials.
 
 {{< children />}}
