@@ -1,0 +1,55 @@
+@model IEnumerable<CloudSoft.Web.Models.Application>
+@{
+    var job = (CloudSoft.Web.Models.Job)ViewBag.Job;
+    ViewData["Title"] = $"Applications for {job.Title}";
+}
+
+<h2>Applications for @job.Title</h2>
+
+<a asp-controller="Job" asp-action="Details" asp-route-id="@job.Id" class="btn btn-secondary mb-3">
+    <i class="fas fa-arrow-left"></i> Back to Job
+</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No applications received yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Email</th>
+                    <th>Applied</th>
+                    <th>Cover Letter</th>
+                    <th>CV</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@app.CandidateName</td>
+                        <td>@app.CandidateEmail</td>
+                        <td>@app.AppliedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@(app.CoverLetter.Length > 100 ? app.CoverLetter[..100] + "..." : app.CoverLetter)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(app.CvUrl))
+                            {
+                                <a asp-controller="Application" asp-action="DownloadCv" asp-route-fileName="@app.CvUrl" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">None</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

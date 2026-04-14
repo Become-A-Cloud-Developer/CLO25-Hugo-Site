@@ -1,0 +1,68 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    command: "azurite --skipApiVersionCheck --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:10000:10000"
+      - "127.0.0.1:10001:10001"
+      - "127.0.0.1:10002:10002"
+    volumes:
+      - azurite-data:/data
+
+  cloudsoft-web:
+    build:
+      context: ./src/CloudSoft.Web
+      dockerfile: Dockerfile
+    container_name: cloudsoft-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Feature flags — toggle external dependencies on/off
+      - FeatureFlags__UseMongoDB=true
+      - FeatureFlags__UseBlobStorage=true
+      - FeatureFlags__UseGoogleAuth=false
+      - FeatureFlags__UseKeyVault=false
+      - FeatureFlags__UseApplicationInsights=false
+      - FeatureFlags__UseRestCountries=true
+      # MongoDB
+      - MongoDb__ConnectionString=mongodb://mongodb:27017
+      - MongoDb__DatabaseName=cloudsoft
+      # Identity
+      - ConnectionStrings__Identity=Data Source=/app/data/identity.db
+      # Google OAuth (set via .env file or shell)
+      - Google__ClientId=${GOOGLE_CLIENT_ID}
+      - Google__ClientSecret=${GOOGLE_CLIENT_SECRET}
+      # Seed accounts
+      - AdminSeed__Password=${ADMIN_SEED_PASSWORD:-Admin123!}
+      - CandidateSeed__Password=${CANDIDATE_SEED_PASSWORD:-Candidate123!}
+      # Blob Storage (Azurite)
+      - BlobStorage__ConnectionString=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+      - BlobStorage__ContainerName=cvs
+      # JWT
+      - Jwt__Key=DockerDevJwtSigningKey-NotForProduction-AtLeast32Chars!
+      - Jwt__Issuer=CloudSoft
+      - Jwt__Audience=CloudSoftApi
+      - Jwt__ExpirationMinutes=60
+    volumes:
+      - identity-data:/app/data
+    depends_on:
+      - mongodb
+      - azurite
+
+volumes:
+  mongo-data:
+  azurite-data:
+  identity-data:

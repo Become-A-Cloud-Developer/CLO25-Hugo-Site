@@ -1,0 +1,46 @@
+@model CloudSoft.Web.Models.Application
+@{
+    var job = (CloudSoft.Web.Models.Job)ViewBag.Job;
+    ViewData["Title"] = $"Apply for {job.Title}";
+}
+
+<h2>Apply for @job.Title</h2>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">@job.Title</h5>
+        <p><i class="fas fa-map-marker-alt"></i> @job.Location</p>
+        <p><i class="fas fa-calendar"></i> Deadline: @job.Deadline.ToString("yyyy-MM-dd")</p>
+        <p style="white-space: pre-line">@job.Description</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Apply" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="JobId" />
+
+            <div class="mb-3">
+                <label asp-for="CoverLetter" class="form-label">Cover Letter</label>
+                <textarea asp-for="CoverLetter" class="form-control" rows="8" placeholder="Tell us why you're a great fit..."></textarea>
+                <span asp-validation-for="CoverLetter" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="cvFile" class="form-label">CV (optional)</label>
+                <input type="file" name="cvFile" id="cvFile" class="form-control" accept=".pdf" />
+                <div class="form-text">PDF only, max 5 MB</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Submit Application
+            </button>
+            <a asp-controller="Job" asp-action="Details" asp-route-id="@job.Id" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

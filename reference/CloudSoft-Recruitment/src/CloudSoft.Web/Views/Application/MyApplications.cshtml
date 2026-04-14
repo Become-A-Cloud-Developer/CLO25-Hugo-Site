@@ -1,0 +1,54 @@
+@model IEnumerable<CloudSoft.Web.Models.Application>
+@{
+    ViewData["Title"] = "My Applications";
+}
+
+<h2>My Applications</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">You haven't applied to any jobs yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Applied</th>
+                    <th>Cover Letter</th>
+                    <th>CV</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@app.JobTitle</td>
+                        <td>@app.AppliedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@(app.CoverLetter.Length > 100 ? app.CoverLetter[..100] + "..." : app.CoverLetter)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(app.CvUrl))
+                            {
+                                <span class="badge bg-success">Uploaded</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">None</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

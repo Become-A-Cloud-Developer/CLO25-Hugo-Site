@@ -1,0 +1,248 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.42.1.51946",
+      "templateHash": "10570273902753993333"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "adminSeedPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Admin seed password"
+      }
+    },
+    "candidateSeedPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Candidate seed password"
+      }
+    },
+    "jwtKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "JWT signing key (at least 32 characters)"
+      }
+    }
+  },
+  "variables": {
+    "suffix": "[uniqueString(resourceGroup().id)]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2023-07-01",
+      "name": "[format('cloudsoftstageacr{0}', variables('suffix'))]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Basic"
+      },
+      "properties": {
+        "adminUserEnabled": true
+      }
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2023-09-01",
+      "name": "cloudsoft-stage-logs",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": 30
+      }
+    },
+    {
+      "type": "Microsoft.App/managedEnvironments",
+      "apiVersion": "2024-03-01",
+      "name": "cloudsoft-stage-aca-env",
+      "location": "[parameters('location')]",
+      "properties": {
+        "appLogsConfiguration": {
+          "destination": "log-analytics",
+          "logAnalyticsConfiguration": {
+            "customerId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', 'cloudsoft-stage-logs'), '2023-09-01').customerId]",
+            "sharedKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', 'cloudsoft-stage-logs'), '2023-09-01').primarySharedKey]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', 'cloudsoft-stage-logs')]"
+      ]
+    },
+    {
+      "type": "Microsoft.App/containerApps",
+      "apiVersion": "2024-03-01",
+      "name": "cloudsoft-stage-app",
+      "location": "[parameters('location')]",
+      "properties": {
+        "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', 'cloudsoft-stage-aca-env')]",
+        "configuration": {
+          "activeRevisionsMode": "Single",
+          "ingress": {
+            "external": true,
+            "targetPort": 8080,
+            "allowInsecure": false,
+            "transport": "auto"
+          },
+          "registries": [
+            {
+              "server": "[reference(resourceId('Microsoft.ContainerRegistry/registries', format('cloudsoftstageacr{0}', variables('suffix'))), '2023-07-01').loginServer]",
+              "username": "[listCredentials(resourceId('Microsoft.ContainerRegistry/registries', format('cloudsoftstageacr{0}', variables('suffix'))), '2023-07-01').username]",
+              "passwordSecretRef": "acr-password"
+            }
+          ],
+          "secrets": [
+            {
+              "name": "acr-password",
+              "value": "[listCredentials(resourceId('Microsoft.ContainerRegistry/registries', format('cloudsoftstageacr{0}', variables('suffix'))), '2023-07-01').passwords[0].value]"
+            },
+            {
+              "name": "admin-seed-password",
+              "value": "[parameters('adminSeedPassword')]"
+            },
+            {
+              "name": "candidate-seed-password",
+              "value": "[parameters('candidateSeedPassword')]"
+            },
+            {
+              "name": "jwt-key",
+              "value": "[parameters('jwtKey')]"
+            }
+          ]
+        },
+        "template": {
+          "containers": [
+            {
+              "name": "cloudsoft-web",
+              "image": "mcr.microsoft.com/dotnet/samples:aspnetapp",
+              "resources": {
+                "cpu": "[json('0.25')]",
+                "memory": "0.5Gi"
+              },
+              "env": [
+                {
+                  "name": "ASPNETCORE_ENVIRONMENT",
+                  "value": "Staging"
+                },
+                {
+                  "name": "FeatureFlags__UseMongoDB",
+                  "value": "false"
+                },
+                {
+                  "name": "FeatureFlags__UseBlobStorage",
+                  "value": "false"
+                },
+                {
+                  "name": "FeatureFlags__UseGoogleAuth",
+                  "value": "false"
+                },
+                {
+                  "name": "FeatureFlags__UseKeyVault",
+                  "value": "false"
+                },
+                {
+                  "name": "FeatureFlags__UseApplicationInsights",
+                  "value": "false"
+                },
+                {
+                  "name": "FeatureFlags__UseRestCountries",
+                  "value": "true"
+                },
+                {
+                  "name": "ConnectionStrings__Identity",
+                  "value": "Data Source=/app/data/identity.db"
+                },
+                {
+                  "name": "AdminSeed__Password",
+                  "secretRef": "admin-seed-password"
+                },
+                {
+                  "name": "CandidateSeed__Password",
+                  "secretRef": "candidate-seed-password"
+                },
+                {
+                  "name": "Jwt__Key",
+                  "secretRef": "jwt-key"
+                },
+                {
+                  "name": "Jwt__Issuer",
+                  "value": "CloudSoft"
+                },
+                {
+                  "name": "Jwt__Audience",
+                  "value": "CloudSoftApi"
+                }
+              ],
+              "probes": [
+                {
+                  "type": "Startup",
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8080
+                  },
+                  "initialDelaySeconds": 0,
+                  "periodSeconds": 5,
+                  "failureThreshold": 10,
+                  "timeoutSeconds": 3
+                },
+                {
+                  "type": "Liveness",
+                  "httpGet": {
+                    "path": "/health",
+                    "port": 8080
+                  },
+                  "initialDelaySeconds": 15,
+                  "periodSeconds": 30,
+                  "failureThreshold": 3
+                }
+              ]
+            }
+          ],
+          "scale": {
+            "minReplicas": 1,
+            "maxReplicas": 1
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerRegistry/registries', format('cloudsoftstageacr{0}', variables('suffix')))]",
+        "[resourceId('Microsoft.App/managedEnvironments', 'cloudsoft-stage-aca-env')]"
+      ]
+    }
+  ],
+  "outputs": {
+    "acrLoginServer": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.ContainerRegistry/registries', format('cloudsoftstageacr{0}', variables('suffix'))), '2023-07-01').loginServer]"
+    },
+    "acrName": {
+      "type": "string",
+      "value": "[format('cloudsoftstageacr{0}', variables('suffix'))]"
+    },
+    "appFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.App/containerApps', 'cloudsoft-stage-app'), '2024-03-01').configuration.ingress.fqdn]"
+    },
+    "appUrl": {
+      "type": "string",
+      "value": "[format('https://{0}', reference(resourceId('Microsoft.App/containerApps', 'cloudsoft-stage-app'), '2024-03-01').configuration.ingress.fqdn)]"
+    },
+    "containerAppName": {
+      "type": "string",
+      "value": "cloudsoft-stage-app"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    }
+  }
+}

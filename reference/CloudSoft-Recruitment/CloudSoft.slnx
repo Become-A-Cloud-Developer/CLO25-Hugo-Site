@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CloudSoft.Web/CloudSoft.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CloudSoft.Web.Tests/CloudSoft.Web.Tests.csproj" />
+    <Project Path="tests/CloudSoft.Web.PlaywrightTests/CloudSoft.Web.PlaywrightTests.csproj" />
+  </Folder>
+</Solution>

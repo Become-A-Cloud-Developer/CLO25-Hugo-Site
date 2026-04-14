@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="fas fa-sign-in-alt"></i> Login</h4>
+            </div>
+            <div class="card-body">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                }
+
+                <form asp-action="Login" method="post">
+                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+
+                @if (ViewData["GoogleEnabled"] is true)
+                {
+                    <hr />
+
+                    <a asp-action="GoogleLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="btn btn-outline-danger w-100">
+                        <i class="fab fa-google"></i> Sign in with Google
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

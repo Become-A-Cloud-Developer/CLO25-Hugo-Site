@@ -1,0 +1,48 @@
+@model Job
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Location</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Deadline</dt>
+            <dd class="col-sm-9">@Model.Deadline.ToString("yyyy-MM-dd")</dd>
+
+            <dt class="col-sm-3">Posted</dt>
+            <dd class="col-sm-9">@Model.PostedAt.ToString("yyyy-MM-dd HH:mm") by @Model.PostedByName</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9" style="white-space: pre-line">@Model.Description</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    @if (User.IsInRole("Candidate"))
+    {
+        <a asp-controller="Application" asp-action="Apply" asp-route-id="@Model.Id" class="btn btn-success">
+            <i class="fas fa-paper-plane"></i> Apply
+        </a>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Application" asp-action="ForJob" asp-route-id="@Model.Id" class="btn btn-info">
+            <i class="fas fa-users"></i> View Applications
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Delete
+        </a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
+</div>

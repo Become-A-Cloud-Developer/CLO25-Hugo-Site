@@ -1,0 +1,211 @@
+<mxfile host="65bd71144e">
+    <diagram name="Class Diagram" id="class-diagram">
+        <mxGraphModel dx="1586" dy="650" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="2400" pageHeight="2000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="ctrl_home" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;HomeController&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _logger: ILogger&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Index()&lt;br/&gt;+ Privacy()&lt;br/&gt;+ Error()&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-190" y="60" width="200" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl_account" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;AccountController&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _signInManager: SignInManager&lt;br/&gt;- _userManager: UserManager&lt;br/&gt;- _configuration: IConfiguration&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Login()&lt;br/&gt;+ GoogleLogin()&lt;br/&gt;+ GoogleCallback()&lt;br/&gt;+ Logout()&lt;br/&gt;+ AccessDenied()&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-210" y="240" width="260" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl_job" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;JobController&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _jobService: IJobService&lt;br/&gt;- _userManager: UserManager&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Index()&lt;br/&gt;+ Details(id)&lt;br/&gt;+ Create()&lt;br/&gt;+ Edit(id)&lt;br/&gt;+ Delete(id)&lt;br/&gt;+ DeleteConfirmed(id)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="160" width="240" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl_app" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ApplicationController&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _applicationService: IApplicationService&lt;br/&gt;- _jobService: IJobService&lt;br/&gt;- _blobService: IBlobService&lt;br/&gt;- _userManager: UserManager&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Apply(id)&lt;br/&gt;+ MyApplications()&lt;br/&gt;+ ForJob(id)&lt;br/&gt;+ DownloadCv(fileName)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="30" width="300" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl_jobapi" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;JobApiController&lt;/b&gt;&lt;br/&gt;&lt;i&gt;[Route: /api/jobs]&lt;/i&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _jobService: IJobService&lt;br/&gt;- _applicationService: IApplicationService&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ GetAll()&lt;br/&gt;+ GetById(id)&lt;br/&gt;+ Create(request)&lt;br/&gt;+ GetApplications(id)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="1210" y="30" width="270" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="ctrl_token" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;TokenController&lt;/b&gt;&lt;br/&gt;&lt;i&gt;[Route: /api/token]&lt;/i&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _userManager: UserManager&lt;br/&gt;- _signInManager: SignInManager&lt;br/&gt;- _jwtTokenService: JwtTokenService&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ CreateToken(request)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="1520" y="30" width="260" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_ijob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IJobService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ GetAllJobsAsync()&lt;br/&gt;+ GetJobByIdAsync(id)&lt;br/&gt;+ CreateJobAsync(job)&lt;br/&gt;+ UpdateJobAsync(job)&lt;br/&gt;+ DeleteJobAsync(id)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="280" width="240" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_iapp" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IApplicationService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ ApplyAsync(application)&lt;br/&gt;+ GetMyApplicationsAsync(candidateId)&lt;br/&gt;+ GetApplicationsForJobAsync(jobId)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="330" width="310" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_iblob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IBlobService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ UploadAsync(stream, fileName, contentType)&lt;br/&gt;+ DownloadAsync(fileName)&lt;br/&gt;+ DeleteAsync(fileName)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="810" y="330" width="310" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_icountry" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ICountryService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ SearchCountriesAsync(query)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="330" width="280" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_jwt" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;JwtTokenService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _options: JwtOptions&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ GenerateToken(userId, email, role, name)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="1520" y="330" width="300" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_job" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;JobService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _jobRepository: IJobRepository&lt;br/&gt;- _logger: ILogger&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="505" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_app" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ApplicationService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _applicationRepository: IApplicationRepository&lt;br/&gt;- _logger: ILogger&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="580" width="310" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_blob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;BlobService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _containerClient: BlobContainerClient&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="810" y="560" width="260" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_localblob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;LocalBlobService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _storagePath: string&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="810" y="660" width="230" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_country" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;CountryService&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _httpClient: HttpClient&lt;br/&gt;- _logger: ILogger&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="540" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="svc_discountry" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;DisabledCountryService&lt;/b&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="650" width="220" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_ijob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IJobRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ GetAllAsync()&lt;br/&gt;+ GetByIdAsync(id)&lt;br/&gt;+ AddAsync(job)&lt;br/&gt;+ UpdateAsync(job)&lt;br/&gt;+ DeleteAsync(id)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="660" width="240" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_iapp" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;IApplicationRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ GetByCandidateIdAsync(candidateId)&lt;br/&gt;+ GetByJobIdAsync(jobId)&lt;br/&gt;+ AddAsync(application)&lt;br/&gt;+ HasAppliedAsync(candidateId, jobId)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="780" width="330" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_inmem_job" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;InMemoryJobRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _jobs: ConcurrentDictionary&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="920" width="200" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_mongo_job" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;MongoDbJobRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _jobs: IMongoCollection&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="920" width="200" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_inmem_app" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;InMemoryApplicationRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _applications: ConcurrentDictionary&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="1030" width="280" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo_mongo_app" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;MongoDbApplicationRepository&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _applications: IMongoCollection&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="940" y="1100" width="290" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="mod_job" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;Job&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Id: string&lt;br/&gt;+ Title: string&lt;br/&gt;+ Description: string&lt;br/&gt;+ Location: string&lt;br/&gt;+ Deadline: DateTime&lt;br/&gt;+ PostedAt: DateTime&lt;br/&gt;+ PostedByUserId: string&lt;br/&gt;+ PostedByName: string&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="45" y="1250" width="210" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="mod_app" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;Application&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Id: string&lt;br/&gt;+ JobId: string&lt;br/&gt;+ JobTitle: string&lt;br/&gt;+ CandidateId: string&lt;br/&gt;+ CandidateEmail: string&lt;br/&gt;+ CandidateName: string&lt;br/&gt;+ CoverLetter: string&lt;br/&gt;+ CvUrl: string?&lt;br/&gt;+ AppliedAt: DateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1230" width="220" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="mod_appuser" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ApplicationUser&lt;/b&gt;&lt;br/&gt;&lt;i&gt;extends IdentityUser&lt;/i&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ DisplayName: string?&lt;br/&gt;+ FirstName: string?&lt;br/&gt;+ LastName: string?&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="1220" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="mod_opresult" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;OperationResult&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ IsSuccess: bool&lt;br/&gt;+ Message: string&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Success(message)&lt;br/&gt;+ Failure(message)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="1220" width="230" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="mod_errvm" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ErrorViewModel&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ RequestId: string?&lt;br/&gt;+ ShowRequestId: bool&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+                    <mxGeometry x="1160" y="1220" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="dto_createjob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«DTO»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;CreateJobRequest&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Title: string&lt;br/&gt;+ Description: string&lt;br/&gt;+ Location: string&lt;br/&gt;+ Deadline: DateTime&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ ToJob(): Job&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1520" width="220" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="dto_jobresp" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«DTO»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;JobResponse&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Id: string&lt;br/&gt;+ Title: string&lt;br/&gt;+ Description: string&lt;br/&gt;+ Location: string&lt;br/&gt;+ Deadline: DateTime&lt;br/&gt;+ PostedAt: DateTime&lt;br/&gt;+ PostedByName: string&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ FromJob(job): JobResponse&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="1520" width="220" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="dto_appresp" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«DTO»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;ApplicationResponse&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Id: string&lt;br/&gt;+ JobId: string&lt;br/&gt;+ JobTitle: string&lt;br/&gt;+ CandidateEmail: string&lt;br/&gt;+ CandidateName: string&lt;br/&gt;+ CoverLetter: string&lt;br/&gt;+ AppliedAt: DateTime&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ FromApplication(app)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="1520" width="240" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="dto_tokenreq" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«DTO»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;TokenRequest&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Email: string&lt;br/&gt;+ Password: string&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="810" y="1520" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="dto_tokenresp" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«DTO»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;TokenResponse&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Token: string&lt;br/&gt;+ Expiration: DateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="1520" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="opt_mongo" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«options»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;MongoDbOptions&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ ConnectionString: string&lt;br/&gt;+ DatabaseName: string&lt;br/&gt;+ JobsCollectionName: string&lt;br/&gt;+ ApplicationsCollectionName: string&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="1040" width="200" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="opt_blob" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«options»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;BlobStorageOptions&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ ConnectionString: string&lt;br/&gt;+ ContainerName: string&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1100" y="560" width="230" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="opt_jwt" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;i&gt;«options»&lt;/i&gt;&lt;br/&gt;&lt;b&gt;JwtOptions&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ Key: string&lt;br/&gt;+ Issuer: string&lt;br/&gt;+ Audience: string&lt;br/&gt;+ ExpirationMinutes: int&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="1520" y="480" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="data_dbctx" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ApplicationDbContext&lt;/b&gt;&lt;br/&gt;&lt;i&gt;extends IdentityDbContext&lt;/i&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fce5cd;strokeColor=#d79b00;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="1400" width="250" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mid_apikey" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;ApiKeyMiddleware&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;- _next: RequestDelegate&lt;br/&gt;- _configuration: IConfiguration&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;&quot;&gt;+ InvokeAsync(context)&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#fce5cd;strokeColor=#d79b00;" parent="1" vertex="1">
+                    <mxGeometry x="1830" y="30" width="240" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_1" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_job" target="svc_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_2" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_app" target="svc_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_3" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_blob" target="svc_iblob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_4" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_localblob" target="svc_iblob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_5" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_country" target="svc_icountry" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_6" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="svc_discountry" target="svc_icountry" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_7" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="repo_inmem_job" target="repo_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_8" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="repo_mongo_job" target="repo_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_9" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="repo_inmem_app" target="repo_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="impl_10" style="html=1;dashed=1;endArrow=block;endFill=0;strokeColor=#82b366;" parent="1" source="repo_mongo_app" target="repo_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_1" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_job" target="svc_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_2" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_app" target="svc_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_3" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_app" target="svc_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_4" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_app" target="svc_iblob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_5" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_jobapi" target="svc_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_6" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_jobapi" target="svc_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_7" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="ctrl_token" target="svc_jwt" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_8" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="svc_job" target="repo_ijob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_9" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#999999;" parent="1" source="svc_app" target="repo_iapp" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_10" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#d6b656;" parent="1" source="svc_blob" target="opt_blob" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_11" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#d6b656;" parent="1" source="svc_jwt" target="opt_jwt" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_12" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#d6b656;" parent="1" source="repo_mongo_job" target="opt_mongo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dep_13" style="html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#d6b656;" parent="1" source="repo_mongo_app" target="opt_mongo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="map_1" value="maps from" style="html=1;dashed=1;dashPattern=1 4;endArrow=open;endFill=0;strokeColor=#9673a6;fontSize=10;" parent="1" source="dto_jobresp" target="mod_job" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="map_2" value="maps from" style="html=1;dashed=1;dashPattern=1 4;endArrow=open;endFill=0;strokeColor=#9673a6;fontSize=10;" parent="1" source="dto_appresp" target="mod_app" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="map_3" value="creates" style="html=1;dashed=1;dashPattern=1 4;endArrow=open;endFill=0;strokeColor=#9673a6;fontSize=10;" parent="1" source="dto_createjob" target="mod_job" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="assoc_1" value="references" style="html=1;endArrow=open;endFill=0;strokeColor=#9673a6;fontSize=10;" parent="1" source="mod_app" target="mod_job" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="assoc_2" value="manages" style="html=1;endArrow=open;endFill=0;strokeColor=#d79b00;fontSize=10;" parent="1" source="data_dbctx" target="mod_appuser" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend" value="&lt;p style=&quot;text-align:center;margin:0;&quot;&gt;&lt;b&gt;Legend&lt;/b&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;🔵 Controllers &amp;amp; Implementations&lt;br/&gt;🟢 Interfaces&lt;br/&gt;🟣 Domain Models&lt;br/&gt;🟡 DTOs &amp;amp; Options&lt;br/&gt;🟠 Infrastructure&lt;br/&gt;- - -▷ implements&lt;br/&gt;- - -▸ depends on&lt;br/&gt;····▸ maps / creates&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;" parent="1" vertex="1">
+                    <mxGeometry x="1700" y="1220" width="220" height="200" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
