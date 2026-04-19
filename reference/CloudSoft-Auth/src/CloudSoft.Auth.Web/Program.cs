@@ -99,7 +99,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Seed fixed test users. Exercise 5.3 replaces this with a config-driven admin seeder.
-await TestUserSeeder.SeedAsync(app.Services);
+// Seed roles and (from configuration) the admin user. In Development the
+// candidate lab user is also created automatically.
+await IdentitySeeder.SeedAsync(app.Services, app.Environment);
 
 app.Run();
