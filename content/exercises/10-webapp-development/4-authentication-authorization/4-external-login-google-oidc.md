@@ -5,7 +5,7 @@ cohort = "25"
 courses = ["ACD"]
 description = "Wire up Google as an external identity provider so users can sign in with a Google account. The cookie carries Google-issued claims; no local user store is required."
 weight = 4
-draft = false
+draft = true
 +++
 
 # External Login with Google OIDC
