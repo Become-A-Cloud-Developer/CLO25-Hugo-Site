@@ -25,22 +25,67 @@ Add cookie-based authentication to a fresh ASP.NET Core MVC app using hardcoded 
 
 > **Before starting, ensure you have:**
 >
-> - ✓ .NET 10 SDK installed
-> - ✓ A clone of the `CloudSoft-Auth` starter project at `reference/CloudSoft-Auth/` (plain `dotnet new mvc` output with HTTPS redirection removed for development simplicity)
+> - ✓ .NET 10 SDK installed (`dotnet --version` reports a `10.*` version)
+> - ✓ A Git-tracked working directory for the exercise (a fresh folder is fine)
 > - ✓ Basic familiarity with controllers, views, and `Program.cs`
+>
+> You can also start from the pre-made starter at `reference/CloudSoft-Auth/` in the course repository (the output of Step 1 below, already committed). Copy it to your work directory and skip ahead to Step 2.
 
 ## Exercise Steps
 
 ### Overview
 
-1. **Register cookie authentication** in `Program.cs`
-2. **Create a hardcoded user list** in `Data/DummyUsers.cs`
-3. **Build the `AccountController`** with Login and Logout actions
-4. **Build the `WhoAmIController`** and view that renders the identity state
-5. **Add the footer link** to the Who Am I page
-6. **Test Your Implementation**
+1. **Scaffold** a new ASP.NET Core MVC project
+2. **Register cookie authentication** in `Program.cs`
+3. **Create a hardcoded user list** in `Data/DummyUsers.cs`
+4. **Build the `AccountController`** with Login and Logout actions
+5. **Build the `WhoAmIController`** and view that renders the identity state
+6. **Add the footer link** to the Who Am I page
+7. **Test Your Implementation**
 
-### **Step 1:** Register cookie authentication
+### **Step 1:** Scaffold a new ASP.NET Core MVC project
+
+Start from the default MVC template. The scaffold gives you a home controller, a shared layout, and Bootstrap pre-wired — everything you'll extend over this chapter without distractions from extra boilerplate.
+
+1. **Create** the project folder and scaffold the app:
+
+   ```bash
+   mkdir -p src
+   dotnet new mvc -o src/CloudSoft.Auth.Web --framework net10.0
+   ```
+
+2. **Verify** it builds and runs:
+
+   ```bash
+   dotnet build src/CloudSoft.Auth.Web
+   dotnet run --project src/CloudSoft.Auth.Web --launch-profile http
+   ```
+
+   Opening `http://localhost:5017` should show the default MVC welcome page. Stop the server with `Ctrl+C`.
+
+3. **Remove** the HTTPS redirection from the scaffold. HTTPS is the right default for production, but the development certificate makes Playwright setup fiddly and we're going to hit `http://localhost:5017` throughout the chapter. Open `src/CloudSoft.Auth.Web/Program.cs` and **remove** the `UseHttpsRedirection()` call and the `UseHsts` block:
+
+   > `src/CloudSoft.Auth.Web/Program.cs` (changes shown with `-` / `+`)
+
+   ```diff
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+   -    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+   -    app.UseHsts();
+    }
+
+   -app.UseHttpsRedirection();
+    app.UseRouting();
+   ```
+
+> ℹ **Concept Deep Dive**
+>
+> In production you absolutely want HTTPS and HSTS. In this lab, the app runs only on your development machine and we're going to restart it often, so the HTTP-only setup is a deliberate simplification. When you apply these patterns to your CloudSoft-Recruitment project, leave the HTTPS block in.
+>
+> ✓ **Quick check:** The project builds and `http://localhost:5017` loads the default MVC home page.
+
+### **Step 2:** Register cookie authentication
 
 Cookie authentication is the simplest auth scheme ASP.NET Core ships with. On sign-in, the framework serializes a `ClaimsPrincipal` into an encrypted cookie; on every subsequent request the middleware deserializes that cookie back into `HttpContext.User`. To use it, you register the scheme with dependency injection and add two middleware to the request pipeline.
 
@@ -101,7 +146,7 @@ Cookie authentication is the simplest auth scheme ASP.NET Core ships with. On si
 >
 > ✓ **Quick check:** `dotnet build` succeeds with no errors.
 
-### **Step 2:** Create the hardcoded user list
+### **Step 3:** Create the hardcoded user list
 
 Real applications store users in a database. For this chapter we want to keep the focus on the cookie mechanics, so we use a static in-memory list instead. The data structure deliberately carries only a username and password for now — we'll extend it with roles and claims in later exercises.
 
@@ -135,7 +180,7 @@ Real applications store users in a database. For this chapter we want to keep th
 >
 > - Storing passwords in source code is **only** acceptable for a lab. Never do this in production — ASP.NET Core Identity (Chapter 5) handles proper password hashing and persistence for you.
 
-### **Step 3:** Build the AccountController
+### **Step 4:** Build the AccountController
 
 The `AccountController` handles two flows: showing the login form and processing submitted credentials. On a successful POST it builds a `ClaimsPrincipal` containing one claim — the user's name — and hands it to `HttpContext.SignInAsync`, which encrypts and sets the auth cookie on the response.
 
@@ -275,7 +320,7 @@ The `AccountController` handles two flows: showing the login form and processing
 >
 > ✓ **Quick check:** The project builds. The login view renders at `/Account/Login`.
 
-### **Step 4:** Build the WhoAmI controller and view
+### **Step 5:** Build the WhoAmI controller and view
 
 The Who Am I page is the single window into the current authentication state. It reads `HttpContext.User` — the `ClaimsPrincipal` the cookie middleware materialized — and renders what it finds. Later exercises will extend this view; today it shows three fields and a login/logout control.
 
@@ -342,7 +387,7 @@ The Who Am I page is the single window into the current authentication state. It
 >
 > `User.Identity` returns an `IIdentity` that is null-safe only if the request has no authentication data at all. With cookie authentication registered, the middleware always gives you an identity — possibly unauthenticated. `IsAuthenticated` is the check that tells you the cookie was present and valid.
 
-### **Step 5:** Link the Who Am I page from the footer
+### **Step 6:** Link the Who Am I page from the footer
 
 You want the Who Am I page accessible from everywhere in the app. The simplest place is the shared footer.
 
@@ -362,7 +407,7 @@ You want the Who Am I page accessible from everywhere in the app. The simplest p
    </footer>
    ```
 
-### **Step 6:** Test Your Implementation
+### **Step 7:** Test Your Implementation
 
 1. **Run the app:**
 
