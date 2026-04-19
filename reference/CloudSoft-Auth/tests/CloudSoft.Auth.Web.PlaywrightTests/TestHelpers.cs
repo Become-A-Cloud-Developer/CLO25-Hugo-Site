@@ -24,12 +24,12 @@ public static class TestHelpers
 
     public static async Task LogoutAsync(IPage page)
     {
-        await page.GotoAsync("/");
+        await page.GotoAsync("/WhoAmI");
         var logoutForm = page.Locator("[data-testid='logout-form']");
         if (await logoutForm.CountAsync() > 0)
         {
-            await page.ClickAsync("[data-testid='logout-submit']");
-            await page.WaitForURLAsync(url => !url.Contains("/Account"));
+            await page.GetByTestId("logout-submit").ClickAsync();
+            await page.WaitForURLAsync(url => !url.Contains("/WhoAmI"));
         }
     }
 }

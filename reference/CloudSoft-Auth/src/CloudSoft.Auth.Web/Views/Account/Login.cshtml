@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<h1>Log in</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" data-testid="login-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<form method="post" data-testid="login-form" style="max-width: 420px;">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control"
+               data-testid="login-username" autocomplete="username" />
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control"
+               data-testid="login-password" autocomplete="current-password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-testid="login-submit">Log in</button>
+</form>
+
+<p class="mt-4 text-muted">
+    Dummy credentials for this exercise:
+    <code>admin / admin</code> or <code>candidate / candidate</code>.
+</p>

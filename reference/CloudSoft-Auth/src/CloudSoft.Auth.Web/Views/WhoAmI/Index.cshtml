@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Who Am I?";
+}
+
+<h1>Who Am I?</h1>
+<p class="lead">What the server currently knows about you.</p>
+
+<dl class="row">
+    <dt class="col-sm-4">Is authenticated?</dt>
+    <dd class="col-sm-8" data-testid="whoami-authenticated">
+        @(User.Identity?.IsAuthenticated ?? false)
+    </dd>
+
+    <dt class="col-sm-4">Name</dt>
+    <dd class="col-sm-8" data-testid="whoami-name">
+        @(User.Identity?.Name ?? "(anonymous)")
+    </dd>
+
+    <dt class="col-sm-4">Authentication type</dt>
+    <dd class="col-sm-8" data-testid="whoami-authtype">
+        @(User.Identity?.AuthenticationType ?? "(none)")
+    </dd>
+</dl>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-controller="Account" asp-action="Logout" method="post" data-testid="logout-form">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-secondary" data-testid="logout-submit">
+            Log out
+        </button>
+    </form>
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login" class="btn btn-primary" data-testid="whoami-loginlink">Log in</a>
+}
