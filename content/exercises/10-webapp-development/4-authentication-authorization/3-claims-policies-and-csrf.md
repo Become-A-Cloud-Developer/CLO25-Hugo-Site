@@ -262,4 +262,4 @@ You've generalized the primitive one more step:
 
 ## Done!
 
-You've completed the cookie-auth fundamentals. The final exercise in this chapter adds an **external identity provider** (Google), showing how the same `ClaimsPrincipal` abstraction works across providers.
+You've completed the cookie-auth fundamentals — authentication, role-based gating, custom claims, named policies, and antiforgery protection — all built on top of a hand-assembled `ClaimsPrincipal`.
