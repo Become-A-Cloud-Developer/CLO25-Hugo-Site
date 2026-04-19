@@ -2,12 +2,21 @@ namespace CloudSoft.Auth.Web.Data;
 
 public static class DummyUsers
 {
-    public record User(string Username, string Password, string[] Roles);
+    public record User(
+        string Username,
+        string Password,
+        string[] Roles,
+        Dictionary<string, string> Claims);
 
     public static readonly List<User> All =
     [
-        new("admin", "admin", Roles: ["Admin"]),
-        new("candidate", "candidate", Roles: ["Candidate"]),
+        new("admin", "admin",
+            Roles: ["Admin"],
+            Claims: new() { ["Department"] = "Engineering" }),
+
+        new("candidate", "candidate",
+            Roles: ["Candidate"],
+            Claims: new() { ["Department"] = "Sales" }),
     ];
 
     public static User? Find(string username, string password) =>

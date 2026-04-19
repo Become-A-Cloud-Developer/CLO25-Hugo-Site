@@ -1,3 +1,4 @@
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Who Am I?";
 }
@@ -24,23 +25,82 @@
     <dt class="col-sm-4">Roles</dt>
     <dd class="col-sm-8" data-testid="whoami-roles">
         @{
-            var roles = User.FindAll(System.Security.Claims.ClaimTypes.Role)
-                            .Select(c => c.Value).ToArray();
+            var roles = User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToArray();
         }
         @(roles.Length == 0 ? "(none)" : string.Join(", ", roles))
     </dd>
 </dl>
 
-@if (User.IsInRole("Admin"))
-{
-    <a asp-controller="AdminOnly" asp-action="Index" class="btn btn-outline-primary me-2" data-testid="whoami-adminlink">
-        Admin-only page
-    </a>
-}
+<h2 class="mt-4">All claims</h2>
+<table class="table table-sm table-striped" data-testid="whoami-claims-table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Issuer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            foreach (var claim in User.Claims)
+            {
+                <tr>
+                    <td><code>@claim.Type</code></td>
+                    <td>@claim.Value</td>
+                    <td>@claim.Issuer</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-muted">(no identity — log in to see claims)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="mb-4">
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="AdminOnly" asp-action="Index" class="btn btn-outline-primary me-2" data-testid="whoami-adminlink">
+            Admin-only page
+        </a>
+    }
+    @if (User.HasClaim("Department", "Engineering"))
+    {
+        <a asp-controller="Engineering" asp-action="Index" class="btn btn-outline-primary" data-testid="whoami-engineeringlink">
+            Engineering page
+        </a>
+    }
+</div>
 
 @if (User.Identity?.IsAuthenticated == true)
 {
-    <form asp-controller="Account" asp-action="Logout" method="post" data-testid="logout-form">
+    <h2 class="mt-4">Antiforgery demo</h2>
+    <p class="text-muted">
+        This form is protected by <code>[ValidateAntiForgeryToken]</code>. Submitting it normally succeeds;
+        a POST made without the token returns HTTP 400.
+    </p>
+
+    <form asp-controller="WhoAmI" asp-action="TestPost" method="post" data-testid="csrf-form" class="mb-3">
+        @Html.AntiForgeryToken()
+        <div class="input-group" style="max-width: 420px;">
+            <input type="text" name="message" value="hello" class="form-control"
+                   data-testid="csrf-message" />
+            <button type="submit" class="btn btn-primary" data-testid="csrf-submit">Submit</button>
+        </div>
+    </form>
+
+    @if (TempData["CsrfDemoMessage"] != null)
+    {
+        <div class="alert alert-success" data-testid="csrf-result">
+            @TempData["CsrfDemoMessage"]
+        </div>
+    }
+
+    <form asp-controller="Account" asp-action="Logout" method="post" data-testid="logout-form" class="mt-4">
         @Html.AntiForgeryToken()
         <button type="submit" class="btn btn-outline-secondary" data-testid="logout-submit">
             Log out

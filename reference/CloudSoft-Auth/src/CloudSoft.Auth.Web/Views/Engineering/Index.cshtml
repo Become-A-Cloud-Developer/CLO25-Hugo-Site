@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "Engineering";
+}
+
+<h1 data-testid="engineering-heading">Engineering</h1>
+<p class="lead">You only see this page because your identity carries <code>Department = Engineering</code>.</p>
+<p>The gate is the <code>RequireEngineering</code> policy, not a role.</p>
+
+<a asp-controller="WhoAmI" asp-action="Index" class="btn btn-outline-secondary">Who Am I?</a>
