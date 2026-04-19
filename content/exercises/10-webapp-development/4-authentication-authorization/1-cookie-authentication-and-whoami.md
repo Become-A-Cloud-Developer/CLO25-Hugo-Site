@@ -28,8 +28,6 @@ Add cookie-based authentication to a fresh ASP.NET Core MVC app using hardcoded 
 > - ✓ .NET 10 SDK installed (`dotnet --version` reports a `10.*` version)
 > - ✓ A Git-tracked working directory for the exercise (a fresh folder is fine)
 > - ✓ Basic familiarity with controllers, views, and `Program.cs`
->
-> You can also start from the pre-made starter at `reference/CloudSoft-Auth/` in the course repository (the output of Step 1 below, already committed). Copy it to your work directory and skip ahead to Step 2.
 
 ## Exercise Steps
 

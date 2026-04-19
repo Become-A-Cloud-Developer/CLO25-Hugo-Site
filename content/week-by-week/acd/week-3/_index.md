@@ -33,12 +33,6 @@ The practice lands in two chapters under the Webapp Development exercises:
 
 All exercises evolve a single **"Who Am I?"** page that reveals exactly what the server knows about the current user — authentication state, name, scheme, roles, full claims table, and (after the Google exercise) provider-issued claims.
 
-## Reference project
-
-The starter for all eight exercises lives at `reference/CloudSoft-Auth/` alongside `CloudSoft-Newsletter` and `CloudSoft-Recruitment`. A complete, evolving reference implementation is tracked in the git history of this repository; each exercise end-state has its own commit.
-
-End-to-end Playwright tests cover every stage (except the live Google OIDC round-trip). Run them with `./run-playwright-tests.sh headless` (InMemory) or `./run-playwright-tests-sqlite.sh headless` (SQLite).
-
 ## Preparation
 
 - Read up on the difference between authentication and authorization
