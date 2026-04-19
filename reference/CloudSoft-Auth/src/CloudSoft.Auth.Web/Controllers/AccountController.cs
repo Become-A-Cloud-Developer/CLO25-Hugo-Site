@@ -9,10 +9,14 @@ namespace CloudSoft.Auth.Web.Controllers;
 public class AccountController : Controller
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(SignInManager<ApplicationUser> signInManager)
+    public AccountController(
+        SignInManager<ApplicationUser> signInManager,
+        UserManager<ApplicationUser> userManager)
     {
         _signInManager = signInManager;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -54,6 +58,44 @@ public class AccountController : Controller
 
     [HttpGet]
     public IActionResult AccessDenied() => View();
+
+    [HttpGet]
+    public IActionResult Register() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(string username, string email, string password)
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            ModelState.AddModelError(string.Empty, "Username and password are required.");
+            return View();
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = username,
+            Email = email,
+            EmailConfirmed = true,
+        };
+
+        var create = await _userManager.CreateAsync(user, password);
+        if (!create.Succeeded)
+        {
+            foreach (var error in create.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View();
+        }
+
+        // New users always start as Candidate. Promotion to Admin is an
+        // explicit administrator action (UserAdminController).
+        await _userManager.AddToRoleAsync(user, "Candidate");
+
+        await _signInManager.SignInAsync(user, isPersistent: false);
+        return RedirectToAction("Index", "WhoAmI");
+    }
 
     [HttpPost]
     [AllowAnonymous]

@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" data-testid="register-error">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<form method="post" data-testid="register-form" style="max-width: 420px;">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control"
+               data-testid="register-username" autocomplete="username" />
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control"
+               data-testid="register-email" autocomplete="email" />
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control"
+               data-testid="register-password" autocomplete="new-password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-testid="register-submit">Register</button>
+</form>
+
+<p class="mt-4 text-muted">
+    New accounts default to the <code>Candidate</code> role.
+    An administrator can promote a Candidate to <code>Admin</code> from the User admin page.
+</p>

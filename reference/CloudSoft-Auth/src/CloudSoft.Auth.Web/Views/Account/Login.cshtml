@@ -35,6 +35,11 @@
     <button type="submit" class="btn btn-primary" data-testid="login-submit">Log in</button>
 </form>
 
+<p class="mt-3">
+    No account yet?
+    <a asp-controller="Account" asp-action="Register" data-testid="login-register-link">Register here</a>.
+</p>
+
 <p class="mt-4 text-muted">
     Dummy credentials for this exercise:
     <code>admin / admin</code> or <code>candidate / candidate</code>.

@@ -1,0 +1,66 @@
+@model IEnumerable<CloudSoft.Auth.Web.Controllers.UserAdminController.UserRow>
+@{
+    ViewData["Title"] = "User administration";
+    var currentUserName = User.Identity?.Name;
+}
+
+<h1 data-testid="useradmin-heading">User administration</h1>
+
+@if (TempData["UserAdminMessage"] is string msg)
+{
+    <div class="alert alert-info" data-testid="useradmin-message">@msg</div>
+}
+
+<table class="table table-striped" data-testid="useradmin-table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            var isCurrent = string.Equals(row.Username, currentUserName, StringComparison.Ordinal);
+            <tr data-testid="useradmin-row-@row.Username">
+                <td>@row.Username @(isCurrent ? " (you)" : string.Empty)</td>
+                <td>@row.Email</td>
+                <td data-testid="useradmin-roles-@row.Username">
+                    @(row.Roles.Length == 0 ? "(none)" : string.Join(", ", row.Roles))
+                </td>
+                <td>
+                    @if (isCurrent)
+                    {
+                        <span class="text-muted">(cannot modify self)</span>
+                    }
+                    else if (!row.Roles.Contains("Admin"))
+                    {
+                        <form asp-action="Promote" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="userId" value="@row.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary"
+                                    data-testid="promote-@row.Username">
+                                Promote to Admin
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="Demote" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="userId" value="@row.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-warning"
+                                    data-testid="demote-@row.Username">
+                                Demote
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="WhoAmI" asp-action="Index" class="btn btn-outline-secondary">Who Am I?</a>

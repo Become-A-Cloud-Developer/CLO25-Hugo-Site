@@ -67,6 +67,9 @@
         <a asp-controller="AdminOnly" asp-action="Index" class="btn btn-outline-primary me-2" data-testid="whoami-adminlink">
             Admin-only page
         </a>
+        <a asp-controller="UserAdmin" asp-action="Index" class="btn btn-outline-primary me-2" data-testid="whoami-useradminlink">
+            User admin
+        </a>
     }
     @if (User.HasClaim("Department", "Engineering"))
     {
