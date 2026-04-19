@@ -37,6 +37,12 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
+# Warm Razor compilation so the first Playwright test doesn't race cold compile.
+echo "Warming up..."
+for path in "" "/WhoAmI" "/Account/Login"; do
+    curl -sf "$BASE_URL$path" > /dev/null 2>&1 || true
+done
+
 echo "Running Playwright tests (mode: $MODE)..."
 PLAYWRIGHT_MODE="$MODE" PLAYWRIGHT_BASE_URL="$BASE_URL" \
     dotnet test tests/CloudSoft.Auth.Web.PlaywrightTests/ \

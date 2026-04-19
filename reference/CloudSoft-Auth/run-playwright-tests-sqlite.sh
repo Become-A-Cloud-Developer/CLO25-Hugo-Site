@@ -40,6 +40,14 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
+# First-run Razor compilation can make the initial request slow enough to
+# race with the first Playwright test. Warm up a few endpoints so the JIT
+# and runtime caches are populated before the browser arrives.
+echo "Warming up..."
+for path in "" "/WhoAmI" "/Account/Login" "/Diagnostics/Store"; do
+    curl -sf "$BASE_URL$path" > /dev/null 2>&1 || true
+done
+
 echo "Running Playwright tests (mode: $MODE, store: SQLite)..."
 PLAYWRIGHT_MODE="$MODE" PLAYWRIGHT_BASE_URL="$BASE_URL" \
     IDENTITY_STORE_UNDER_TEST=SQLite \
