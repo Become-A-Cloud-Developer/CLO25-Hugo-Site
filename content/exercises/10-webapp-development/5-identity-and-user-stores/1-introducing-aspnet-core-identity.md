@@ -27,7 +27,7 @@ To avoid introducing a database too early, we use **EF Core InMemory** as the st
 
 > **Before starting, ensure you have:**
 >
-> - ✓ Completed Chapter 4 — the cookie flow, roles, claims, policies, and CSRF work end-to-end
+> - ✓ Completed Chapter 4 — the cookie flow, roles, claims, and policies work end-to-end
 > - ✓ `.NET` 10 SDK installed
 > - ✓ The project builds and tests pass at the end of Exercise 4.4
 
@@ -335,7 +335,7 @@ rm src/CloudSoft.Auth.Web/Data/DummyUsers.cs
    - `Roles: Admin` (from Identity's user-roles join)
    - Claims table includes the role claim and `Department = Engineering`
 
-3. The admin-only page, engineering page, and antiforgery demo still work exactly as before.
+3. The admin-only page and engineering page still work exactly as before.
 
 4. Restart the app (Ctrl+C, `dotnet run` again). Log in as admin again. This proves the seeder re-runs on every InMemory boot.
 

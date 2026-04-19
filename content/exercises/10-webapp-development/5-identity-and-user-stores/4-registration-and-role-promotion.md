@@ -402,7 +402,7 @@ The full user-management story now works end-to-end:
 You've completed Chapter 5 and the full eight-exercise arc. The app has:
 
 - Cookie authentication built from primitives (Chapter 4)
-- Roles, claims, policies, CSRF protection (Chapter 4)
+- Roles, claims, and policy-based authorization (Chapter 4)
 - External login via Google OIDC (Chapter 4)
 - ASP.NET Core Identity with a feature-flagged user store (Chapter 5)
 - Config-driven idempotent admin seeding (Chapter 5)

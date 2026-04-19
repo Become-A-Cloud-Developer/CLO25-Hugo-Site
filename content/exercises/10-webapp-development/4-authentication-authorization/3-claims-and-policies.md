@@ -1,27 +1,26 @@
 +++
-title = "3. Claims, Policies, and CSRF Protection"
+title = "3. Claims and Policies"
 program = "CLO"
 cohort = "25"
 courses = ["ACD"]
-description = "Attach custom claims to the signed-in principal, gate a page with a named policy, and verify antiforgery protection on state-changing POSTs"
+description = "Attach custom claims to the signed-in principal and gate a page with a named authorization policy"
 weight = 3
 draft = false
 +++
 
-# Claims, Policies, and CSRF Protection
+# Claims and Policies
 
 ## Goal
 
-Generalize what you built in Exercise 2 to any claim — not just roles — and use **named policies** to express authorization rules declaratively. Then add a small **antiforgery demo** that shows exactly what happens when a state-changing POST arrives without a CSRF token.
+Generalize what you built in Exercise 2 to any claim — not just roles — and use **named policies** to express authorization rules declaratively.
 
-By the end, the Who Am I page renders the full claim list (type, value, issuer) and the user can trigger both the accept and reject paths of the antiforgery check.
+By the end, the Who Am I page renders the full claim list (type, value, issuer) and a new `/Engineering` page is accessible only to users whose identity carries `Department = Engineering`.
 
 > **What you'll learn:**
 >
 > - How to add arbitrary custom claims to a `ClaimsPrincipal`
 > - How `AddAuthorization(options => options.AddPolicy(...))` registers a named policy
 > - How `[Authorize(Policy = "…")]` differs from `[Authorize(Roles = "…")]`
-> - What antiforgery tokens protect against and how ASP.NET Core enforces them
 
 ## Prerequisites
 
@@ -39,8 +38,7 @@ By the end, the Who Am I page renders the full claim list (type, value, issuer) 
 3. **Register a policy** in `Program.cs`
 4. **Create the Engineering page** gated by the policy
 5. **Extend the Who Am I view** — full claims table and conditional link
-6. **Add the CSRF demo form**
-7. **Test Your Implementation**
+6. **Test Your Implementation**
 
 ### **Step 1:** Extend the dummy user list with claims
 
@@ -226,91 +224,20 @@ The Who Am I page can now render every claim on the identity. Each row includes 
    </div>
    ```
 
-### **Step 6:** Add the antiforgery demo form
-
-The demo is a trivial POST that echoes a message back via TempData. The action is protected with `[ValidateAntiForgeryToken]`; the form includes `@Html.AntiForgeryToken()`. Removing either side breaks the round-trip.
-
-1. **Open** `src/CloudSoft.Auth.Web/Controllers/WhoAmIController.cs`
-
-2. **Add** the `TestPost` action:
-
-   > `src/CloudSoft.Auth.Web/Controllers/WhoAmIController.cs`
-
-   ```csharp
-   using Microsoft.AspNetCore.Authorization;
-   using Microsoft.AspNetCore.Mvc;
-
-   namespace CloudSoft.Auth.Web.Controllers;
-
-   public class WhoAmIController : Controller
-   {
-       public IActionResult Index() => View();
-
-       [HttpPost]
-       [Authorize]
-       [ValidateAntiForgeryToken]
-       public IActionResult TestPost(string message)
-       {
-           TempData["CsrfDemoMessage"] = $"Received: {message}";
-           return RedirectToAction(nameof(Index));
-       }
-   }
-   ```
-
-3. **In** the Who Am I view, **add** the demo form inside the `User.Identity?.IsAuthenticated` block, **before** the existing logout form:
-
-   > `src/CloudSoft.Auth.Web/Views/WhoAmI/Index.cshtml`
-
-   ```html
-   <h2 class="mt-4">Antiforgery demo</h2>
-   <p class="text-muted">
-       This form is protected by <code>[ValidateAntiForgeryToken]</code>. Submitting it normally succeeds;
-       a POST made without the token returns HTTP 400.
-   </p>
-
-   <form asp-controller="WhoAmI" asp-action="TestPost" method="post" data-testid="csrf-form" class="mb-3">
-       @Html.AntiForgeryToken()
-       <div class="input-group" style="max-width: 420px;">
-           <input type="text" name="message" value="hello" class="form-control"
-                  data-testid="csrf-message" />
-           <button type="submit" class="btn btn-primary" data-testid="csrf-submit">Submit</button>
-       </div>
-   </form>
-
-   @if (TempData["CsrfDemoMessage"] != null)
-   {
-       <div class="alert alert-success" data-testid="csrf-result">
-           @TempData["CsrfDemoMessage"]
-       </div>
-   }
-   ```
-
-> ℹ **Concept Deep Dive**
->
-> Antiforgery protects against cross-site request forgery: an attacker's page submits a form to your endpoint using a victim's cookie. The token is a per-session secret set as a cookie and echoed in a hidden form field; the server compares them on every POST. A third-party page can't read your antiforgery cookie (same-origin policy), so it can't produce a matching field.
->
-> ⚠ **Common Mistakes**
->
-> - Omitting `[ValidateAntiForgeryToken]` on MVC controller POSTs. It is **not** applied automatically.
-> - Using `@Html.AntiForgeryToken()` outside the `<form>` — the hidden field must be a child of the submitted form.
-
-### **Step 7:** Test Your Implementation
+### **Step 6:** Test Your Implementation
 
 1. **Run** the app and log in as `admin`.
 2. On Who Am I, confirm:
    - The `All claims` table includes `http://schemas.microsoft.com/ws/2008/06/identity/claims/role = Admin` and `Department = Engineering`.
    - An **Engineering page** button appears (and navigates successfully).
-3. Submit the **Antiforgery demo** form — a green alert shows `Received: hello`.
-4. Log out, log in as `candidate`:
+3. Log out, log in as `candidate`:
    - Claims table now shows `Department = Sales`.
    - The Engineering button is gone. Typing `/Engineering` in the address bar redirects to `/Account/AccessDenied`.
-5. **(Developer-tools test)** Open browser DevTools → Network → inspect the `TestPost` submission. The request body contains a `__RequestVerificationToken` field. Re-submit the form via curl without that token (or delete the `@Html.AntiForgeryToken()` line, rebuild, submit) and observe HTTP 400.
 
 > ✓ **Success indicators:**
 >
 > - The claims table shows every claim you added plus `ClaimTypes.Name`
 > - `[Authorize(Policy = "RequireEngineering")]` behaves exactly like `[Authorize(Roles = ...)]`: allow or redirect to access denied
-> - The antiforgery form works when submitted normally and fails with 400 when the token is stripped
 
 ## Common Issues
 
@@ -319,8 +246,6 @@ The demo is a trivial POST that echoes a message back via TempData. The action i
 > **Policy never satisfied:** Both the claim type and value match exactly (string equality, case-sensitive). `Department` is not the same as `department`.
 >
 > **`InvalidOperationException: No policy named…`:** You referenced `[Authorize(Policy = "Foo")]` without calling `AddPolicy("Foo", ...)` in `Program.cs`.
->
-> **Antiforgery form always fails:** Check that `@Html.AntiForgeryToken()` is inside the form and that `[ValidateAntiForgeryToken]` is on the action method. Both are required.
 
 ## Summary
 
@@ -328,7 +253,6 @@ You've generalized the primitive one more step:
 
 - ✓ Any claim, not just roles, can live on the principal
 - ✓ Named policies let you express authorization rules in one place and re-use them on many controllers
-- ✓ Antiforgery token protection is easy to add and catastrophic to forget
 
 > **Key takeaway:** `[Authorize(Policy = ...)]` is the general form. `[Authorize(Roles = ...)]` is syntactic sugar over a role-claim check. Reach for policies when the rule is anything other than "is the user in this role?".
 

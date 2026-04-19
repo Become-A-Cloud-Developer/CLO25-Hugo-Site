@@ -233,6 +233,6 @@ You've added the final piece of cookie-based authentication:
 
 ## Done!
 
-Chapter 4 is complete. You now understand the entire cookie-authentication stack: the cookie itself, the `ClaimsPrincipal` it carries, roles and custom claims, named policies, antiforgery protection, and external providers.
+Chapter 4 is complete. You now understand the entire cookie-authentication stack: the cookie itself, the `ClaimsPrincipal` it carries, roles and custom claims, named policies, and external providers.
 
 **Chapter 5** adds persistence: ASP.NET Core Identity, a feature-flagged InMemory/SQLite user store, startup admin seeding, and real registration with role promotion.
