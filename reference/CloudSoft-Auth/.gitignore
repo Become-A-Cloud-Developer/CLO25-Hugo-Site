@@ -1,0 +1,30 @@
+# .NET build output
+bin/
+obj/
+*.user
+*.suo
+*.lscache
+
+# VS / Rider
+.vs/
+.idea/
+
+# NuGet
+packages/
+*.nupkg
+
+# macOS
+.DS_Store
+
+# Playwright
+playwright-report/
+test-results/
+
+# EF Core SQLite data file (Ex 5.2+)
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# User secrets are stored in ~/.microsoft/usersecrets — not here
+# but nothing to gitignore on that count

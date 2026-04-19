@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/CloudSoft.Auth.Web/CloudSoft.Auth.Web.csproj" />
+  <Project Path="tests/CloudSoft.Auth.Web.PlaywrightTests/CloudSoft.Auth.Web.PlaywrightTests.csproj" />
+</Solution>
