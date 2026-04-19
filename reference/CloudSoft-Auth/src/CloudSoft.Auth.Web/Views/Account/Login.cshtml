@@ -1,5 +1,10 @@
+@using Microsoft.AspNetCore.Authentication
+@inject IAuthenticationSchemeProvider SchemeProvider
 @{
     ViewData["Title"] = "Log in";
+    var externalSchemes = (await SchemeProvider.GetAllSchemesAsync())
+        .Where(s => !string.IsNullOrEmpty(s.DisplayName))
+        .ToArray();
 }
 
 <h1>Log in</h1>
@@ -34,3 +39,21 @@
     Dummy credentials for this exercise:
     <code>admin / admin</code> or <code>candidate / candidate</code>.
 </p>
+
+@if (externalSchemes.Any())
+{
+    <hr />
+    <h2>Or sign in with</h2>
+    <form method="post" asp-controller="Account" asp-action="ExternalLogin" data-testid="external-login-form">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+        @foreach (var scheme in externalSchemes)
+        {
+            <button type="submit" name="provider" value="@scheme.Name"
+                    class="btn btn-outline-primary me-2"
+                    data-testid="external-login-@scheme.Name.ToLowerInvariant()">
+                @scheme.DisplayName
+            </button>
+        }
+    </form>
+}
