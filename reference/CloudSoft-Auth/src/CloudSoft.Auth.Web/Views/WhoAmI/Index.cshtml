@@ -20,7 +20,23 @@
     <dd class="col-sm-8" data-testid="whoami-authtype">
         @(User.Identity?.AuthenticationType ?? "(none)")
     </dd>
+
+    <dt class="col-sm-4">Roles</dt>
+    <dd class="col-sm-8" data-testid="whoami-roles">
+        @{
+            var roles = User.FindAll(System.Security.Claims.ClaimTypes.Role)
+                            .Select(c => c.Value).ToArray();
+        }
+        @(roles.Length == 0 ? "(none)" : string.Join(", ", roles))
+    </dd>
 </dl>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-controller="AdminOnly" asp-action="Index" class="btn btn-outline-primary me-2" data-testid="whoami-adminlink">
+        Admin-only page
+    </a>
+}
 
 @if (User.Identity?.IsAuthenticated == true)
 {

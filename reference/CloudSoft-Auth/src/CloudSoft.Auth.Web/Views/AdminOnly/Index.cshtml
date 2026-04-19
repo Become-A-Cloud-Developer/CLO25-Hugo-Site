@@ -1,0 +1,8 @@
+@{
+    ViewData["Title"] = "Admin only";
+}
+
+<h1 data-testid="adminonly-heading">Admin only</h1>
+<p class="lead">You only see this page because your identity carries the <code>Admin</code> role.</p>
+
+<a asp-controller="WhoAmI" asp-action="Index" class="btn btn-outline-secondary">Who Am I?</a>
