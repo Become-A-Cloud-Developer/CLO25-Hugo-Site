@@ -27,9 +27,9 @@ To avoid introducing a database too early, we use **EF Core InMemory** as the st
 
 > **Before starting, ensure you have:**
 >
-> - ✓ Completed Chapter 4 — the cookie flow, roles, claims, policies, and CSRF work end-to-end
+> - ✓ Completed Chapter 4 Exercises 1–3 — the cookie flow, roles, claims, policies, and CSRF work end-to-end
 > - ✓ `.NET` 10 SDK installed
-> - ✓ The project builds and tests pass at the end of Exercise 4.4
+> - ✓ The project builds and tests pass at the end of Exercise 4.3
 
 ## Exercise Steps
 
@@ -132,23 +132,6 @@ The registration in `Program.cs` replaces most of your Chapter 4 authentication 
    });
    ```
 
-3. **Change** Google registration to attach to the existing scheme:
-
-   > `src/CloudSoft.Auth.Web/Program.cs`
-
-   ```csharp
-   var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
-   var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-   if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
-   {
-       builder.Services.AddAuthentication().AddGoogle(options =>
-       {
-           options.ClientId = googleClientId;
-           options.ClientSecret = googleClientSecret;
-       });
-   }
-   ```
-
 > ⚠ **Common Mistakes**
 >
 > - Calling `AddAuthentication(scheme).AddCookie()` alongside `AddIdentity` clobbers Identity's cookie configuration. `AddIdentity` already sets up the scheme; you only configure it.
@@ -164,8 +147,6 @@ The controller no longer builds a `ClaimsPrincipal` by hand. `SignInManager.Pass
 
    ```csharp
    using CloudSoft.Auth.Web.Data;
-   using Microsoft.AspNetCore.Authentication;
-   using Microsoft.AspNetCore.Authorization;
    using Microsoft.AspNetCore.Identity;
    using Microsoft.AspNetCore.Mvc;
 
@@ -219,19 +200,6 @@ The controller no longer builds a `ClaimsPrincipal` by hand. `SignInManager.Pass
 
        [HttpGet]
        public IActionResult AccessDenied() => View();
-
-       [HttpPost]
-       [AllowAnonymous]
-       [ValidateAntiForgeryToken]
-       public IActionResult ExternalLogin(string provider, string? returnUrl = null)
-       {
-           var redirectUrl = !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)
-               ? returnUrl
-               : Url.Action("Index", "WhoAmI");
-
-           var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-           return Challenge(properties, provider);
-       }
    }
    ```
 
@@ -353,8 +321,6 @@ rm src/CloudSoft.Auth.Web/Data/DummyUsers.cs
 > **PasswordValidator error when seeding:** The password doesn't meet the configured policy. Either loosen `PasswordOptions` further (for dev only) or use stronger seed passwords.
 >
 > **"Scheme Cookies does not exist":** You removed `AddCookie(...)` but something (old code) still references the `Cookies` scheme name. Identity's scheme is `IdentityConstants.ApplicationScheme` (`"Identity.Application"`).
->
-> **Google button disappeared:** The external-schemes query in `Login.cshtml` also returned the classic cookie scheme pre-Identity (no-op because it has no `DisplayName`). Identity doesn't set a `DisplayName` on its cookie either, so the filter still works. If you see nothing after configuring Google, check your user-secrets.
 
 ## Summary
 
