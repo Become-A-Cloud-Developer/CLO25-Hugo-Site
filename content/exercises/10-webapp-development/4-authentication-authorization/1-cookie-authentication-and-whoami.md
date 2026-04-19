@@ -61,25 +61,9 @@ Start from the default MVC template. The scaffold gives you a home controller, a
 
    Opening `http://localhost:5017` should show the default MVC welcome page. Stop the server with `Ctrl+C`.
 
-3. **Remove** the HTTPS redirection from the scaffold. HTTPS is the right default for production, but the development certificate makes Playwright setup fiddly and we're going to hit `http://localhost:5017` throughout the chapter. Open `src/CloudSoft.Auth.Web/Program.cs` and **remove** the `UseHttpsRedirection()` call and the `UseHsts` block:
-
-   > `src/CloudSoft.Auth.Web/Program.cs` (changes shown with `-` / `+`)
-
-   ```diff
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Home/Error");
-   -    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-   -    app.UseHsts();
-    }
-
-   -app.UseHttpsRedirection();
-    app.UseRouting();
-   ```
-
 > ℹ **Concept Deep Dive**
 >
-> In production you absolutely want HTTPS and HSTS. In this lab, the app runs only on your development machine and we're going to restart it often, so the HTTP-only setup is a deliberate simplification. When you apply these patterns to your CloudSoft-Recruitment project, leave the HTTPS block in.
+> `dotnet run` with the `http` profile binds only to port `5017` over plain HTTP. The scaffold's `app.UseHttpsRedirection()` call is effectively a no-op in this mode — it only kicks in when an HTTPS endpoint is also configured (the `https` launch profile). Keep the scaffold's HTTPS and HSTS lines as-is; you may want HTTPS locally later when testing Google OIDC, and they're the right defaults for production anyway.
 >
 > ✓ **Quick check:** The project builds and `http://localhost:5017` loads the default MVC home page.
 
@@ -89,16 +73,19 @@ Cookie authentication is the simplest auth scheme ASP.NET Core ships with. On si
 
 1. **Open** `src/CloudSoft.Auth.Web/Program.cs`
 
-2. **Replace** the file with the following:
+2. **Add** the `using` at the top:
 
    > `src/CloudSoft.Auth.Web/Program.cs`
 
    ```csharp
    using Microsoft.AspNetCore.Authentication.Cookies;
+   ```
 
-   var builder = WebApplication.CreateBuilder(args);
+3. **Register** the cookie scheme right after `AddControllersWithViews()`:
 
-   // Add services to the container.
+   > `src/CloudSoft.Auth.Web/Program.cs`
+
+   ```csharp
    builder.Services.AddControllersWithViews();
 
    builder.Services
@@ -110,27 +97,20 @@ Cookie authentication is the simplest auth scheme ASP.NET Core ships with. On si
        });
 
    builder.Services.AddAuthorization();
+   ```
 
-   var app = builder.Build();
+4. **Add** the authentication and authorization middleware after `UseRouting()` and before the endpoint mapping. Keep the existing `UseHttpsRedirection()` call untouched — it's inherited from the scaffold.
 
-   if (!app.Environment.IsDevelopment())
-   {
-       app.UseExceptionHandler("/Home/Error");
-   }
+   > `src/CloudSoft.Auth.Web/Program.cs`
 
+   ```csharp
+   app.UseHttpsRedirection();
    app.UseRouting();
 
    app.UseAuthentication();
    app.UseAuthorization();
 
    app.MapStaticAssets();
-
-   app.MapControllerRoute(
-       name: "default",
-       pattern: "{controller=Home}/{action=Index}/{id?}")
-       .WithStaticAssets();
-
-   app.Run();
    ```
 
 > ℹ **Concept Deep Dive**
