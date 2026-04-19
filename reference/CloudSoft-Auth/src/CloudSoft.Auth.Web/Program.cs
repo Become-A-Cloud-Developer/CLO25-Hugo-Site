@@ -7,10 +7,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Data: EF Core InMemory store backing ASP.NET Core Identity.
-// Exercise 5.2 introduces a feature flag that swaps this for SQLite.
+// Data: store provider chosen by the IdentityStore:Provider flag.
+// InMemory — transient, reseeded each boot. SQLite — file-based, persistent.
+var storeProvider = builder.Configuration["IdentityStore:Provider"] ?? "InMemory";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("CloudSoftAuthDb"));
+{
+    switch (storeProvider.ToLowerInvariant())
+    {
+        case "sqlite":
+            var connectionString = builder.Configuration.GetConnectionString("Identity")
+                ?? "Data Source=cloudsoft-auth.db";
+            options.UseSqlite(connectionString);
+            break;
+
+        case "inmemory":
+        default:
+            options.UseInMemoryDatabase("CloudSoftAuthDb");
+            break;
+    }
+});
 
 // Identity: user + role management, scoped to ApplicationUser.
 // Password requirements are relaxed to keep the hardcoded Chapter-4 passwords
@@ -73,6 +88,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+// For SQLite, create the schema if this is the first run. InMemory doesn't need it.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (db.Database.IsRelational())
+    {
+        db.Database.EnsureCreated();
+    }
+}
 
 // Seed fixed test users. Exercise 5.3 replaces this with a config-driven admin seeder.
 await TestUserSeeder.SeedAsync(app.Services);

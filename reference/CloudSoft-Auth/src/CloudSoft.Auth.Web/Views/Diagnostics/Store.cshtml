@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Store Diagnostics";
+}
+
+<h1>Identity store diagnostics</h1>
+
+<dl class="row">
+    <dt class="col-sm-4">Configured provider</dt>
+    <dd class="col-sm-8" data-testid="diag-configured-provider">@ViewBag.ConfiguredProvider</dd>
+
+    <dt class="col-sm-4">EF Core provider in use</dt>
+    <dd class="col-sm-8" data-testid="diag-provider-name">@ViewBag.ProviderName</dd>
+
+    <dt class="col-sm-4">Is relational?</dt>
+    <dd class="col-sm-8" data-testid="diag-is-relational">@ViewBag.IsRelational</dd>
+</dl>
+
+<p class="text-muted">
+    Switch stores by setting <code>IdentityStore:Provider</code> to
+    <code>InMemory</code> or <code>SQLite</code>. For SQLite, a connection
+    string lives under <code>ConnectionStrings:Identity</code>.
+</p>
