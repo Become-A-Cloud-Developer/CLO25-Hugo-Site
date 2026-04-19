@@ -1,14 +1,14 @@
 +++
-title = "3. Claims and Policies"
+title = "3. Claims, Policies, and CSRF Protection"
 program = "CLO"
 cohort = "25"
 courses = ["ACD"]
-description = "Attach custom claims to the signed-in principal and gate a page with a named authorization policy"
+description = "Attach custom claims to the signed-in principal, gate a page with a named policy, and understand antiforgery protection on state-changing POSTs"
 weight = 3
 draft = false
 +++
 
-# Claims and Policies
+# Claims, Policies, and CSRF Protection
 
 ## Goal
 
@@ -16,11 +16,14 @@ Generalize what you built in Exercise 2 to any claim — not just roles — and 
 
 By the end, the Who Am I page renders the full claim list (type, value, issuer) and a new `/Engineering` page is accessible only to users whose identity carries `Department = Engineering`.
 
+CSRF protection is already present on the login and logout forms from Exercise 1 via the `[ValidateAntiForgeryToken]` attribute paired with `@Html.AntiForgeryToken()`. Keep that pairing in mind whenever you add a state-changing POST from here on.
+
 > **What you'll learn:**
 >
 > - How to add arbitrary custom claims to a `ClaimsPrincipal`
 > - How `AddAuthorization(options => options.AddPolicy(...))` registers a named policy
 > - How `[Authorize(Policy = "…")]` differs from `[Authorize(Roles = "…")]`
+> - What antiforgery tokens protect against and how ASP.NET Core enforces them
 
 ## Prerequisites
 
@@ -253,6 +256,7 @@ You've generalized the primitive one more step:
 
 - ✓ Any claim, not just roles, can live on the principal
 - ✓ Named policies let you express authorization rules in one place and re-use them on many controllers
+- ✓ Antiforgery token protection is easy to add with `[ValidateAntiForgeryToken]` + `@Html.AntiForgeryToken()` and catastrophic to forget
 
 > **Key takeaway:** `[Authorize(Policy = ...)]` is the general form. `[Authorize(Roles = ...)]` is syntactic sugar over a role-claim check. Reach for policies when the rule is anything other than "is the user in this role?".
 

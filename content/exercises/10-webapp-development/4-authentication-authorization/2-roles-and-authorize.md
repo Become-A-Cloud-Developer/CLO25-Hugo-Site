@@ -222,4 +222,4 @@ You've added the second primitive on top of Exercise 1's cookie authentication:
 
 ## Done!
 
-Admin and Candidate now see different pages. Next: arbitrary claims and policy-based authorization, generalizing what you've built so far.
+Admin and Candidate now see different pages. Next: arbitrary claims and policy-based authorization — plus CSRF protection for state-changing POSTs.

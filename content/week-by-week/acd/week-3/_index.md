@@ -3,7 +3,7 @@ title = "Week 3"
 program = "CLO"
 cohort = "25"
 courses = ["ACD"]
-description = "Authentication and authorization in ASP.NET Core: cookie auth primitives, roles, claims, policies, and ASP.NET Core Identity"
+description = "Authentication and authorization in ASP.NET Core: cookie auth primitives, roles, claims, policies, CSRF, and ASP.NET Core Identity"
 weight = 3
 +++
 
@@ -22,13 +22,13 @@ This week covers the identity layer of the reference application from the bottom
 - Authentication methods (password, token, MFA) and types (local, remote, managed)
 - OAuth 2.0 and OpenID Connect
 - ASP.NET Core Identity, cookie authentication, and JWT authentication
-- `[Authorize]`, roles, claims, and policy-based authorization
+- `[Authorize]`, roles, claims, policies, and CSRF protection
 
 ## Practice
 
 The practice lands in two chapters under the Webapp Development exercises:
 
-- **[Chapter 4 — Authentication and Authorization](/exercises/10-webapp-development/4-authentication-authorization/)** — four exercises that build cookie auth, roles, claims, policies, and Google OIDC on top of a minimal scaffolded app, using hardcoded test users only. Stays entirely in the presentation layer.
+- **[Chapter 4 — Authentication and Authorization](/exercises/10-webapp-development/4-authentication-authorization/)** — four exercises that build cookie auth, roles, claims, policies, CSRF, and Google OIDC on top of a minimal scaffolded app, using hardcoded test users only. Stays entirely in the presentation layer.
 - **[Chapter 5 — Identity and User Stores](/exercises/10-webapp-development/5-identity-and-user-stores/)** — four further exercises that replace the hand-rolled sign-in with ASP.NET Core Identity, add a feature-flagged InMemory/SQLite user store, introduce config-driven admin seeding, and finish with registration and role promotion.
 
 All exercises evolve a single **"Who Am I?"** page that reveals exactly what the server knows about the current user — authentication state, name, scheme, roles, full claims table, and (after the Google exercise) provider-issued claims.
@@ -42,5 +42,6 @@ All exercises evolve a single **"Who Am I?"** page that reveals exactly what the
 
 - What is the difference between authentication and authorization?
 - How does cookie-based login work in a web application?
+- Why is CSRF protection needed, and how is it implemented in ASP.NET Core?
 - When does ASP.NET Core Identity pay for itself over hand-rolled cookie auth?
 - How should the first admin user get into a fresh system?

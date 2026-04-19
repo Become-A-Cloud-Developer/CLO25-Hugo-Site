@@ -27,7 +27,7 @@ To avoid introducing a database too early, we use **EF Core InMemory** as the st
 
 > **Before starting, ensure you have:**
 >
-> - ✓ Completed Chapter 4 — the cookie flow, roles, claims, and policies work end-to-end
+> - ✓ Completed Chapter 4 — the cookie flow, roles, claims, policies, and CSRF work end-to-end
 > - ✓ `.NET` 10 SDK installed
 > - ✓ The project builds and tests pass at the end of Exercise 4.4
 
