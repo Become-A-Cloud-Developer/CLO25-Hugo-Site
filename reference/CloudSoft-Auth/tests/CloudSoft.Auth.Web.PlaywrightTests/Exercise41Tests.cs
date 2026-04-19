@@ -40,8 +40,10 @@ public class Exercise41Tests : TestBase
             .ToContainTextAsync("True");
         await Expect(Page.GetByTestId("whoami-name"))
             .ToContainTextAsync("admin");
+        // Any registered scheme is acceptable: "Cookies" before Exercise 5.1,
+        // "Identity.Application" after Identity takes over.
         await Expect(Page.GetByTestId("whoami-authtype"))
-            .ToContainTextAsync("Cookies");
+            .Not.ToContainTextAsync("(none)");
     }
 
     [Test]

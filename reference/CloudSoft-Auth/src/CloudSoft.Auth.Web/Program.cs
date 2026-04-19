@@ -1,27 +1,47 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+using CloudSoft.Auth.Web.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var authBuilder = builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    });
+// Data: EF Core InMemory store backing ASP.NET Core Identity.
+// Exercise 5.2 introduces a feature flag that swaps this for SQLite.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("CloudSoftAuthDb"));
 
-// Google OAuth is conditionally registered. Provide both ClientId and ClientSecret
-// via user-secrets (development) or environment variables (production):
-//   dotnet user-secrets set "Authentication:Google:ClientId"     "..."
-//   dotnet user-secrets set "Authentication:Google:ClientSecret" "..."
+// Identity: user + role management, scoped to ApplicationUser.
+// Password requirements are relaxed to keep the hardcoded Chapter-4 passwords
+// (admin/admin, candidate/candidate) working. Production apps should leave
+// the defaults in place.
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 3;
+        options.User.RequireUniqueEmail = false;
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+// Google OAuth is conditionally registered.
 var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
 var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 if (!string.IsNullOrEmpty(googleClientId) && !string.IsNullOrEmpty(googleClientSecret))
 {
-    authBuilder.AddGoogle(options =>
+    builder.Services.AddAuthentication().AddGoogle(options =>
     {
         options.ClientId = googleClientId;
         options.ClientSecret = googleClientSecret;
@@ -54,5 +74,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// Seed fixed test users. Exercise 5.3 replaces this with a config-driven admin seeder.
+await TestUserSeeder.SeedAsync(app.Services);
 
 app.Run();
