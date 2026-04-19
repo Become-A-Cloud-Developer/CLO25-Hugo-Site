@@ -405,6 +405,80 @@
 }
 
 /* ===================
+   CODE STYLES
+   =================== */
+
+.reveal code {
+    font-family: "Fira Code", "SF Mono", Menlo, Consolas, monospace;
+    background: rgba(0, 217, 255, 0.12);
+    color: var(--tech-cyan);
+    padding: 0.08em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.reveal pre.code-block {
+    background: rgba(0, 0, 0, 0.45);
+    border-left: 4px solid var(--tech-cyan);
+    padding: var(--space-md) var(--space-lg);
+    margin: var(--space-sm) 0;
+    font-family: "Fira Code", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 1.3em;
+    color: var(--white);
+    line-height: 1.5;
+    text-align: left;
+    overflow-x: auto;
+    box-shadow: none;
+}
+
+.reveal pre.code-block code {
+    background: transparent;
+    color: var(--white);
+    padding: 0;
+    font-size: 1em;
+}
+
+.reveal pre.code-block .kw { color: var(--swedish-yellow); }
+.reveal pre.code-block .attr { color: var(--tech-cyan); }
+.reveal pre.code-block .str { color: #8ae68a; }
+.reveal pre.code-block .cmt { color: var(--muted-text); font-style: italic; }
+
+/* ===================
+   SVG DIAGRAM SLIDE
+   =================== */
+
+.diagram-slide {
+    padding: var(--space-xl);
+    height: 100vh;
+    display: flex !important;
+    flex-direction: column;
+}
+
+.diagram-slide .slide-header {
+    color: var(--swedish-yellow);
+    font-size: 3.6em;
+    margin-bottom: var(--space-lg);
+    border-left: 4px solid var(--swedish-yellow);
+    padding-left: var(--space-md);
+}
+
+.diagram-slide .diagram-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.diagram-slide svg {
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+}
+
+/* ===================
    FRAGMENT ANIMATIONS
    =================== */
 

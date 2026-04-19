@@ -1,5 +1,9 @@
 ---
-version: 1.0.0
+name: revealjs-skill
+description: Create Reveal.js HTML presentations with the Swedish tech aesthetic (blue/yellow/cyan on dark background) for the Hugo site. Use when the user asks for a presentation, slides, or a deck. Produces standalone HTML in static/presentations/ and a linking Hugo content page. Supports six slide types (Hero, Profile Card, Bullet, Timeline, Closing, Diagram) plus inline SVG and syntax-highlighted code blocks.
+metadata:
+  version: "1.1.0"
+  last_updated: "2026-04-19"
 ---
 
 # Reveal.js Swedish Tech Presentation Skill
@@ -8,9 +12,10 @@ version: 1.0.0
 Expert skill for creating professional Reveal.js presentations with a distinctive Swedish tech aesthetic. Use standalone HTML presentations stored in `static/presentations/` and link to them from Hugo content pages.
 
 ## Core Capabilities
-- Create multi-slide Reveal.js presentations with 5 predefined slide types
+- Create multi-slide Reveal.js presentations with 6 predefined slide types
 - Apply Swedish tech design system (blue/yellow/cyan color scheme)
 - Generate interactive elements with fragment animations
+- Embed inline SVG diagrams and syntax-highlighted code blocks
 - Maintain consistent typography and spacing optimized for large screens
 
 ## Design System
@@ -40,7 +45,7 @@ static/presentations/
 └── images/                    # Presentation images
 ```
 
-## The 5 Slide Types
+## The 6 Slide Types
 
 ### 1. Hero Slide
 Opening slide with course badge, multi-line title, and decorative elements.
@@ -189,6 +194,46 @@ Centered content for questions or closing statements.
 </section>
 ```
 
+### 6. Diagram Slide
+Full-width slide with an inline SVG diagram. Use for flow charts, topologies, and conceptual visuals that need to render crisply at 1920×1080. Prefer inline SVG over raster images — it scales, themes cleanly, and stays in version control.
+
+```html
+<section class="diagram-slide" data-background-color="#0A0E27">
+    <h2 class="slide-header">Diagram Title</h2>
+
+    <div class="diagram-container">
+        <svg viewBox="0 0 1600 560" xmlns="http://www.w3.org/2000/svg" aria-label="Short description of what the diagram shows">
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                </marker>
+            </defs>
+
+            <!-- A box -->
+            <rect x="20" y="220" width="240" height="120" rx="12"
+                  fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+            <text x="140" y="285" text-anchor="middle"
+                  fill="#fff" font-family="Segoe UI" font-size="30" font-weight="700">Step 1</text>
+
+            <!-- An arrow -->
+            <line x1="265" y1="280" x2="385" y2="280"
+                  stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+            <text x="325" y="265" text-anchor="middle"
+                  fill="#00D9FF" font-family="Segoe UI" font-size="20" font-weight="700">label</text>
+
+            <!-- Add more boxes/arrows as needed -->
+        </svg>
+    </div>
+</section>
+```
+
+**Diagram color conventions:**
+- **Swedish blue** (`#006AA7`) filled boxes for primary entities
+- **Dark** (`#0A0E27`) filled boxes with **yellow** (`#FECC00`) border for emphasized/active steps
+- **Cyan** (`#00D9FF`) arrows/text for flow and neutral labels
+- **Yellow** (`#FECC00`) arrows/text for critical transitions
+- Always include a `viewBox` and `aria-label` so the SVG scales and is accessible
+
 ## Complete HTML Template
 
 ```html
@@ -282,6 +327,7 @@ Use the appropriate slide type for each section:
 - **Bullet Slide**: Main content, lists, key points
 - **Timeline Slide**: Schedules, phases, progression
 - **Closing Slide**: Questions, thank you, contact info
+- **Diagram Slide**: Flow charts, topologies, conceptual visuals (inline SVG)
 
 ### 4. Add Interactivity
 - Use `class="fragment"` for sequential reveals
@@ -333,6 +379,33 @@ Use the appropriate slide type for each section:
 <div class="fragment fade-in description-box" data-fragment-index="2">
 ```
 
+### Inline Code
+Use `<code>` for short snippets inside info boxes — renders as cyan monospace on a subtle tinted background.
+
+```html
+<p>Decorate with <code>[Authorize]</code> to require an authenticated user</p>
+```
+
+### Code Block
+Use `<pre class="code-block">` for multi-line snippets. Wrap tokens in the following span classes for hand-rolled syntax highlighting:
+
+- `<span class="kw">` — keywords (yellow)
+- `<span class="attr">` — attributes / annotations (cyan)
+- `<span class="str">` — string literals (green)
+- `<span class="cmt">` — comments (muted, italic)
+
+```html
+<div class="fragment">
+    <pre class="code-block"><code><span class="attr">[Authorize(Roles = <span class="str">"Admin"</span>)]</span>
+<span class="kw">public class</span> AdminController : Controller
+{
+    <span class="kw">public</span> IActionResult Index() =&gt; View();
+}</code></pre>
+</div>
+```
+
+Keep code blocks to ~6 lines and ~60 columns so they stay legible at 1920×1080. Escape `<` and `>` in code (`&lt;` `&gt;`). HTML entities like `&amp;` render correctly.
+
 ## Example Usage
 
 ```
@@ -361,6 +434,14 @@ Claude Code will:
 ---
 
 ## Changelog
+
+### 1.1.0 — Code blocks and SVG diagrams
+
+- Added **Diagram Slide** as the 6th slide type, with inline SVG scaffolding, an arrow marker pattern, and color conventions
+- Added **Inline Code** pattern using `<code>` — cyan monospace on a tinted background
+- Added **Code Block** pattern using `<pre class="code-block">` with hand-rolled syntax highlighting via `kw` / `attr` / `str` / `cmt` span classes
+- Extended `template.css` with matching styles for code, code blocks, and the diagram slide layout
+- Documented escaping rules (`&lt;`, `&gt;`, `&amp;`) and sizing guidance for code blocks
 
 ### 1.0.0 — Initial release
 

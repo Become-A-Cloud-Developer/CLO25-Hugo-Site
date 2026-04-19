@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Authentication & Authorization</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>ACD &bull; Week 3</span>
+                </div>
+
+                <h1 class="main-title">
+                    AUTHENTICATION<br>
+                    &amp; AUTHORIZATION
+                </h1>
+
+                <p class="subtitle">Identity, Access, and ASP.NET Core</p>
+                <p class="course-info">Advanced Cloud Development &bull; 2026</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Authentication - Definition -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication</h2>
+
+                <div class="fragment info-box">
+                    <p>The process of <span class="highlight">verifying the identity</span> of a user, system, or application trying to access a resource</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>It confirms that users are <span class="highlight">who they claim to be</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Asks the question: <span class="highlight">"Who are you?"</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Authorization - Definition -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization</h2>
+
+                <div class="fragment info-box">
+                    <p>The process of determining the <span class="highlight">permissions</span> an authenticated user has over secured resources</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Defines the <span class="highlight">level of access</span> and <span class="highlight">which actions</span> are allowed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Asks the question: <span class="highlight">"What are you allowed to do?"</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: AuthN vs AuthZ -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication vs Authorization</h2>
+
+                <div class="fragment info-box">
+                    <p>Authorization happens <span class="highlight">after</span> authentication &mdash; you must know <em>who</em> someone is before you can decide <em>what</em> they may do</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authentication:</span> "Who are you?" &mdash; proves identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization:</span> "What are you allowed to do?" &mdash; grants or denies access</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: AuthN Key Concepts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication &mdash; Key Concepts</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Principal:</span> an entity that can be authenticated &mdash; a human user, a computer, or a service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Credentials:</span> the "id card" presented &mdash; passwords, certificates, tokens, or biometrics</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Identity:</span> what the principal receives once authenticated &mdash; a digital badge carrying claims</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claim:</span> a piece of information about the principal &mdash; name, role, email, preferences</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: SVG Diagram - Auth Flow -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Full Picture</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 560" xmlns="http://www.w3.org/2000/svg" aria-label="Authentication and Authorization flow diagram">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                            </marker>
+                            <marker id="arrowhead-yellow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#FECC00"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Principal -->
+                        <g>
+                            <rect x="20" y="220" width="240" height="120" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="140" y="270" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="30" font-weight="700">Principal</text>
+                            <text x="140" y="305" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18">user / service</text>
+                        </g>
+
+                        <!-- Arrow: Credentials -->
+                        <line x1="265" y1="280" x2="385" y2="280" stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <text x="325" y="265" text-anchor="middle" fill="#00D9FF" font-family="Segoe UI" font-size="20" font-weight="700">Credentials</text>
+
+                        <!-- Authentication -->
+                        <g>
+                            <rect x="390" y="220" width="260" height="120" rx="12" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="520" y="270" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="28" font-weight="800">Authentication</text>
+                            <text x="520" y="305" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18">verifies identity</text>
+                        </g>
+
+                        <!-- Arrow: issues -->
+                        <line x1="655" y1="280" x2="775" y2="280" stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <text x="715" y="265" text-anchor="middle" fill="#00D9FF" font-family="Segoe UI" font-size="20" font-weight="700">issues</text>
+
+                        <!-- Identity (with Claims) -->
+                        <g>
+                            <rect x="780" y="180" width="260" height="200" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="910" y="225" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="30" font-weight="700">Identity</text>
+                            <line x1="820" y1="245" x2="1000" y2="245" stroke="#FECC00" stroke-width="2"/>
+                            <text x="910" y="285" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="700">Claims</text>
+                            <text x="910" y="315" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="16">name &bull; email</text>
+                            <text x="910" y="340" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="16">role &bull; ...</text>
+                        </g>
+
+                        <!-- Arrow: Authorization -->
+                        <line x1="1045" y1="280" x2="1165" y2="280" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow)"/>
+                        <text x="1105" y="265" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="700">Authorization</text>
+
+                        <!-- Resource -->
+                        <g>
+                            <rect x="1170" y="220" width="260" height="120" rx="12" fill="#0A0E27" stroke="#00D9FF" stroke-width="3"/>
+                            <text x="1300" y="270" text-anchor="middle" fill="#00D9FF" font-family="Segoe UI" font-size="30" font-weight="700">Resource</text>
+                            <text x="1300" y="305" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18">protected data</text>
+                        </g>
+
+                        <!-- Labels under arrows -->
+                        <text x="325" y="400" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18" font-style="italic">presents</text>
+                        <text x="1105" y="400" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18" font-style="italic">grants / denies</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: AuthN Methods -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication &mdash; Methods</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Username / Password:</span> the classic pair &mdash; simple, familiar, but weakest on its own</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Token-Based (JWT):</span> the server issues a signed token after login; the client attaches it to subsequent requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Multi-Factor (MFA):</span> two or more independent checks &mdash; something you know, something you have, something you are</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: AuthN Types -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication &mdash; Types</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Local:</span> handled directly by the application &mdash; you own the user store</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Remote:</span> delegated to an external identity provider &mdash; OAuth / OIDC with Google, Facebook, Microsoft</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Managed:</span> a cloud service runs the user directory for you &mdash; Azure AD B2C, AWS Cognito</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Takeaway / Recap -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Takeaway &mdash; Authentication</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">Principal</span> presents <span class="highlight">Credentials</span>; Authentication issues an <span class="highlight">Identity</span> carrying <span class="highlight">Claims</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Methods range from <span class="highlight">passwords</span> to <span class="highlight">tokens</span> to <span class="highlight">MFA</span> &mdash; layered, not exclusive</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>You can run auth <span class="highlight">locally</span>, <span class="highlight">delegate</span> it, or let the <span class="highlight">cloud</span> manage it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Next: now that we know <em>who</em> the user is &mdash; what may they do?</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: AuthZ Key Concepts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization &mdash; Key Concepts</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Roles:</span> categories of users defined by what they are allowed to do &mdash; Admin, Candidate, Guest</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Permissions:</span> specific rights assigned to roles or users &mdash; read, write, delete, approve</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Roles <em>group</em> permissions so access can be reasoned about at a human scale</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: AuthZ Methods -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization &mdash; Methods</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Role-Based:</span> users belong to roles; permissions attach to roles &mdash; <code>Administrator</code>, <code>Guest</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claim-Based:</span> access decided from claims on the identity &mdash; department, age, subscription tier</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Policy-Based:</span> a named set of requirements &mdash; all must be satisfied for access</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: OAuth 2.0 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OAuth 2.0</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Open Authorization</span> &mdash; a delegated access protocol, <em>not</em> an authentication protocol</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lets third-party apps access user data <span class="highlight">without seeing credentials</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">access token</span> authorizes calls to the Resource Server on the user's behalf</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Uses <span class="highlight">bearer tokens</span> &mdash; possess the token, gain the access</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 13: OIDC -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OpenID Connect (OIDC)</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">authentication layer</span> built on top of OAuth 2.0</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>OAuth tells you <em>what</em> a token may do &mdash; OIDC also tells you <span class="highlight">who the user is</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ID Token:</span> a JWT issued after authentication, carrying claims about the user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>JWT = <code>Header</code> . <code>Payload</code> . <code>Signature</code> &mdash; compact, signed, self-describing</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 14: OIDC Flow - Timeline -->
+            <section class="timeline-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OIDC Authorization Code Flow</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item fragment" data-fragment-index="1">
+                        <div class="timeline-week">1</div>
+                        <div class="timeline-label">Login attempt</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="2">
+                        <div class="timeline-week">2</div>
+                        <div class="timeline-label">Redirect to IdP</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="3">
+                        <div class="timeline-week">3</div>
+                        <div class="timeline-label">User consents</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="4">
+                        <div class="timeline-week">4</div>
+                        <div class="timeline-label">Auth code</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="5">
+                        <div class="timeline-week">5</div>
+                        <div class="timeline-label">Exchange code</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="6">
+                        <div class="timeline-week">6</div>
+                        <div class="timeline-label">Tokens returned</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="7">
+                        <div class="timeline-week">7</div>
+                        <div class="timeline-label">Decode ID token</div>
+                    </div>
+                    <div class="timeline-item fragment" data-fragment-index="8">
+                        <div class="timeline-week">8</div>
+                        <div class="timeline-label">Call UserInfo</div>
+                    </div>
+                </div>
+
+                <div class="description-container">
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="1">
+                        <p><span class="highlight">1 &mdash; Login attempt:</span> the user tries to sign in to the application</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="2">
+                        <p><span class="highlight">2 &mdash; Redirect:</span> the app sends the user to the OIDC provider for authentication</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="3">
+                        <p><span class="highlight">3 &mdash; Consent:</span> after signing in, the user approves the permissions the app requests</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="4">
+                        <p><span class="highlight">4 &mdash; Auth code:</span> the provider redirects back to the app's redirect URI with a short-lived code</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="5">
+                        <p><span class="highlight">5 &mdash; Exchange:</span> the app calls the provider server-side, trading the code for tokens</p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="6">
+                        <p><span class="highlight">6 &mdash; Tokens:</span> the provider validates the code and returns an <code>id_token</code> and <code>access_token</code></p>
+                    </div>
+                    <div class="fragment fade-in-then-out description-box" data-fragment-index="7">
+                        <p><span class="highlight">7 &mdash; Decode:</span> the app decodes the ID token to read user claims</p>
+                    </div>
+                    <div class="fragment fade-in description-box" data-fragment-index="8">
+                        <p><span class="highlight">8 &mdash; UserInfo:</span> the access token calls UserInfo or other APIs on behalf of the user</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 15: ASP.NET Core Middleware -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core &mdash; Middleware</h2>
+
+                <div class="fragment info-box">
+                    <p>Authentication and authorization are both <span class="highlight">middleware components</span> in the request pipeline</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authentication middleware:</span> inspects the incoming request and builds a <code>ClaimsPrincipal</code> from it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization middleware:</span> checks that principal against the requirements of the endpoint</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Order matters: <code>UseAuthentication()</code> must come <em>before</em> <code>UseAuthorization()</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 16: Cookie & JWT -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core &mdash; Cookie vs JWT</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cookie Authentication:</span> on login the server issues a session cookie; the browser returns it on every request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Great for <span class="highlight">server-rendered web apps</span> &mdash; MVC, Razor Pages &mdash; the browser handles it transparently</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">JWT Authentication (OIDC):</span> the client sends a bearer token in the <code>Authorization</code> header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Great for <span class="highlight">APIs and SPAs</span> &mdash; stateless, cross-domain, decoupled from cookies</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 17: [Authorize] -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core &mdash; [Authorize]</h2>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize]</code> on a controller or action requires an <span class="highlight">authenticated user</span> to access it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[AllowAnonymous]</code> <span class="highlight">overrides</span> <code>[Authorize]</code> for specific endpoints &mdash; useful for login and public pages</p>
+                </div>
+
+                <div class="fragment">
+                    <pre class="code-block"><code><span class="attr">[Authorize]</span>
+<span class="kw">public class</span> AdminController : Controller
+{
+    <span class="attr">[AllowAnonymous]</span>
+    <span class="kw">public</span> IActionResult Login() =&gt; View();
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- SLIDE 18: Roles & Claims -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core &mdash; Roles &amp; Claims</h2>
+
+                <div class="fragment info-box">
+                    <p>Restrict by <span class="highlight">role</span> directly in the attribute &mdash; comma-separate to allow several</p>
+                </div>
+
+                <div class="fragment">
+                    <pre class="code-block"><code><span class="attr">[Authorize(Roles = <span class="str">"Admin"</span>)]</span>
+<span class="kw">public</span> IActionResult Dashboard() =&gt; View();
+
+<span class="attr">[Authorize(Roles = <span class="str">"Admin,Candidate"</span>)]</span>
+<span class="kw">public</span> IActionResult Profile() =&gt; View();</code></pre>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Claims are part of the user's identity &mdash; check them in code via <code>User.HasClaim(...)</code> or with a named <span class="highlight">policy</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 19: Demo -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Demo</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">1.</span> Create a new ASP.NET Core application</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">2.</span> Wire up authentication and authorization middleware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">3.</span> Add a login page backed by ASP.NET Core Identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">4.</span> Decorate a controller with <code>[Authorize]</code> and try accessing it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">5.</span> Log in, visit the protected page, then log out</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 20: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
