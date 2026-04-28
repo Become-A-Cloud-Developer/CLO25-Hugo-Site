@@ -1,0 +1,54 @@
+name: build-and-deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sign in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Log in to ACR
+        run: az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Build and push image
+        run: |
+          IMAGE="${{ secrets.ACR_NAME }}.azurecr.io/cloudci-api:${{ github.sha }}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            -n ca-api-week6 \
+            -g rg-api-week6 \
+            --image "$IMAGE"
+
+      - name: Smoke test
+        run: |
+          FQDN=$(az containerapp show \
+            -n ca-api-week6 -g rg-api-week6 \
+            --query properties.configuration.ingress.fqdn -o tsv)
+          for i in {1..20}; do
+            if curl -fsS "https://$FQDN/swagger/index.html" >/dev/null; then
+              echo "Smoke test passed."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Smoke test failed."
+          exit 1

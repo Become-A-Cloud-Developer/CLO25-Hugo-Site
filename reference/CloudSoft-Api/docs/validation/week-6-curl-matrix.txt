@@ -1,0 +1,123 @@
+# Week 6 — CloudCiApi curl matrix
+# Captured: 2026-04-28T10:23:07Z
+# FQDN: ca-api-week6.politeplant-6df3bf1f.northeurope.azurecontainerapps.io
+# Subscription: ca0a7799-8e2e-4237-8616-8cc0e947ecd5
+# Resource group: rg-api-week6
+#
+# This matrix captures three states of the API in chronological order of the chapter:
+#  - Section A — Ex 6.1 anonymous (already torn down by Ex 6.2's deploy)
+#  - Section B — Ex 6.2 API-key gated (CURRENT live state at capture time)
+#  - Section C — Ex 6.3 JWT bearer (captured later in this run)
+
+=================================================================
+Section B — Ex 6.2 state (API-key middleware gating /api/quotes)
+=================================================================
+
+## B.1 Anonymous (no header) → 401 + WWW-Authenticate: ApiKey
+$ curl -is https://$FQDN/api/quotes
+HTTP/2 401 
+date: Tue, 28 Apr 2026 10:23:07 GMT
+server: Kestrel
+www-authenticate: ApiKey
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+API key is missing.
+## B.2 Wrong key → 403
+$ curl -is -H "X-Api-Key: not-the-key" https://$FQDN/api/quotes
+HTTP/2 403 
+date: Tue, 28 Apr 2026 10:23:07 GMT
+server: Kestrel
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+API key is invalid.
+## B.3 Right key → 200 + JSON array
+$ curl -is -H "X-Api-Key: <REDACTED>" https://$FQDN/api/quotes
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+date: Tue, 28 Apr 2026 10:23:07 GMT
+server: Kestrel
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+[{"id":1,"author":"Edsger W. Dijkstra","text":"Simplicity is prerequisite for reliability.","createdAt":"2026-04-28T10:22:49.1171068+00:00"},{"id":2,"author":"Grace Hopper","text":"The most dangerous phrase in the language is 'we've always done it this way.'","createdAt":"2026-04-28T10:22:49.11713+00:00"},{"id":3,"author":"Alan Kay","text":"The best way to predict the future is to invent it.","createdAt":"2026-04-28T10:22:49.1171302+00:00"},{"id":4,"author":"Linus Torvalds","text":"Talk is cheap. Show me the code.","createdAt":"2026-04-28T10:22:49.1171303+00:00"}]
+
+=================================================================
+Section C — Ex 6.3 state (JWT bearer authentication)
+Captured: 2026-04-28T10:27:26Z
+=================================================================
+
+## C.1 Anonymous (no Authorization header) → 401 + WWW-Authenticate: Bearer
+$ curl -is https://$FQDN/api/quotes
+HTTP/2 401 
+content-length: 0
+date: Tue, 28 Apr 2026 10:27:26 GMT
+server: Kestrel
+www-authenticate: Bearer
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+
+## C.2 Login with valid credentials → 200 + token + expiresAt
+$ curl -is -X POST https://$FQDN/api/tokens/login -H "Content-Type: application/json" -d {"username":"alice","password":"alice123"}
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+date: Tue, 28 Apr 2026 10:27:26 GMT
+server: Kestrel
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGljZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhbGljZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzc3Mzc1NjQ3LCJpc3MiOiJjbG91ZGNpLWFwaS1wcm9kIiwiYXVkIjoiY2xvdWRjaS1hcGktY2xpZW50cy1wcm9kIn0.4c5X-o1xUIuCkX8syz1EMI-IH8JVVbdAz_CXZ0ZCN0I","expiresAt":"2026-04-28T11:27:27.3242615Z"}
+## C.3 Login with bad credentials → 401
+$ curl -is -X POST https://$FQDN/api/tokens/login -H "Content-Type: application/json" -d {"username":"alice","password":"wrong"}
+HTTP/2 401 
+content-type: application/problem+json; charset=utf-8
+date: Tue, 28 Apr 2026 10:27:26 GMT
+server: Kestrel
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.2","title":"Unauthorized","status":401,"traceId":"00-17d3bd28e1954007d2d1cac3c60d9d07-6fe0ee28cda6ae1d-00"}
+## C.4 Authorized request with valid Bearer token → 200 + JSON array
+$ curl -is -H "Authorization: Bearer <REDACTED>" https://$FQDN/api/quotes
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+date: Tue, 28 Apr 2026 10:27:26 GMT
+server: Kestrel
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+[{"id":1,"author":"Edsger W. Dijkstra","text":"Simplicity is prerequisite for reliability.","createdAt":"2026-04-28T10:26:46.8327769+00:00"},{"id":2,"author":"Grace Hopper","text":"The most dangerous phrase in the language is 'we've always done it this way.'","createdAt":"2026-04-28T10:26:46.8327996+00:00"},{"id":3,"author":"Alan Kay","text":"The best way to predict the future is to invent it.","createdAt":"2026-04-28T10:26:46.8327997+00:00"},{"id":4,"author":"Linus Torvalds","text":"Talk is cheap. Show me the code.","createdAt":"2026-04-28T10:26:46.8327998+00:00"}]
+## C.5 Tampered token (one char flipped in payload segment) → 401
+$ curl -is -H "Authorization: Bearer <TAMPERED>" https://$FQDN/api/quotes
+HTTP/2 401 
+content-length: 0
+date: Tue, 28 Apr 2026 10:27:27 GMT
+server: Kestrel
+www-authenticate: Bearer error="invalid_token", error_description="The signature key was not found"
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+
+## C.6 Expired token (HS256 signed with same key, exp set 1 hour in the past) → 401
+$ curl -is -H "Authorization: Bearer <EXPIRED>" https://$FQDN/api/quotes
+HTTP/2 401 
+content-length: 0
+date: Tue, 28 Apr 2026 10:27:27 GMT
+server: Kestrel
+www-authenticate: Bearer error="invalid_token", error_description="The token expired at '04/28/2026 09:27:09'"
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+
+## C.7 Malformed token (not three base64url segments) → 401
+$ curl -is -H "Authorization: Bearer not.a.jwt" https://$FQDN/api/quotes
+HTTP/2 401 
+content-length: 0
+date: Tue, 28 Apr 2026 10:27:27 GMT
+server: Kestrel
+www-authenticate: Bearer error="invalid_token"
+request-context: appId=cid-v1:6ee83f78-a98d-4482-81cd-9af58339584e
+
+
+## C.8 Decoded JWT payload (illustrative — base64url payload segment from C.2)
+{
+    "sub": "alice",
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": "alice",
+    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": "admin",
+    "exp": 1777375606,
+    "iss": "cloudci-api-prod",
+    "aud": "cloudci-api-clients-prod"
+}

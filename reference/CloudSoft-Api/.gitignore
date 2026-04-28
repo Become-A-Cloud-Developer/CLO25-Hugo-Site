@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Build artifacts
+*.dll
+*.pdb
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Editor
+.vscode/
+.idea/
+
+## Node (for scripts/)
+scripts/node_modules/
+scripts/package-lock.json
