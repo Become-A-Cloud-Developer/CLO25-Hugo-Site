@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Relational vs NoSQL Data Models</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    RELATIONAL<br>
+                    VS NOSQL<br>
+                    DATA MODELS
+                </h1>
+
+                <p class="subtitle">Part IV — Data Access</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Two shapes of application data -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Two shapes of application data</h2>
+
+                <div class="fragment info-box">
+                    <p>Ledgers and inventory want <span class="highlight">strict structure</span> and atomic updates</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Catalogues and telemetry want <span class="highlight">flexible structure</span> and high read throughput</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The data model shapes migrations, queries, and consistency</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: How records are structured -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How records are structured</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Relational</span>: rows in typed tables, joined via foreign keys</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Document</span>: self-describing JSON/BSON documents in collections</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Relational normalises facts; documents co-locate everything related</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Schema as a contract -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Schema as a contract</h2>
+
+                <div class="fragment info-box">
+                    <p>Relational schema is <span class="highlight">enforced at write time</span> by the database</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Document schema lives in <span class="highlight">application code</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rigid schemas reject bad data; flexible schemas defer the check</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The cost of migration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The cost of migration</h2>
+
+                <div class="fragment info-box">
+                    <p>Relational: versioned migration scripts in lockstep with code</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Document: collections hold <span class="highlight">mixed shapes</span>; reads handle both</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The migration moved from the database into application logic</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Denormalization answers the join problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Denormalization answers the join problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Document reads avoid joins by <span class="highlight">duplicating data</span> across documents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trades write-time complexity for read-time simplicity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Document boundary is the central modelling decision</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Eventual consistency -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Eventual consistency</h2>
+
+                <div class="fragment info-box">
+                    <p>CAP theorem forces a choice under partition</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Eventual consistency</span>: replicas converge once writes stop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cosmos DB exposes Strong / Bounded / Session / Eventual as a knob</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example: Cosmos DB MongoDB API -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked example: Cosmos DB MongoDB API</h2>
+
+                <div class="fragment info-box">
+                    <p>Provision account, database, collection — <span class="highlight">no schema declared</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Driver inserts arbitrary BSON documents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One-document read replaces a four-table join</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Decision framework -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Decision framework</h2>
+
+                <div class="fragment info-box">
+                    <p>Relational when invariants matter and data outlives code</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Document when shape evolves and scale beats joins</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Many systems use <span class="highlight">both</span> — one model per bounded context</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

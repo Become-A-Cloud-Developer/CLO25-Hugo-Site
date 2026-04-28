@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Connections, Pooling, and Transactions</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONNECTIONS,<br>
+                    POOLING, AND<br>
+                    TRANSACTIONS
+                </h1>
+
+                <p class="subtitle">Part IV — Data Access</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The cost of opening a connection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Cost of Opening a Connection</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">TCP</span> handshake, <span class="highlight">TLS</span> handshake, protocol handshake, authentication</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">5–50 ms</span> on local network, <span class="highlight">100+ ms</span> across regions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Naive code opens one connection per request and burns latency on setup</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The fix is <span class="highlight">not</span> fewer connections — it is <span class="highlight">reusing</span> them</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The connection pool -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Connection Pool</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">cache of open connections</span> kept inside the client library</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Idle connection available, return it; otherwise open a new one up to <code>MaxPoolSize</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Configured through the <span class="highlight">connection string</span> — <code>MaxPoolSize</code>, <code>MinPoolSize</code>, <code>ConnectionLifetime</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sized so <code>pool_size &times; replicas</code> stays under the database connection cap</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Where the pool lives -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Where the Pool Lives</h2>
+
+                <div class="fragment info-box">
+                    <p>Inside the <span class="highlight">client object</span> in the application process — not a separate service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every replica has its own pool; the database sees the <span class="highlight">sum</span> of all pools</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Constructing a new client per request <span class="highlight">defeats pooling</span> completely</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reuse the client; let the pool do its job</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Singleton client, Scoped repository -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Singleton Client, Scoped Repository</h2>
+
+                <div class="fragment info-box">
+                    <p>Database clients (<code>MongoClient</code>, <code>BlobServiceClient</code>, Npgsql data source) are <span class="highlight">thread-safe</span> and own the pool</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Register them as <span class="highlight">Singleton</span> in DI — one instance per process</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repositories built on top are registered as <span class="highlight">Scoped</span> — one per request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>All scoped repositories share the same singleton client, and therefore the same pool</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Transactions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Transactions</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">transaction</span> is a unit of work the database treats atomically</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Either every operation commits, or any failure rolls everything back</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The application boundary for the <span class="highlight">ACID</span> properties</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Keep transactions <span class="highlight">short</span> — no HTTP calls, no user input inside them</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Isolation levels -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Isolation Levels</h2>
+
+                <div class="fragment info-box">
+                    <p>Controls what concurrent transactions see of each other's in-flight changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Read Uncommitted</span> — fastest, allows dirty reads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Read Committed</span> — typical default, prevents dirty reads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Repeatable Read</span> — same row returns same value within a transaction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Serializable</span> — strongest, transactions behave as if run one at a time</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Optimistic vs pessimistic locking -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Optimistic vs Pessimistic Locking</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Pessimistic</span> — lock the row before reading or writing; others wait</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Optimistic</span> — read with a version, update only if version still matches</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optimistic suits <span class="highlight">low-contention</span> writes (profile edits)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pessimistic suits <span class="highlight">high-contention</span> writes (last seat, last unit in stock)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Practical rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Practical Rules</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reuse</span> client instances — Singleton in DI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Keep <span class="highlight">transactions short</span> and local to one database</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Avoid distributed transactions</span> — prefer outbox pattern with local transactions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Connection string lives in configuration, never in source</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

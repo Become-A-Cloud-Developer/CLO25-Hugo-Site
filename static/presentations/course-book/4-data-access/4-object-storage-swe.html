@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Objektlagring och filuppladdning</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OBJEKTLAGRING<br>
+                    OCH FILUPPLADDNING
+                </h1>
+
+                <p class="subtitle">Del IV — Dataåtkomst</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför inte databasen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför inte databasen</h2>
+
+                <div class="fragment info-box">
+                    <p>Databaser är optimerade för <span class="highlight">små, indexerade</span> operationer, inte stora binära payloads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stora <code>BLOB</code>-kolumner blåser upp <span class="highlight">transaktionsloggar</span> och backup-fönster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strukturerad data läses via predikat; binär data läses via <span class="highlight">identitet</span> (URL)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En foreign-key-liknande referens kopplar databasraden till blob-URL:en</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Blobs och containers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blobs och containers</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">blob</span> är en oföränderlig byte-sekvens med ett sökvägs-liknande namn, content type och metadata</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">container</span> är den översta grupperingen av blobs i ett storage-konto</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Blob-namnrymden är <span class="highlight">platt per container</span> — snedstreck är konvention, inte riktiga kataloger</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Åtkomstpolicyer och access tiers konfigureras på container-nivå</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Oföränderlighetsmodellen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Oföränderlighetsmodellen</h2>
+
+                <div class="fragment info-box">
+                    <p>Blobs stödjer inte <span class="highlight">partiella skrivningar</span> — uppladdningar ersätter hela bloben</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen <code>UPDATE</code> av byte 1024 — minsta skrivning är en fullständig omskrivning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samtidiga uppladdningar till samma namn: en vinner helt, den andra skrivs över helt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Oföränderlighet är vad som låter objektlagring <span class="highlight">replikera aggressivt</span> mellan datacenter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Access tiers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Access tiers (åtkomstnivåer)</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hot</span> — högst lagringskostnad, lägst läskostnad, omedelbar åtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cool</span> — lägre lagringskostnad, högre läskostnad, omedelbar åtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Archive</span> — billigast lagring, timslång <span class="highlight">rehydration</span> innan läsning är möjlig</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Livscykelpolicyer flyttar blobs mellan nivåer automatiskt baserat på ålder eller åtkomstmönster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: SAS-token -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SAS-token</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">SAS-token</span> är en tidsbegränsad, scope-begränsad URL signerad med konto-nyckeln</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kodar behörigheter, scope, utgångstid och signatur i query-strängen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Låter webbläsare ladda upp eller ner <span class="highlight">direkt</span> utan att byten passerar app-servern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>User delegation SAS (signerad via Entra ID) föredras framför service SAS i produktion</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Streaming-uppladdning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Streaming-uppladdning</h2>
+
+                <div class="fragment info-box">
+                    <p>SDK:n delar upp källströmmen i <span class="highlight">block</span> (4–100 MB)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Block laddas upp <span class="highlight">parallellt</span> och försöks om individuellt vid fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett avslutande <code>Commit Block List</code> sätter atomiskt ihop dem till en blob</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En ASP.NET request body är en <code>Stream</code> — pipa den direkt in i <code>BlobClient.UploadAsync</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: En service-metod -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">En service-metod</h2>
+
+                <div class="fragment info-box">
+                    <p><code>BlobServiceClient</code> skapas en gång och återanvänds — en tunn wrapper kring HTTP-klienten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GetBlobContainerClient</code> och <code>GetBlobClient</code> är <span class="highlight">lättviktiga</span> — inga nätverksanrop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>UploadAsync(stream, overwrite: true)</code> utför den faktiska streaming-överföringen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att sätta <code>BlobHttpHeaders.ContentType</code> säkerställer korrekt rendering vid senare nedladdning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Blob-lagring vs databas-BLOB -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blob-lagring vs databas-BLOB</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Blob-lagring</span> vinner för allt som serveras via HTTP eller är större än några hundra KB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Databas-kolumn</span> vinner för små, transaktionellt kopplade binära data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Blob-lagring kostar ören per GB; databaslagring kostar kronor per GB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SAS-baserad direkt åtkomst från webbläsare är <span class="highlight">bara möjlig</span> med blob-lagring</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

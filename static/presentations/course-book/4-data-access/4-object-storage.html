@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Object Storage and File Uploads</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OBJECT STORAGE<br>
+                    AND FILE UPLOADS
+                </h1>
+
+                <p class="subtitle">Part IV — Data Access</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why not the database -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Not the Database</h2>
+
+                <div class="fragment info-box">
+                    <p>Databases optimize for <span class="highlight">small, indexed</span> operations, not multi-megabyte payloads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Large <code>BLOB</code> columns inflate <span class="highlight">transaction logs</span> and backup windows</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Structured data is read by predicate; binary data is read by <span class="highlight">identity</span> (URL)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A foreign-key-like reference ties the database row to the blob URL</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Blobs and containers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blobs and Containers</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">blob</span> is an immutable byte sequence with a path-like name, content type, and metadata</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">container</span> is the top-level grouping for blobs in a storage account</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The blob namespace is <span class="highlight">flat per container</span> — slashes are conventional, not real directories</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Access policies and access tiers attach at the container level</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The immutability model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Immutability Model</h2>
+
+                <div class="fragment info-box">
+                    <p>Blobs do not support <span class="highlight">partial writes</span> — uploads replace the entire blob</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No <code>UPDATE</code> of byte 1024 — the smallest write is a complete rewrite</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Concurrent uploads to the same name: one wins entirely, the other is overwritten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Immutability is what lets object storage <span class="highlight">replicate aggressively</span> across data centers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Access tiers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Access Tiers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hot</span> — highest storage cost, lowest read cost, instant access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cool</span> — lower storage cost, higher read cost, instant access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Archive</span> — cheapest storage, hours-long <span class="highlight">rehydration</span> before any read</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lifecycle policies move blobs between tiers automatically by age or access pattern</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: SAS tokens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SAS Tokens</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">SAS</span> is a time-limited, scope-limited URL signed with the account key</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Encodes permissions, scope, expiry, and signature in the query string</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lets browsers upload or download <span class="highlight">directly</span> without bytes flowing through the app server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>User delegation SAS (signed via Entra ID) is preferred over service SAS in production</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Streaming uploads -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Streaming Uploads</h2>
+
+                <div class="fragment info-box">
+                    <p>The SDK breaks the source stream into <span class="highlight">blocks</span> (4–100 MB)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Blocks upload in <span class="highlight">parallel</span> and retry independently on failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A final <code>Commit Block List</code> atomically assembles them into one blob</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An ASP.NET request body is a <code>Stream</code> — pipe it straight into <code>BlobClient.UploadAsync</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: A service method -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A Service Method</h2>
+
+                <div class="fragment info-box">
+                    <p><code>BlobServiceClient</code> is created once and reused — it is a thin HTTP-client wrapper</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GetBlobContainerClient</code> and <code>GetBlobClient</code> are <span class="highlight">lightweight</span> — no network calls</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>UploadAsync(stream, overwrite: true)</code> does the actual streaming transfer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Setting <code>BlobHttpHeaders.ContentType</code> ensures correct rendering on later download</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Blob storage vs database BLOB -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blob Storage vs Database BLOB</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Blob storage</span> wins for anything served over HTTP or larger than a few hundred KB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Database column</span> wins for small, transactionally-coupled binary data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Blob storage costs cents per GB; database storage costs dollars per GB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SAS-based browser-direct access is <span class="highlight">only possible</span> with blob storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Relationella vs NoSQL-datamodeller</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    RELATIONELLA<br>
+                    VS NOSQL-<br>
+                    DATAMODELLER
+                </h1>
+
+                <p class="subtitle">Del IV — Dataåtkomst</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Två former av applikationsdata -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Två former av applikationsdata</h2>
+
+                <div class="fragment info-box">
+                    <p>Huvudböcker och lager kräver <span class="highlight">strikt struktur</span> och atomära uppdateringar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kataloger och telemetri kräver <span class="highlight">flexibel struktur</span> och hög lässkapacitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Datamodellen styr migreringar, frågor och konsistens</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Hur poster struktureras -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur poster struktureras</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Relationell</span>: rader i typade tabeller, sammanfogade via främmande nycklar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dokument</span>: självbeskrivande JSON/BSON-dokument i collections</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Relationellt normaliserar fakta; dokument samlar allt relaterat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Schema som kontrakt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Schema som kontrakt</h2>
+
+                <div class="fragment info-box">
+                    <p>Relationellt schema <span class="highlight">upprätthålls vid skrivning</span> av databasen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dokumentschema lever i <span class="highlight">applikationskoden</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strikt schema avvisar dålig data; flexibelt schema skjuter upp kontrollen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Migreringens kostnad -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Migreringens kostnad</h2>
+
+                <div class="fragment info-box">
+                    <p>Relationellt: versionerade migreringsskript i takt med koden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dokument: collections innehåller <span class="highlight">blandade former</span>; läsningar hanterar båda</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Migreringen flyttar från databasen till applikationslogiken</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Denormalisering löser join-problemet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Denormalisering löser join-problemet</h2>
+
+                <div class="fragment info-box">
+                    <p>Dokumentläsningar undviker joins genom att <span class="highlight">duplicera data</span> mellan dokument</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byter skrivtidskomplexitet mot lästidsenkelhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dokumentets gräns är det centrala modelleringsbeslutet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Eventuell konsistens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Eventuell konsistens</h2>
+
+                <div class="fragment info-box">
+                    <p>CAP-teoremet tvingar fram ett val under partition</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Eventuell konsistens</span>: repliker konvergerar när skrivningar upphör</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cosmos DB exponerar Strong / Bounded / Session / Eventual som ett reglage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Exempel: Cosmos DB MongoDB API -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: Cosmos DB MongoDB API</h2>
+
+                <div class="fragment info-box">
+                    <p>Skapa konto, databas, collection — <span class="highlight">inget schema deklareras</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Drivrutinen sätter in godtyckliga BSON-dokument</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En läsning av ett dokument ersätter en join över fyra tabeller</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Beslutsramverk -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Beslutsramverk</h2>
+
+                <div class="fragment info-box">
+                    <p>Relationellt när invarianter spelar roll och data lever längre än koden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dokument när formen utvecklas och skalan väger tyngre än joins</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Många system använder <span class="highlight">båda</span> — en modell per bounded context</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ORM och repository-mönstret</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ORM OCH<br>
+                    REPOSITORY-<br>
+                    MÖNSTRET
+                </h1>
+
+                <p class="subtitle">Del IV — Dataåtkomst</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför rå dataåtkomst skadar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför rå dataåtkomst skadar</h2>
+
+                <div class="fragment info-box">
+                    <p>Databasdrivrutinens vokabulär läcker in i <span class="highlight">controllers</span> och tjänster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma fråga skrivs om på <span class="highlight">tre ställen</span> med små skillnader</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Schemaändringar</span> kräver att varje inbäddad fråga hittas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Affärsregler ligger bredvid <span class="highlight">filtersyntax</span> istället för att stå för sig själva</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen söm för att ersätta med fejk — varje test kräver en <span class="highlight">riktig databas</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en ORM gör -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad en ORM gör</h2>
+
+                <div class="fragment info-box">
+                    <p>Översätter mellan <span class="highlight">databasrader</span> och <span class="highlight">objekt i minnet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Genererar SQL från typade uttryck (<code>LINQ</code>, query builders)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ändringsspårning</span> skriver bara modifierade kolumner vid spara</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Identitetskarta</span> håller en instans per primärnyckel per session</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ODM:er tillämpar samma idé på dokumentlager som <span class="highlight">MongoDB</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Vad repository-mönstret gör -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad repository-mönstret gör</h2>
+
+                <div class="fragment info-box">
+                    <p>En enda klass döljer all dataåtkomstkod bakom ett <span class="highlight">interface</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänstelagret anropar <code>FindByIdAsync</code>, <code>AddAsync</code> — aldrig drivrutinen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lagringstekniken blir ett <span class="highlight">avgränsat, utbytbart</span> val</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänstelagret blir <span class="highlight">enhetstestbart</span> med en fejkad repository</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stödjer de fyra <span class="highlight">CRUD</span>-operationerna som grund</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Generisk vs domänspecifik -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Generisk vs domänspecifik</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Generisk</span> <code>IRepository&lt;T&gt;</code> — en implementation, många entiteter, mest CRUD</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Domänspecifik</span> <code>INewsletterRepository</code> — frågor som matchar verksamheten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Generisk ensam läcker <span class="highlight">domänfrågor</span> tillbaka in i tjänstelagret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Domänspecifik ensam duplicerar <span class="highlight">CRUD</span> över varje aggregat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanlig kompromiss: <span class="highlight">generisk bas + domänspecifik utökning</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Hur de kombineras -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur de kombineras</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ORM</span> ligger längst ner — översättning rad till objekt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Repository</span> ligger ovanpå — domänformat API till tjänstelagret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ORM tar bort <span class="highlight">drivrutinsvokabulär</span> från datalagret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repository tar bort <span class="highlight">datalagervokabulär</span> från tjänstelagret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Var och en ensam lämnar det <span class="highlight">andra problemet</span> olöst</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Konkret exempel: NewsletterRepository -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Konkret exempel: NewsletterRepository</h2>
+
+                <div class="fragment info-box">
+                    <p><code>INewsletterRepository</code> deklarerar <code>GetPublishedAsync</code>, <code>FindBySlugAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoRepository&lt;T&gt;</code>-basen levererar <span class="highlight">CRUD</span> via MongoDB-drivrutinen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterRepository</code> utökar den med nyhetsbrevsspecifika <span class="highlight">finders</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registreras i <code>Program.cs</code> via <span class="highlight">dependency injection</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterService</code> beror endast på interfacet — <span class="highlight">inga MongoDB-typer</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: När det lönar sig -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När det lönar sig</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Flera konsumenter</span> läser samma data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänstelagret behöver enhetstester <span class="highlight">utan databas</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lagringstekniken kan <span class="highlight">ändras mellan miljöer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Teamet värdesätter att hålla <span class="highlight">frågesyntax</span> ute ur affärslogiken</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: När det inte gör det -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När det inte gör det</h2>
+
+                <div class="fragment info-box">
+                    <p>En enskild liten tjänst med frågor som bara används på <span class="highlight">ett ställe</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inget behov av att testa tjänsten <span class="highlight">utan en databas</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Generiskt interface växer till att <span class="highlight">återskapa drivrutinen</span> metod för metod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kostnaden är verklig — inför det bara när det <span class="highlight">förtjänar sin plats</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ORM and the Repository Pattern</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ORM AND THE<br>
+                    REPOSITORY<br>
+                    PATTERN
+                </h1>
+
+                <p class="subtitle">Part IV — Data Access</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why raw data access hurts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Raw Data Access Hurts</h2>
+
+                <div class="fragment info-box">
+                    <p>Database driver vocabulary leaks into <span class="highlight">controllers</span> and services</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same query gets rewritten in <span class="highlight">three places</span> with subtle differences</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Schema changes</span> require finding every embedded query</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Business rules sit next to <span class="highlight">filter syntax</span> instead of standing on their own</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No seam to substitute a fake — every test needs a <span class="highlight">real database</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What an ORM does -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What an ORM Does</h2>
+
+                <div class="fragment info-box">
+                    <p>Translates between <span class="highlight">database rows</span> and <span class="highlight">in-memory objects</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Generates SQL from typed expressions (<code>LINQ</code>, query builders)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Change tracking</span> writes only modified columns on save</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Identity map</span> keeps one instance per primary key per session</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ODMs apply the same idea to document stores like <span class="highlight">MongoDB</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: What the repository pattern does -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What the Repository Pattern Does</h2>
+
+                <div class="fragment info-box">
+                    <p>A single class hides all data-access code behind an <span class="highlight">interface</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service layer calls <code>FindByIdAsync</code>, <code>AddAsync</code> — never the driver</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Storage technology becomes a <span class="highlight">contained, swappable</span> choice</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service layer becomes <span class="highlight">unit-testable</span> with a fake repository</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Supports the four <span class="highlight">CRUD</span> operations as its baseline</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Generic vs domain-specific -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Generic vs Domain-Specific</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Generic</span> <code>IRepository&lt;T&gt;</code> — one implementation, lots of entities, mostly CRUD</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Domain-specific</span> <code>INewsletterRepository</code> — queries that match the business</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Generic alone leaks <span class="highlight">domain queries</span> back into the service layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Domain-specific alone duplicates <span class="highlight">CRUD</span> across every aggregate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common compromise: <span class="highlight">generic base + domain-specific extension</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: How they compose -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How They Compose</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ORM</span> sits at the bottom — row-to-object translation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Repository</span> sits on top — domain-shaped API to the service layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ORM removes <span class="highlight">driver vocabulary</span> from the data layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repository removes <span class="highlight">data-layer vocabulary</span> from the service layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each one alone leaves the <span class="highlight">other concern</span> unsolved</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked example: NewsletterRepository -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: NewsletterRepository</h2>
+
+                <div class="fragment info-box">
+                    <p><code>INewsletterRepository</code> declares <code>GetPublishedAsync</code>, <code>FindBySlugAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoRepository&lt;T&gt;</code> base supplies <span class="highlight">CRUD</span> via the MongoDB driver</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterRepository</code> extends it with newsletter-specific <span class="highlight">finders</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registered in <code>Program.cs</code> via <span class="highlight">dependency injection</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterService</code> depends only on the interface — <span class="highlight">no MongoDB types</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: When it pays for itself -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When It Pays for Itself</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Multiple consumers</span> reading the same data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service layer needs unit tests <span class="highlight">without a database</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Storage technology might <span class="highlight">change across environments</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Team values keeping <span class="highlight">query syntax</span> out of business logic</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: When it does not -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When It Does Not</h2>
+
+                <div class="fragment info-box">
+                    <p>Single small service with queries used in <span class="highlight">one place</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No need to test the service <span class="highlight">without a database</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Generic interface grows to <span class="highlight">recreate the driver</span> one method at a time</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The cost is real — only adopt it when it <span class="highlight">earns its keep</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -71,10 +71,16 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/5-cloud-databases/`, `content/exercises/10-webapp-development/3-data-layer/`
 **Studieguide week:** Course week 6 (v.10)
 **Glossary file:** `docs/coursebook-mining/part-4-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part IV run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | Relational vs NoSQL Data Models | validated | 1883 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 2 | ORM and the Repository Pattern | validated | 2215 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 3 | Connections, Pooling, and Transactions | validated | 2602 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 4 | Object Storage and File Uploads | validated | 2444 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part IV totals:** 4 chapters, 9,144 words of prose, 8 HTML slide decks. All four chapters pass voice-check clean.
 
 ---
 

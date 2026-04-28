@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Anslutningar, pool och transaktioner</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ANSLUTNINGAR,<br>
+                    POOL OCH<br>
+                    TRANSAKTIONER
+                </h1>
+
+                <p class="subtitle">Del IV — Dataåtkomst</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Kostnaden att öppna en anslutning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kostnaden att öppna en anslutning</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">TCP</span>-handskakning, <span class="highlight">TLS</span>-handskakning, protokollhandskakning, autentisering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">5–50 ms</span> i lokalt nät, <span class="highlight">100+ ms</span> över regioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Naiv kod öppnar en ny anslutning per anrop och bränner latens på uppsättning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösningen är <span class="highlight">inte</span> färre anslutningar — utan att <span class="highlight">återanvända</span> dem</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Connection pool -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Connection Pool</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">cache av öppna anslutningar</span> i klientbiblioteket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lediga anslutningar lämnas ut direkt; annars öppnas en ny upp till <code>MaxPoolSize</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konfigureras via <span class="highlight">connection string</span> — <code>MaxPoolSize</code>, <code>MinPoolSize</code>, <code>ConnectionLifetime</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dimensioneras så att <code>poolstorlek &times; repliker</code> håller sig under databasens anslutningstak</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Var poolen bor -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Var poolen bor</h2>
+
+                <div class="fragment info-box">
+                    <p>I <span class="highlight">klientobjektet</span> i applikationsprocessen — inte en separat tjänst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje replika har sin egen pool; databasen ser <span class="highlight">summan</span> av alla pooler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att konstruera en ny klient per anrop <span class="highlight">förstör poolningen</span> helt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återanvänd klienten; låt poolen göra sitt jobb</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Singleton-klient, Scoped-repository -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Singleton-klient, Scoped-repository</h2>
+
+                <div class="fragment info-box">
+                    <p>Databasklienter (<code>MongoClient</code>, <code>BlobServiceClient</code>, Npgsql-datakälla) är <span class="highlight">trådsäkra</span> och äger poolen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registreras som <span class="highlight">Singleton</span> i DI — en instans per process</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repositories ovanpå registreras som <span class="highlight">Scoped</span> — en per anrop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Alla scoped repositories delar samma singleton-klient och därmed samma pool</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Transaktioner -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Transaktioner</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">transaktion</span> är en arbetsenhet som databasen behandlar atomärt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Antingen genomförs alla operationer, eller så rullas allt tillbaka vid fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationens uttryck för <span class="highlight">ACID</span>-egenskaperna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Håll transaktioner <span class="highlight">korta</span> — inga HTTP-anrop, ingen användarinteraktion inuti</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Isoleringsnivåer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Isoleringsnivåer</h2>
+
+                <div class="fragment info-box">
+                    <p>Styr vad samtidiga transaktioner ser av varandras pågående ändringar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Read Uncommitted</span> — snabbast, tillåter smutsiga läsningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Read Committed</span> — vanligt standardval, förhindrar smutsiga läsningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Repeatable Read</span> — samma rad ger samma värde inom transaktionen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Serializable</span> — starkast, transaktionerna beter sig som om de kördes i tur och ordning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Optimistisk kontra pessimistisk låsning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Optimistisk kontra pessimistisk låsning</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Pessimistisk låsning</span> — lås raden före läsning eller skrivning; andra väntar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Optimistisk låsning</span> — läs med versionsfält, uppdatera bara om versionen stämmer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optimistisk passar <span class="highlight">låg konkurrens</span> (profiländringar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pessimistisk passar <span class="highlight">hög konkurrens</span> (sista platsen, sista varan i lager)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Praktiska regler -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Praktiska regler</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Återanvänd</span> klientinstanser — Singleton i DI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Håll <span class="highlight">transaktioner korta</span> och lokala till en databas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Undvik distribuerade transaktioner</span> — föredra outbox-mönstret med lokala transaktioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Connection string ligger i konfiguration, aldrig i källkod</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
