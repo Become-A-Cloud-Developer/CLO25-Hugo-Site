@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OAuth 2.0 och OpenID Connect</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OAUTH 2.0<br>
+                    OCH OPENID<br>
+                    CONNECT
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Problemet med delegerad åtkomst -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problemet med delegerad åtkomst</h2>
+
+                <div class="fragment info-box">
+                    <p>Appar behöver anropa API:er <span class="highlight">åt en användare</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att be om ett lösenord till en tredje part är osäkert och opraktiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"Logga in med Google" kräver identitet <span class="highlight">utan att dela lösenord</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösning: en betrodd <span class="highlight">authorization server</span> håller credentialen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Token bär scopad behörighet och signerad identitet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: De fyra aktörerna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De fyra aktörerna</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resource owner</span> — den mänskliga användaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Client</span> — applikationen som begär åtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization server</span> — Entra ID, Google, GitHub, Auth0</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resource server</span> — API:et som hostar användarens data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Förtroendet mellan dem bärs av <span class="highlight">signerade token</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Grant-typer i översikt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Grant-typer i översikt</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization code</span> — interaktiv inloggning (webbläsarappar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Client credentials</span> — maskin-till-maskin, ingen användare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Device code</span> — enheter med begränsad inmatning (TV, CLI)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Refresh token</span> — byt långlivad token mot ny access-token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Implicit och password-grant <span class="highlight">rekommenderas inte</span> längre</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Authorization code med PKCE -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization code med PKCE</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Front channel</span>: webbläsaromdirigering till authorization server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Användaren loggar in där, samtycker till <span class="highlight">scope</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern dirigerar tillbaka med en engångs-<code>code</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Back channel</span>: klienten byter <code>code</code> + <code>code_verifier</code> mot token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>PKCE binder ihop de två halvorna — skyddar <span class="highlight">publika klienter</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Redirect-URI och state -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Redirect-URI och state</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Redirect-URI</span> måste vara förregistrerad, exakt matchning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hindrar angripare från att kapa koder till egen callback</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">state</span>-parametern — slumpvärde per inloggning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Valideras vid callback för att stoppa <span class="highlight">CSRF</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda kontrollerna är <span class="highlight">obligatoriska</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Vad OIDC lägger till -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad OIDC lägger till</h2>
+
+                <div class="fragment info-box">
+                    <p>OAuth ensam ger en <span class="highlight">access-token</span> — en behörighetssedel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>OIDC ger en <span class="highlight">ID-token</span> — en signerad JWT som intygar <em>vem</em></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ID-token-claims: <code>sub</code>, <code>name</code>, <code>email</code>, <code>iss</code>, <code>aud</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten verifierar signaturen mot utfärdarens <span class="highlight">publika nyckel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ID-token är för klienten; access-token är för API:et</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: OAuth kontra OIDC -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OAuth kontra OIDC</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OAuth</span> svarar på auktorisering — "får klienten anropa API:et?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OIDC</span> svarar på autentisering — "vem är användaren?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma protokollfamilj, <span class="highlight">olika frågor</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Workload-federation (GitHub Actions till Azure) återanvänder OIDC för icke-mänskliga anropare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Täcks i <span class="highlight">DevOps-delen</span> av boken</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Registrering i ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Registrering i ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddOpenIdConnect</code> registrerar hanteraren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Authority</code> pekar på utfärdarens <span class="highlight">discovery-URL</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ClientId</code> och <code>ClientSecret</code> från app-registreringen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ResponseType = "code"</code>, <code>UsePkce = true</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Resultat: en <span class="highlight">ClaimsPrincipal</span> fylld från ID-token</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

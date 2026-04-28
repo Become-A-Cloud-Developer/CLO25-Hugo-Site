@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>API-nycklar och maskin-till-maskin</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    API-NYCKLAR OCH<br>
+                    MASKIN-TILL-MASKIN
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Problemet med maskin-till-maskin -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problemet med maskin-till-maskin</h2>
+
+                <div class="fragment info-box">
+                    <p>En backend som anropar en annan backend har <span class="highlight">ingen användare</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inget inloggningsformulär, ingen webbläsare, ingen cookie</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anroparen är en process, inte en person</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Behöver ändå en credential som servern kan kontrollera</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>API-nycklar är den enklaste grinden för detta fall</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en API-nyckel är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad en API-nyckel är</h2>
+
+                <div class="fragment info-box">
+                    <p>En lång, ogenomskinlig <span class="highlight">delad hemlighet</span> mellan klient och server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skickas i en header — vanligen <code>X-Api-Key</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bär <span class="highlight">inga claims</span>, ingen identitet, ingen utgångstid</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bevisar endast "anroparen känner till hemligheten"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma egenskap för varje klient som har nyckeln</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Hur den följer med ett anrop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur den följer med ett anrop</h2>
+
+                <div class="fragment info-box">
+                    <p>Header på varje anrop: <code>X-Api-Key: kQ8j+7Hf...</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Måste gå över <span class="highlight">TLS</span> — klartext hamnar i router-loggar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Saknad header → <code>401 Unauthorized</code> + <code>WWW-Authenticate: ApiKey</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fel header → <code>403 Forbidden</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rätt header → begäran går vidare till controllern</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: ASP.NET Core middleware -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core middleware</h2>
+
+                <div class="fragment info-box">
+                    <p>En klass med <code>RequestDelegate</code>-konstruktor och <code>InvokeAsync(HttpContext)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registreras med <code>app.UseMiddleware&lt;ApiKeyMiddleware&gt;()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Placeras <span class="highlight">efter</span> routing, <span class="highlight">före</span> controllers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Läser headern, jämför med <code>string.Equals(..., Ordinal)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Antingen kortsluter eller anropar <code>await _next(context)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Svagare än JWT -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Svagare än JWT</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ingen utgångstid</span> — giltig tills konfigurationen ändras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inga claims</span> — varje anropare ser likadan ut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ingen per-anropare-auktorisering</span> — samma nyckel, samma åtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rotation är destruktiv</span> om inte servern accepterar två nycklar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>JWT bär identitet; API-nycklar bär bara "känner hemligheten"</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Generering och lagring -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Generering och lagring</h2>
+
+                <div class="fragment info-box">
+                    <p>Generera med <code>openssl rand -base64 48</code> — 384 bitar entropi</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>256 bitar är golvet; verkliga risken är <span class="highlight">läckage</span>, inte brute force</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Aldrig</span> i versionshanterad kod — en commit räcker för läckage</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lokal utveckling: placeholder i <code>appsettings.Development.json</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Produktion: plattformens secret store + <code>secretref:</code> env-variabel</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Rotation av nycklar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rotation av nycklar</h2>
+
+                <div class="fragment info-box">
+                    <p>Rotation med en enda nyckel är destruktiv — alla klienter bryts samtidigt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Produktionsmönster: acceptera <span class="highlight"><code>Current</code> och <code>Previous</code></span> parallellt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lyft fram ny nyckel, degradera den gamla; klienter byter i egen takt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ta bort <code>Previous</code> när telemetri visar att ingen trafik använder den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utan rotation blir varje läckage permanent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: När en API-nyckel räcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När en API-nyckel räcker</h2>
+
+                <div class="fragment info-box">
+                    <p>En betrodd klient driftsatt tillsammans med servern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hotmodellen är "stäng ute anonym trafik", inte per-anropare-revision</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Interna eller lågkänsliga API:er där enkelhet väger tyngre än attribution</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: När den inte räcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När den inte räcker</h2>
+
+                <div class="fragment info-box">
+                    <p>Per-anropare-attribution krävs ("vilken klient gjorde detta?")</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Olika anropare behöver olika behörigheter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Credentials måste löpa ut utan operatörsingripande</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Flera oberoende konsumenter måste kunna återkallas individuellt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Nästa steg är en <span class="highlight">JWT bearer-token</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Cookie-Based Authentication and Sessions</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    COOKIE-BASED<br>
+                    AUTHENTICATION<br>
+                    AND SESSIONS
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: HTTP forgets every request -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">HTTP forgets every request</h2>
+
+                <div class="fragment info-box">
+                    <p>HTTP itself carries <span class="highlight">no memory</span> between requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A signed-in user must be re-recognised on every request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The browser stores a <span class="highlight">cookie</span> the server hands it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cookies travel automatically on every same-origin request</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The authentication cookie -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The authentication cookie</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">cookie</span> is data the server asks the browser to store and replay</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The cookie value is an <span class="highlight">encrypted, signed authentication ticket</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Opaque to the browser, tamper-evident to the server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Editing one byte logs the user out, never escalates</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The sign-in handshake -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The sign-in handshake</h2>
+
+                <div class="fragment info-box">
+                    <p>POST username and password over HTTPS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verify the password against the stored hash</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Build a <code>ClaimsPrincipal</code> and call <code>HttpContext.SignInAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Server emits <code>Set-Cookie</code>, browser stores it, redirects back</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Registering cookie authentication -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Registering cookie authentication</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.AddCookie(options =&gt; …)</code> configures lifetime and security</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>app.UseAuthentication()</code> runs <span class="highlight">before</span> <code>app.UseAuthorization()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The principal must reach <code>HttpContext.User</code> before <code>[Authorize]</code> checks</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Cookie attributes that matter -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Cookie attributes that matter</h2>
+
+                <div class="fragment info-box">
+                    <p><code>HttpOnly</code> — JavaScript cannot read the cookie</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Secure</code> — sent only over HTTPS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>SameSite=Lax</code> — withheld from most cross-site posts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Expires</code> / <code>Max-Age</code> — bounds the cookie's lifetime</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Sessions and sliding expiration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sessions and sliding expiration</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">session</span> is the span over which the same user is recognised</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fixed expiration logs users out at a wall-clock time</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sliding expiration</span> re-emits the cookie as the user works</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sign-out emits an expired cookie; idle sessions then die on their own</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: CSRF — the cookie-specific threat -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CSRF — the cookie-specific threat</h2>
+
+                <div class="fragment info-box">
+                    <p>The browser attaches the cookie to <span class="highlight">every</span> request, including cross-site posts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A hostile form can act as the user without ever reading the cookie</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bearer-token APIs are unaffected — tokens are not auto-attached</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Defence lives at the <span class="highlight">application layer</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: The anti-forgery token -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The anti-forgery token</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">anti-forgery token</span> is a per-session secret in a hidden form field</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Paired with a separate cookie carrying the matching half</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ValidateAntiForgeryToken]</code> rejects any POST whose halves disagree</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>SameSite=Lax</code> plus the token is belt-and-braces</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

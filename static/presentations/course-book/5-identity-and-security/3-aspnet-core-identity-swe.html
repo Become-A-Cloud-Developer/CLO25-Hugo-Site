@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ASP.NET Core Identity</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ASP.NET CORE<br>
+                    IDENTITY
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför inte bygga själv? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför inte bygga själv?</h2>
+
+                <div class="fragment info-box">
+                    <p>Lösenordshashning, salt och iterationer är lätta att göra <span class="highlight">fel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återställningstokens, e-postbekräftelse och låsning är hela funktioner i sig</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje egen variant är en framtida <span class="highlight">säkerhetsincident</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ramverket har redan en testad implementation</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad Identity är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Identity är</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett bibliotek för <span class="highlight">användarhantering</span>: registrering, inloggning, återställning, låsning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Äger användartabellen och <span class="highlight">lösenordshashen</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Komponeras med cookie-autentisering — ersätter den inte</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två huvudtjänster: <span class="highlight">UserManager</span> och <span class="highlight">SignInManager</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: IdentityUser-modellen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IdentityUser-modellen</h2>
+
+                <div class="fragment info-box">
+                    <p>Basentitet med <code>Id</code>, <code>UserName</code>, <code>Email</code>, <code>PasswordHash</code>, <code>SecurityStamp</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Spårar <span class="highlight">låsningstillstånd</span> och räknare för misslyckade försök</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Utöka</span> genom att härleda <code>ApplicationUser : IdentityUser</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den härledda typen följer med som generisk parameter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Användarlagringar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Användarlagringar</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">användarlagring</span> är persistensbackenden bakom Identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">EF Core</span> mot SQL är standardvalet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">In-memory</span>-lagring endast för tester och demon</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Egna</span> lagringar via <code>IUserStore&lt;TUser&gt;</code> för äldre databaser</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: UserManager vs SignInManager -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">UserManager vs SignInManager</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">UserManager</span> är data-API:et — skapa, hitta, byta lösenord, tilldela roll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SignInManager</span> orkestrerar hela <span class="highlight">inloggningsflödet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>PasswordSignInAsync</code> verifierar hashen och utfärdar cookie-biljetten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda är <span class="highlight">DI-registrerade</span>, request-scopade tjänster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Hashning av lösenord i Identity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hashning av lösenord i Identity</h2>
+
+                <div class="fragment info-box">
+                    <p>Standardalgoritm: <span class="highlight">PBKDF2</span> med HMAC-SHA-512</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Salt per användare</span> plus 310 000 iterationer (nuvarande standard)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Långsamheten stoppar offline-attacker; saltet stoppar rainbow-tables</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationen <span class="highlight">lagrar aldrig klartext</span> — bara hashen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Låsning och återställning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Låsning och återställning</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Låsning</span> aktiveras efter <code>MaxFailedAccessAttempts</code> (standard 5)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Låsta konton misslyckas direkt även med korrekt lösenord</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Återställningstokens</span> är signerade och tidsbegränsade; bundna till security stamp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lyckad lösenordsändring ogiltigförklarar utestående tokens</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Konkret exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Konkret exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddDefaultIdentity&lt;IdentityUser&gt;().AddEntityFrameworkStores&lt;ApplicationDbContext&gt;()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Register-controllern anropar <code>_userManager.CreateAsync(user, password)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sedan <code>_userManager.AddToRoleAsync(user, "Candidate")</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slutligen <code>_signInManager.SignInAsync(user, isPersistent: false)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: När Identity inte ska användas -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När Identity inte ska användas</h2>
+
+                <div class="fragment info-box">
+                    <p>Rena JSON-API:er — använd bara <span class="highlight">JWT bearer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SPA federerad mot extern IdP — använd <span class="highlight">OpenID Connect</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Interna verktyg — använd organisationens katalog (Entra ID)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Använd Identity när applikationen äger sin <span class="highlight">användardatabas</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -87,13 +87,23 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 ## Part V — Identity & Security
 
 **Course tag:** BCD + ACD
-**Companion exercise:** `content/exercises/10-webapp-development/4-authentication-authorization/`, `content/exercises/10-webapp-development/5-identity-and-user-stores/`, `content/exercises/4-services-and-apis/1-rest-api-and-dtos/2-api-key-middleware.md`, plus the future JWT chapter
-**Studieguide week:** ACD week 3 (v.17)
+**Companion exercises:** `content/exercises/10-webapp-development/4-authentication-authorization/`, `content/exercises/10-webapp-development/5-identity-and-user-stores/`, `content/exercises/4-services-and-apis/1-rest-api-and-dtos/`
+**Studieguide weeks:** BCD week 8 (v.12) and ACD week 3 (v.17)
 **Glossary file:** `docs/coursebook-mining/part-5-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part V run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | Authentication vs Authorization | validated | 2109 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 2 | Cookie-Based Authentication and Sessions | validated | 2272 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 3 | ASP.NET Core Identity | validated | 1989 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 4 | Roles, Claims, and Policies | validated | 1671 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 5 | Bearer Tokens and JWT | validated | 2072 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 6 | API Keys and Machine-to-Machine | validated | 2141 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 7 | OAuth 2.0 and OpenID Connect | validated | 2527 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 8 | Secret Management | validated | 2254 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part V totals:** 8 chapters, 17,035 words of prose, 16 HTML slide decks. All chapters pass voice-check clean.
 
 ---
 

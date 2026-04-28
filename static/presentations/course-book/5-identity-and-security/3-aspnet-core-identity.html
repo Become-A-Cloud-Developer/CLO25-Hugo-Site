@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>ASP.NET Core Identity</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ASP.NET CORE<br>
+                    IDENTITY
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why not roll your own? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why not roll your own?</h2>
+
+                <div class="fragment info-box">
+                    <p>Password hashing, salts, and iteration counts are easy to get <span class="highlight">wrong</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reset tokens, email confirmation, and lockout are full features in themselves</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every reinvention is a future <span class="highlight">security incident</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The framework already ships a tested implementation</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What Identity is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Identity is</h2>
+
+                <div class="fragment info-box">
+                    <p>A library for <span class="highlight">user management</span>: registration, sign-in, reset, lockout</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Owns the user table and the <span class="highlight">password hash</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Composes with cookie authentication — does not replace it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two main services: <span class="highlight">UserManager</span> and <span class="highlight">SignInManager</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The IdentityUser model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The IdentityUser model</h2>
+
+                <div class="fragment info-box">
+                    <p>Base entity with <code>Id</code>, <code>UserName</code>, <code>Email</code>, <code>PasswordHash</code>, <code>SecurityStamp</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tracks <span class="highlight">lockout</span> state and failed-attempt counter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Extend</span> by deriving <code>ApplicationUser : IdentityUser</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The derived type flows through as a generic parameter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: User stores -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">User stores</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">user store</span> is the persistence backend behind Identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">EF Core</span> against SQL is the standard choice</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">In-memory</span> store for tests and demos only</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Custom</span> stores possible via <code>IUserStore&lt;TUser&gt;</code> for legacy databases</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: UserManager vs SignInManager -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">UserManager vs SignInManager</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">UserManager</span> is the data API — create, find, change password, add to role</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SignInManager</span> orchestrates the <span class="highlight">sign-in flow</span> end to end</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>PasswordSignInAsync</code> validates the hash and issues the cookie ticket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both are <span class="highlight">DI-registered</span>, request-scoped services</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Password hashing in Identity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Password hashing in Identity</h2>
+
+                <div class="fragment info-box">
+                    <p>Default algorithm: <span class="highlight">PBKDF2</span> with HMAC-SHA-512</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Per-user salt</span> plus 310,000 iterations (current default)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slowness defeats offline attacks; salt defeats rainbow tables</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Application <span class="highlight">never stores plaintext</span> — only the hash</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Lockout and reset flows -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lockout and reset flows</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lockout</span> activates after <code>MaxFailedAccessAttempts</code> (default 5)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Locked accounts fail fast even with a correct password</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reset tokens</span> are signed and time-limited; bound to the security stamp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Successful password change invalidates outstanding tokens</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddDefaultIdentity&lt;IdentityUser&gt;().AddEntityFrameworkStores&lt;ApplicationDbContext&gt;()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Register controller calls <code>_userManager.CreateAsync(user, password)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Then <code>_userManager.AddToRoleAsync(user, "Candidate")</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Finally <code>_signInManager.SignInAsync(user, isPersistent: false)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: When not to use Identity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When not to use Identity</h2>
+
+                <div class="fragment info-box">
+                    <p>Pure JSON APIs — use <span class="highlight">JWT bearer</span> only</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SPA federated to an external IdP — use <span class="highlight">OpenID Connect</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Internal tools — use organisation's directory (Entra ID)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Use Identity when the application owns its <span class="highlight">user database</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

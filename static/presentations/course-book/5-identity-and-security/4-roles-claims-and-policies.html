@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Roles, Claims, and Policies</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ROLES, CLAIMS,<br>
+                    AND POLICIES
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Authorization needs facts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization needs facts</h2>
+
+                <div class="fragment info-box">
+                    <p>Authentication confirms <span class="highlight">who</span> signed in</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authorization decides <span class="highlight">what</span> that identity may do</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Decisions need <span class="highlight">facts about the user</span>, not just a yes-to-signed-in</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Facts live on the principal as <span class="highlight">claims</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The ClaimsPrincipal -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The ClaimsPrincipal</h2>
+
+                <div class="fragment info-box">
+                    <p><code>HttpContext.User</code> exposes a <span class="highlight"><code>ClaimsPrincipal</code></span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each <span class="highlight">claim</span> is a name-value pair (type + value)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllers read claims via <code>User.FindFirst(type)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The cookie ticket carries the same claims back on every request</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Roles are a special claim -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Roles are a special claim</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">role</span> is a claim of type <code>ClaimTypes.Role</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "Admin")]</code> checks for that claim</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>User.IsInRole("Admin")</code> is the same check by hand</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Coarse on purpose — fast group membership lookup</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Worked example: AdminController -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked example: AdminController</h2>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "Admin")]</code> on the controller class</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every action requires the <span class="highlight">Admin</span> role claim</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonymous request → 401, redirected to login</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authenticated non-admin → 403 forbidden</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: When roles stop being enough -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When roles stop being enough</h2>
+
+                <div class="fragment info-box">
+                    <p>"Edit your own profile" depends on <span class="highlight">identity</span>, not group</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"EU tenant" depends on a <span class="highlight">tenant claim</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"At least 18" depends on a <span class="highlight">computation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Encoding nuance as roles bloats the role list</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Authorization policies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization policies</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">authorization policy</span> is a named set of requirements</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registered once via <code>AddAuthorization(o =&gt; o.AddPolicy(...))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applied with <code>[Authorize(Policy = "Name")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Renaming or rewriting the rule is a <span class="highlight">one-line edit</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Custom requirements and handlers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Custom requirements and handlers</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IAuthorizationRequirement</code> carries the parameters</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>IAuthorizationHandler</code> evaluates against <code>context.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Handler calls <code>context.Succeed(requirement)</code> on match</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Example: <span class="highlight">MinimumAge</span> policy reads a <code>DateOfBirth</code> claim</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: A decision framework -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A decision framework</h2>
+
+                <div class="fragment info-box">
+                    <p>Plain <code>[Authorize]</code> — any authenticated user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "X")]</code> — rule is exactly group membership</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>RequireClaim</code> policy — rule is exactly claim equality</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Custom requirement + handler — rule needs computation</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

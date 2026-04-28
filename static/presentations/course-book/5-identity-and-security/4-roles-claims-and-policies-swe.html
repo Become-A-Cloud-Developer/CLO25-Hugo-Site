@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Roller, claims och policyer</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ROLLER, CLAIMS<br>
+                    OCH POLICYER
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Auktorisering behöver fakta -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Auktorisering behöver fakta</h2>
+
+                <div class="fragment info-box">
+                    <p>Autentisering bekräftar <span class="highlight">vem</span> som loggat in</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Auktorisering avgör <span class="highlight">vad</span> den identiteten får göra</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Beslutet behöver <span class="highlight">fakta om användaren</span>, inte bara att hen är inloggad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fakta lever på principalen som <span class="highlight">claims</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: ClaimsPrincipal -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ClaimsPrincipal</h2>
+
+                <div class="fragment info-box">
+                    <p><code>HttpContext.User</code> exponerar en <span class="highlight"><code>ClaimsPrincipal</code></span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje <span class="highlight">claim</span> (påstående) är ett namn-värdepar (typ + värde)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllers läser claims via <code>User.FindFirst(type)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cookie-biljetten bär samma claims tillbaka vid varje request</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Roller är ett särskilt claim -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Roller är ett särskilt claim</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">roll</span> är ett claim av typen <code>ClaimTypes.Role</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "Admin")]</code> kontrollerar det claimet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>User.IsInRole("Admin")</code> är samma kontroll för hand</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avsiktligt grovkornig — snabb gruppmedlemskontroll</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Exempel: AdminController -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: AdminController</h2>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "Admin")]</code> på controller-klassen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje action kräver claim med rollen <span class="highlight">Admin</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonym request → 401, omdirigeras till login</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inloggad icke-admin → 403 forbidden</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: När roller inte räcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När roller inte räcker</h2>
+
+                <div class="fragment info-box">
+                    <p>"Redigera din egen profil" beror på <span class="highlight">identitet</span>, inte grupp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"EU-tenant" beror på ett <span class="highlight">tenant-claim</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"Minst 18 år" beror på en <span class="highlight">beräkning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att uttrycka nyans som roller får rollistan att svälla</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Auktoriseringspolicyer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Auktoriseringspolicyer</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">policy</span> är en namngiven uppsättning krav</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registreras en gång via <code>AddAuthorization(o =&gt; o.AddPolicy(...))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tillämpas med <code>[Authorize(Policy = "Name")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att byta namn eller logik är en <span class="highlight">enradig ändring</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Egna krav och handlers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Egna krav och handlers</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IAuthorizationRequirement</code> bär parametrarna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>IAuthorizationHandler</code> utvärderar mot <code>context.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Handlern anropar <code>context.Succeed(requirement)</code> vid träff</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: policyn <span class="highlight">MinimumAge</span> läser ett <code>DateOfBirth</code>-claim</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Beslutsguide -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Beslutsguide</h2>
+
+                <div class="fragment info-box">
+                    <p>Enbart <code>[Authorize]</code> — vilken inloggad användare som helst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(Roles = "X")]</code> — regeln är gruppmedlemskap</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>RequireClaim</code>-policy — regeln är claim-likhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Eget krav + handler — regeln behöver beräkning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

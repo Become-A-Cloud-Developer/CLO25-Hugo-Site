@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>API Keys and Machine-to-Machine</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    API KEYS AND<br>
+                    MACHINE-TO-MACHINE
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The machine-to-machine problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Machine-to-Machine Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>A backend calling another backend has <span class="highlight">no user</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No login form, no browser, no cookie to carry</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The caller is a process, not a person</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Still needs a credential the server can check</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>API keys are the cheapest gate for this case</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What an API key is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What an API Key Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A long, opaque <span class="highlight">shared secret</span> between client and server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sent in a request header — conventionally <code>X-Api-Key</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Carries <span class="highlight">no claims</span>, no identity, no expiration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Proves only "the caller knows the secret"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same property for every client that holds the key</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: How it travels with a request -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How It Travels with a Request</h2>
+
+                <div class="fragment info-box">
+                    <p>Header on every call: <code>X-Api-Key: kQ8j+7Hf...</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Must travel over <span class="highlight">TLS</span> — plaintext puts it in router logs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No header → <code>401 Unauthorized</code> + <code>WWW-Authenticate: ApiKey</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Wrong header → <code>403 Forbidden</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Right header → request continues to the controller</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: ASP.NET Core middleware -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core Middleware</h2>
+
+                <div class="fragment info-box">
+                    <p>A class with a <code>RequestDelegate</code> constructor and <code>InvokeAsync(HttpContext)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registered with <code>app.UseMiddleware&lt;ApiKeyMiddleware&gt;()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sits <span class="highlight">after</span> routing, <span class="highlight">before</span> controllers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reads the header, compares with <code>string.Equals(..., Ordinal)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Either short-circuits or calls <code>await _next(context)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Weaker than JWT -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Weaker than JWT</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No expiration</span> — valid until configuration changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No claims</span> — every caller looks identical</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No per-caller authorization</span> — same key, same access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rotation is destructive</span> unless the server accepts two keys</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>JWT carries identity; API keys carry only "knows the secret"</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Generation and storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Generation and Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Generate with <code>openssl rand -base64 48</code> — 384 bits of entropy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>256 bits is the floor; the real risk is <span class="highlight">leakage</span>, not brute force</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Never</span> in source control — committed once means leaked forever</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Local dev: non-secret placeholder in <code>appsettings.Development.json</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Production: platform secret store + <code>secretref:</code> env var</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Key rotation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Key Rotation</h2>
+
+                <div class="fragment info-box">
+                    <p>Single-key rotation is destructive — every client breaks at once</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Production pattern: accept <span class="highlight"><code>Current</code> and <code>Previous</code></span> in parallel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Promote new key, demote old; clients cut over at their own pace</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Remove <code>Previous</code> once telemetry shows no traffic on the old key</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Without rotation, every leak is permanent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: When an API key is enough -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When an API Key Is Enough</h2>
+
+                <div class="fragment info-box">
+                    <p>One trusted client deployed alongside the server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Threat model is "keep anonymous traffic out," not per-caller audit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Internal or low-sensitivity APIs where simplicity outweighs attribution</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: When it is not -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When It Is Not</h2>
+
+                <div class="fragment info-box">
+                    <p>Per-caller attribution required ("which client did this?")</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Different callers need different permissions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Credentials must expire without operator action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multiple independent consumers must be revoked individually</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The next step is a <span class="highlight">JWT bearer token</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

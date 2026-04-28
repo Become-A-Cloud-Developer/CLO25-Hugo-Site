@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OAuth 2.0 and OpenID Connect</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OAUTH 2.0<br>
+                    AND OPENID<br>
+                    CONNECT
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Delegated-Access Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Delegated-Access Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Apps must call APIs <span class="highlight">on a user's behalf</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Asking for a third-party password is unsafe and impractical</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"Sign in with Google" needs identity <span class="highlight">without password sharing</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Solution: a trusted <span class="highlight">authorization server</span> holds the credential</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tokens carry scoped permission and signed identity</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Four Actors -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Four Actors</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resource owner</span> — the human user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Client</span> — the application requesting access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization server</span> — Entra ID, Google, GitHub, Auth0</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resource server</span> — the API hosting the user's data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trust between them is carried by <span class="highlight">signed tokens</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Grant Types at a Glance -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Grant Types at a Glance</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization code</span> — interactive user login (browser apps)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Client credentials</span> — machine-to-machine, no user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Device code</span> — input-constrained devices (TVs, CLIs)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Refresh token</span> — exchange long-lived token for a fresh access token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Implicit and password grants are <span class="highlight">discouraged</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Authorization Code with PKCE -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization Code with PKCE</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Front channel</span>: browser redirect to authorization server</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>User logs in there, consents to <span class="highlight">scopes</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Server redirects back with a one-time <code>code</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Back channel</span>: client exchanges <code>code</code> + <code>code_verifier</code> for tokens</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>PKCE binds the two halves — defends <span class="highlight">public clients</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Redirect URI and State -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Redirect URI and State</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Redirect URI</span> must be pre-registered, exact match</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Prevents attackers from redirecting codes to themselves</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">state</span> parameter — random per-login value</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Validated on callback to defeat <span class="highlight">CSRF</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both checks are <span class="highlight">non-optional</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: What OIDC Adds -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What OIDC Adds</h2>
+
+                <div class="fragment info-box">
+                    <p>OAuth alone returns an <span class="highlight">access token</span> — a permission slip</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>OIDC returns an <span class="highlight">ID token</span> — a signed JWT asserting <em>who</em></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ID token claims: <code>sub</code>, <code>name</code>, <code>email</code>, <code>iss</code>, <code>aud</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Client validates the signature against the issuer's <span class="highlight">public key</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ID token is for the client; access token is for the API</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: OAuth vs OIDC -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OAuth vs OIDC</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OAuth</span> answers authorization — "may this client call that API?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OIDC</span> answers authentication — "who is this user?"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same protocol family, <span class="highlight">different questions</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Workload federation (GitHub Actions to Azure) reuses OIDC for non-human callers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Covered in the <span class="highlight">DevOps</span> part of the book</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: ASP.NET Core Registration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core Registration</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddOpenIdConnect</code> registers the handler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Authority</code> points to the issuer's <span class="highlight">discovery URL</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ClientId</code> and <code>ClientSecret</code> from app registration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ResponseType = "code"</code>, <code>UsePkce = true</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Result: a <span class="highlight">ClaimsPrincipal</span> populated from the ID token</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

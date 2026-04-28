@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Autentisering kontra auktorisering</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    AUTENTISERING<br>
+                    KONTRA<br>
+                    AUKTORISERING
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Två frågor varje skyddad begäran besvarar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Två frågor varje skyddad begäran besvarar</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Vem</span> gör detta anrop?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Får de</span> göra det de begär?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Autentisering besvarar den första</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Auktorisering besvarar den andra</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma begäran, olika sanningskällor</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Autentisering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Autentisering</h2>
+
+                <div class="fragment info-box">
+                    <p>Validerar en <span class="highlight">credential</span> mot en känd identitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Indata: lösenord, bearer-token, certifikat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utdata: en identitet kopplad till begäran</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fel &rarr; <code>401 Unauthorized</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Säger ingenting om vad anroparen får göra</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Auktorisering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Auktorisering</h2>
+
+                <div class="fragment info-box">
+                    <p>Avgör om en <span class="highlight">autentiserad identitet</span> får fortsätta</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Indata: principalen och den begärda resursen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Läser roller, claims eller policyresultat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fel &rarr; <code>403 Forbidden</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rör aldrig credentialen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Principalen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Principalen</h2>
+
+                <div class="fragment info-box">
+                    <p>En <code>ClaimsPrincipal</code> kopplad till <code>HttpContext.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bär ett namn och en lista av <span class="highlight">claims</span> (påståenden)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byggs av autentiseringshanteraren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Läses av varje auktoriseringskontroll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma form oavsett credentialformat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Ordning i pipelinen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Ordning i pipelinen</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Autentiseringsmiddleware</span> körs tidigt — fyller <code>HttpContext.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routing</span> matchar begäran mot en controller-action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Auktoriseringsfilter</span> utvärderar <code>[Authorize]</code> mot principalen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Action körs bara om filtret godkänner</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Auktoriseringsbeslut -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Auktoriseringsbeslut</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rollkontroll</span> — <code>[Authorize(Roles = "Admin")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claim-kontroll</span> — <code>User.HasClaim("tenant", id)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Policyutvärdering</span> — <code>[Authorize(Policy = "ManagerOnly")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Från grovt till fint, från enkelt till centraliserat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Vad denna del utvecklar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad denna del utvecklar</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cookies</span> — sessioner i webbläsaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ASP.NET Core Identity</span> — hanterat användarregister</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claims och policies</span> — auktoriseringsregler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">JWT</span> — bearer-token för API:er</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OAuth / OIDC</span> — federerad identitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Key Vault</span> — driftshemligheter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

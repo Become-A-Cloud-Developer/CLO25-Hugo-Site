@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Bearer tokens och JWT</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BEARER TOKENS<br>
+                    OCH JWT
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Cookies passar inte alla anropare -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Cookies passar inte alla anropare</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">mobilapp</span> delar ingen cookie jar med en webbläsare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">SPA</span> korsar origins där cookies krånglar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">tjänst-till-tjänst-anrop</span> har ingen webbläsare alls</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Alla kan ändå sätta en HTTP-<span class="highlight">header</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad "bearer" betyder -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad "bearer" betyder</h2>
+
+                <div class="fragment info-box">
+                    <p>Skickas i varje request som <code>Authorization: Bearer &lt;token&gt;</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern validerar tokenen, inte vem som presenterar den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Den som bär tokenen</span> behandlas som autentiserad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Därför: <span class="highlight">TLS är obligatoriskt</span>, livslängder hålls korta</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: JWT-formatet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">JWT-formatet</h2>
+
+                <div class="fragment info-box">
+                    <p>Tre base64-kodade segment sammanfogade med punkter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Header</span> — algoritm och nyckel-ID (<code>alg</code>, <code>kid</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Payload</span> — JSON med claims om identiteten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Signatur</span> — bevisar att de två första segmenten inte ändrats</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Standard-claims i payloaden -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Standard-claims i payloaden</h2>
+
+                <div class="fragment info-box">
+                    <p><code>iss</code> — <span class="highlight">utfärdare</span>, tjänsten som signerade tokenen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>sub</code> — <span class="highlight">subject</span>, identiteten tokenen gäller</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>aud</code> — <span class="highlight">mottagare</span> (audience), tjänsten som ska acceptera den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>exp</code>, <code>nbf</code>, <code>iat</code> — när tokenen är giltig</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Validering av en JWT -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Validering av en JWT</h2>
+
+                <div class="fragment info-box">
+                    <p>Läs <code>kid</code> ur headern, slå upp <span class="highlight">verifieringsnyckeln</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Symmetrisk</span> (HS256) — delad hemlighet hos utfärdare och validerare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Asymmetrisk</span> (RS256) — utfärdaren signerar privat, validerare använder publik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kontrollera <code>iss</code>, <code>aud</code> och <code>exp</code> efter att signaturen godkänts</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core JwtBearer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core JwtBearer</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddJwtBearer</code> med <span class="highlight">Authority</span> och <span class="highlight">Audience</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authority styr nyckelhämtningen från <code>/.well-known/...</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllers ser samma <span class="highlight"><code>ClaimsPrincipal</code></span> som vid cookie-auth</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Korta access tokens, refresh tokens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Korta access tokens, refresh tokens</h2>
+
+                <div class="fragment info-box">
+                    <p>Access tokens lever <span class="highlight">minuter</span>, inte dagar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En läckt token är en användbar credential tills den går ut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En separat <span class="highlight">refresh token</span> byts mot en ny access token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Refresh tokens kan <span class="highlight">återkallas</span> serverside; access tokens kan inte</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: När JWT är fel val -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När JWT är fel val</h2>
+
+                <div class="fragment info-box">
+                    <p>En session kan <span class="highlight">dödas</span> i databasen — nästa anrop misslyckas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En JWT är <span class="highlight">giltig tills den går ut</span>, utan central kontroll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Block-listor och nyckelrotation undergräver formatets vinst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>När återkallning måste vara <span class="highlight">omedelbar</span>, välj serversessioner</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

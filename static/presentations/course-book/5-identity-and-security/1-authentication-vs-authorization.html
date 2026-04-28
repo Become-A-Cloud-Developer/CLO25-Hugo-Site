@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Authentication vs Authorization</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    AUTHENTICATION<br>
+                    VS<br>
+                    AUTHORIZATION
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Two questions every secured request answers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Two questions every secured request answers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Who</span> is making this call?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Are they allowed</span> to do what they ask?</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authentication answers the first</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authorization answers the second</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same request, different sources of truth</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Authentication -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authentication</h2>
+
+                <div class="fragment info-box">
+                    <p>Validates a <span class="highlight">credential</span> against a known identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inputs: password, bearer token, certificate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Output: an identity attached to the request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Failure &rarr; <code>401 Unauthorized</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Says nothing about what the caller may do</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Authorization -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization</h2>
+
+                <div class="fragment info-box">
+                    <p>Decides whether an <span class="highlight">authenticated identity</span> may proceed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inputs: the principal and the requested resource</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reads roles, claims, or policy results</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Failure &rarr; <code>403 Forbidden</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Never touches the credential</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The principal -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The principal</h2>
+
+                <div class="fragment info-box">
+                    <p>A <code>ClaimsPrincipal</code> attached to <code>HttpContext.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Carries a name and a list of <span class="highlight">claims</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Built by the authentication handler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Read by every authorization check</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same shape regardless of credential format</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Pipeline order -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Pipeline order</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authentication middleware</span> runs early — populates <code>HttpContext.User</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Routing</span> matches the request to a controller action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Authorization filter</span> evaluates <code>[Authorize]</code> against the principal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Action runs only if the filter passes</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Authorization decisions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authorization decisions</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Role check</span> — <code>[Authorize(Roles = "Admin")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claim check</span> — <code>User.HasClaim("tenant", id)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Policy evaluation</span> — <code>[Authorize(Policy = "ManagerOnly")]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Coarse to fine, simple to centralized</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: What this Part develops -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What this Part develops</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cookies</span> — browser sessions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ASP.NET Core Identity</span> — managed user store</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Claims and policies</span> — authorization rules</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">JWT</span> — bearer tokens for APIs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OAuth / OIDC</span> — federated identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Key Vault</span> — operational secrets</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

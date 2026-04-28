@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Bearer Tokens and JWT</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BEARER TOKENS<br>
+                    AND JWT
+                </h1>
+
+                <p class="subtitle">Part V — Identity &amp; Security</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Cookies do not fit every caller -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Cookies Do Not Fit Every Caller</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">mobile app</span> has no shared cookie jar with a browser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">single-page app</span> crosses origins where cookies struggle</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">service-to-service</span> call has no browser at all</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>All of them can still set an HTTP <span class="highlight">header</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What "bearer" means -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What "Bearer" Means</h2>
+
+                <div class="fragment info-box">
+                    <p>Sent on each request as <code>Authorization: Bearer &lt;token&gt;</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The server validates the token, not who is presenting it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Whoever holds the token</span> is treated as authenticated</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Therefore: <span class="highlight">TLS is mandatory</span>, lifetimes stay short</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The JWT format -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The JWT Format</h2>
+
+                <div class="fragment info-box">
+                    <p>Three base64-encoded segments joined by dots</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Header</span> — algorithm and key ID (<code>alg</code>, <code>kid</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Payload</span> — JSON claims about the identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Signature</span> — proves the first two segments were not altered</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Standard claims in the payload -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Standard Claims in the Payload</h2>
+
+                <div class="fragment info-box">
+                    <p><code>iss</code> — <span class="highlight">issuer</span>, the service that signed the token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>sub</code> — <span class="highlight">subject</span>, the identity the token is about</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>aud</code> — <span class="highlight">audience</span>, the service meant to accept it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>exp</code>, <code>nbf</code>, <code>iat</code> — when the token is valid</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Validating a JWT -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Validating a JWT</h2>
+
+                <div class="fragment info-box">
+                    <p>Read <code>kid</code> from the header, look up the <span class="highlight">verification key</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Symmetric</span> (HS256) — shared secret for issuer and validator</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Asymmetric</span> (RS256) — issuer signs private, validators use public</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Check <code>iss</code>, <code>aud</code>, and <code>exp</code> after the signature passes</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core JwtBearer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core JwtBearer</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddJwtBearer</code> with <span class="highlight">Authority</span> and <span class="highlight">Audience</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Authority drives the public-key fetch from <code>/.well-known/...</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllers see the same <span class="highlight"><code>ClaimsPrincipal</code></span> as cookie auth</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Short access tokens, refresh tokens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Short Access Tokens, Refresh Tokens</h2>
+
+                <div class="fragment info-box">
+                    <p>Access tokens live <span class="highlight">minutes</span>, not days</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A leaked token is a usable credential until it expires</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A separate <span class="highlight">refresh token</span> trades for a new access token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Refresh tokens can be <span class="highlight">revoked</span> server-side; access tokens cannot</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: When JWT is the wrong choice -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When JWT Is the Wrong Choice</h2>
+
+                <div class="fragment info-box">
+                    <p>A session can be <span class="highlight">killed</span> in the database — the next call fails</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A JWT is <span class="highlight">valid until it expires</span>, with no central check</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Block-lists and key rotation undo the format's main benefit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Where revocation must be <span class="highlight">immediate</span>, prefer server-side sessions</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

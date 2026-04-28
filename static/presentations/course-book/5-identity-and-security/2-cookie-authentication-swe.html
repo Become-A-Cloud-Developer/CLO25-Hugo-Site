@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Cookie-baserad autentisering och sessioner</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    COOKIE-BASERAD<br>
+                    AUTENTISERING<br>
+                    OCH SESSIONER
+                </h1>
+
+                <p class="subtitle">Del V — Identitet och säkerhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: HTTP glömmer varje request -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">HTTP glömmer varje request</h2>
+
+                <div class="fragment info-box">
+                    <p>HTTP själv bär <span class="highlight">inget minne</span> mellan requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En inloggad användare måste återkännas vid varje request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Webbläsaren lagrar en <span class="highlight">cookie</span> som servern skickar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cookies följer automatiskt med på alla same-origin-requests</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Autentiserings-cookien -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Autentiserings-cookien</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">cookie</span> är data som servern ber webbläsaren spara och skicka tillbaka</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värdet är en <span class="highlight">krypterad, signerad autentiseringsbiljett</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ogenomskinlig för webbläsaren, manipuleringsskyddad för servern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En ändrad byte loggar ut användaren, ger aldrig högre behörighet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Inloggnings-handskakningen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Inloggnings-handskakningen</h2>
+
+                <div class="fragment info-box">
+                    <p>POST:a användarnamn och lösenord över HTTPS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verifiera lösenordet mot lagrad hash</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bygg en <code>ClaimsPrincipal</code> och anropa <code>HttpContext.SignInAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern skickar <code>Set-Cookie</code>, webbläsaren sparar den, redirect tillbaka</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Registrera cookie-autentisering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Registrera cookie-autentisering</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.AddCookie(options =&gt; …)</code> styr livslängd och säkerhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>app.UseAuthentication()</code> körs <span class="highlight">före</span> <code>app.UseAuthorization()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Principalen måste finnas på <code>HttpContext.User</code> innan <code>[Authorize]</code> utvärderas</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Cookie-attribut som spelar roll -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Cookie-attribut som spelar roll</h2>
+
+                <div class="fragment info-box">
+                    <p><code>HttpOnly</code> — JavaScript kan inte läsa cookien</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Secure</code> — skickas endast över HTTPS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>SameSite=Lax</code> — utelämnas från de flesta cross-site-POSTs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Expires</code> / <code>Max-Age</code> — begränsar cookiens livslängd</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Sessioner och glidande utgång -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sessioner och glidande utgång</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">session</span> är perioden då samma användare återkänns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fast utgång loggar ut användaren vid en bestämd klockslag</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Glidande utgång</span> skickar ny cookie medan användaren arbetar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utloggning skickar en utgången cookie; passiva sessioner dör av sig själva</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: CSRF — det cookie-specifika hotet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CSRF — det cookie-specifika hotet</h2>
+
+                <div class="fragment info-box">
+                    <p>Webbläsaren bifogar cookien till <span class="highlight">varje</span> request, även cross-site-POSTs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett illvilligt formulär kan agera som användaren utan att läsa cookien</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bearer-token-API:er drabbas inte — tokens skickas inte automatiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Försvaret ligger i <span class="highlight">applikationslagret</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Anti-förfalskningstoken (CSRF-skydd) -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Anti-förfalskningstoken (CSRF-skydd)</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">anti-förfalskningstoken</span> är en sessionsbunden hemlighet i ett dolt formulärfält</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Paras med en separat cookie som bär den matchande halvan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ValidateAntiForgeryToken]</code> avvisar varje POST där halvorna inte stämmer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>SameSite=Lax</code> plus token är hängslen och livrem</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
