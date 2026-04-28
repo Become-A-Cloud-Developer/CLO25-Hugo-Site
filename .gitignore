@@ -28,3 +28,6 @@ docs/student-reports/
 # Assignment answer keys (teacher only)
 docs/assignments/**/assignment-*-answers.md
 sample-ebook/
+
+# Claude Code runtime state (per-machine, per-session)
+.claude/scheduled_tasks.lock
