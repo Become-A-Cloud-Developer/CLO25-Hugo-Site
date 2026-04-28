@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Lagring</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    LAGRING
+                </h1>
+
+                <p class="subtitle">Infrastruktur Grunder</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Vad är Lagring? -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad är Lagring?</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lagring</span> avser system och enheter som används för att spara, hämta och hantera data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kritiskt för applikationer, system och <span class="highlight">datadrivna operationer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skiljer sig från databaser: lagring tillhandahåller infrastruktur, databaser lägger till struktur och sökbarhet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Grund för <span class="highlight">persistenslagret</span> i alla systemarkitekturer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Karakteristik för lagring - Kapacitet och Prestanda -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kapacitet och Prestanda</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kapacitet:</span> Den totala mängden data ett lagringssystem kan hantera</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mäts i GB, TB eller PB för större system</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Throughput:</span> Mängden data som överförs per sekund (MB/s, GB/s)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Latens:</span> Tid det tar att få åtkomst till data efter en begäran (ms, μs)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Redundans -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Redundans</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Redundans</span> replikerar data för att kunna återställa vid fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">RAID:</span> Kombinerar flera diskar för att förbättra prestanda, kapacitet och redundans</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Snapshots:</span> Ögonblicksbilder av data som lagras lokalt eller nära källan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Backuper:</span> Regelbundna kopior av data som lagras externt för återställning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Block Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Block Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Delar upp data i <span class="highlight">block av fast storlek</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje block har en unik adress, åtkomst sker oberoende</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Används för <span class="highlight">databaser och applikationer</span> som kräver direkt diskåtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Protokoll: <span class="highlight">iSCSI</span>, Fibre Channel, NVMe</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: Hårddiskar, SAN (Storage Area Network), Azure Disk Storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: File Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">File Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Hanterar filer och kataloger likt ett <span class="highlight">hierarkiskt filsystem</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Perfekt för <span class="highlight">delad åtkomst</span> över flera system</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>NAS (Network-Attached Storage) tillhandahåller centraliserade filtjänster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Protokoll: <span class="highlight">SMB/CIFS</span> (Windows), <span class="highlight">NFS</span> (Unix/Linux)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: Azure Files, Amazon EFS, traditionella NAS-enheter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Object Storage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Object Storage</h2>
+
+                <div class="fragment info-box">
+                    <p>Lagrar data som <span class="highlight">objekt med metadata</span>, likt filer men utan hierarki</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Platt namnrymd med buckets/containers istället för mappar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lämplig för <span class="highlight">ostrukturerad data</span> i massiv skala</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Åtkomst via <span class="highlight">HTTP/S API:er</span> (REST)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Exempel: <span class="highlight">Azure Blob Storage</span>, Amazon S3, Google Cloud Storage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Praktiska tillämpningar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Praktiska Tillämpningar</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Datasjöar:</span> Big data-analys och maskininlärning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Medialagring:</span> Videoströmningsplattformar, bildarkiv</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Backup och arkivering:</span> Långtidslagring och efterlevnad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Applikationsdata:</span> VM-diskar, containervolymer, databaslagring</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">💿</div>
+                    <p class="big-text">Sammanfattning</p>
+                    <p class="subtitle" style="margin-top: 2em; font-size: 1.5em; max-width: 900px;">Lagring är en grundläggande komponent i IT-infrastruktur. Att välja rätt lagringstyp förbättrar prestanda, skalbarhet och tillförlitlighet.</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

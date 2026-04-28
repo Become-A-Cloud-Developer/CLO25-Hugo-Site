@@ -15,7 +15,7 @@ This week focuses on automating infrastructure provisioning. You will learn abou
 
 Understand the concepts behind Infrastructure as Code:
 
-- [Infrastructure as Code](/infrastructure-fundamentals/infrastructure-as-code/) - What IaC is, ARM templates, and Bicep
+- [Infrastructure as Code](/course-book/2-infrastructure/infrastructure-as-code/) - What IaC is, ARM templates, and Bicep
 
 ## Practice
 

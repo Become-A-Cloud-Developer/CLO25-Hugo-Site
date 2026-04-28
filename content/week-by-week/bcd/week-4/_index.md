@@ -15,7 +15,7 @@ This week covers virtual networking in Azure. You will learn about network secur
 
 Understand the concepts behind network infrastructure:
 
-- [Network](/infrastructure-fundamentals/network/) - IP addresses, CIDR ranges, firewalls, and network architecture
+- [Network](/course-book/2-infrastructure/network/) - IP addresses, CIDR ranges, firewalls, and network architecture
 
 ## Practice
 

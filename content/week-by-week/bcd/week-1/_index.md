@@ -15,8 +15,8 @@ This week introduces cloud computing and virtual servers. You will create an Azu
 
 Understand the concepts behind compute infrastructure:
 
-- [Intro to Cloud Development](/intro-cloud-development/) - What cloud computing is, service models, and deployment models
-- [Compute](/infrastructure-fundamentals/compute/) - What servers are, server roles, and how physical and virtual servers work
+- [Intro to Cloud Development](/course-book/1-cloud-foundations/) - What cloud computing is, service models, and deployment models
+- [Compute](/course-book/2-infrastructure/compute/) - What servers are, server roles, and how physical and virtual servers work
 
 ## Practice
 

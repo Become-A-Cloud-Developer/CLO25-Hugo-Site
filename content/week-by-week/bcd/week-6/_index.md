@@ -15,7 +15,7 @@ This week covers cloud storage services. You will learn about blob storage, data
 
 Understand the concepts behind data storage:
 
-- [Storage](/infrastructure-fundamentals/storage/) - Persistence, databases, and storage services
+- [Storage](/course-book/2-infrastructure/storage/) - Persistence, databases, and storage services
 
 ## Practice
 
