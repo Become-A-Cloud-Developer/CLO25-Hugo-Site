@@ -1,0 +1,58 @@
+================================================================
+Week 5 — Logging and Monitoring | KQL transcripts
+Workspace: workspace-rgcicdweek4RYcM (customerId 851d6578-a025-4c8f-8797-d00a06b4662a)
+Container App: ca-cicd-week4 (rg-cicd-week4 / northeurope)
+Captured: 2026-04-28T08:44:10Z
+================================================================
+
+----------------------------------------------------------------
+Query 1 — recent log lines from the Container App (last 30m)
+----------------------------------------------------------------
+
+ContainerAppConsoleLogs_CL
+| where TimeGenerated > ago(30m)
+| where ContainerAppName_s == "ca-cicd-week4"
+| project TimeGenerated, RevisionName_s, ContainerGroupName_s, Log_s
+| order by TimeGenerated desc
+| take 5
+
+Result:
+ca-cicd-week4--0000007-58d9d87bf-fmsqs	      Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning	ca-cicd-week4--0000007	PrimaryResult	2026-04-28T08:42:10.377449Z
+ca-cicd-week4--0000007-58d9d87bf-fmsqs	warn: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[60]	ca-cicd-week4--0000007	PrimaryResult	2026-04-28T08:42:10.377449Z
+ca-cicd-week4--0000007-58d9d87bf-fmsqs	warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]	ca-cicd-week4--0000007	PrimaryResult	2026-04-28T08:42:10.377449Z
+ca-cicd-week4--0000007-58d9d87bf-fmsqs	      No XML encryptor configured. Key {2d6b6a0f-932f-4316-ad30-b2bcb82a7ebd} may be persisted to storage in unencrypted form.	ca-cicd-week4--0000007	PrimaryResult	2026-04-28T08:42:10.377449Z
+ca-cicd-week4--0000007-58d9d87bf-fmsqs	warn: Microsoft.AspNetCore.Hosting.Diagnostics[15]	ca-cicd-week4--0000007	PrimaryResult	2026-04-28T08:42:10.377449Z
+
+----------------------------------------------------------------
+Query 2 — Home page rendered lines (structured fields visible)
+----------------------------------------------------------------
+
+ContainerAppConsoleLogs_CL
+| where TimeGenerated > ago(30m)
+| where ContainerAppName_s == "ca-cicd-week4"
+| where Log_s has "Home page rendered"
+| project TimeGenerated, ContainerGroupName_s, Log_s
+| order by TimeGenerated desc
+| take 5
+
+Result:
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	      Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c	PrimaryResult	2026-04-28T08:41:37.0947981Z
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	      Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c	PrimaryResult	2026-04-28T08:41:24.0415631Z
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	      Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c	PrimaryResult	2026-04-28T08:41:24.0415631Z
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	      Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c	PrimaryResult	2026-04-28T08:41:24.0415631Z
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	      Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c	PrimaryResult	2026-04-28T08:41:24.0415631Z
+
+----------------------------------------------------------------
+Query 3 — request count grouped by replica (centralised view)
+----------------------------------------------------------------
+
+ContainerAppConsoleLogs_CL
+| where TimeGenerated > ago(30m)
+| where ContainerAppName_s == "ca-cicd-week4"
+| where Log_s has "Home page rendered"
+| summarize requests = count() by ContainerGroupName_s
+
+Result:
+ca-cicd-week4--0000004-5dffd4464f-pdsfg	PrimaryResult	1
+ca-cicd-week4--0000006-f9ff55bc7-zs8ht	PrimaryResult	1
+ca-cicd-week4--0000007-58d9d87bf-xwgjm	PrimaryResult	27

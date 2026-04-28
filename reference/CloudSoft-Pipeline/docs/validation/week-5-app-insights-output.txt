@@ -1,0 +1,195 @@
+================================================================
+Week 5 — Logging and Monitoring | Application Insights query
+App Insights component: cloudci-insights
+appId: 914efd2e-6555-4ded-b3df-a59e7ab10c26
+Captured: 2026-04-28T08:45:02Z
+================================================================
+
+All queries return rows in 'tables[0].rows' as ordered arrays matching
+the columns descriptor in 'tables[0].columns'.
+
+----------------------------------------------------------------
+Q1 — request telemetry (auto-instrumented by SDK)
+----------------------------------------------------------------
+requests | where timestamp > ago(20m) | summarize count() by name, resultCode | order by count_ desc
+
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "resultCode",
+          "type": "string"
+        },
+        {
+          "name": "count_",
+          "type": "long"
+        }
+      ],
+      "name": "PrimaryResult",
+      "rows": [
+        [
+          "GET {controller=Home}/{action=Index}/{id?}",
+          "200",
+          20
+        ],
+        [
+          "GET {controller=Home}/{action=Index}/{id?}",
+          "500",
+          5
+        ],
+        [
+          "GET lib/bootstrap/dist/css/bootstrap.min.css",
+          "200",
+          1
+        ],
+        [
+          "GET css/site.css",
+          "200",
+          1
+        ],
+        [
+          "GET lib/jquery/dist/jquery.min.js",
+          "200",
+          1
+        ],
+        [
+          "GET lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+          "200",
+          1
+        ],
+        [
+          "GET CloudCi.styles.css",
+          "200",
+          1
+        ],
+        [
+          "GET js/site.js",
+          "200",
+          1
+        ]
+      ]
+    }
+  ]
+}
+
+----------------------------------------------------------------
+Q2 — exceptions captured (induced via /Home/Boom)
+----------------------------------------------------------------
+exceptions | where timestamp > ago(20m) | summarize count() by type, outerMessage | order by count_ desc
+
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "name": "type",
+          "type": "string"
+        },
+        {
+          "name": "outerMessage",
+          "type": "string"
+        },
+        {
+          "name": "count_",
+          "type": "long"
+        }
+      ],
+      "name": "PrimaryResult",
+      "rows": [
+        [
+          "System.InvalidOperationException",
+          "Boom! This is a deliberate failure for the Failures blade.",
+          5
+        ]
+      ]
+    }
+  ]
+}
+
+----------------------------------------------------------------
+Q3 — custom metric home-page-views
+----------------------------------------------------------------
+customMetrics | where timestamp > ago(20m) | where name == "home-page-views" | summarize total = sum(value), windowStart = min(timestamp), windowEnd = max(timestamp) by name
+
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "total",
+          "type": "real"
+        },
+        {
+          "name": "windowStart",
+          "type": "datetime"
+        },
+        {
+          "name": "windowEnd",
+          "type": "datetime"
+        }
+      ],
+      "name": "PrimaryResult",
+      "rows": [
+        [
+          "home-page-views",
+          27,
+          "2026-04-28T08:41:37.3944326Z",
+          "2026-04-28T08:41:37.3944326Z"
+        ]
+      ]
+    }
+  ]
+}
+
+----------------------------------------------------------------
+Q4 — traces (ILogger lines flowing into App Insights as traces)
+----------------------------------------------------------------
+traces | where timestamp > ago(20m) | where message has "Home page rendered" | project timestamp, severityLevel, message | order by timestamp desc | take 3
+
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "name": "timestamp",
+          "type": "datetime"
+        },
+        {
+          "name": "severityLevel",
+          "type": "int"
+        },
+        {
+          "name": "message",
+          "type": "string"
+        }
+      ],
+      "name": "PrimaryResult",
+      "rows": [
+        [
+          "2026-04-28T08:41:36.3660141Z",
+          1,
+          "Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c"
+        ],
+        [
+          "2026-04-28T08:41:22.7078083Z",
+          1,
+          "Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c"
+        ],
+        [
+          "2026-04-28T08:41:22.3203048Z",
+          1,
+          "Home page rendered for ca-cicd-week4--0000007-58d9d87bf-xwgjm build d9223b85bc56dc55ca1b95b0628929f592f5a58c"
+        ]
+      ]
+    }
+  ]
+}

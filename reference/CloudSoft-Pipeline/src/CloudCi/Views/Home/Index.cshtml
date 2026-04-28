@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Home";
-    var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
-    var hostName = Environment.MachineName;
+    var buildSha = ViewData["BuildSha"] as string ?? "local";
+    var hostName = ViewData["HostName"] as string ?? Environment.MachineName;
 }
 
 <div class="text-center">

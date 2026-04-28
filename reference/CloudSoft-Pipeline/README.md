@@ -1,14 +1,18 @@
 # CloudSoft-Pipeline
 
-Reference project for the ACD course's **CI/CD to Azure Container Apps** exercises under `content/exercises/3-deployment/9-cicd-to-container-apps/`.
+Reference project for two consecutive ACD chapters that share one running ASP.NET Core MVC application:
+
+- **CI/CD to Azure Container Apps** — `content/exercises/3-deployment/9-cicd-to-container-apps/`
+- **Logging and Monitoring** — `content/exercises/3-deployment/10-logging-and-monitoring/`
 
 ## Purpose
 
-A tiny ASP.NET Core MVC application that grows alongside the three CI/CD exercises. The single laboratory surface is the **homepage**, which displays the build commit SHA and hostname so students can see each new revision land on Azure Container Apps.
+A tiny ASP.NET Core MVC application that grows across two chapters of exercises. The single laboratory surface is the **homepage**, which displays the build commit SHA and hostname so students can see each new revision land on Azure Container Apps. By the end of the second chapter the same homepage is also instrumented with `ILogger<T>` and Application Insights.
 
-- **Exercise 1** — First pipeline: GitHub Actions builds the image and pushes to Docker Hub. Azure Container Apps pulls from the public registry. Deployment is manual.
-- **Exercise 2** — Private registry: switch to Azure Container Registry, authenticate with a service principal, and have the pipeline run `az containerapp update` itself. Add a smoke test.
-- **Exercise 3** — Passwordless OIDC: replace the service principal secret with OIDC federation between GitHub and Microsoft Entra ID. The pipeline still works, but no long-lived password exists.
+- **Week 4 Exercise 1** — First pipeline: GitHub Actions builds the image and pushes to Docker Hub. Azure Container Apps pulls from the public registry. Deployment is manual.
+- **Week 4 Exercise 2** — Private registry: switch to Azure Container Registry, authenticate with a service principal, and have the pipeline run `az containerapp update` itself. Add a smoke test.
+- **Week 4 Exercise 3** — Passwordless OIDC: replace the service principal secret with OIDC federation between GitHub and Microsoft Entra ID. The pipeline still works, but no long-lived password exists.
+- **Week 5 Exercises 1–3** — Observability: structured `ILogger<T>` with semantic message templates, container-log queries against the auto-provisioned Log Analytics workspace using KQL, then Application Insights with Live Metrics, an Application Map, a Failures blade fed by a `/Home/Boom` action, and a `home-page-views` custom metric. The chapter ends by tearing down the resource group and the Entra app registration.
 
 ## Layout
 
@@ -49,7 +53,7 @@ Then open `http://localhost:8080`. The badge should show `build: dev-local`.
 
 ## Exercise progression
 
-Each exercise corresponds to one or more commits in the live GitHub repository (`larsappel/cloudci`). The state in this directory represents the **final** state after all three exercises are complete: the workflow uses OIDC federation, and no long-lived secrets remain in the repository.
+Each exercise corresponds to one or more commits in the live GitHub repository (`larsappel/cloudci`). Week 5 commits append to the same history as Week 4 — there is one continuous timeline. The state in this directory represents the **final** state after all six exercises (across both chapters) are complete: OIDC-federated workflow, structured `ILogger` calls, request correlation IDs, App Insights SDK wired up, `/Home/Boom` for inducing exceptions, and a `home-page-views` custom metric.
 
 ## Live deployment
 
