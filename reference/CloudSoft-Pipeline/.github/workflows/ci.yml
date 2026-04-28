@@ -1,0 +1,59 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  ACR_NAME: acrlap8a9f
+  IMAGE_NAME: cloudci
+  RESOURCE_GROUP: rg-cicd-week4
+  CONTAINER_APP: ca-cicd-week4
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure (federated)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Log in to ACR
+        run: az acr login --name $ACR_NAME
+
+      - name: Build and push image
+        run: |
+          docker build \
+            --build-arg BUILD_SHA=${{ github.sha }} \
+            -t $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }} \
+            -t $ACR_NAME.azurecr.io/$IMAGE_NAME:latest \
+            .
+          docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }}
+          docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:latest
+
+      - name: Deploy to Container App
+        run: |
+          az containerapp update \
+            -g $RESOURCE_GROUP \
+            -n $CONTAINER_APP \
+            --image $ACR_NAME.azurecr.io/$IMAGE_NAME:${{ github.sha }}
+
+  smoke-test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl the FQDN
+        run: |
+          curl --fail --max-time 30 --retry 5 --retry-delay 5 --retry-connrefused \
+            "https://ca-cicd-week4.yellowcoast-76379f35.northeurope.azurecontainerapps.io/"

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Home";
+    var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
+    var hostName = Environment.MachineName;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Hello from CloudCi.</p>
+
+    <div class="mt-4">
+        <span class="badge bg-secondary" data-testid="build-sha">
+            build: @buildSha
+        </span>
+        <span class="badge bg-secondary" data-testid="host-name">
+            host: @hostName
+        </span>
+    </div>
+</div>

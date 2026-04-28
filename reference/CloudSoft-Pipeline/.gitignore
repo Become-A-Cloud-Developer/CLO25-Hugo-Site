@@ -1,0 +1,23 @@
+# .NET build output
+bin/
+obj/
+*.user
+*.suo
+*.lscache
+
+# VS / Rider
+.vs/
+.idea/
+
+# NuGet
+packages/
+*.nupkg
+
+# Local-only configuration
+appsettings.Development.json
+
+# Editor swap files
+*.swp
+
+# macOS
+.DS_Store
