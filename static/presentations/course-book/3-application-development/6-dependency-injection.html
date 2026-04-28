@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dependency Injection</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DEPENDENCY<br>
+                    INJECTION
+                </h1>
+
+                <p class="subtitle">Part III &mdash; Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Controllers that <span class="highlight"><code>new</code> their collaborators</span> mix work with assembly</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One concrete choice is <span class="highlight">hard-coded</span> into the consumer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tests cannot substitute fakes without rewriting the class</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Object-graph wiring leaks into <span class="highlight">every layer</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Inversion -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Inversion</h2>
+
+                <div class="fragment info-box">
+                    <p>A class <span class="highlight">declares</span> what it needs through its constructor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A runtime <span class="highlight">container</span> supplies the implementations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The consumer depends on an <span class="highlight">interface</span>, not a concrete type</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Construction order moves to <span class="highlight">one place</span> at startup</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Constructor Injection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Constructor Injection</h2>
+
+                <div class="fragment info-box">
+                    <p>Dependencies enter through <span class="highlight">constructor parameters</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stored in <span class="highlight"><code>readonly</code></span> fields &mdash; immutable for the object's life</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Makes requirements <span class="highlight">explicit</span> in the type signature</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pairs naturally with <span class="highlight">interface-based</span> registration</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Service Registration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Service Registration</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IServiceCollection</code> is the <span class="highlight">startup builder</span> in <code>Program.cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddScoped&lt;INewsletterService, NewsletterService&gt;()</code> binds <span class="highlight">interface to implementation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Concrete-type registration is valid for <span class="highlight">internal</span> helpers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Container is sealed once <code>builder.Build()</code> runs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The Three Lifetimes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Three Lifetimes</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Singleton</span> &mdash; one instance for the whole application</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scoped</span> &mdash; one instance per HTTP request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Transient</span> &mdash; a new instance on every resolution</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Default for application services is usually <span class="highlight">Scoped</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Captive Dependencies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Captive Dependencies</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">Singleton</span> that holds a <span class="highlight">Scoped</span> dependency captures it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The shorter-lived service is <span class="highlight">promoted</span> to the longer lifetime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Per-request state then <span class="highlight">leaks</span> between users</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Validate at startup; reverse direction (Scoped depends on Singleton) is safe</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked Example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example &mdash; Newsletter</h2>
+
+                <div class="fragment info-box">
+                    <p><code>INewsletterService</code> &rarr; <code>NewsletterService</code> registered <span class="highlight">Scoped</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ISubscriberRepository</code> &rarr; <code>InMemorySubscriberRepository</code> registered <span class="highlight">Singleton</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterController</code> receives <span class="highlight"><code>INewsletterService</code></span> through its constructor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Swapping the repository edits <span class="highlight">one line</span> in <code>Program.cs</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Testability -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Testability</h2>
+
+                <div class="fragment info-box">
+                    <p>Hand-construct the controller with a <span class="highlight">fake</span> service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No DI container, no database, no HTTP server needed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tests are <span class="highlight">fast, deterministic, isolated</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The payoff for <span class="highlight">interfaces + constructor injection</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

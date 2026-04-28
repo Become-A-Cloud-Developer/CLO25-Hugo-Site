@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>The .NET Platform</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THE<br>
+                    .NET<br>
+                    PLATFORM
+                </h1>
+
+                <p class="subtitle">Part III — Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why .NET Exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why .NET Exists</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cross-platform</span> managed runtime for Windows, Linux, and macOS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One toolchain for desktop, mobile, console, and web workloads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Open source under the <span class="highlight">MIT license</span>; developed in public on GitHub</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Unified version (5, 6, 7, 8, 9, 10) replaces the older Windows-only <span class="highlight">.NET Framework</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Compilation Pipeline -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Compilation Pipeline</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">C# source</span> in <code>.cs</code> files written by the developer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>C# compiler emits <span class="highlight">Intermediate Language</span> (IL) — CPU-independent bytecode</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Just-in-time</span> (JIT) compilation translates IL to native code at runtime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same IL runs on x86-64, ARM64, Windows, Linux, and macOS</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The Common Language Runtime -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Common Language Runtime</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CLR</span> loads assemblies, JIT-compiles IL, and hosts the running process</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Garbage collector</span> reclaims unreferenced memory automatically</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Exception handling</span> unwinds the stack and protects process state</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Managed runtime eliminates use-after-free and double-free defects</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Assemblies and NuGet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Assemblies and NuGet</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">assembly</span> is a <code>.dll</code> containing IL, type metadata, and resources</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Metadata enables <span class="highlight">reflection</span> — DI, model binding, and routing rely on it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NuGet</span> is the package manager; dependencies declared in <code>.csproj</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Public packages on <code>nuget.org</code>; private feeds for internal libraries</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The dotnet CLI -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The dotnet CLI</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet new &lt;template&gt;</code> — scaffold a new project (<code>mvc</code>, <code>webapi</code>, <code>console</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet restore</code> — download declared NuGet dependencies</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet build</code> — compile to IL, output to <code>bin/Debug/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet run</code> — build and start the application locally</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet add package &lt;name&gt;</code> — add a NuGet reference</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p>The .NET <span class="highlight">web framework</span> layered on top of the CLR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kestrel</span> HTTP server accepts connections and parses requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Configurable middleware <span class="highlight">pipeline</span> in <code>Program.cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Built-in support for <span class="highlight">MVC</span>, dependency injection, and configuration</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked Example: dotnet new mvc -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: dotnet new mvc</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet new mvc -n CloudSoft</code> scaffolds an MVC project</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Controllers/</code>, <code>Views/</code>, <code>Models/</code> form the <span class="highlight">presentation layer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Program.cs</code> builds the host and starts <span class="highlight">Kestrel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.json</code> supplies configuration; <code>wwwroot/</code> holds static assets</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

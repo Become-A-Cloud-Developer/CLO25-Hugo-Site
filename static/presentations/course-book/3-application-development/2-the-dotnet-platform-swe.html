@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Plattformen .NET</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PLATTFORMEN<br>
+                    .NET
+                </h1>
+
+                <p class="subtitle">Del III — Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför .NET finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför .NET finns</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Plattformsoberoende</span> runtime för Windows, Linux och macOS</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En verktygskedja för desktop, mobil, konsol och webb</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Öppen källkod under <span class="highlight">MIT-licens</span>; utvecklas öppet på GitHub</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den enade versionen (5, 6, 7, 8, 9, 10) ersätter det äldre Windows-bundna <span class="highlight">.NET Framework</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Kompileringspipelinen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kompileringspipelinen</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">C#-källkod</span> i <code>.cs</code>-filer skriven av utvecklaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>C#-kompilatorn producerar <span class="highlight">Intermediate Language</span> (IL) — CPU-oberoende bytekod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Just-in-time</span> (JIT) översätter IL till maskinkod vid körning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma IL körs på x86-64, ARM64, Windows, Linux och macOS</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Common Language Runtime -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Common Language Runtime</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CLR</span> laddar assemblies, JIT-kompilerar IL och driver processen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Garbage collector</span> frigör oanvänd minnesallokering automatiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Exception handling</span> rullar tillbaka stacken och skyddar processens tillstånd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hanterad runtime eliminerar use-after-free och dubbel frigörning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Assemblies och NuGet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Assemblies och NuGet</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">assembly</span> är en <code>.dll</code> med IL, typmetadata och resurser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Metadatan möjliggör <span class="highlight">reflektion</span> — DI, model binding och routing bygger på det</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">NuGet</span> är pakethanteraren; beroenden deklareras i <code>.csproj</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Publika paket på <code>nuget.org</code>; privata feeds för interna bibliotek</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Verktyget dotnet CLI -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Verktyget dotnet CLI</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet new &lt;mall&gt;</code> — skapa ett nytt projekt (<code>mvc</code>, <code>webapi</code>, <code>console</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet restore</code> — hämtar deklarerade NuGet-paket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet build</code> — kompilerar till IL, lägger resultat i <code>bin/Debug/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet run</code> — bygger och startar applikationen lokalt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet add package &lt;namn&gt;</code> — lägger till en NuGet-referens</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p>.NET-<span class="highlight">ramverket</span> för webb, byggt ovanpå CLR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kestrel</span> är HTTP-servern som tar emot anslutningar och tolkar förfrågningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konfigurerbar middleware-<span class="highlight">pipeline</span> i <code>Program.cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inbyggt stöd för <span class="highlight">MVC</span>, dependency injection och konfiguration</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Exempel: dotnet new mvc -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: dotnet new mvc</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet new mvc -n CloudSoft</code> skapar ett MVC-projekt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Controllers/</code>, <code>Views/</code>, <code>Models/</code> utgör <span class="highlight">presentationslagret</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Program.cs</code> bygger värden och startar <span class="highlight">Kestrel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.json</code> levererar konfiguration; <code>wwwroot/</code> håller statiska filer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

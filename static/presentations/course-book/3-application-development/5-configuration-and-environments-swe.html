@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Konfiguration och miljöer</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    KONFIGURATION<br>
+                    OCH<br>
+                    MILJÖER
+                </h1>
+
+                <p class="subtitle">Del III &mdash; Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför externalisera konfiguration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför externalisera konfiguration</h2>
+
+                <div class="fragment info-box">
+                    <p>Samma binär ska köra i <span class="highlight">dev, staging och produktion</span> oförändrad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hemligheter</span> får inte hamna i versionshantering &mdash; git-historik är permanent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Driftpersonal ändrar inställningar utan att bygga om applikationen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Flera driftsättningar av samma binär lever med olika inställningar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Leverantörskedjan -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Leverantörskedjan</h2>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.json</code> &mdash; grundvärden som följer med källkoden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.{Environment}.json</code> &mdash; miljöspecifik <span class="highlight">override</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">User-secrets</span> &mdash; endast lokala utvecklingsuppgifter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Miljövariabler</span> &mdash; driftsättningsspecifika värden och produktionshemligheter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kommandoradsargument &mdash; sista ordet vid diagnostiska körningar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: IConfiguration som läsgränssnitt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IConfiguration som läsgränssnitt</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IConfiguration</code> slår ihop kedjan till ett <span class="highlight">nyckel-värde-träd</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hierarkiska nycklar använder kolon: <code>MongoDB:ConnectionString</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Injiceras via DI; konsumenten vet inte vilken leverantör värdet kom från</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returnerar <code>null</code> för nycklar som ingen leverantör tillhandahåller</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Val av miljö -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Val av miljö</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ASPNETCORE_ENVIRONMENT</code> styr aktiv miljö</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standard är <span class="highlight">Production</span> när variabeln saknas &mdash; säkrare än dev</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Läser in <code>appsettings.&lt;env&gt;.json</code> och aktiverar utvecklarfunktioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>app.Environment.IsDevelopment()</code> styr körtidsbeteende</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: User-secrets-arbetsflödet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">User-secrets-arbetsflödet</h2>
+
+                <div class="fragment info-box">
+                    <p>Lagras utanför projektmappen, i användarprofilen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kopplas till projektet via <code>UserSecretsId</code>-GUID i <code>.csproj</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CLI: <code>dotnet user-secrets init</code>, <code>set</code>, <code>list</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Aktiv <span class="highlight">endast</span> när miljön är <code>Development</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Override via miljövariabler -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Override via miljövariabler</h2>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB:ConnectionString</code> blir <code>MongoDB__ConnectionString</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dubbelt understreck ersätter kolon &mdash; de flesta OS förbjuder kolon i variabelnamn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Leverantören ligger senare i kedjan och <span class="highlight">åsidosätter</span> JSON-filerna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standardmetod för produktionshemligheter och driftsättningsvärden</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Starkt typade IOptions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Starkt typade IOptions</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IOptions&lt;T&gt;</code> binder en konfigurationssektion till en typad C#-klass</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tar bort magiska strängar &mdash; felstavningar blir <span class="highlight">kompileringsfel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sektionsvägen lever på ett ställe, inte hos varje konsument</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>IOptionsSnapshot&lt;T&gt;</code> och <code>IOptionsMonitor&lt;T&gt;</code> för förändringskänsliga fall</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Dev vs produktions-hemlighetslager -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dev vs produktions-hemlighetslager</h2>
+
+                <div class="fragment info-box">
+                    <p>User-secrets och miljövariabler lagrar hemligheter i <span class="highlight">klartext på disk</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Produktion kräver kryptering, åtkomstlogg och rotation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hanterade hemlighetslager (Azure Key Vault) ansluts till samma kedja</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Detaljeras i Del V &mdash; Managed Identities och Key Vault</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

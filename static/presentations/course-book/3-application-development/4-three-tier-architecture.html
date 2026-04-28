@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Three-Tier Architecture</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THREE-TIER<br>
+                    ARCHITECTURE
+                </h1>
+
+                <p class="subtitle">Part III — Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why Monolithic Controllers Break Down -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Monolithic Controllers Break Down</h2>
+
+                <div class="fragment info-box">
+                    <p>A controller mixes <span class="highlight">HTTP handling</span>, business rules, and data access</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Three reasons to change collide in one file</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tests need a real database to exercise validation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Swapping storage forces edits across every controller</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Duplicate rules drift between features over time</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Three Layers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Three Layers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Presentation layer</span> — controllers and views; HTTP in, HTTP out</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Service layer</span> — business logic, validation, orchestration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Data layer</span> — repositories that hide the storage technology</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each layer has one reason to change</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Folders signal the structure; <span class="highlight">interfaces</span> enforce it</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Layer Diagram -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layer Diagram</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 620" xmlns="http://www.w3.org/2000/svg" aria-label="Three-tier architecture: presentation depends on service via INewsletterService, service depends on data via ISubscriberRepository, dependencies flow downward only">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Presentation -->
+                        <rect x="500" y="40" width="600" height="130" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="95" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="34" font-weight="700">Presentation Layer</text>
+                        <text x="800" y="140" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="600">Controllers &amp; Views</text>
+
+                        <!-- Interface boundary 1 -->
+                        <rect x="600" y="200" width="400" height="60" rx="8"
+                              fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                        <text x="800" y="240" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="700">INewsletterService</text>
+
+                        <!-- Arrow 1 -->
+                        <line x1="800" y1="170" x2="800" y2="195"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Service -->
+                        <rect x="500" y="290" width="600" height="130" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="345" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="34" font-weight="700">Service Layer</text>
+                        <text x="800" y="390" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="600">Business Logic &amp; Validation</text>
+
+                        <!-- Arrow 2 -->
+                        <line x1="800" y1="260" x2="800" y2="285"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Interface boundary 2 -->
+                        <rect x="580" y="450" width="440" height="60" rx="8"
+                              fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                        <text x="800" y="490" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="700">ISubscriberRepository</text>
+
+                        <!-- Arrow 3 -->
+                        <line x1="800" y1="420" x2="800" y2="445"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Data -->
+                        <rect x="500" y="540" width="600" height="60" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="582" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="32" font-weight="700">Data Layer — Repositories</text>
+
+                        <!-- Arrow 4 -->
+                        <line x1="800" y1="510" x2="800" y2="535"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Side label -->
+                        <text x="1200" y="320" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">dependencies</text>
+                        <text x="1200" y="350" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">flow downward</text>
+                        <text x="1200" y="380" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">only</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Dependency Direction -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dependency Direction</h2>
+
+                <div class="fragment info-box">
+                    <p>References flow downward only — <span class="highlight">never upward</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controller depends on <code>INewsletterService</code>, not the concrete class</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service depends on <code>ISubscriberRepository</code>, not the concrete class</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Concrete types are wired in <code>Program.cs</code> via the DI container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each layer compiles against an <span class="highlight">abstraction</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Request Flow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Request Flow: Newsletter Subscribe</h2>
+
+                <div class="fragment info-box">
+                    <p>Controller receives POST, hands email and name to <code>INewsletterService</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service validates, calls <code>ISubscriberRepository.ExistsAsync</code> and <code>AddAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repository writes to the store and returns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service returns an <code>OperationResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controller picks a <span class="highlight">redirect</span> or re-renders the form</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked Example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterController</code> — presentation layer, returns <code>IActionResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterService</code> — service layer, returns <code>OperationResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>InMemorySubscriberRepository</code> — data layer, writes to <code>ConcurrentDictionary</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Replace the repository with a <span class="highlight">MongoDB-backed class</span> — controller and service untouched</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: The Trade-Off -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Trade-Off</h2>
+
+                <div class="fragment info-box">
+                    <p>More files per feature (<span class="highlight">4–6 instead of 1</span>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reusable business rules across features</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Substitutable storage backends</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Unit tests that exercise <span class="highlight">one layer at a time</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Worth the cost once the application grows past a single feature</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

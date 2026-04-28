@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Trelagersarkitektur</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    TRELAGERS-<br>
+                    ARKITEKTUR
+                </h1>
+
+                <p class="subtitle">Del III — Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför monolitiska controllers blir ohållbara -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför monolitiska controllers blir ohållbara</h2>
+
+                <div class="fragment info-box">
+                    <p>En controller blandar <span class="highlight">HTTP-hantering</span>, affärsregler och dataåtkomst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tre skäl att ändra koden krockar i samma fil</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tester kräver en riktig databas för att köra validering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byte av lagring tvingar fram ändringar i varje controller</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Duplicerade regler glider isär mellan funktioner över tid</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: De tre lagren -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De tre lagren</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Presentationslager</span> — controllers och vyer; HTTP in, HTTP ut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Servicelager</span> — affärslogik, validering, orkestrering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Datalager</span> — repositories som döljer lagringstekniken</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje lager har ett skäl att ändras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mappar signalerar strukturen; <span class="highlight">interface</span> upprätthåller den</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Lagerdiagram -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lagerdiagram</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 620" xmlns="http://www.w3.org/2000/svg" aria-label="Trelagersarkitektur: presentation beror på service via INewsletterService, service beror på data via ISubscriberRepository, beroenden går endast nedåt">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Presentation -->
+                        <rect x="500" y="40" width="600" height="130" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="95" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="34" font-weight="700">Presentationslager</text>
+                        <text x="800" y="140" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="600">Controllers &amp; vyer</text>
+
+                        <!-- Interface boundary 1 -->
+                        <rect x="600" y="200" width="400" height="60" rx="8"
+                              fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                        <text x="800" y="240" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="700">INewsletterService</text>
+
+                        <!-- Arrow 1 -->
+                        <line x1="800" y1="170" x2="800" y2="195"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Service -->
+                        <rect x="500" y="290" width="600" height="130" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="345" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="34" font-weight="700">Servicelager</text>
+                        <text x="800" y="390" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="600">Affärslogik &amp; validering</text>
+
+                        <!-- Arrow 2 -->
+                        <line x1="800" y1="260" x2="800" y2="285"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Interface boundary 2 -->
+                        <rect x="580" y="450" width="440" height="60" rx="8"
+                              fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                        <text x="800" y="490" text-anchor="middle"
+                              fill="#FECC00" font-family="Segoe UI" font-size="24" font-weight="700">ISubscriberRepository</text>
+
+                        <!-- Arrow 3 -->
+                        <line x1="800" y1="420" x2="800" y2="445"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Data -->
+                        <rect x="500" y="540" width="600" height="60" rx="12"
+                              fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                        <text x="800" y="582" text-anchor="middle"
+                              fill="#fff" font-family="Segoe UI" font-size="32" font-weight="700">Datalager — repositories</text>
+
+                        <!-- Arrow 4 -->
+                        <line x1="800" y1="510" x2="800" y2="535"
+                              stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+                        <!-- Side label -->
+                        <text x="1200" y="320" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">beroenden</text>
+                        <text x="1200" y="350" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">går endast</text>
+                        <text x="1200" y="380" text-anchor="start"
+                              fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="700">nedåt</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Beroenderiktning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Beroenderiktning</h2>
+
+                <div class="fragment info-box">
+                    <p>Referenser går endast nedåt — <span class="highlight">aldrig uppåt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllern beror på <code>INewsletterService</code>, inte den konkreta klassen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servicen beror på <code>ISubscriberRepository</code>, inte den konkreta klassen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konkreta typer kopplas in i <code>Program.cs</code> via DI-containern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje lager kompileras mot en <span class="highlight">abstraktion</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Anropsflöde -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Anropsflöde: Prenumerera på nyhetsbrev</h2>
+
+                <div class="fragment info-box">
+                    <p>Controllern tar emot POST, skickar e-post och namn till <code>INewsletterService</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servicen validerar, anropar <code>ISubscriberRepository.ExistsAsync</code> och <code>AddAsync</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repositoryt skriver till lagret och returnerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servicen returnerar ett <code>OperationResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Controllern väljer en <span class="highlight">redirect</span> eller renderar formuläret igen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Praktiskt exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Praktiskt exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterController</code> — presentationslager, returnerar <code>IActionResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterService</code> — servicelager, returnerar <code>OperationResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>InMemorySubscriberRepository</code> — datalager, skriver till <code>ConcurrentDictionary</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byt repositoryt mot en <span class="highlight">MongoDB-baserad klass</span> — controller och service orörda</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Avvägningen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Avvägningen</h2>
+
+                <div class="fragment info-box">
+                    <p>Fler filer per funktion (<span class="highlight">4–6 istället för 1</span>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återanvändbara affärsregler mellan funktioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utbytbara lagringsbackends</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enhetstester som kör <span class="highlight">ett lager i taget</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värt kostnaden när applikationen växer förbi en enstaka funktion</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

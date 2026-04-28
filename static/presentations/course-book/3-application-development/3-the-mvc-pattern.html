@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>The MVC Pattern</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THE MVC<br>
+                    PATTERN
+                </h1>
+
+                <p class="subtitle">Part III &mdash; Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why MVC exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why MVC exists</h2>
+
+                <div class="fragment info-box">
+                    <p>Input handling, business state, and rendering change for <span class="highlight">different reasons</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mixing them yields code that is hard to test or modify</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>MVC assigns each concern to a <span class="highlight">distinct role</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Roles communicate through narrow interfaces, not shared state</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The three roles -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The three roles</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Controller</span> &mdash; receives input, coordinates work, returns a result</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">View</span> &mdash; renders state to HTML using a Razor template</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Model</span> &mdash; the typed data passed from controller to view</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rich domain models live in the service layer, not here</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Controllers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Controllers</h2>
+
+                <div class="fragment info-box">
+                    <p>A class ending in <code>Controller</code>, living in <code>Controllers/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Public methods are <span class="highlight">actions</span> that handle requests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each action returns an <code>IActionResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Attributes like <code>[HttpGet]</code>, <code>[HttpPost]</code>, <code>[Authorize]</code> constrain matching</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Routing -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Routing</h2>
+
+                <div class="fragment info-box">
+                    <p>Matches an incoming <span class="highlight">URI to a controller action</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Conventional template: <code>{controller=Home}/{action=Index}/{id?}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Attribute routing: <code>[Route]</code> and <code>[HttpGet("{id:int}")]</code> on the action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Route values are extracted from the path before the action runs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Model binding -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Model binding</h2>
+
+                <div class="fragment info-box">
+                    <p>Converts request data into <span class="highlight">typed action parameters</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sources: route values, query string, form fields, JSON body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Validation attributes (<code>[Required]</code>, <code>[StringLength]</code>) populate <code>ModelState</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Action body checks <code>ModelState.IsValid</code> before proceeding</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Action results -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Action results</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ViewResult</code> &mdash; render a Razor view</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>RedirectToActionResult</code> &mdash; 302 redirect after a successful POST</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>JsonResult</code> &mdash; serialize an object for an API response</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NotFoundResult</code>, <code>BadRequestResult</code> &mdash; explicit error responses</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Razor view syntax -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Razor view syntax</h2>
+
+                <div class="fragment info-box">
+                    <p><code>.cshtml</code> files mix HTML and C# expressions prefixed with <code>@</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>@model Product</code> declares the <span class="highlight">strongly-typed model</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>@if</code>, <code>@foreach</code> for control flow inside templates</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tag helpers (<code>asp-for</code>, <code>asp-action</code>) bind inputs to model properties</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: The request flow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The request flow</h2>
+
+                <div class="fragment info-box">
+                    <p>Request &rarr; middleware &rarr; <span class="highlight">routing</span> &rarr; controller &rarr; action &rarr; result &rarr; response</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dependency injection supplies the controller's constructor parameters</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each stage can be tested or replaced independently</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The framework handles serialization, status codes, and headers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>HTTP Fundamentals</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    HTTP<br>
+                    FUNDAMENTALS
+                </h1>
+
+                <p class="subtitle">Part III — Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why HTTP Exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why HTTP Exists</h2>
+
+                <div class="fragment info-box">
+                    <p>Layered on <span class="highlight">TCP/IP</span> — adds meaning to the byte stream</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Text-based</span> messages — readable with <code>curl</code> and dev tools</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Stateless</span> — each request stands alone, state travels in headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Uniform interface</span> — same vocabulary for every application</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Request-Response Cycle -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Request-Response Cycle</h2>
+
+                <div class="fragment info-box">
+                    <p>Client opens a TCP connection to host and port</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Client writes a <span class="highlight">request</span> — method, URI, headers, optional body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Server writes a <span class="highlight">response</span> — status code, headers, optional body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Connection is freed; the next request repeats the shape</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: HTTP Methods -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">HTTP Methods</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span> — retrieve a representation, no side effects</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span> — submit data that creates or mutates state</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">PUT</span> — replace a resource at a known URI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">PATCH</span> — partial update of a resource</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DELETE</span> — remove a resource</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: GET versus POST -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">GET versus POST</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span>: parameters in query string, body empty, bookmarkable</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span>: parameters in body, hidden from URL bar and history</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span> is <span class="highlight">safe</span> and <span class="highlight">idempotent</span> — repeats are harmless</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span> is neither — repeats create duplicates</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mutating actions always use <span class="highlight">POST</span> (or <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Status Codes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Status Codes</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">1xx</span> informational, <span class="highlight">2xx</span> success, <span class="highlight">3xx</span> redirect</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">4xx</span> client error — request is wrong, retry will not help</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">5xx</span> server error — server failed, retry may succeed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common: <code>200 OK</code>, <code>302 Found</code>, <code>400 Bad Request</code>, <code>404 Not Found</code>, <code>500 Internal Server Error</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: URIs and Headers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">URIs and Headers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">URI</span> = scheme + authority + path + query + fragment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Path</span> drives routing to a controller action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Query string</span> carries <code>GET</code> parameters as <code>key=value</code> pairs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Headers</span> carry metadata: <code>Content-Type</code>, <code>Authorization</code>, <code>Cookie</code>, <code>Cache-Control</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked Example: curl to ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: curl to ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p><code>curl -v https://localhost:7240/Home/Index</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Request: <code>GET /Home/Index HTTP/1.1</code> plus <code>Host</code> and <code>Accept</code> headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Server matches path to <code>HomeController.Index()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Response: <code>200 OK</code>, <code>Content-Type: text/html</code>, rendered Razor view in body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <code>POST</code> form submission carries body data and typically redirects with <code>302</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Idempotency Matters on Failure -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Idempotency Matters on Failure</h2>
+
+                <div class="fragment info-box">
+                    <p>Retrying a <code>GET</code>, <code>PUT</code>, or <code>DELETE</code> after a timeout is safe</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Retrying a <code>POST</code> may create duplicates — payment APIs use <span class="highlight">idempotency keys</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The "Confirm form resubmission" dialog exists because <code>POST</code> is not idempotent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

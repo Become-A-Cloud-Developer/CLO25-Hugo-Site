@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>HTTP Fundamentals</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    HTTP<br>
+                    FUNDAMENTALS
+                </h1>
+
+                <p class="subtitle">Del III — Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför HTTP finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför HTTP finns</h2>
+
+                <div class="fragment info-box">
+                    <p>Bygger på <span class="highlight">TCP/IP</span> — tillför betydelse till byte-strömmen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Textbaserade</span> meddelanden — läsbara med <code>curl</code> och utvecklarverktyg</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Tillståndslöst</span> — varje förfrågan står ensam, tillstånd reser i headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Enhetligt gränssnitt</span> — samma vokabulär för alla applikationer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Förfrågan-svar-cykeln -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Förfrågan-svar-cykeln</h2>
+
+                <div class="fragment info-box">
+                    <p>Klienten öppnar en TCP-anslutning till värd och port</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten skriver en <span class="highlight">förfrågan</span> — metod, URI, headers, valfri body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern skriver ett <span class="highlight">svar</span> — statuskod, headers, valfri body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anslutningen frigörs; nästa förfrågan upprepar samma form</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: HTTP-metoder -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">HTTP-metoder</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span> — hämta en representation, inga sidoeffekter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span> — skicka data som skapar eller ändrar tillstånd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">PUT</span> — ersätt en resurs vid en känd URI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">PATCH</span> — delvis uppdatering av en resurs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DELETE</span> — ta bort en resurs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: GET kontra POST -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">GET kontra POST</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span>: parametrar i query-strängen, tom body, bokmärkesbar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span>: parametrar i bodyn, dolda från URL-fältet och historiken</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GET</span> är <span class="highlight">säker</span> och <span class="highlight">idempotent</span> — upprepningar är ofarliga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">POST</span> är ingetdera — upprepningar skapar dubbletter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tillståndsändrande åtgärder använder alltid <span class="highlight">POST</span> (eller <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Statuskoder -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Statuskoder</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">1xx</span> informativa, <span class="highlight">2xx</span> lyckade, <span class="highlight">3xx</span> omdirigeringar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">4xx</span> klientfel — förfrågan är fel, försök igen hjälper inte</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">5xx</span> serverfel — servern misslyckades, försök igen kan lyckas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanliga: <code>200 OK</code>, <code>302 Found</code>, <code>400 Bad Request</code>, <code>404 Not Found</code>, <code>500 Internal Server Error</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: URI:er och headers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">URI:er och headers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">URI</span> = schema + auktoritet + sökväg + query + fragment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sökvägen</span> styr routing till en controller-action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Query-strängen</span> bär <code>GET</code>-parametrar som <code>nyckel=värde</code>-par</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Headers</span> bär metadata: <code>Content-Type</code>, <code>Authorization</code>, <code>Cookie</code>, <code>Cache-Control</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Konkret exempel: curl mot ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Konkret exempel: curl mot ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p><code>curl -v https://localhost:7240/Home/Index</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Förfrågan: <code>GET /Home/Index HTTP/1.1</code> plus <code>Host</code>- och <code>Accept</code>-headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern matchar sökvägen mot <code>HomeController.Index()</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Svar: <code>200 OK</code>, <code>Content-Type: text/html</code>, renderad Razor-vy i bodyn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <code>POST</code>-formulärinlämning bär body-data och omdirigerar oftast med <code>302</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Idempotens spelar roll vid fel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Idempotens spelar roll vid fel</h2>
+
+                <div class="fragment info-box">
+                    <p>Att återförsöka en <code>GET</code>, <code>PUT</code> eller <code>DELETE</code> efter en timeout är säkert</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att återförsöka en <code>POST</code> kan skapa dubbletter — betalnings-API:er använder <span class="highlight">idempotensnycklar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dialogen "Bekräfta att formuläret skickas igen" finns eftersom <code>POST</code> inte är idempotent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

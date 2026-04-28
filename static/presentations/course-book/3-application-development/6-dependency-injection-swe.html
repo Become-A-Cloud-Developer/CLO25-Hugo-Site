@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dependency Injection</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DEPENDENCY<br>
+                    INJECTION
+                </h1>
+
+                <p class="subtitle">Del III &mdash; Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Problemet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problemet</h2>
+
+                <div class="fragment info-box">
+                    <p>Controllers som <span class="highlight"><code>new</code>:ar sina samarbetspartners</span> blandar arbete med montering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett konkret val blir <span class="highlight">hårdkodat</span> i konsumenten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tester kan inte byta in fejk-objekt utan att skriva om klassen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Object-graph-koppling läcker ut i <span class="highlight">varje lager</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Inversionen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Inversionen</h2>
+
+                <div class="fragment info-box">
+                    <p>En klass <span class="highlight">deklarerar</span> vad den behöver via sin constructor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">container</span> i runtime levererar implementationerna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konsumenten beror på ett <span class="highlight">interface</span>, inte en konkret typ</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konstruktionsordningen flyttas till <span class="highlight">ett ställe</span> vid uppstart</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Constructor Injection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Constructor Injection</h2>
+
+                <div class="fragment info-box">
+                    <p>Beroenden kommer in via <span class="highlight">constructor-parametrar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lagras i <span class="highlight"><code>readonly</code></span>-fält &mdash; oföränderliga under objektets livstid</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Gör kraven <span class="highlight">explicita</span> i typsignaturen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Passar naturligt med <span class="highlight">interface-baserad</span> registrering</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Service-registrering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Service-registrering</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IServiceCollection</code> är <span class="highlight">startup-byggaren</span> i <code>Program.cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddScoped&lt;INewsletterService, NewsletterService&gt;()</code> binder <span class="highlight">interface till implementation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registrering på konkret typ fungerar för <span class="highlight">interna</span> hjälpklasser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Containern stängs när <code>builder.Build()</code> körs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: De tre livstiderna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De tre livstiderna</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Singleton</span> &mdash; en instans för hela applikationen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scoped</span> &mdash; en instans per HTTP-request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Transient</span> &mdash; en ny instans vid varje upplösning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standardval för applikationstjänster är oftast <span class="highlight">Scoped</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Captive Dependencies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Captive Dependencies</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">Singleton</span> som håller ett <span class="highlight">Scoped</span> beroende fångar in det</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den kortlivade tjänsten <span class="highlight">uppgraderas</span> till den längre livstiden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tillstånd per request <span class="highlight">läcker</span> då mellan användare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Validera vid uppstart; omvänd riktning (Scoped beror på Singleton) är säker</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Genomgånget exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget exempel &mdash; Newsletter</h2>
+
+                <div class="fragment info-box">
+                    <p><code>INewsletterService</code> &rarr; <code>NewsletterService</code> registreras som <span class="highlight">Scoped</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ISubscriberRepository</code> &rarr; <code>InMemorySubscriberRepository</code> registreras som <span class="highlight">Singleton</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NewsletterController</code> tar emot <span class="highlight"><code>INewsletterService</code></span> via sin constructor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byte av repository ändrar <span class="highlight">en rad</span> i <code>Program.cs</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Testbarhet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Testbarhet</h2>
+
+                <div class="fragment info-box">
+                    <p>Bygg controllern manuellt med en <span class="highlight">fejk</span>-service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen DI-container, ingen databas, ingen HTTP-server behövs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tester blir <span class="highlight">snabba, deterministiska, isolerade</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vinsten av <span class="highlight">interface + constructor injection</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

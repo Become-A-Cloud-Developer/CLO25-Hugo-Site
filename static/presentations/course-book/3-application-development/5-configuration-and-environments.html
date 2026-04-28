@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Configuration and Environments</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONFIGURATION<br>
+                    AND<br>
+                    ENVIRONMENTS
+                </h1>
+
+                <p class="subtitle">Part III &mdash; Application Development</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why Externalize Configuration -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Externalize Configuration</h2>
+
+                <div class="fragment info-box">
+                    <p>The same binary must run in <span class="highlight">dev, staging, and production</span> unchanged</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Secrets</span> must not enter source control &mdash; git history is permanent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Operators change settings without rebuilding the application</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multiple deploys of one binary coexist with different settings</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Provider Chain -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Provider Chain</h2>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.json</code> &mdash; base defaults shipped in source control</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>appsettings.{Environment}.json</code> &mdash; per-environment <span class="highlight">override</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">User-secrets</span> &mdash; local development credentials only</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Environment variables</span> &mdash; per-deployment values and production secrets</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Command-line arguments &mdash; last-write-wins for diagnostic runs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: IConfiguration as the Read Interface -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">IConfiguration as the Read Interface</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IConfiguration</code> collapses the provider chain into one <span class="highlight">key-value tree</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hierarchical keys use a colon: <code>MongoDB:ConnectionString</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Injected through DI; consumers never know the source provider</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returns <code>null</code> for keys no provider supplies</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Environment Selection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Environment Selection</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ASPNETCORE_ENVIRONMENT</code> selects the active environment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Defaults to <span class="highlight">Production</span> when unset &mdash; safer than dev defaults</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Loads <code>appsettings.&lt;env&gt;.json</code> and gates developer-only features</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>app.Environment.IsDevelopment()</code> controls runtime behaviour</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: User-Secrets Workflow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">User-Secrets Workflow</h2>
+
+                <div class="fragment info-box">
+                    <p>Stored outside the project tree, in the user's profile</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Linked to the project by <code>UserSecretsId</code> GUID in <code>.csproj</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CLI: <code>dotnet user-secrets init</code>, <code>set</code>, <code>list</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Active <span class="highlight">only</span> when the environment is <code>Development</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Environment Variable Override Pattern -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Environment Variable Override Pattern</h2>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB:ConnectionString</code> becomes <code>MongoDB__ConnectionString</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Double underscore replaces colon &mdash; most OSes ban colons in var names</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Provider sits later in the chain, so it <span class="highlight">overrides</span> JSON files</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standard mechanism for production secrets and per-deployment values</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Strongly-Typed IOptions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Strongly-Typed IOptions</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IOptions&lt;T&gt;</code> binds a configuration section to a typed C# class</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Removes magic strings &mdash; typos become <span class="highlight">compile errors</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Section path lives in one registration call, not every consumer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>IOptionsSnapshot&lt;T&gt;</code> and <code>IOptionsMonitor&lt;T&gt;</code> for change-aware cases</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Dev vs Production Secret Stores -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dev vs Production Secret Stores</h2>
+
+                <div class="fragment info-box">
+                    <p>User-secrets and env vars store secrets in <span class="highlight">plaintext at rest</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Production needs encryption, access audit, rotation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Managed secret stores (Azure Key Vault) plug into the same chain</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Detailed in Part V &mdash; Managed Identities and Key Vault</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

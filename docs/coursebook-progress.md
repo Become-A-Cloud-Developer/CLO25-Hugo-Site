@@ -49,11 +49,19 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Course tag:** BCD
 **Companion exercise:** `content/exercises/10-webapp-development/`
 **Studieguide week:** Course week 3 (v.7) and Course week 5 (v.9)
-**Glossary file:** `docs/coursebook-mining/part-3-glossary.md` (created in B1)
+**Glossary file:** `docs/coursebook-mining/part-3-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part III run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | HTTP Fundamentals | validated | 2213 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 2 | The .NET Platform | validated | 1608 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 3 | The MVC Pattern | validated | 2117 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 4 | Three-Tier Architecture | validated | 1861 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 5 | Configuration and Environments | validated | 2030 | 10 / 10 | 2026-04-28 | One soft warning ("simply") accepted |
+| 6 | Dependency Injection | validated | 1943 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part III totals:** 6 chapters, 11,772 words of prose, 12 HTML slide decks. Cross-Part anchor check: 0 unresolved.
 
 ---
 

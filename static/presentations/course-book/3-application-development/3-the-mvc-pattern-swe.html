@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>MVC-mönstret</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    MVC-<br>
+                    MÖNSTRET
+                </h1>
+
+                <p class="subtitle">Del III &mdash; Applikationsutveckling</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför MVC finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför MVC finns</h2>
+
+                <div class="fragment info-box">
+                    <p>Indatahantering, affärstillstånd och rendering ändras av <span class="highlight">olika skäl</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att blanda dem ger kod som är svår att testa eller ändra</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>MVC tilldelar varje ansvar en <span class="highlight">egen roll</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollerna kommunicerar via smala gränssnitt, inte delat tillstånd</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: De tre rollerna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De tre rollerna</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Controller</span> &mdash; tar emot indata, koordinerar arbete, returnerar ett resultat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Vy</span> &mdash; renderar tillstånd till HTML via en Razor-mall</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Modell</span> &mdash; det typade dataobjekt som skickas från controller till vy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rika domänmodeller hör hemma i tjänstelagret, inte här</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Controllers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Controllers</h2>
+
+                <div class="fragment info-box">
+                    <p>En klass vars namn slutar på <code>Controller</code>, placerad i <code>Controllers/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Publika metoder är <span class="highlight">actions</span> som hanterar förfrågningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje action returnerar ett <code>IActionResult</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Attribut som <code>[HttpGet]</code>, <code>[HttpPost]</code>, <code>[Authorize]</code> styr vilka anrop som matchar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Routing -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Routing</h2>
+
+                <div class="fragment info-box">
+                    <p>Matchar inkommande <span class="highlight">URI mot en controller-action</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konventionell mall: <code>{controller=Home}/{action=Index}/{id?}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Attribut-routing: <code>[Route]</code> och <code>[HttpGet("{id:int}")]</code> på själva metoden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Route-värden extraheras från sökvägen innan action körs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Model binding -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Model binding</h2>
+
+                <div class="fragment info-box">
+                    <p>Konverterar requestdata till <span class="highlight">typade action-parametrar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Källor: route-värden, query string, formulärfält, JSON-body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Valideringsattribut (<code>[Required]</code>, <code>[StringLength]</code>) fyller <code>ModelState</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Action-kroppen kontrollerar <code>ModelState.IsValid</code> innan den fortsätter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Action-resultat -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Action-resultat</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ViewResult</code> &mdash; rendera en Razor-vy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>RedirectToActionResult</code> &mdash; 302-redirect efter ett lyckat POST</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>JsonResult</code> &mdash; serialisera ett objekt för ett API-svar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>NotFoundResult</code>, <code>BadRequestResult</code> &mdash; uttryckliga felsvar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Razor-syntax -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Razor-syntax</h2>
+
+                <div class="fragment info-box">
+                    <p><code>.cshtml</code>-filer blandar HTML och C#-uttryck inledda med <code>@</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>@model Product</code> deklarerar den <span class="highlight">starkt typade modellen</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>@if</code>, <code>@foreach</code> för flödeskontroll i mallen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tag helpers (<code>asp-for</code>, <code>asp-action</code>) binder inputfält till modellens egenskaper</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Request-flödet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Request-flödet</h2>
+
+                <div class="fragment info-box">
+                    <p>Request &rarr; middleware &rarr; <span class="highlight">routing</span> &rarr; controller &rarr; action &rarr; resultat &rarr; response</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dependency injection förser controllerns konstruktor med dess beroenden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje steg kan testas eller bytas ut oberoende av de övriga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ramverket sköter serialisering, statuskoder och headers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
