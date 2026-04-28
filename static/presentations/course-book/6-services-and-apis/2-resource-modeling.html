@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Resource Modeling and URIs</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    RESOURCE<br>
+                    MODELING<br>
+                    AND URIs
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The unit of API design -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Unit of API Design</h2>
+
+                <div class="fragment info-box">
+                    <p>REST APIs expose <span class="highlight">resources</span>, not functions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>First question is the noun, not the verb</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>HTTP methods supply the verbs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Predictability comes from one consistent grid</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Clients can guess the next URI without reading the docs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Collection vs item -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Collection vs Item</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Collection</span> — <code>/quotes</code> addresses the list</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Item</span> — <code>/quotes/{id}</code> addresses one</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Methods on a collection: <code>GET</code>, <code>POST</code>, rarely <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Methods on an item: <code>GET</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two shapes carry almost every endpoint</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Naming conventions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Naming Conventions</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Plural noun</span> for collections — <code>/quotes</code>, never <code>/quote</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No verbs</span> in URIs — the HTTP method is the verb</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lowercase</span>, hyphens between words — <code>/customer-orders</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identifiers in item URIs — int, GUID, or slug</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Whatever you pick becomes part of the contract</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Hierarchical relationships -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hierarchical Relationships</h2>
+
+                <div class="fragment info-box">
+                    <p><code>/customers/{id}/orders</code> — orders belonging to one customer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sub-resource shape says "child belongs to parent"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Flat shape <code>/orders?customerId=42</code> says "child is independent"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both can return identical JSON</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The URI emphasises <span class="highlight">what the API thinks the data is</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Decision framework -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Decision Framework</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sub-resource</span> when child cannot exist without parent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sub-resource</span> when authorization scope matches the parent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Flat with filter</span> when cross-parent queries are common</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Flat with filter</span> when the child has a global identity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Some APIs expose both — scoped list, flat canonical address</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Filtering and pagination -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Filtering and Pagination</h2>
+
+                <div class="fragment info-box">
+                    <p>Query parameters narrow a collection — <code>?status=active</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Filtering, sorting, search — all <code>?</code> not <code>/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pagination is the same idea — <code>?page=3&amp;size=20</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>/quotes/page/3</code> is a URI mistake</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Detailed pagination patterns come at the end of this Part</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: URI stability -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">URI Stability — The Contract</h2>
+
+                <div class="fragment info-box">
+                    <p>A published URI is a contract — clients depend on it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Renaming <code>/quotes</code> to <code>/cool-quotes</code> breaks every client</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The remedy when shape must change is <span class="highlight">API versioning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>/v1/quotes</code> stays frozen; <code>/v2/quotes</code> is the new shape</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ten minutes at the whiteboard saves the breaking change later</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: CloudCiApi worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CloudCiApi Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes</code> — list, returns array of <code>QuoteDto</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes/{id}</code> — one item, or <code>404</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>POST /api/quotes</code> — <code>201 Created</code> with <code>Location</code> header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[HttpGet("{id:int}")]</code> route constraint pins segment to ints</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>CreatedAtAction(...)</code> builds the URL from the named action</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: What good resource modeling buys -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Good Resource Modeling Buys</h2>
+
+                <div class="fragment info-box">
+                    <p>Guessable URIs — new endpoints feel like the old ones</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stable URIs — security changes touch middleware, not URLs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Clear ownership — sub-resource vs flat is explicit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Predictable grid — clients map operations to methods</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The rest of Part VI builds on top of this shape</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

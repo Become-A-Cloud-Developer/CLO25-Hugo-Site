@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Status Codes, Versioning, and Error Responses</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    STATUS CODES,<br>
+                    VERSIONING,<br>
+                    AND ERRORS
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The status code is the primary signal -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Status Code Is the Primary Signal</h2>
+
+                <div class="fragment info-box">
+                    <p>A REST call has <span class="highlight">two languages</span> — body for data, status for outcome</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Clients should branch on the <span class="highlight">code alone</span>, not the prose</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <code>200</code> with an error message in the body breaks every parser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The body adds detail; the <span class="highlight">status line tells the truth</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The success codes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Success Codes</h2>
+
+                <div class="fragment info-box">
+                    <p><code>200 OK</code> — the unmarked default for <code>GET</code> and successful <code>PUT</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>201 Created</code> — <code>POST</code> made a new resource; include a <span class="highlight">Location</span> header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>204 No Content</code> — success with nothing to return; typical for <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The body of a <code>201</code> should be the <span class="highlight">new resource</span>, not just an id</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The client-error codes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Client-Error Codes</h2>
+
+                <div class="fragment info-box">
+                    <p><code>400 Bad Request</code> — malformed input, missing field, parse failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>401 Unauthorized</code> — no valid credential; really means <span class="highlight">unauthenticated</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>403 Forbidden</code> — credential is valid but <span class="highlight">not entitled</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>404 Not Found</code> — the resource at this URI does not exist</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>409 Conflict</code> — request collides with <span class="highlight">current state</span> of the resource</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: 400 vs 422 and the throttling code -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">400 vs 422 and the Throttling Code</h2>
+
+                <div class="fragment info-box">
+                    <p><code>400</code> — JSON did not parse, types wrong, required field missing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>422 Unprocessable Entity</code> — JSON parsed, <span class="highlight">business rule</span> rejected it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>429 Too Many Requests</code> — rate-limit exceeded; include <code>Retry-After</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> defaults to <code>400</code> for model validation — pick one and stay consistent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Server errors and information leakage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Server Errors and Information Leakage</h2>
+
+                <div class="fragment info-box">
+                    <p><code>500 Internal Server Error</code> — unhandled exception, downstream failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The body must <span class="highlight">never expose</span> stack traces or internal exception messages</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonymous clients should not learn the system's internal shape</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Map exceptions to <code>ProblemDetails</code> in <code>app.UseExceptionHandler</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Problem details — RFC 7807 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problem Details — RFC 7807</h2>
+
+                <div class="fragment info-box">
+                    <p>A standard JSON error shape: <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returned with <code>Content-Type: application/problem+json</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One parser works for <span class="highlight">every</span> API that follows the convention</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>type</code> is the stable kind-of-error key; <code>instance</code> correlates to logs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: ProblemDetails in ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ProblemDetails in ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ControllerBase.Problem(...)</code> — base helper for any error</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ControllerBase.ValidationProblem(...)</code> — adds the <span class="highlight">errors</span> dictionary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> returns <code>ValidationProblemDetails</code> on model failures <span class="highlight">automatically</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pair with <code>app.UseExceptionHandler("/error")</code> for unhandled exceptions</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: API versioning strategies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">API Versioning Strategies</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">URL path</span> — <code>/v1/quotes</code>; visible, easy to route, the safe default</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Header (media type)</span> — <code>Accept: ...; v=2</code>; clean URI, harder to debug</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Query string</span> — <code>?api-version=2</code>; easy to pin, clutters caches</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick <span class="highlight">one</span> and apply it across every endpoint</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Breaking-change discipline -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Breaking-Change Discipline</h2>
+
+                <div class="fragment info-box">
+                    <p>Most changes should be <span class="highlight">additive</span> — new optional fields, new endpoints</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A new field never breaks an existing client; a renamed one always does</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Breaking changes go behind a <span class="highlight">new version</span>, with the old kept alive</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Use <code>Sunset: &lt;date&gt;</code> to tell clients when the old version retires</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DTO:er kontra entiteter</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DTO:ER<br>
+                    KONTRA<br>
+                    ENTITETER
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Två former, en resurs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Två Former, En Resurs</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Entiteten</span> är domänformen — vad intern kod resonerar kring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">DTO:n</span> är wire-formen — vad API:et exponerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>De ser identiska ut dag ett, divergerar månad tre</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Olika förändringstakt, olika orsaker att gå sönder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En typ för båda är valet som kostar mest senare</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Varför entiteten är en dålig wire-form -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Entiteten Är En Dålig Wire-form</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Överexponerar</span> interna fält — varje public-property publiceras som standard</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Läcker persistensdetaljer</span> — navigationsegenskaper, <code>RowVersion</code>, nyckelval</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kopplar</span> API-kontraktet till databasschemat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att lägga till en kolumn skickar kolumnen till alla klienter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att dölja fält med <code>[JsonIgnore]</code> inverterar det säkra standardvärdet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Vad en DTO är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad En DTO Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En klass formad för <span class="highlight">wire</span>, inte för lagring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bär endast fälten som API-kontraktet exponerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inga persistensattribut, inget beteende — en platt post</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Frikopplad från entiteten av en avsiktlig typgräns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Databasändringar bryter inte klienter; API-ändringar tvingar inga migrationer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Request-DTO — indatavalidering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Request-DTO — Indatavalidering</h2>
+
+                <div class="fragment info-box">
+                    <p>Beskriver vad klienten <span class="highlight">får skicka</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utelämnar server-kontrollerade fält (<code>Id</code>, <code>CreatedAt</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Valideringsattribut sitter naturligt: <code>[Required]</code>, <code>[StringLength]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> returnerar <code>400 Bad Request</code> automatiskt vid fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Request-regler och domäninvarianter förblir oberoende</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Response-DTO — selektiv exponering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Response-DTO — Selektiv Exponering</h2>
+
+                <div class="fragment info-box">
+                    <p>Beskriver vad servern <span class="highlight">returnerar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Interna kolumner hålls ute genom konstruktion — ingen property att fylla</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kan forma om data: platta ut, byta namn, formatera datum</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bär server-tilldelade värden som <code>Id</code> och <code>CreatedAt</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kompilatorn upprätthåller asymmetrin mellan request och response</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Var mappningen bor -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Var Mappningen Bor</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inline</span> i controllern — okej för en resurs, duplicering växer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Egen mappare-klass</span> eller extension methods — testbart, ett ställe att hitta</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bibliotek</span> (AutoMapper, Mapster) — noll kod per typ, dolt beteende</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Övningen använder en <code>private static QuoteDto ToDto(Quote q)</code>-metod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj den lättaste formen som överlever antalet resurser</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Konkret exempel — Quote -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Konkret Exempel — Quote</h2>
+
+                <div class="fragment info-box">
+                    <p>Entiteten bär <code>Id</code>, <code>Author</code>, <code>Text</code>, <code>CreatedAt</code>, plus framtida audit-kolumner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>CreateQuoteRequest</code> har <code>Author</code> och <code>Text</code> — servern äger resten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>QuoteResponse</code> bär varje publikt fält, inget internt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mapparen är en metod, ändras bara när response-formen ändras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje lager utvecklas i sin egen takt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Kostnaden — när det är värt det -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kostnaden — När Det Är Värt Det</h2>
+
+                <div class="fragment info-box">
+                    <p>Fler typer betyder mer kod — tre eller fyra filer per resurs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värt det när API:et är <span class="highlight">publikt</span> eller har externa klienter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värt det när persistensen kommer växa med interna kolumner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värt det när valideringsregler skiljer sig från domäninvarianter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Svårt att motivera enbart för tunna privata endpoints i en driftsättning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

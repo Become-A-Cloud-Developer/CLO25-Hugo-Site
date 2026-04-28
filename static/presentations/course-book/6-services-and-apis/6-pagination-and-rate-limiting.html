@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Pagination, Idempotency, and Rate Limiting</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PAGINATION,<br>
+                    IDEMPOTENCY,<br>
+                    AND RATE LIMITING
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why returning everything fails -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Returning Everything Fails</h2>
+
+                <div class="fragment info-box">
+                    <p>A million-row response <span class="highlight">wastes bandwidth, memory, and threads</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Clients cannot resume a dropped connection mid-transfer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The contract is <span class="highlight">set on day one</span> — reversing it breaks clients</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pagination caps response size from the first version of the API</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Three pagination strategies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Pagination Strategies</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Offset / limit</span> — <code>?offset=20&amp;limit=10</code>, easy but deep pages slow</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Page / size</span> — <code>?page=3&amp;size=10</code>, UI-friendly, same trade-offs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cursor</span> — opaque server-issued token, <span class="highlight">stable under writes</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cursor cannot jump to an arbitrary page; offset can</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The response envelope -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Response Envelope</h2>
+
+                <div class="fragment info-box">
+                    <p>JSON envelope with <code>data</code> and <code>pagination</code> fields, or</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>GitHub-style <span class="highlight">Link header</span> with <code>rel="next"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Envelope maps cleanly to a typed <span class="highlight">DTO</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick one and stay consistent across the API</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Idempotency -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Idempotency</h2>
+
+                <div class="fragment info-box">
+                    <p>A request is <span class="highlight">idempotent</span> when sending it twice equals once</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GET</code>, <code>PUT</code>, <code>DELETE</code> are idempotent by HTTP definition</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>POST</code> is <span class="highlight">not</span> — two posts create two resources</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Idempotency lets client libraries retry safely on transient failures</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The Idempotency-Key header -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Idempotency-Key Header</h2>
+
+                <div class="fragment info-box">
+                    <p>Client generates a UUID <span class="highlight">before the first attempt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same key on every retry of the same logical operation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Server caches the response by key (24-hour TTL is common)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Subsequent hits return the <span class="highlight">cached response</span>, not a re-execution</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Rate limiting -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rate Limiting</h2>
+
+                <div class="fragment info-box">
+                    <p>Caps requests per identity per time window</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Protects backends from <span class="highlight">abuse and accidental hot-loops</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returns <code>429 Too Many Requests</code> with <span class="highlight">Retry-After</span> header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ASP.NET Core ships rate-limiter middleware out of the box</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Three rate-limit algorithms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Rate-Limit Algorithms</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fixed window</span> — cheap, but allows 2× burst at the boundary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sliding window</span> — smooth, more expensive to track</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Token bucket</span> — bursts up to capacity, steady refill rate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Token bucket fits <span class="highlight">real bursty client behaviour</span> best</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes?cursor=...&amp;limit=20</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returns <code>{ data: [...], pagination: { nextCursor: "..." } }</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Program.cs</code> registers a <span class="highlight">token-bucket</span> policy: 100 tokens, 10/s refill</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[EnableRateLimiting("quotes")]</code> opts the controller in</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

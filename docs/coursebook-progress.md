@@ -113,10 +113,18 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/4-services-and-apis/`
 **Studieguide week:** ACD week 6 (v.20)
 **Glossary file:** `docs/coursebook-mining/part-6-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part VI run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | REST Principles | validated | 2096 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 2 | Resource Modeling and URIs | validated | 2156 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 3 | DTOs vs Entities | validated | 1810 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 4 | Status Codes, Versioning, and Error Responses | validated | 2022 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 5 | OpenAPI and Swagger | validated | 2077 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 6 | Pagination, Idempotency, and Rate Limiting | validated | 2132 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part VI totals:** 6 chapters, 12,293 words of prose, 12 HTML slide decks. All chapters pass voice-check clean.
 
 ---
 

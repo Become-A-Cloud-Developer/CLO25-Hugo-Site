@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Paginering, idempotens och rate limiting</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PAGINERING,<br>
+                    IDEMPOTENS<br>
+                    OCH RATE LIMITING
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför returnera allt inte fungerar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför "returnera allt" inte fungerar</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett svar med en miljon rader <span class="highlight">slösar bandbredd, minne och trådar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten kan inte återuppta en avbruten överföring</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kontraktet sätts <span class="highlight">dag ett</span> — att backa bryter klienter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Paginering begränsar svarsstorleken från första versionen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Tre pagineringsstrategier -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tre pagineringsstrategier</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Offset / limit</span> — <code>?offset=20&amp;limit=10</code>, enkel men djupa sidor långsamma</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Page / size</span> — <code>?page=3&amp;size=10</code>, UI-vänligt, samma avvägningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cursor</span> — opak server-utfärdad token, <span class="highlight">stabil vid skrivningar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cursor kan inte hoppa till godtycklig sida; offset kan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Svarsformatet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Svarsformatet</h2>
+
+                <div class="fragment info-box">
+                    <p>JSON-envelope med fälten <code>data</code> och <code>pagination</code>, eller</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Link-header</span> i GitHub-stil med <code>rel="next"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Envelopen mappar rakt mot en typad <span class="highlight">DTO</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj en variant och håll dig konsekvent i hela API:et</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Idempotens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Idempotens</h2>
+
+                <div class="fragment info-box">
+                    <p>En förfrågan är <span class="highlight">idempotent</span> när två anrop ger samma effekt som ett</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GET</code>, <code>PUT</code>, <code>DELETE</code> är idempotenta enligt HTTP-definitionen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>POST</code> är <span class="highlight">inte</span> idempotent — två POST skapar två resurser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Idempotens låter klientbibliotek göra säkra retries vid tillfälliga fel</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Headern Idempotency-Key -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Headern Idempotency-Key</h2>
+
+                <div class="fragment info-box">
+                    <p>Klienten genererar en UUID <span class="highlight">före första försöket</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma nyckel vid varje retry av samma logiska operation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern cachar svaret per nyckel (24 timmars TTL är vanligt)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Senare träffar returnerar det <span class="highlight">cachade svaret</span>, ingen ny körning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Rate limiting -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rate limiting</h2>
+
+                <div class="fragment info-box">
+                    <p>Begränsar antal förfrågningar per identitet per tidsfönster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skyddar backend mot <span class="highlight">missbruk och oavsiktliga hot-loops</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returnerar <code>429 Too Many Requests</code> med <span class="highlight">Retry-After</span>-header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ASP.NET Core levereras med rate-limiter-middleware</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Tre rate-limit-algoritmer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tre rate-limit-algoritmer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fixed window</span> — billig, tillåter 2× burst vid gränsen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sliding window</span> — jämn, dyrare att underhålla</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Token bucket</span> — burst upp till kapacitet, stadig påfyllning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Token bucket passar <span class="highlight">verklig burstig klienttrafik</span> bäst</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes?cursor=...&amp;limit=20</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returnerar <code>{ data: [...], pagination: { nextCursor: "..." } }</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Program.cs</code> registrerar en <span class="highlight">token-bucket</span>-policy: 100 tokens, 10/s</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[EnableRateLimiting("quotes")]</code> aktiverar controllern</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

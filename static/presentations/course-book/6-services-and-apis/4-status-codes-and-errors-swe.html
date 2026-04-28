@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Statuskoder, versionshantering och felsvar</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    STATUSKODER,<br>
+                    VERSIONSHANTERING<br>
+                    OCH FELSVAR
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Statuskoden är den primära signalen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Statuskoden är den primära signalen</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett REST-anrop talar <span class="highlight">två språk</span> — body för data, status för utfall</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienter ska kunna förgrena på <span class="highlight">bara koden</span>, inte på prosan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <code>200</code> med ett felmeddelande i body förstör alla parsers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Body fyller på med detaljer; <span class="highlight">statusraden talar sanning</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Lyckade-svaren -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lyckade-svaren</h2>
+
+                <div class="fragment info-box">
+                    <p><code>200 OK</code> — standardvalet för <code>GET</code> och lyckad <code>PUT</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>201 Created</code> — <code>POST</code> skapade en ny resurs; inkludera <span class="highlight">Location</span>-header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>204 No Content</code> — lyckat utan body; typiskt för <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Body i en <code>201</code> ska vara den <span class="highlight">nya resursen</span>, inte bara ett id</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Klientfel-koderna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Klientfel-koderna</h2>
+
+                <div class="fragment info-box">
+                    <p><code>400 Bad Request</code> — felaktig input, saknat fält, parse-fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>401 Unauthorized</code> — ingen giltig credential; betyder egentligen <span class="highlight">oautentiserad</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>403 Forbidden</code> — credential är giltig men <span class="highlight">inte berättigad</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>404 Not Found</code> — resursen på den här URI:n finns inte</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>409 Conflict</code> — anropet krockar med resursens <span class="highlight">nuvarande tillstånd</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: 400 mot 422 och throttling-koden -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">400 mot 422 och throttling-koden</h2>
+
+                <div class="fragment info-box">
+                    <p><code>400</code> — JSON parsade inte, fel typer, saknat obligatoriskt fält</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>422 Unprocessable Entity</code> — JSON parsade, <span class="highlight">affärsregel</span> avvisade</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>429 Too Many Requests</code> — rate-limit överskriden; inkludera <code>Retry-After</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> ger <code>400</code> för modellvalidering — välj ett spår och håll det</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Serverfel och informationsläckage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Serverfel och informationsläckage</h2>
+
+                <div class="fragment info-box">
+                    <p><code>500 Internal Server Error</code> — ohanterat undantag, nedströmsfel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Body får <span class="highlight">aldrig avslöja</span> stack traces eller interna undantagsmeddelanden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonyma klienter ska inte lära sig systemets interna form</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mappa undantag till <code>ProblemDetails</code> i <code>app.UseExceptionHandler</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Problem details — RFC 7807 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problem details — RFC 7807</h2>
+
+                <div class="fragment info-box">
+                    <p>En standard-form för fel-JSON: <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skickas med <code>Content-Type: application/problem+json</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En parser räcker för <span class="highlight">varje</span> API som följer konventionen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>type</code> är den stabila felklass-nyckeln; <code>instance</code> korrelerar mot loggar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: ProblemDetails i ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ProblemDetails i ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ControllerBase.Problem(...)</code> — bas-hjälpare för vilket fel som helst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ControllerBase.ValidationProblem(...)</code> — lägger till <span class="highlight">errors</span>-dictionary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> returnerar <code>ValidationProblemDetails</code> vid modellfel <span class="highlight">automatiskt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kombinera med <code>app.UseExceptionHandler("/error")</code> för ohanterade undantag</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Strategier för API-versionshantering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Strategier för API-versionshantering</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">URL-väg</span> — <code>/v1/quotes</code>; synlig, enkel att routea, det säkra förvalet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Header (media-typ)</span> — <code>Accept: ...; v=2</code>; ren URI, svårare att felsöka</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Query-sträng</span> — <code>?api-version=2</code>; lätt att pinna, skräpar i cache</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj <span class="highlight">en</span> och tillämpa den på varje endpoint</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Disciplin kring brytande ändringar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Disciplin kring brytande ändringar</h2>
+
+                <div class="fragment info-box">
+                    <p>De flesta ändringar bör vara <span class="highlight">additiva</span> — nya valfria fält, nya endpoints</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett nytt fält bryter aldrig en befintlig klient; ett omdöpt fält gör alltid det</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Brytande ändringar läggs bakom en <span class="highlight">ny version</span>, med den gamla kvar i drift</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Använd <code>Sunset: &lt;datum&gt;</code> för att tala om när den gamla versionen pensioneras</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

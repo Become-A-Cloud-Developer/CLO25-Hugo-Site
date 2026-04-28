@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>REST-principer</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    REST-<br>
+                    PRINCIPER
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför REST finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför REST Finns</h2>
+
+                <div class="fragment info-box">
+                    <p>HTTP-API:er är kontrakt mellan program som <span class="highlight">aldrig har träffats</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utan en gemensam stil hittar varje API på sina egna konventioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> är den dominerande arkitekturstilen ovanpå HTTP</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Formulerad av Roy Fielding år 2000 som en beskrivning av hur webben redan fungerade</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inte ett protokoll — en uppsättning <span class="highlight">begränsningar</span> som en tjänst kan välja att följa</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad REST är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad REST Är</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> = Representational State Transfer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Servern exponerar namngivna <span class="highlight">resurser</span> via URI:er</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten manipulerar <span class="highlight">representationer</span> med standardiserade HTTP-metoder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje förfrågan bär med sig allt servern behöver för att behandla den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En tjänst är mer eller mindre RESTful — det finns inget godkänt/underkänt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: De fem bärande begränsningarna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De Fem Bärande Begränsningarna</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Klient-server-separation</span> — oberoende halvor, bara API-kontraktet mellan dem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Stateless</span> — varje förfrågan självständig; ingen sessionsdata på servern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cachebarhet</span> — svar deklarerar om de får cachas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Enhetligt gränssnitt</span> — resurser, standardmetoder, representationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Skiktat system</span> — proxyer och CDN är osynliga för klienten</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Stateless i praktiken -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Stateless i Praktiken</h2>
+
+                <div class="fragment info-box">
+                    <p>Servern håller <span class="highlight">persistent</span> tillstånd — inget per-konversation-tillstånd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vilken replika som helst kan svara på vilken förfrågan som helst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Auth-kontext, cursors, identifierare följer med <span class="highlight">i varje förfrågan</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten blir större; servern skalar horisontellt utan extra arbete</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: större payloads, upprepade headers, ingen implicit kontext</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Det enhetliga gränssnittet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Det Enhetliga Gränssnittet</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resurs</span> = allt som kan adresseras med en URI (<code>/quotes/42</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Representation</span> = byten på tråden (oftast JSON)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standardmetoder: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konventioner låter mellanlager resonera utan att kunna applikationen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>HATEOAS (länkar i svar) är strikt-REST — sällan i produktion</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Exempel: GET /quotes/42 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: GET /quotes/42</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes/42</code> namnger resursen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>200 OK</code> med <code>Content-Type: application/json</code> är representationen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Cache-Control: public, max-age=60</code> gör svaret cachebart</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen sessionscookie — ren <span class="highlight">stateless</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Byggs i <code>CloudCiApi</code> i den åtföljande övningen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Richardson Maturity Model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Richardson Maturity Model</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Nivå 0</span> — en URL, åtgärden i kroppen (SOAP-över-HTTP)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Nivå 1</span> — flera URL:er, men fortfarande POST till allt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Nivå 2</span> — resurser + standardmetoder + statuskoder (de flesta "REST"-API:er)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Nivå 3</span> — Nivå 2 + HATEOAS (sällsynt i produktion)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Nivå 2 är sweet spot för fungerande API:er</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: REST är inte det enda valet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">REST Är Inte Det Enda Valet</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">gRPC</span> — HTTP/2 + Protocol Buffers, mindre och streambar, opak för HTTP-verktyg</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GraphQL</span> — klienten väljer fält från en endpoint, svår att cacha</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> — vinner för publika HTTP-API:er, CDN-caching, förutsägbara resurser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj efter arbetsbelastning, inte efter hype</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

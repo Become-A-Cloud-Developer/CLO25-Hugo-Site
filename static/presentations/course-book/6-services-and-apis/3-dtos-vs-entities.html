@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DTOs vs Entities</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DTOs<br>
+                    VS<br>
+                    ENTITIES
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Two shapes, one resource -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Two Shapes, One Resource</h2>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">entity</span> is the domain shape — what internal code reasons about</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">DTO</span> is the wire shape — what the API exposes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>They look identical on day one, diverge by month three</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Different rates of change, different reasons to break</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One type for both is the choice that costs the most later</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Why the entity is a poor wire shape -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why the Entity Is a Poor Wire Shape</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Over-exposes</span> internal fields — every public property is published by default</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Leaks persistence concerns</span> — navigation properties, <code>RowVersion</code>, key choices</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Couples</span> the API contract to the database schema</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Adding a column ships the column to every client</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hiding fields with <code>[JsonIgnore]</code> inverts the safe default</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: What a DTO is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What a DTO Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A class shaped for <span class="highlight">the wire</span>, not for storage</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Carries only the fields the API contract exposes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No persistence attributes, no behaviour — a flat record</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Decoupled from the entity by a deliberate type boundary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Database changes do not break clients; API changes do not force migrations</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Request DTO -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Request DTO — Input Validation</h2>
+
+                <div class="fragment info-box">
+                    <p>Describes what the client is <span class="highlight">allowed to send</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Omits server-controlled fields (<code>Id</code>, <code>CreatedAt</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Validation attributes attach naturally: <code>[Required]</code>, <code>[StringLength]</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ApiController]</code> returns <code>400 Bad Request</code> automatically on failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Request rules and domain invariants stay independent</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Response DTO -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Response DTO — Selective Exposure</h2>
+
+                <div class="fragment info-box">
+                    <p>Describes what the server <span class="highlight">returns</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Internal columns stay out by construction — no property to fill</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Can reshape data: flatten, rename, format dates</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Carries server-assigned values like <code>Id</code> and <code>CreatedAt</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compiler enforces the asymmetry between request and response</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Where mapping lives -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Where Mapping Lives</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inline</span> in the controller — fine for one resource, duplication grows</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dedicated mapper class</span> or extension methods — testable, one place to look</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Library</span> (AutoMapper, Mapster) — zero per-type code, hidden behaviour</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The exercise uses a <code>private static QuoteDto ToDto(Quote q)</code> method</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick the lightest form that survives the resource count</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example - Quote -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example — Quote</h2>
+
+                <div class="fragment info-box">
+                    <p>Entity carries <code>Id</code>, <code>Author</code>, <code>Text</code>, <code>CreatedAt</code>, plus future audit columns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>CreateQuoteRequest</code> has <code>Author</code> and <code>Text</code> — server owns the rest</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>QuoteResponse</code> carries every public field, nothing internal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mapper is one method, changes only when the response shape changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each layer evolves on its own clock</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: The cost - when worth paying -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Cost — When Worth Paying</h2>
+
+                <div class="fragment info-box">
+                    <p>More types means more typing — three or four files per resource</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Worth it when the API is <span class="highlight">public-facing</span> or has external clients</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Worth it when persistence will grow internal columns</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Worth it when validation rules differ from domain invariants</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hard to justify only for thin private endpoints inside one deployable</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

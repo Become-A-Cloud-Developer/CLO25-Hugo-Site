@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Resursmodellering och URI:er</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    RESURS-<br>
+                    MODELLERING<br>
+                    OCH URI:ER
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Designens minsta enhet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Designens Minsta Enhet</h2>
+
+                <div class="fragment info-box">
+                    <p>REST-API:er exponerar <span class="highlight">resurser</span>, inte funktioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Första frågan är substantivet, inte verbet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>HTTP-metoderna står för verben</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Förutsägbarheten kommer ur ett konsekvent rutnät</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienter kan gissa nästa URI utan att läsa dokumentationen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Samling kontra objekt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Samling Kontra Objekt</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Samling</span> — <code>/quotes</code> adresserar listan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Objekt</span> — <code>/quotes/{id}</code> adresserar ett enda</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Metoder på en samling: <code>GET</code>, <code>POST</code>, sällan <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Metoder på ett objekt: <code>GET</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två former bär nästan varje endpoint</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Namnkonventioner -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Namnkonventioner</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Plural</span> för samlingar — <code>/quotes</code>, aldrig <code>/quote</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inga verb</span> i URI:er — HTTP-metoden är verbet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Gemener</span>, bindestreck mellan ord — <code>/customer-orders</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identifierare i objekt-URI — int, GUID eller slug</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Det du väljer blir en del av kontraktet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Hierarkiska relationer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hierarkiska Relationer</h2>
+
+                <div class="fragment info-box">
+                    <p><code>/customers/{id}/orders</code> — order som tillhör en kund</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Underresurs säger "barnet hör till föräldern"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Platt form <code>/orders?customerId=42</code> säger "barnet är fristående"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda kan returnera samma JSON</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>URI:n betonar <span class="highlight">vad API:et anser att datan är</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Beslutsram -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Beslutsram</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Underresurs</span> när barnet inte kan finnas utan föräldern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Underresurs</span> när auktoriseringen följer föräldern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Platt med filter</span> när cross-parent-frågor är vanliga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Platt med filter</span> när barnet har en global identitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vissa API:er exponerar båda — scopad lista, platt kanonadress</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Filtrering och paginering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Filtrering och Paginering</h2>
+
+                <div class="fragment info-box">
+                    <p>Query-parametrar smalnar av en samling — <code>?status=active</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Filtrering, sortering, sökning — alla <code>?</code> inte <code>/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Paginering är samma idé — <code>?page=3&amp;size=20</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>/quotes/page/3</code> är ett URI-misstag</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Detaljerade pagineringsmönster kommer i slutet av Del VI</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: URI-stabilitet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">URI-stabilitet — Kontraktet</h2>
+
+                <div class="fragment info-box">
+                    <p>En publicerad URI är ett kontrakt — klienter beror av den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att döpa om <code>/quotes</code> till <code>/cool-quotes</code> bryter varje klient</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösningen när formen måste ändras är <span class="highlight">API-versionering</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>/v1/quotes</code> förblir fryst; <code>/v2/quotes</code> är den nya formen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tio minuter vid tavlan sparar den brytande förändringen senare</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: CloudCiApi — konkret exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CloudCiApi — Konkret Exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes</code> — lista, returnerar array av <code>QuoteDto</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes/{id}</code> — ett objekt, eller <code>404</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>POST /api/quotes</code> — <code>201 Created</code> med <code>Location</code>-header</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[HttpGet("{id:int}")]</code> låser segmentet till heltal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>CreatedAtAction(...)</code> bygger URL:en från det namngivna actionet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Vad bra resursmodellering ger -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Bra Resursmodellering Ger</h2>
+
+                <div class="fragment info-box">
+                    <p>Gissbara URI:er — nya endpoints känns som de gamla</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stabila URI:er — säkerhetsändringar rör middleware, inte URL</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tydligt ägarskap — underresurs eller platt är ett uttalat val</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Förutsägbart rutnät — klienter mappar operationer till metoder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Resten av Del VI bygger ovanpå denna form</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

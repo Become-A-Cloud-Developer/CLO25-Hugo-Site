@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>REST Principles</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    REST<br>
+                    PRINCIPLES
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why REST exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why REST Exists</h2>
+
+                <div class="fragment info-box">
+                    <p>HTTP APIs are contracts between programs that have <span class="highlight">never met</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Without a shared style, every API invents its own conventions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> is the dominant architectural style on top of HTTP</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Articulated by Roy Fielding in 2000 as a description of how the web already worked</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Not a protocol — a set of <span class="highlight">constraints</span> a service can choose to honour</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What REST is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What REST Is</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> = Representational State Transfer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The server exposes named <span class="highlight">resources</span> at URIs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The client manipulates <span class="highlight">representations</span> with the standard HTTP methods</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each request carries everything the server needs to process it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A service is more or less RESTful — there is no pass/fail</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The five load-bearing constraints -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Five Load-Bearing Constraints</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Client-server separation</span> — independent halves, only the API contract between them</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Statelessness</span> — every request self-contained; no server-side session</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cacheability</span> — responses declare whether they can be cached</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Uniform interface</span> — resources, standard methods, representations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Layered system</span> — proxies and CDNs are invisible to the client</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Statelessness in practice -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Statelessness in Practice</h2>
+
+                <div class="fragment info-box">
+                    <p>The server keeps <span class="highlight">persistent</span> state — no per-conversation state</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Any replica can serve any request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Auth context, cursors, identifiers all ride <span class="highlight">on every request</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The client gets bigger; the server scales horizontally for free</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: bigger payloads, repeated headers, no implicit context</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The uniform interface -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Uniform Interface</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Resource</span> = anything addressable by a URI (<code>/quotes/42</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Representation</span> = the bytes on the wire (usually JSON)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standard methods: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Conventions let intermediaries reason without knowing the app</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>HATEOAS (links in responses) is the strict-REST aspiration — rarely shipped</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked example: GET /quotes/42 -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: GET /quotes/42</h2>
+
+                <div class="fragment info-box">
+                    <p><code>GET /api/quotes/42</code> names the resource</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>200 OK</code> with <code>Content-Type: application/json</code> is the representation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>Cache-Control: public, max-age=60</code> makes it cacheable</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No session cookie — pure <span class="highlight">statelessness</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Built in the companion exercise's <code>CloudCiApi</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Richardson Maturity Model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Richardson Maturity Model</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Level 0</span> — one URL, action in the body (SOAP-over-HTTP)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Level 1</span> — multiple URLs, but still POST for everything</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Level 2</span> — resources + standard methods + status codes (most "REST" APIs)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Level 3</span> — Level 2 + HATEOAS (rare in production)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Level 2 is the sweet spot for working APIs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: REST is not the only choice -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">REST Is Not the Only Choice</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">gRPC</span> — HTTP/2 + Protocol Buffers, smaller and streamable, opaque to HTTP tooling</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">GraphQL</span> — client picks fields from one endpoint, hard to cache</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">REST</span> — wins for public HTTP APIs, CDN caching, predictable resources</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick by workload, not by hype</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

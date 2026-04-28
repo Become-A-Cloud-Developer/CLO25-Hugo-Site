@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OpenAPI och Swagger</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OPENAPI<br>
+                    OCH SWAGGER
+                </h1>
+
+                <p class="subtitle">Del VI — Tjänster och API:er</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Kontraktsproblemet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kontraktsproblemet</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett API utan maskinläsbar dokumentation tvingar klienter att <span class="highlight">läsa källkod eller gissa</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Handskriven dokumentation <span class="highlight">driver isär</span> så fort en controller ändras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Källkoden är auktoritativ men oläsbar för icke-utvecklare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösningen: ett kontrakt härlett från koden, i ett format som <span class="highlight">verktyg</span> kan läsa</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: OpenAPI-specifikationen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OpenAPI-specifikationen</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OpenAPI</span> är standardformatet (JSON eller YAML) som beskriver ett HTTP-API</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Deklarerar paths, operationer, parametrar, scheman och säkerhetsscheman</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Donerades till Linux Foundation 2015; OpenAPI 3.0 är vanligast</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett dokument — läses av människor, kodgeneratorer och kontrakttest</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Paths, operationer, scheman -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Paths, operationer, scheman</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">path</span> är en URI-mall som <code>/api/Quotes/{id}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">operation</span> är en HTTP-metod på en path — <code>GET /api/Quotes/{id}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">schema</span> beskriver en JSON-form, oftast en DTO</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återanvändbara scheman ligger under <code>components/schemas</code> och refereras med <code>$ref</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Säkerhetsscheman i dokumentet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Säkerhetsscheman i dokumentet</h2>
+
+                <div class="fragment info-box">
+                    <p>Bearer-token: <code>"type": "http", "scheme": "bearer"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>API-nyckel: <code>"type": "apiKey", "in": "header", "name": "X-Api-Key"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verktyg behandlar säkerhet som en del av kontraktet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kodgeneratorer skapar en parameter för credential; tester larmar om auth saknas</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Swagger UI som webbläsarutforskare -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Swagger UI som webbläsarutforskare</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Swagger UI</span> renderar ett OpenAPI-dokument som en navigerbar, körbar sida</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En tagg per controller; expandera för att se operationer och scheman</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Try it out</span> gör varje operation till ett formulär som skickar en riktig request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Serveras på <code>/swagger</code> av Swashbuckle i ASP.NET Core</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Swashbuckle genererar dokumentet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Swashbuckle genererar dokumentet</h2>
+
+                <div class="fragment info-box">
+                    <p>Inspekterar controllers, route-attribut, DTO:er och returtyper</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddEndpointsApiExplorer()</code> + <code>AddSwaggerGen()</code> registrerar generatorn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>UseSwagger()</code> serverar JSON; <code>UseSwaggerUI()</code> serverar utforskaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda måste registreras <span class="highlight">före</span> <code>MapControllers()</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Annoteringar gör dokumentet rikare -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Annoteringar gör dokumentet rikare</h2>
+
+                <div class="fragment info-box">
+                    <p><code>[ProducesResponseType(typeof(QuoteDto), 200)]</code> dokumenterar success-bodyn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ProducesResponseType(404)]</code> dokumenterar fel-vägen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>XML-doc-kommentarer flödar in som beskrivningar i operationer och properties</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standarddokumentet är korrekt men tunt — annoteringar fyller luckorna</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Exponera auth så Authorize fungerar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exponera auth så Authorize fungerar</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddSecurityDefinition("Bearer", ...)</code> deklarerar bearer-schemat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddSecurityRequirement(...)</code> knyter det till operationerna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Swagger UI får en <span class="highlight">Authorize</span>-knapp; en inklistrad JWT följer med varje "Try it out"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utan det svarar säkrade routes med <code>401</code> inifrån utforskaren</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Verktygsvinsten -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Verktygsvinsten</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kodgeneratorer</span> (NSwag, Kiota) skapar typade klient-SDK:er</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kontrakttester</span> (Schemathesis) verifierar att svaren matchar scheman</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Postman / Insomnia</span> importerar dokumentet som en request-samling</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mock-servrar</span> (Prism) returnerar exempelresponser för parallell utveckling</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

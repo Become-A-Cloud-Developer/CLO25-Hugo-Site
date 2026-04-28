@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>OpenAPI and Swagger</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    OPENAPI<br>
+                    AND SWAGGER
+                </h1>
+
+                <p class="subtitle">Part VI — Services and APIs</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The contract problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Contract Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>An API without machine-readable docs forces clients to <span class="highlight">read source or guess</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hand-written docs <span class="highlight">drift</span> the moment a controller changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Source code is authoritative but unreadable to non-developers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The fix: a contract derived from the code, in a format <span class="highlight">tools</span> can consume</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: OpenAPI specification -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">OpenAPI Specification</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OpenAPI</span> is the standard JSON or YAML format describing an HTTP API</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Declares paths, operations, parameters, schemas, security schemes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Donated to the Linux Foundation in 2015; OpenAPI 3.0 is the common target</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One document — read by humans, code generators, and contract testers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Paths, operations, schemas -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Paths, Operations, Schemas</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">path</span> is a URI template like <code>/api/Quotes/{id}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">operation</span> is an HTTP method on a path — <code>GET /api/Quotes/{id}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">schema</span> describes a JSON shape, usually a DTO</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reusable schemas live under <code>components/schemas</code> and are referenced by <code>$ref</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Security schemes in the document -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Security Schemes in the Document</h2>
+
+                <div class="fragment info-box">
+                    <p>Bearer token: <code>"type": "http", "scheme": "bearer"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>API key: <code>"type": "apiKey", "in": "header", "name": "X-Api-Key"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tooling treats security as a first-class part of the contract</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Code generators emit a credential parameter; testers fail if auth is missing</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Swagger UI as the browser explorer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Swagger UI as the Browser Explorer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Swagger UI</span> renders an OpenAPI document as a navigable, executable page</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One tag per controller; expand to see operations and schemas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Try it out</span> turns each operation into a form that issues a real request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Served at <code>/swagger</code> by Swashbuckle in ASP.NET Core</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Swashbuckle generates the document -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Swashbuckle Generates the Document</h2>
+
+                <div class="fragment info-box">
+                    <p>Introspects controllers, route attributes, DTOs, return types</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddEndpointsApiExplorer()</code> + <code>AddSwaggerGen()</code> register the generator</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>UseSwagger()</code> serves the JSON; <code>UseSwaggerUI()</code> serves the explorer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both must register <span class="highlight">before</span> <code>MapControllers()</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Annotations make the document richer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Annotations Make the Document Richer</h2>
+
+                <div class="fragment info-box">
+                    <p><code>[ProducesResponseType(typeof(QuoteDto), 200)]</code> documents the success body</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>[ProducesResponseType(404)]</code> documents the failure path</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>XML doc comments flow into operation and property descriptions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Default-generated docs are correct but sparse — annotations close the gap</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Exposing auth so Authorize works -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exposing Auth So Authorize Works</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddSecurityDefinition("Bearer", ...)</code> declares the bearer scheme</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AddSecurityRequirement(...)</code> attaches it to operations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Swagger UI grows an <span class="highlight">Authorize</span> button; a pasted JWT flows into every "Try it out"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Without it, secured routes return <code>401</code> from inside the explorer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: The toolchain payoff -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Toolchain Payoff</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Code generators</span> (NSwag, Kiota) emit typed client SDKs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Contract testers</span> (Schemathesis) assert responses match schemas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Postman / Insomnia</span> import the document as a request collection</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mock servers</span> (Prism) serve example responses for parallel development</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
