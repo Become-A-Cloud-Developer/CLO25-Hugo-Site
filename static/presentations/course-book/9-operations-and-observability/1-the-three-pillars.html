@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>The Three Pillars: Logs, Metrics, Traces</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THE THREE<br>
+                    PILLARS
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: A deployed app is a black box -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A Deployed App is a Black Box</h2>
+
+                <div class="fragment info-box">
+                    <p>Without <span class="highlight">telemetry</span>, the operator sees only "process is alive"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A failed request is <span class="highlight">indistinguishable</span> from a successful one</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No debugger, no breakpoint, no second chance to reproduce</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Visibility is whatever the application <span class="highlight">chooses to emit</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Monitoring vs. observability -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Monitoring vs. Observability</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Monitoring</span> answers a fixed list of questions ("is CPU &gt; 80%?")</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Observability</span> lets you ask new questions of existing signals</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Monitoring catches failures you <span class="highlight">predicted</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Observability investigates the ones you <span class="highlight">did not</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Logs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Logs — The Narrative</h2>
+
+                <div class="fragment info-box">
+                    <p>Timestamped, <span class="highlight">discrete events</span> with full context</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One log line = one event for one user, with stack trace and IDs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Best at: <span class="highlight">per-request detail</span>, exception analysis</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Falls short: aggregate questions over high volume are expensive</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Metrics -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Metrics — Numbers Over Time</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Numeric samples</span> aggregated into time buckets</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Counters, gauges, histograms — <span class="highlight">pre-aggregated</span> by construction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Best at: dashboards, alerts, SLOs, long-term trends</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Falls short: cannot describe individual requests</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Traces -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Traces — Flow Across Services</h2>
+
+                <div class="fragment info-box">
+                    <p>Causal chains tied by a shared <span class="highlight">trace ID</span> (operation ID)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A trace is a tree of <span class="highlight">spans</span>: root span + child spans per call</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>W3C Trace Context</code> propagates the ID across HTTP hops</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Best at: <span class="highlight">latency attribution</span>, cross-service investigation</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Cost trade-offs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Cost Trade-offs</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Logs</span> — expensive at volume, indispensable for detail</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Metrics</span> — cheapest at scale; cost grows with cardinality, not events</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Traces</span> — medium cost; sampling preserves diagnostic value</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A working stack mixes all three at different sample rates</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: A Failing Checkout</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Metric</span> — <code>http_requests_failed{route="/checkout"}</code> spikes at 14:03</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trace</span> — root span 4.8s; child span timed out calling payment provider</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Log</span> — operation ID pulls the exception, stack trace, user ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One incident, three views — <span class="highlight">none sufficient alone</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: How the three combine -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How the Three Combine</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Metrics</span> notice the incident and bound its scope</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Traces</span> locate the failing dependency</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Logs</span> explain the exact failure for the affected user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Shared <span class="highlight">correlation IDs</span> let the investigator pivot between signals</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: What Part IX covers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Part IX Covers</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger&lt;T&gt;</code> and structured logging in ASP.NET Core</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Insights</span> as the .NET telemetry sink</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Log Analytics and KQL</span> for queryable centralised logs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Health checks, alerts, and <span class="highlight">service-level objectives</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

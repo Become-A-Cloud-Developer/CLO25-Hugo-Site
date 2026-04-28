@@ -177,10 +177,18 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/3-deployment/10-logging-and-monitoring/`
 **Studieguide week:** ACD week 5 (v.19), BCD week 9 (v.13)
 **Glossary file:** `docs/coursebook-mining/part-9-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part IX run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | The Three Pillars: Logs, Metrics, Traces | validated | 2258 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 2 | Structured Logging with ILogger | validated | 2235 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 3 | Application Insights and Telemetry | validated | 2564 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 4 | Log Analytics and KQL Basics | validated | 2242 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 5 | Health Checks | validated | 2113 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 6 | Alerts and SLOs | validated | 2015 | 12 / 12 | 2026-04-28 | All 10 gates pass |
+
+**Part IX totals:** 6 chapters, 13,427 words of prose, 12 HTML slide decks. All chapters pass voice-check clean.
 
 ---
 

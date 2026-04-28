@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Health Checks</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    HEALTH<br>
+                    CHECKS
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a TCP probe is not enough -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a TCP Probe is Not Enough</h2>
+
+                <div class="fragment info-box">
+                    <p>The orchestrator decides every few seconds: keep, restart, or drain a replica</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Default probe is "did the <span class="highlight">TCP connect</span> succeed" — almost always passes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Process can be alive but <span class="highlight">deadlocked</span>, <span class="highlight">dependency-starved</span>, or stuck mid-init</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Application needs to publish its own opinion of its health</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What a health check is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What a Health Check Is</h2>
+
+                <div class="fragment info-box">
+                    <p>An HTTP endpoint — typically <code>/healthz</code> — owned by the application</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returns <code>200 OK</code> when healthy, <code>503 Service Unavailable</code> when not</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Optional JSON body lists sub-checks for human debugging</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Must be <span class="highlight">fast and cheap</span> — probe budget is a few hundred milliseconds</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Three canonical probe types -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Canonical Probe Types</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Liveness</span> — is the process running, used for restart decisions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Readiness</span> — can the process accept traffic right now, gates the load balancer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dependency probe</span> — is a downstream service reachable, building block of readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each probe answers a different question and triggers a different platform action</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Liveness vs readiness -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Liveness vs Readiness</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Liveness fail</span> &rarr; kill and restart the container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Readiness fail</span> &rarr; remove from load balancer, do not restart</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Confusing the two causes <span class="highlight">cascading restart loops</span> during dependency blips</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Liveness must not call dependencies; readiness usually does</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The /healthz convention -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The /healthz Convention</h2>
+
+                <div class="fragment info-box">
+                    <p><code>/healthz/live</code> for liveness, <code>/healthz/ready</code> for readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Path is conventional — Kubernetes templates and ASP.NET Core defaults assume it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Separating paths keeps the two responsibilities from tangling</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same contract works for Container Apps, Kubernetes, and the smoke test gate</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core IHealthCheck -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core IHealthCheck</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IHealthCheck</code> interface — single async method, returns Healthy / Degraded / Unhealthy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Framework checks for <span class="highlight">Mongo, Key Vault, SQL, Redis</span> ship as extension methods</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Custom checks implement the interface, get injected dependencies via DI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Tags</span> route each check to the right probe path</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example: register Mongo and Key Vault -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: Register Mongo and Key Vault</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddHealthChecks().AddCheck("self", ..., tags: ["live"])</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.AddMongoDb(..., tags: ["ready"])</code> and <code>.AddAzureKeyVault(..., tags: ["ready"])</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MapHealthChecks("/healthz/live", Predicate = c =&gt; c.Tags.Contains("live"))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MapHealthChecks("/healthz/ready", ...)</code> filters to ready-tagged checks</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Health checks and the smoke test gate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Health Checks and the Smoke Test Gate</h2>
+
+                <div class="fragment info-box">
+                    <p>Pipeline's smoke gate already curls the new revision after <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The natural target is <code>/healthz/ready</code> of the new revision</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A 200 proves the image pulled, the container booted, and dependencies are reachable</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A 503 fails the gate before users see a 5xx — <span class="highlight">clean rollback</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Composing with the rest of Part IX -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Composing with the Rest of Part IX</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Logs</span> answer "what happened"; <span class="highlight">health checks</span> drive automatic recovery</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Readiness shapes <span class="highlight">autoscaling</span> — unhealthy replicas don't count as capacity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dependency probes surface failures that logs alone would miss</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Single endpoint serves continuous polling and one-shot deploy gates</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Larm och SLO:er</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    LARM<br>
+                    OCH SLO:ER
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför larm spelar roll -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Larm Spelar Roll</h2>
+
+                <div class="fragment info-box">
+                    <p>En dashboard som ingen tittar på <span class="highlight">misslyckas tyst</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Telemetri i lagring är inte detsamma som att någon blir informerad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Larm gör en sökbar signal till en telefon som vibrerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den svårare frågan — vad är värt att väcka någon för</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en larmregel är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad en Larmregel Är</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Larmregel</span> = villkor + utvärderingskälla + destination</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utvärderingskälla: en metrik-ström eller en <span class="highlight">KQL</span>-fråga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Destination: en <span class="highlight">åtgärdsgrupp</span> som levererar notifieringen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konfigureras i Azure Monitor, Application Insights eller Log Analytics</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Metrik-baserade vs logg-baserade larm -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Metrik-baserade vs Logg-baserade Larm</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Metrik-baserade</span> — föraggregerade, billiga, låg fördröjning, fasta metriker</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Logg-baserade</span> — kör en KQL-fråga schemalagt, full flexibilitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Logg-baserade betalar för intagningsfördröjning (1–3 min) och frågekostnad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj metrik-baserat när metriken finns, logg-baserat när den saknas</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Statiska trösklar vs dynamiska baslinjer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Statiska Trösklar vs Dynamiska Baslinjer</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">tröskel</span> är den numeriska gräns som utlöser larmet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Statiska trösklar fungerar när normalt beteende har stabilt intervall</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dynamiska baslinjer lär sig historiska mönster, hanterar <span class="highlight">säsongsvariation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dynamiska baslinjer behöver ~10 dagars historik för att lära sig</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Åtgärdsgrupper -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Åtgärdsgrupper</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Åtgärdsgrupp</span> = återanvändbar samling av notifieringskanaler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En grupp, många larmregler — byt jouren på ett ställe</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kanaler: e-post, SMS, webhook, PagerDuty, Slack, Teams</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kanalvalet är en del av signalen — e-post vs SMS vs personsökning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Larmtrötthetsfällan -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Larmtrötthetsfällan</h2>
+
+                <div class="fragment info-box">
+                    <p>För många regler &rarr; joursvarsteamet ignorerar notifieringar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Övergående tillstånd (driftsättnings-spikar) utlöser trösklar utan orsak</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"Under N minuter"-duration hjälper på regelnivå</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den djupare lösningen: <span class="highlight">sluta larma på tillstånd användarna inte känner</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: SLI, SLO, felbudget -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SLI, SLO, Felbudget</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SLI</span> — mätningen (t.ex. % av förfrågningar som returnerar 2xx)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SLO</span> — målet (t.ex. 99,5% över 30 dagar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Felbudget</span> — det som är kvar av "tillåten otillgänglighet"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>99,9% SLO över 30 dagar &rarr; ~43 min tolerabel nedtid</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Att sätta en realistisk SLO -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Att Sätta en Realistisk SLO</h2>
+
+                <div class="fragment info-box">
+                    <p>Mät SLI:n i <span class="highlight">flera veckor innan</span> ett tal lovas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ouppnåelig SLO lär teamet att talet är en fiktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SLO:n måste vara både meningsfull för användare och nåbar för teamet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>99,99% på en tjänst som levererar 99,5% garanterar konstant larmande</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Genomgånget exempel: 5xx burn-rate-larm -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel: 5xx Burn-rate-larm</h2>
+
+                <div class="fragment info-box">
+                    <p>SLO: 99,5% lyckade svar över 30 dagar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Regel: avg <code>requests_failed_5xx</code> &gt; 5% över ett 5-minutersfönster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Enskilda 5xx-blippar utlöser inte; långvariga fel gör det</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kopplad till åtgärdsgrupp <code>ag-oncall-payments</code> — Teams + SMS + e-post</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Varför SLO:er motverkar trötthet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför SLO:er Motverkar Trötthet</h2>
+
+                <div class="fragment info-box">
+                    <p>Inom budget = systemet fungerar som avtalat &rarr; <span class="highlight">inget larm</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Budget hotad = verkligt hot mot kontraktet &rarr; <span class="highlight">larm värt att lita på</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Larm blir sällsynta men meningsfulla — jouren lär sig att lita på dem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Budgeten samlar utveckling och produkt kring en gemensam mätning</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

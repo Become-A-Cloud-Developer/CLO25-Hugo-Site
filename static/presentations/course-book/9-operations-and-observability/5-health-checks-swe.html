@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Hälsokontroller</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    HÄLSO-<br>
+                    KONTROLLER
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför en TCP-probe inte räcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför en TCP-probe Inte Räcker</h2>
+
+                <div class="fragment info-box">
+                    <p>Orkestratorn bestämmer varje sekund: behåll, starta om eller dränera en replika</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standardprob är "lyckades <span class="highlight">TCP connect</span>" — nästan alltid sant</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Processen kan leva men vara <span class="highlight">deadlockad</span>, sakna beroenden eller hänga i init</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationen måste själv publicera sin syn på sin hälsa</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en hälsokontroll är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad en Hälsokontroll Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En HTTP-endpoint — typiskt <code>/healthz</code> — som applikationen själv äger</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Returnerar <code>200 OK</code> vid frisk, <code>503 Service Unavailable</code> vid sjuk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Valfri JSON-body listar delkontroller för felsökning av människor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Måste vara <span class="highlight">snabb och billig</span> — probens budget är några hundra millisekunder</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Tre kanoniska probtyper -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tre Kanoniska Probtyper</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Liveness probe</span> — kör processen, används för omstartsbeslut</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Readiness probe</span> — kan processen ta emot trafik just nu, gatear lastbalanseraren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dependency probe</span> — är en nedströms tjänst nåbar, byggsten i readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje prob svarar på en annan fråga och triggar olika plattformsåtgärder</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Liveness mot readiness -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Liveness mot Readiness</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Liveness fel</span> &rarr; döda och starta om containern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Readiness fel</span> &rarr; ta ur lastbalanseraren, starta inte om</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att blanda ihop dem ger <span class="highlight">kaskaderande omstartsloopar</span> vid kortvariga beroendefel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Liveness får inte anropa beroenden; readiness gör det oftast</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: /healthz-konventionen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">/healthz-konventionen</h2>
+
+                <div class="fragment info-box">
+                    <p><code>/healthz/live</code> för liveness, <code>/healthz/ready</code> för readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sökvägen är konvention — Kubernetes-mallar och ASP.NET Core utgår från den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Separata sökvägar håller de två ansvaren isär</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma kontrakt fungerar för Container Apps, Kubernetes och smoke-gaten</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: ASP.NET Core IHealthCheck -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ASP.NET Core IHealthCheck</h2>
+
+                <div class="fragment info-box">
+                    <p><code>IHealthCheck</code>-gränssnittet — en async-metod som returnerar Healthy / Degraded / Unhealthy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Färdiga kontroller för <span class="highlight">Mongo, Key Vault, SQL, Redis</span> levereras som extension-metoder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Egna kontroller implementerar gränssnittet och får beroenden via DI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Taggar</span> dirigerar varje kontroll till rätt probsökväg</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Exempel: registrera Mongo och Key Vault -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: Registrera Mongo och Key Vault</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AddHealthChecks().AddCheck("self", ..., tags: ["live"])</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.AddMongoDb(..., tags: ["ready"])</code> och <code>.AddAzureKeyVault(..., tags: ["ready"])</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MapHealthChecks("/healthz/live", Predicate = c =&gt; c.Tags.Contains("live"))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MapHealthChecks("/healthz/ready", ...)</code> filtrerar på ready-taggade kontroller</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Hälsokontroller och smoke-gaten -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hälsokontroller och Smoke-gaten</h2>
+
+                <div class="fragment info-box">
+                    <p>Pipelinens smoke-gate curlar redan den nya revisionen efter <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Naturligt mål är <code>/healthz/ready</code> för den nya revisionen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>200 bevisar att imagen drogs, containern bootade och beroenden är nåbara</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>503 stoppar gaten innan användare ser något 5xx — <span class="highlight">ren rollback</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Hänger ihop med resten av Del IX -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hänger Ihop med Resten av Del IX</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Loggar</span> svarar på "vad hände"; <span class="highlight">hälsokontroller</span> driver automatisk återhämtning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Readiness formar <span class="highlight">autoskalningen</span> — sjuka replikor räknas inte som kapacitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dependency probes synliggör fel som loggar ensamma skulle missa</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En endpoint betjänar både kontinuerlig polling och engångs-gate vid deploy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

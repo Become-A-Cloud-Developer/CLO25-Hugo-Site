@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Strukturerad loggning med ILogger</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    STRUKTURERAD<br>
+                    LOGGNING
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför struktur spelar roll -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Struktur Spelar Roll</h2>
+
+                <div class="fragment info-box">
+                    <p>Loggrader i fri text går att <span class="highlight">söka i</span>, inte att fråga mot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sammanslagna strängar <span class="highlight">löser upp</span> värdena i prosa</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>I skala behöver en operatör <span class="highlight">fält</span>, inte regex-extraktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strukturerade loggar bevarar både meddelandet <span class="highlight">och</span> fälten</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad strukturerad loggning är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Strukturerad Loggning Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En konstant <span class="highlight">meddelandemall</span> med namngivna platshållare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Värden skickas som separata argument — <span class="highlight">aldrig interpolerade</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ramverket behåller den renderade texten <span class="highlight">och</span> fältmängden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Nedströmslager indexerar fälten som <span class="highlight">kolumner</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: ILogger<T> i ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ILogger&lt;T&gt; i ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p>Host:en registrerar en öppen generisk <code>ILogger&lt;&gt;</code>-mappning i <span class="highlight">DI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konstruktorer ber om <code>ILogger&lt;NewsletterController&gt;</code> — får den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Typparametern <code>T</code> blir <span class="highlight">loggkategorin</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kategorier matchas <span class="highlight">hierarkiskt</span> efter namnrymdsprefix</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Meddelandemallar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Meddelandemallar</h2>
+
+                <div class="fragment info-box">
+                    <p>Första argumentet är en <span class="highlight">konstant sträng</span> med <code>{PascalCasePlatshållare}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Efterföljande argument fyller platshållarna efter <span class="highlight">position</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fältnamnen kommer från mallen, inte från argumentens variabelnamn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bygg aldrig mallen vid körning — den är <span class="highlight">händelsens identitet</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Loggnivåer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Loggnivåer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trace / Debug</span> — diagnostiska detaljer, av i produktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Information</span> — normalt flöde: begäran startad, jobb klart</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Warning</span> — oväntat men återhämtat (retry, fallback, saknad config)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Error / Critical</span> — misslyckad operation / systemfel</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Loggningsscope -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Loggningsscope</h2>
+
+                <div class="fragment info-box">
+                    <p><code>using (logger.BeginScope(new Dictionary&lt;string, object&gt; { ... }))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fälten fästs på <span class="highlight">varje loggkall inuti blocket</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanlig användning: <span class="highlight">korrelations-ID</span> per begäran, satt av middleware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Scope kan nästlas — begäran, tenant och operation komponeras</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Berikning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Berikning</h2>
+
+                <div class="fragment info-box">
+                    <p>Visst sammanhang hör till <span class="highlight">varje</span> loggrad, inte till varje anropsplats</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Globalt: maskinnamn, build SHA, miljö — sätts vid host-uppstart</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Per begäran: korrelations-ID, användar-ID, tenant-ID — sätts av middleware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anropsplatsen kan fokusera på <span class="highlight">händelsen</span>, inte på metadatan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Genomgånget exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger&lt;NewsletterController&gt;</code> injiceras via konstruktorn</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Scope per begäran öppnas med <code>CorrelationId = HttpContext.TraceIdentifier</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>LogInformation("Subscribe requested for {Email}", email)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En fråga kan nu gruppera per mall och filtrera på korrelations-ID</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Driftspraxis -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Driftspraxis</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inga personuppgifter</span> — ersätt e-post/namn med surrogat-ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inga hemligheter</span> — sanera config-värden, tokens, headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sampla vid hög volym</span> — släng Debug, sampla pratiga händelser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Håll mallarna stabila</span> — dashboards lutar sig mot konstant text</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

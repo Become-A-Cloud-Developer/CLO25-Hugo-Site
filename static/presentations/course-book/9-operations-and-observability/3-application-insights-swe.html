@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Application Insights och telemetri</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    APPLICATION<br>
+                    INSIGHTS
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför en APM-destination -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför en APM-destination</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger</code> skriver till stdout — bra, men bara en pelare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En loggström svarar på <span class="highlight">vad</span> som hände, inte <span class="highlight">hur snabbt</span> eller <span class="highlight">hur ofta</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Request-tider, beroendetider och exceptions kräver en rikare sink</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Insights</span> är Azures hanterade APM-destination för .NET</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad Application Insights faktiskt är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Application Insights Faktiskt Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">APM</span>-tjänst från Microsoft byggd på en <span class="highlight">Log Analytics-workspace</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workspace-baserat läge</span> lägger app-telemetri bredvid container-stdout</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett frågbart lager för <code>requests</code>, <code>exceptions</code>, <code>traces</code>, <code>ContainerAppConsoleLogs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Legacy-läge (separat lagring) finns kvar, men är aldrig rätt val</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: SDK:ns automatiska instrumentering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SDK:ns Automatiska Instrumentering</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Requests</span> — URL, metod, varaktighet, status, operation ID per HTTP-anrop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Beroenden</span> — <code>HttpClient</code>, SQL, Azure SDK-anrop tidsmäts automatiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Exceptions</span> — typ, meddelande, stack trace, korrelerade till sin request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Traces</span> — varje <code>ILogger</code>-rad över den konfigurerade nivån</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Connection string och secret-referens -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Connection String och Secret-referens</h2>
+
+                <div class="fragment info-box">
+                    <p>Modernt format: en <span class="highlight">connection string</span>, inte den gamla instrumentation key</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SDK:n läser <code>APPLICATIONINSIGHTS_CONNECTION_STRING</code> från miljön</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>I Container Apps: lägg som secret, injicera med <code>secretref:appinsights-cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En rad räcker: <code>services.AddApplicationInsightsTelemetry(...)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: De fyra dashboards -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De Fyra Dashboards Utvecklare Når Efter</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Live Metrics</span> — senaste 60 sekunderna, ~1 s latens, gratis</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Map</span> — noder per tjänst, kanter med p95-latens och felgrad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Failures</span> — exceptions grupperade per typ, drill-down via operation ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Performance</span> — långsamma operationer rankade per p50/p95/p99-latens</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Sampling som kostnadsspak -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sampling som Kostnadsspak</h2>
+
+                <div class="fragment info-box">
+                    <p>Telemetri faktureras per GB ingestion — pratglada tjänster blir dyra</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Adaptive sampling</span> är på by default, struper över ~5 items/sekund</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samplar <span class="highlight">hela operationer</span>, aldrig isolerade exceptions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Backend reviktar serverside, så antal och medelvärden förblir korrekta</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Egna events och metrics -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Egna Events och Metrics</h2>
+
+                <div class="fragment info-box">
+                    <p>Injicera <code>TelemetryClient</code> från DI, anropa <code>GetMetric</code> eller <code>TrackEvent</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GetMetric("home-page-views").TrackValue(1)</code> — aggregeras klientside, billigt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>TrackEvent("HomePageViewed", props)</code> — ett item per anrop, affärssignaler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Egna items ärver requestens <span class="highlight">operation ID</span> automatiskt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Vad den inte löser av sig själv -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad den Inte Löser av Sig Själv</h2>
+
+                <div class="fragment info-box">
+                    <p>En komponent per miljö, alla tjänster pekar på samma</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Icke-app-data (plattformens audit-loggar, infra-metrics) bor någon annanstans</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Korrelation över tjänster kräver att alla delar samma komponent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">KQL</span> i workspace binder ihop App Insights-tabellerna med container-stdout</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

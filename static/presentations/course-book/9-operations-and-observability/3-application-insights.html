@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Application Insights and Telemetry</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    APPLICATION<br>
+                    INSIGHTS
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why an APM destination -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why an APM Destination</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger</code> writes to stdout — useful, but only one pillar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A log stream answers <span class="highlight">what</span> happened, not <span class="highlight">how fast</span> or <span class="highlight">how often</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Request timing, dependency timing, and exceptions need a richer sink</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Insights</span> is Azure's managed APM destination for .NET</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What App Insights actually is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Application Insights Actually Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A Microsoft <span class="highlight">APM</span> service built on a <span class="highlight">Log Analytics workspace</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workspace-based mode</span> keeps app telemetry next to container stdout</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One queryable store for <code>requests</code>, <code>exceptions</code>, <code>traces</code>, <code>ContainerAppConsoleLogs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Legacy mode (separate store) is still possible, but never the right choice</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: SDK auto-instrumentation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SDK Auto-instrumentation</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Requests</span> — URL, method, duration, status, operation ID per HTTP call</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Dependencies</span> — <code>HttpClient</code>, SQL, Azure SDK calls timed automatically</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Exceptions</span> — type, message, stack trace, correlated to parent request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Traces</span> — every <code>ILogger</code> line above the configured level</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Connection string and secret reference -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Connection String and Secret Reference</h2>
+
+                <div class="fragment info-box">
+                    <p>Modern format: a <span class="highlight">connection string</span>, not a legacy instrumentation key</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>SDK reads <code>APPLICATIONINSIGHTS_CONNECTION_STRING</code> from the environment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>On Container Apps: store as a secret, inject via <code>secretref:appinsights-cs</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One line wires it up: <code>services.AddApplicationInsightsTelemetry(...)</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The four dashboards -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Four Dashboards Developers Reach For</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Live Metrics</span> — last 60 seconds, ~1 s latency, free, bypasses ingestion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Map</span> — nodes per service, edges with p95 latency and failure rate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Failures</span> — exceptions grouped by type, drill-down via operation ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Performance</span> — slow operations ranked by p50/p95/p99 latency</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Sampling as the cost lever -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sampling as the Cost Lever</h2>
+
+                <div class="fragment info-box">
+                    <p>Telemetry is billed per GB ingested — chatty services get expensive fast</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Adaptive sampling</span> is on by default, throttles above ~5 items/second</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samples <span class="highlight">whole operations</span>, never orphaned exceptions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Backend reweights server-side, so counts and averages stay accurate</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Custom events and metrics -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Custom Events and Metrics</h2>
+
+                <div class="fragment info-box">
+                    <p>Inject <code>TelemetryClient</code> from DI, call <code>GetMetric</code> or <code>TrackEvent</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>GetMetric("home-page-views").TrackValue(1)</code> — aggregates client-side, cheap</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>TrackEvent("HomePageViewed", props)</code> — one item per call, business signals</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Custom items inherit the surrounding request's <span class="highlight">operation ID</span> automatically</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: What it does not solve on its own -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What It Does Not Solve on Its Own</h2>
+
+                <div class="fragment info-box">
+                    <p>One component per environment, all services pointing at it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Non-app data (platform audit logs, infra metrics) lives elsewhere</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cross-service correlation needs every service to share the component</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">KQL</span> across the workspace ties App Insights tables to container stdout</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

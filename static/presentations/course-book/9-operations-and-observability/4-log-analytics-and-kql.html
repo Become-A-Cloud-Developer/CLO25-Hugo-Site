@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Log Analytics and KQL Basics</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    LOG ANALYTICS<br>
+                    AND KQL
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a query language -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a Query Language</h2>
+
+                <div class="fragment info-box">
+                    <p>App Insights dashboards answer the <span class="highlight">common</span> questions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Long-tail incidents need <span class="highlight">arbitrary</span> questions about the same data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A query language lets a one-off question become a one-line answer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The data is already there — it just needs the right way to ask</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Workspace and tables -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Workspace and Tables</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">Log Analytics workspace</span> is the shared time-series store</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Container Apps and Application Insights both write into it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Data is partitioned into <span class="highlight">tables</span>, one per data-source type</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AppRequests</code>, <code>AppExceptions</code>, <code>AppDependencies</code>, <code>ContainerAppConsoleLogs_CL</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: KQL as a pipe of transforms -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">KQL as a Pipe of Transforms</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">KQL</span> (Kusto Query Language) chains operators with the <code>|</code> symbol</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each operator transforms the table flowing through it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Read top to bottom — source, filter, narrow, aggregate, sort</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The pipeline is the natural unit of authoring and review</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The workhorse operators -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Workhorse Operators</h2>
+
+                <div class="fragment info-box">
+                    <p><code>where</code> filters rows — keep what matters, prune early</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>project</code> selects columns — narrows the row before downstream work</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>summarize</code> aggregates — <code>count()</code>, <code>avg()</code>, <code>percentile()</code> per group</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>extend</code> adds a computed column — <code>bin(TimeGenerated, 1m)</code> for charts</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Time range first, always -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Time Range First, Always</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">time range</span> bounds cost, latency, and partitions scanned</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>where TimeGenerated &gt; ago(1h)</code> belongs at the <span class="highlight">front</span> of every query</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The portal time-picker is convenient but <span class="highlight">not portable</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Embed the filter so the query works in workbooks and alerts too</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked example: failed responses -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: Failed Responses</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AppRequests | where TimeGenerated &gt; ago(1h)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| where ResultCode startswith "5"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| summarize FailureCount = count() by OperationName</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| order by FailureCount desc | take 10</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Retention as a cost knob -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Retention as a Cost Knob</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Retention</span> sets how far back queries can reach — default <span class="highlight">30 days</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Configurable from 7 days to 2 years, per workspace or per table</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Longer retention costs more — pay per GB ingested <span class="highlight">and</span> per GB retained</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tune per table: keep <code>AppRequests</code> longer, drop console logs sooner</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Saving queries and workbooks -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Saving Queries and Workbooks</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Saved queries</span> persist a one-off into the workspace or the user account</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workbooks</span> combine queries, charts, parameters into one investigation page</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A workbook with a date-range parameter feeds every query inside it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Domain-specific workbooks become the team's <span class="highlight">investigation playbook</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

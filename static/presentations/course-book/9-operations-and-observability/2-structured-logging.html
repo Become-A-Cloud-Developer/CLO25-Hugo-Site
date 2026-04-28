@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Structured Logging with ILogger</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    STRUCTURED<br>
+                    LOGGING
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why structure matters -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Structure Matters</h2>
+
+                <div class="fragment info-box">
+                    <p>Free-text log lines are <span class="highlight">searchable</span>, not queryable</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Concatenated strings <span class="highlight">dissolve</span> their values into prose</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>At scale, an operator needs <span class="highlight">fields</span>, not regex extraction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Structured logs keep both the message <span class="highlight">and</span> the named fields</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What structured logging is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Structured Logging Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A constant <span class="highlight">message template</span> with named placeholders</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Values passed as separate arguments — <span class="highlight">never interpolated</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Framework retains the rendered text <span class="highlight">and</span> the field map</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Downstream stores index the fields as <span class="highlight">columns</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: ILogger<T> in ASP.NET Core -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ILogger&lt;T&gt; in ASP.NET Core</h2>
+
+                <div class="fragment info-box">
+                    <p>Host registers an open generic <code>ILogger&lt;&gt;</code> mapping in <span class="highlight">DI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Constructors ask for <code>ILogger&lt;NewsletterController&gt;</code> — get it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The type parameter <code>T</code> becomes the <span class="highlight">log category</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Categories are matched <span class="highlight">hierarchically</span> by namespace prefix</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Message templates -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Message Templates</h2>
+
+                <div class="fragment info-box">
+                    <p>First argument is a <span class="highlight">constant string</span> with <code>{PascalCasePlaceholders}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trailing arguments fill the placeholders by <span class="highlight">position</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Field names come from the template, not the argument variables</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Never build the template at runtime — it is the <span class="highlight">event identity</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Log levels -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Log Levels</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Trace / Debug</span> — diagnostic detail, off in production</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Information</span> — normal flow: request started, job completed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Warning</span> — unexpected but recovered (retry, fallback, missing config)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Error / Critical</span> — failed operation / system-level failure</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Logging scopes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Logging Scopes</h2>
+
+                <div class="fragment info-box">
+                    <p><code>using (logger.BeginScope(new Dictionary&lt;string, object&gt; { ... }))</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fields attach to <span class="highlight">every log call inside the block</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Common use: per-request <span class="highlight">correlation ID</span> added by middleware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Scopes nest — request, tenant, and operation scopes compose</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Enrichment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Enrichment</h2>
+
+                <div class="fragment info-box">
+                    <p>Some context belongs on <span class="highlight">every</span> log line, not at each call site</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Global: machine name, build SHA, environment — added at host setup</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Per-request: correlation ID, user ID, tenant ID — added by middleware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Keeps the call site focused on the <span class="highlight">event</span>, not the metadata</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger&lt;NewsletterController&gt;</code> injected via constructor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Per-request scope opened with <code>CorrelationId = HttpContext.TraceIdentifier</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>LogInformation("Subscribe requested for {Email}", email)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A query can now group by template, filter by correlation ID</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Operational practices -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Operational Practices</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No PII in logs</span> — replace email/name with surrogate IDs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">No secrets in logs</span> — scrub config values, tokens, headers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sample at high volume</span> — drop Debug, sample chatty events</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Keep templates stable</span> — dashboards key on the constant text</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

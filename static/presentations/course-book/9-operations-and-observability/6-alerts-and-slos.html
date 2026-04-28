@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Alerts and SLOs</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ALERTS<br>
+                    AND SLOs
+                </h1>
+
+                <p class="subtitle">Part IX — Operations and Observability</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why alerts matter -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Alerts Matter</h2>
+
+                <div class="fragment info-box">
+                    <p>A dashboard that nobody watches <span class="highlight">fails silently</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Telemetry sitting in storage is not the same as someone being told</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Alerts turn a queryable signal into a phone vibrating</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The harder question — what is worth waking someone up for</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What an alert rule is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What an Alert Rule Is</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Alert rule</span> = condition + evaluation source + destination</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Evaluation source: a metric stream or a <span class="highlight">KQL</span> query</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Destination: an <span class="highlight">action group</span> that delivers the notification</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Configured in Azure Monitor, Application Insights, or Log Analytics</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Metric-based vs log-based alerts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Metric-based vs Log-based Alerts</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Metric-based</span> — pre-aggregated, cheap, low latency, fixed metrics only</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Log-based</span> — runs a KQL query on a schedule, total flexibility</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Log-based pays for ingestion delay (1–3 min) and per-evaluation cost</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick metric-based when the metric exists, log-based when it does not</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Static thresholds vs dynamic baselines -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Static Thresholds vs Dynamic Baselines</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">threshold</span> is the numeric boundary that triggers an alert</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Static thresholds work when normal behaviour has a stable range</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dynamic baselines learn historical patterns, handle <span class="highlight">seasonality</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dynamic baselines need ~10 days of history to learn from</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Action groups -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Action Groups</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Action group</span> = a reusable collection of notification channels</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One group, many alert rules — change the rotation in one place</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Channels: email, SMS, webhook, PagerDuty, Slack, Teams</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Channel choice is part of the signal — email vs SMS vs page</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: The alert fatigue trap -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Alert Fatigue Trap</h2>
+
+                <div class="fragment info-box">
+                    <p>Too many rules &rarr; on-call ignores notifications &rarr; real incidents missed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Transient conditions (deployment spikes) trip thresholds without cause</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Adding "for N minutes" duration helps at the rule level</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The deeper fix: <span class="highlight">stop alerting on conditions users do not feel</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: SLI, SLO, error budget -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">SLI, SLO, Error Budget</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SLI</span> — the measurement (e.g. % of requests returning 2xx)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">SLO</span> — the target (e.g. 99.5% over 30 days)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Error budget</span> — what is left of "allowed unavailability"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>99.9% SLO over 30 days &rarr; ~43 min of tolerable downtime</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Setting a realistic SLO -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Setting a Realistic SLO</h2>
+
+                <div class="fragment info-box">
+                    <p>Measure the SLI for <span class="highlight">several weeks before</span> promising a number</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An unachievable SLO trains the team that the number is a fiction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The SLO must be both meaningful to users and reachable by the team</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>99.99% on a service that delivers 99.5% guarantees constant alerting</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Worked example: 5xx burn-rate alert -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: 5xx Burn-rate Alert</h2>
+
+                <div class="fragment info-box">
+                    <p>SLO: 99.5% successful responses over 30 days</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rule: avg <code>requests_failed_5xx</code> &gt; 5% over a 5-minute window</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Single 5xx blips do not trip; sustained failure does</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Wired to action group <code>ag-oncall-payments</code> — Teams + SMS + email fallback</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Why SLOs counter fatigue -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why SLOs Counter Fatigue</h2>
+
+                <div class="fragment info-box">
+                    <p>Within budget = system is operating as agreed &rarr; <span class="highlight">no alert</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Budget at risk = real threat to the contract &rarr; <span class="highlight">alert worth trusting</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Alerts become rare but meaningful — on-call learns to trust them</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The budget aligns engineering and product around one measurement</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

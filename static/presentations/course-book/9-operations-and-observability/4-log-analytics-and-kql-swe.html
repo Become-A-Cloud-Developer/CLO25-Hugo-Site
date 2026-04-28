@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Log Analytics och KQL — grunderna</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    LOG ANALYTICS<br>
+                    OCH KQL
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför ett frågespråk -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför ett Frågespråk</h2>
+
+                <div class="fragment info-box">
+                    <p>App Insights-dashboards svarar på de <span class="highlight">vanliga</span> frågorna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Långsvansade incidenter kräver <span class="highlight">godtyckliga</span> frågor mot samma data</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett frågespråk gör en engångsfråga till ett enradssvar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Datan finns redan där — den behöver bara rätt sätt att frågas</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Workspace och tabeller -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Workspace och Tabeller</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">Log Analytics</span>-workspace är det gemensamma tidsseriearkivet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Container Apps och Application Insights skriver båda dit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Datan partitioneras i <span class="highlight">tabeller</span>, en per datakällstyp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>AppRequests</code>, <code>AppExceptions</code>, <code>AppDependencies</code>, <code>ContainerAppConsoleLogs_CL</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: KQL som pipeline -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">KQL som Pipeline av Transformer</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">KQL</span> (Kusto Query Language) kedjar operatorer med tecknet <code>|</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje operator transformerar tabellen som flödar genom den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Läs uppifrån och ned — källa, filter, smala av, aggregera, sortera</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pipelinen är den naturliga enheten för att skriva och granska</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Arbetshäst-operatorerna -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Arbetshäst-operatorerna</h2>
+
+                <div class="fragment info-box">
+                    <p><code>where</code> filtrerar rader — behåll det som spelar roll, beskär tidigt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>project</code> väljer kolumner — smalnar raden före nedströmsarbete</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>summarize</code> aggregerar — <code>count()</code>, <code>avg()</code>, <code>percentile()</code> per grupp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>extend</code> lägger till en beräknad kolumn — <code>bin(TimeGenerated, 1m)</code> för diagram</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Tidsfönstret först -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tidsfönstret Först, Alltid</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">tidsfönster</span> begränsar kostnad, latens och partitioner som scannas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>where TimeGenerated &gt; ago(1h)</code> hör hemma <span class="highlight">först</span> i varje fråga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Portalens tidsväljare är bekväm men <span class="highlight">inte portabel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bädda in filtret så att frågan funkar i workbooks och alerts också</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Genomgånget exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel: Misslyckade Requests</h2>
+
+                <div class="fragment info-box">
+                    <p><code>AppRequests | where TimeGenerated &gt; ago(1h)</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| where ResultCode startswith "5"</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| summarize FailureCount = count() by OperationName</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>| order by FailureCount desc | take 10</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Retention som kostnadsratt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Retention som Kostnadsratt</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Retention</span> styr hur långt bak frågor kan nå — standard <span class="highlight">30 dagar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Konfigurerbart från 7 dagar till 2 år, per workspace eller per tabell</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Längre retention kostar mer — betala per GB ingesterad <span class="highlight">och</span> per GB lagrad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tunna per tabell: behåll <code>AppRequests</code> längre, släpp konsolloggar tidigare</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Spara nyttiga frågor -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Spara Nyttiga Frågor</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sparade frågor</span> persistar en engångsfråga i workspace eller användarkonto</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workbooks</span> kombinerar frågor, diagram, parametrar i en utredningssida</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En workbook med datumintervall-parameter matar varje fråga inuti den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Domänspecifika workbooks blir teamets <span class="highlight">utredningsplaybook</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

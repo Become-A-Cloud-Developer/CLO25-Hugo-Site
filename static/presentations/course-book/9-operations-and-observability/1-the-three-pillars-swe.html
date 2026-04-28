@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>De tre pelarna: loggar, mätvärden, spårningar</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DE TRE<br>
+                    PELARNA
+                </h1>
+
+                <p class="subtitle">Del IX — Drift och observerbarhet</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: En driftsatt app är en svart låda -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">En Driftsatt App är en Svart Låda</h2>
+
+                <div class="fragment info-box">
+                    <p>Utan <span class="highlight">telemetri</span> ser operatören bara "processen lever"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En misslyckad förfrågan är <span class="highlight">omöjlig att skilja</span> från en lyckad</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen debugger, inget brytpunkt, ingen andra chans att återskapa</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Insynen är endast det som applikationen <span class="highlight">väljer att sända ut</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Övervakning vs. observerbarhet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Övervakning vs. Observerbarhet</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Övervakning</span> besvarar en fast lista frågor ("är CPU &gt; 80 %?")</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Observerbarhet</span> låter dig ställa nya frågor till befintliga signaler</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Övervakning fångar fel du har <span class="highlight">förutsett</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Observerbarhet utreder de fel du <span class="highlight">inte förutsåg</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Loggar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Loggar — Berättelsen</h2>
+
+                <div class="fragment info-box">
+                    <p>Tidstämplade, <span class="highlight">diskreta händelser</span> med full kontext</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En loggrad = en händelse för en användare, med stack trace och ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bäst för: <span class="highlight">detaljer per förfrågan</span>, undantagsanalys</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Brister: aggregerade frågor över hög volym blir dyra</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Mätvärden -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Mätvärden — Siffror Över Tid</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Numeriska mätningar</span> aggregerade i tidsintervall</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Räknare, mätare, histogram — <span class="highlight">föraggregerade</span> i sin natur</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bäst för: dashboards, larm, SLO:er, långsiktiga trender</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Brister: kan inte beskriva enskilda förfrågningar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Spårningar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Spårningar — Flöde Mellan Tjänster</h2>
+
+                <div class="fragment info-box">
+                    <p>Kausala kedjor sammanbundna av ett delat <span class="highlight">trace ID</span> (operation ID)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En spårning är ett träd av <span class="highlight">spans</span>: rot-span + barn per anrop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>W3C Trace Context</code> propagerar ID:t över HTTP-hopp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bäst för: <span class="highlight">latensattribution</span>, utredning över tjänstegränser</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Kostnadsavvägningar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kostnadsavvägningar</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Loggar</span> — dyra i volym, oumbärliga för detaljer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mätvärden</span> — billigast i skala; kostnaden växer med kardinalitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Spårningar</span> — medelkostnad; sampling bevarar diagnostiskt värde</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En fungerande stack blandar alla tre med olika samplingsgrader</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Exempel: en misslyckad checkout -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: en Misslyckad Checkout</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mätvärde</span> — <code>http_requests_failed{route="/checkout"}</code> toppar 14:03</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Spårning</span> — rot-span 4,8s; barn-span timeout mot betalleverantör</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Logg</span> — operation ID hämtar undantaget, stack trace, användar-ID</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En incident, tre vyer — <span class="highlight">ingen är tillräcklig ensam</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Hur de tre samverkar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur de Tre Samverkar</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mätvärden</span> upptäcker incidenten och avgränsar omfattningen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Spårningar</span> lokaliserar det felande beroendet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Loggar</span> förklarar exakt vad som hände för användaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Delade <span class="highlight">korrelations-ID</span> låter utredaren pivotera mellan signalerna</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Vad Del IX täcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Del IX Täcker</h2>
+
+                <div class="fragment info-box">
+                    <p><code>ILogger&lt;T&gt;</code> och strukturerad loggning i ASP.NET Core</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Application Insights</span> som telemetrimottagare för .NET</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Log Analytics och KQL</span> för frågbara centraliserade loggar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hälsokontroller, larm och <span class="highlight">Service Level Objectives</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
