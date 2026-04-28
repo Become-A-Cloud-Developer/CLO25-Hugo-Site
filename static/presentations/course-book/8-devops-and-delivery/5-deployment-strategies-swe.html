@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Driftsättningsstrategier</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DRIFTSÄTTNINGS-<br>
+                    STRATEGIER
+                </h1>
+
+                <p class="subtitle">Del VIII &mdash; DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför en strategi behövs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför en strategi behövs</h2>
+
+                <div class="fragment info-box">
+                    <p>En driftsättning är det <span class="highlight">mest riskfyllda ögonblicket</span> &mdash; den nya koden har aldrig burit riktig trafik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strategier skiljer sig på <span class="highlight">omkopplingstid</span>, <span class="highlight">blast radius</span> och <span class="highlight">rollback-hastighet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Snabbare omkoppling betyder oftast <span class="highlight">större blast radius</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Säkrare utrullning betyder oftast <span class="highlight">mer infrastruktur</span> att underhålla</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Manuell gate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Manuell gate</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">manuell gate</span> stoppar pipelinen tills en människa klickar <span class="highlight">Godkänn</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Continuous <span class="highlight">delivery</span> utan continuous <span class="highlight">deployment</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fångar "fel ögonblick"-fel &mdash; fredagsdeploy, kunddemo, misstänkt build</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: <span class="highlight">lead time</span> när godkännaren inte är tillgänglig</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Rolling deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rolling deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Byt replikor <span class="highlight">en batch i taget</span> bakom lastbalanseraren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationen är tillgänglig under hela utrullningen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>maxUnavailable</code> och <code>maxSurge</code> formar kapaciteten under fönstret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: ett <span class="highlight">fönster med blandade versioner</span> kan visa kompatibilitetsbuggar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Blue-green deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blue-green deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Två identiska miljöer &mdash; en <span class="highlight">aktiv</span>, en <span class="highlight">vilande</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Driftsätt till den vilande, röktesta, <span class="highlight">växla trafik atomärt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollback är en enda växel tillbaka &mdash; mäts i sekunder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: ungefär <span class="highlight">2&times; infrastruktur</span> under driftsättningsfönstret</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Canary deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Canary deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Routa <span class="highlight">1&ndash;5%</span> av trafiken till den nya versionen först</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bevaka felfrekvens, latens och KPI:er mot tröskelvärden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ramp upp <span class="highlight">1% &rarr; 10% &rarr; 50% &rarr; 100%</span> om mätvärdena håller; backa om inte</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräver trafikuppdelning + metric-styrd promotion</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Feature-flaggor -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Feature-flaggor</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">feature-flagga</span> slår på eller av en funktion vid körning, utan redeploy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Frikopplar <span class="highlight">driftsättning</span> (installera kod) från <span class="highlight">release</span> (exponera för användare)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kombineras med vilken strategi som helst &mdash; flagga inuti en canary-build</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollback via flaggväxling är snabbare än redeploy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Välja en strategi -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Välja en strategi</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Manuell gate</span> &mdash; sällan-releaser; människan tillför signalen som saknas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rolling</span> &mdash; tillståndslösa tjänster; bakåtkompatibla ändringar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Blue-green</span> &mdash; omkopplingskänsligt; inkompatibla ändringar med tidigare migration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Canary</span> &mdash; rika mätvärden; behöver verifiering mot riktig trafik före full exponering</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Genomgång -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgång &mdash; Container Apps</h2>
+
+                <div class="fragment info-box">
+                    <p>Övningens manuella gate: pusha image, klicka sedan <span class="highlight">Create new revision</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automatiserad form: <code>az containerapp update</code> + <code>curl --fail https://$FQDN/health</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett misslyckat röktest avslutar workflowet med non-zero</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multi-revision-läge + <code>traffic</code>-vikter ger en riktig <span class="highlight">canary</span>-primitiv</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

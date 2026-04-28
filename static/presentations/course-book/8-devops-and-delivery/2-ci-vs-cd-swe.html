@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>CI vs CD</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CI<br>
+                    VS CD
+                </h1>
+
+                <p class="subtitle">Del VIII — DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: CI/CD är tre praktiker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CI/CD Är Tre Praktiker, Inte En</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CI</span> — dagliga sammanslagningar till en gemensam trunk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kontinuerlig leverans</span> — varje grön commit är redo att släppas, mänsklig grind</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kontinuerlig driftsättning</span> — varje grön commit driftsätts, ingen mänsklig grind</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att klumpa ihop dem döljer <span class="highlight">vilket steg ett team bör ta härnäst</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Smärtan som motiverade CI -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Smärtan Som Motiverade CI</h2>
+
+                <div class="fragment info-box">
+                    <p>Två-veckors feature-branchar <span class="highlight">driver hårt</span> från trunken</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Namnbyten, beroendeuppgraderingar, refaktoreringar <span class="highlight">krockar vid merge</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Integrationsrisken växer <span class="highlight">icke-linjärt</span> med branchens ålder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tre små dagliga merges slår <span class="highlight">en merge av tre dagars arbete</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Vad CI faktiskt kräver -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad CI Faktiskt Kräver</h2>
+
+                <div class="fragment info-box">
+                    <p>Varje commit triggar <span class="highlight">bygge och test</span>, ovillkorligt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje commit når en <span class="highlight">gemensam trunk</span> inom timmar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett rött bygge blockerar <span class="highlight">alla</span> tills det är grönt igen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Disciplinen kring det röda bygget är <span class="highlight">det som gör CI till en praktik</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Trunk-baserad utveckling -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Trunk-baserad Utveckling</h2>
+
+                <div class="fragment info-box">
+                    <p>Kortlivade branchar: <span class="highlight">timmar till två dagar</span>, aldrig veckor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Vertikal skivning</span>: släpp migrationen först, sedan endpointen, sedan UI:t</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Feature flags</span> döljer ofärdigt arbete bakom en runtime-switch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trunken har <span class="highlight">alltid produktionsform</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Pull request-grinden -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Pull Request-grinden</h2>
+
+                <div class="fragment info-box">
+                    <p>Trunkens kvalitetströskel flyttas till <span class="highlight">merge-tillfället</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bygge grönt, tester gröna, linter ren, <span class="highlight">en peer review</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skild från en driftsättningsgrind — PR-grinden <span class="highlight">skyddar själva trunken</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Snabb pipeline (~minuter) är en <span class="highlight">förutsättning</span>, inte en lyx</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Spektrumet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Spektrumet</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CI</span> — trunken går alltid att bygga; driftsättning är en separat fråga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kontinuerlig leverans</span> — grön commit kan driftsättas inom minuter, människa väljer när</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kontinuerlig driftsättning</span> — grön commit driftsätts automatiskt, ingen knapp att trycka på</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje steg förutsätter strikt att <span class="highlight">föregående redan är på plats</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Genomgånget exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Branch vs Flagga-skyddad Trunk</h2>
+
+                <div class="fragment info-box">
+                    <p>Team A: <span class="highlight">9-dagars branch</span> → smärtsam merge, två integrationsbuggar, 14 dagar till prod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Team B: <span class="highlight">5 små PR:s</span> under 4 dagar, varje grön och driftsatt bakom en flagga</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dag 4: flaggan slås på för <span class="highlight">5% kanarie</span> → 100% i slutet av dagen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma feature, mindre integrationsrisk, <span class="highlight">driftsättning frikopplad från release</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Välja CD eller kontinuerlig driftsättning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Välja CD Eller Kontinuerlig Driftsättning</h2>
+
+                <div class="fragment info-box">
+                    <p>Reglerad regim → mänsklig godkännande är obligatoriskt; välj <span class="highlight">leverans</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återställning snabbare än diagnos → välj <span class="highlight">driftsättning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen kanarie eller flaggor ännu → <span class="highlight">inte redo</span> för driftsättning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Beslutet handlar om <span class="highlight">operativ mognad</span>, inte teknisk kapacitet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

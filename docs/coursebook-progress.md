@@ -155,10 +155,19 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/3-deployment/9-cicd-to-container-apps/`
 **Studieguide week:** ACD week 4 (v.18)
 **Glossary file:** `docs/coursebook-mining/part-8-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part VIII run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | The DevOps Philosophy | validated | 2317 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 2 | Continuous Integration vs Continuous Deployment | validated | 2365 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 3 | Pipelines as Code | validated | 2123 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 4 | Build, Test, and Smoke Gates | validated | 2226 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 5 | Deployment Strategies | validated | 2182 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 6 | Pipeline Secrets and OIDC Federation | validated | 2170 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 7 | Azure Container Apps as a Deployment Target | validated | 2258 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part VIII totals:** 7 chapters, 15,641 words of prose, 14 HTML slide decks. All chapters pass voice-check clean.
 
 ---
 

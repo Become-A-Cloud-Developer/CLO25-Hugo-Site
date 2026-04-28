@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Azure Container Apps som driftsättningsmål</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    AZURE<br>
+                    CONTAINER APPS<br>
+                    SOM MÅL
+                </h1>
+
+                <p class="subtitle">Del VIII &mdash; DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför en hanterad runtime -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför en hanterad runtime</h2>
+
+                <div class="fragment info-box">
+                    <p>Statslösa tjänster behöver <span class="highlight">skalning, ingress, certifikat</span> &mdash; men inte ett helt kluster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vanliga VM:ar lämnar patchning och lastbalansering till teamet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett fullt <span class="highlight">Kubernetes</span>-kluster lägger på noder, RBAC och ingress-controllers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Apps</span> sitter i mellanrummet &mdash; hanterad, serverless, opinionsstark</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Container Apps-modellen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Container Apps-modellen</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">Container App-miljö</span> är gränsen för nätverk och observabilitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">container app</span> är den driftsatta enheten &mdash; image, env-vars, ingress, skalning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">revision</span> är en oföränderlig ögonblicksbild av appens image och konfiguration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje meningsfull ändring skapar en <span class="highlight">ny revision</span> &mdash; aldrig en ändring på plats</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Single- mot multiple-revision-läge -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Single- mot multiple-revision-läge</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Single-revision</span> ersätter den aktiva revisionen vid varje deploy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Multiple-revision</span> låter gamla revisioner leva kvar för <span class="highlight">trafikuppdelning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multiple-revision är grunden för <span class="highlight">canary</span> och <span class="highlight">blue-green</span>-strategier</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avställda revisioner kostar inget vid noll trafik, men skräpar i listan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Ingress -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Ingress</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ingress</span> kopplar in publik <span class="highlight">FQDN</span>, HTTPS och Layer 7-routing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hanterade certifikat &mdash; ingen manuell certifikatlivscykel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Egna domäner</span> via CNAME plus plattformsutfärdade eller uppladdade certifikat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">mTLS</span> på miljönivå autentiserar anrop mellan tjänster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Skalningsregler -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Skalningsregler</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">HTTP-samtidighet</span> &mdash; skala på antal pågående requests per replika</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CPU / minne</span> &mdash; skala på observerat resurstryck</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Egna KEDA-scalers</span> &mdash; Service Bus-ködjup, Kafka-lag, cron</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Skala till noll</span> med <code>--min-replicas 0</code> &mdash; betala inget när tyst</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Driftsättningens uppdateringsflöde -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Driftsättningens uppdateringsflöde</h2>
+
+                <div class="fragment info-box">
+                    <p><code>az containerapp update --image mycr.azurecr.io/cloudci:1.0</code> skapar en ny revision</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Plattformen patchar aldrig en körande revision &mdash; alltid en <span class="highlight">ny oföränderlig</span> version</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>az containerapp revision list</code> visar revisionshistoriken per app</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pipelinens smoke-gate verifierar att den nya revisionen är <span class="highlight">aktiv</span> och frisk</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Hämta från ACR med managed identity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hämta från ACR med managed identity</h2>
+
+                <div class="fragment info-box">
+                    <p>Naivt: lagra registrets användarnamn + lösenord som app-konfiguration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Native: ge appen en <span class="highlight">managed identity</span>, tilldela den <code>AcrPull</code> på registryt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runtimen mintar en <span class="highlight">kortlivad ACR-token</span> vid varje pull &mdash; ingen hemlighet sparas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma primitiv som andra Azure-tjänster använder för att läsa från ACR</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Hänger ihop med övriga delen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hänger ihop med övriga delen</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Pipeline</span> bygger och pushar imagen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Smoke-gate</span> curlar FQDN efter <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Driftsättningsstrategin</span> väljer single- eller multiple-revision-läge</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OIDC-federation</span> låter pipelinen anropa <code>az containerapp update</code> utan hemlighet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

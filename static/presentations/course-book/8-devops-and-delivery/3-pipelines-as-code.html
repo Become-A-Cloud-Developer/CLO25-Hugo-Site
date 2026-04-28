@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Pipelines as Code</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PIPELINES<br>
+                    AS CODE
+                </h1>
+
+                <p class="subtitle">Part VIII — DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why the pipeline belongs in the repo -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why The Pipeline Belongs In The Repo</h2>
+
+                <div class="fragment info-box">
+                    <p>Clicks in a portal cannot be <span class="highlight">code-reviewed</span> or diffed</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A new team member <span class="highlight">cannot read the release process</span> by reading the source</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Portal redesigns silently <span class="highlight">break institutional knowledge</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A YAML file in the repo is <span class="highlight">reviewed, reverted, and audited</span> like any other code</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The GitHub Actions vocabulary -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The GitHub Actions Vocabulary</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workflow</span> — a YAML file in <code>.github/workflows/</code> that triggers on events</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Job</span> — a set of steps that run together on one runner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Step</span> — a single shell command or action invocation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Runner</span> — the machine (Ubuntu, Windows, macOS) that executes the job</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Action</span> — a reusable, named unit of code called from a step</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The hierarchy fits together -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Hierarchy Fits Together</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">workflow</span> contains one or more <span class="highlight">jobs</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">job</span> runs on a runner and contains <span class="highlight">steps</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">step</span> is either a shell <code>run:</code> or an <code>uses:</code> action call</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jobs run in parallel by default; <code>needs:</code> <span class="highlight">chains them sequentially</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each job starts on a <span class="highlight">fresh runner</span> — no state from previous runs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Triggers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Triggers: When A Workflow Runs</h2>
+
+                <div class="fragment info-box">
+                    <p><code>push</code> — fires on every commit to a <span class="highlight">specified branch</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>pull_request</code> — fires when a PR is opened or updated; <span class="highlight">the gate</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>workflow_dispatch</code> — adds a manual <span class="highlight">"Run workflow"</span> button</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>schedule</code> — fires on a <span class="highlight">cron expression</span> (nightly tests, housekeeping)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One workflow can listen for <span class="highlight">several triggers at once</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Code review for the pipeline itself -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Code Review For The Pipeline Itself</h2>
+
+                <div class="fragment info-box">
+                    <p>Pipeline edits flow through the <span class="highlight">same PR review</span> as application changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Risky changes (new deploy step, rotated credentials) are <span class="highlight">gated by a reviewer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Commit history of <code>.github/workflows/</code> becomes the <span class="highlight">release-process audit log</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A bad pipeline change is <span class="highlight">one <code>git revert</code> away</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Artifacts -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Artifacts: Passing Files Between Jobs</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">artifact</span> is a file or set of files produced by a job</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each job runs on a fresh runner — <span class="highlight">disk does not carry over</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Upload</span> in the build job, <span class="highlight">download</span> in the test job</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stored on the workflow run page (<span class="highlight">90-day default</span>) for forensic download</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Artifacts are workflow-internal; <span class="highlight">Docker images</span> are external deliverables</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Minimal CI Workflow</h2>
+
+                <div class="fragment info-box">
+                    <p><code>on: [push, pull_request]</code> — fires on commits to <span class="highlight">main</span> and PRs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Three jobs: <code>build</code>, <code>test</code>, <code>docker-build</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>needs:</code> chains them; <span class="highlight">failure halts the chain</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each job re-checks out the source — <span class="highlight">fresh runners share no state</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>${{ secrets.DOCKERHUB_TOKEN }}</code> is injected, <span class="highlight">never visible in logs</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: The trade-off: YAML drift -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Trade-off: YAML Drift</h2>
+
+                <div class="fragment info-box">
+                    <p>Workflows grow past readability fast — <span class="highlight">30 lines become 300</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reusable workflows</span> (<code>workflow_call</code>) factor out shared logic</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Composite actions</span> package step sequences into a named action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Matrix strategies</span> collapse "same job for each version" into one definition</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Refactor the workflow with the <span class="highlight">same instincts as application code</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

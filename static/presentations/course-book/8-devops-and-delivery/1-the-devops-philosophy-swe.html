@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DevOps-filosofin</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DEVOPS-<br>
+                    FILOSOFIN
+                </h1>
+
+                <p class="subtitle">Del VIII — DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Den historiska klyftan -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Den Historiska Klyftan</h2>
+
+                <div class="fragment info-box">
+                    <p>Utvecklare skrev kod; <span class="highlight">drift</span> körde den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kvartalsvisa releaser, helgnatt-driftsättningar, <span class="highlight">skuldbeläggning</span> vid fel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två team med <span class="highlight">motsatta mål</span>: förändring vs. drifttid</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kostnaden gömdes i <span class="highlight">batch-storlek</span> och köer mellan team</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad DevOps förändrade -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad DevOps Förändrade</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Delat ägarskap</span> — bygg det, kör det, ta jouren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Skuldfria post-mortems</span> söker saknade skyddsräcken, inte personer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Automation som standard</span> — allt som görs två gånger skriptas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kulturen först; <span class="highlight">verktyg och mått</span> därefter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: De fyra DORA-måtten -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De Fyra DORA-måtten</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ledtid</span> — från commit till produktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Driftsättningsfrekvens</span> — hur ofta kod når användarna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">MTTR</span> — från incident till återställd tjänst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Change-failure rate</span> — andel driftsättningar som orsakar incident</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två mäter <span class="highlight">genomflöde</span>; två mäter <span class="highlight">stabilitet</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Genomflöde vs. stabilitet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomflöde vs. Stabilitet</h2>
+
+                <div class="fragment info-box">
+                    <p>Genomflöde utan stabilitet = <span class="highlight">kaospipeline</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stabilitet utan genomflöde = <span class="highlight">fryst releasecykel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Elit-team scorar högt på <span class="highlight">alla fyra</span> samtidigt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Frekvent <span class="highlight">återställningsövning</span> sänker MTTR</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Värdeströmmen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Värdeströmmen</h2>
+
+                <div class="fragment info-box">
+                    <p>Stegen från <span class="highlight">idé till körande kod</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mest tid är <span class="highlight">väntan</span>, inte arbete</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slöseri gömmer sig i <span class="highlight">stora batchar</span> och manuella överlämningar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kartlägg först, <span class="highlight">automatisera värsta kön</span> sedan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Konkret exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">En Tvåårig Resa</h2>
+
+                <div class="fragment info-box">
+                    <p>Före: kvartalsvisa driftsättningar, <span class="highlight">8 h MTTR</span>, 30% change-failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Efter: dagliga driftsättningar, <span class="highlight">12 min MTTR</span>, 5% change-failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kulturskifte: <span class="highlight">delad jour</span> + skuldfria genomgångar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verktygsskifte: <code>GitHub Actions</code> + <code>Container Apps</code> + smoke tests</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Vad Del VIII täcker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Del VIII Täcker</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CI vs. CD</span>, pipelines som kod, gates, driftsättningsstrategier</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hemligheter</span>, OIDC-federation, Azure Container Apps som mål</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje kapitel svarar: <span class="highlight">vilket DORA-mått påverkar detta?</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

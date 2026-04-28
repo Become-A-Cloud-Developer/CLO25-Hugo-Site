@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Pipelines som kod</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    PIPELINES<br>
+                    SOM KOD
+                </h1>
+
+                <p class="subtitle">Del VIII — DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför pipelinen hör hemma i repot -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Pipelinen Hör Hemma I Repot</h2>
+
+                <div class="fragment info-box">
+                    <p>Klick i en portal kan inte <span class="highlight">code-reviewas</span> eller diffas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En ny teammedlem kan inte läsa releaseprocessen genom att <span class="highlight">läsa källkoden</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>När portalen designas om förlorar teamet sin <span class="highlight">samlade kunskap</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En YAML-fil i repot <span class="highlight">granskas, revertas och loggas</span> som vilken kod som helst</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vokabulären i GitHub Actions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vokabulären I GitHub Actions</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workflow</span> — en YAML-fil i <code>.github/workflows/</code> som triggas av events</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Jobb</span> — en uppsättning steg som körs tillsammans på en runner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Steg</span> — ett enskilt skalkommando eller anrop av en action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Runner</span> — maskinen (Ubuntu, Windows, macOS) som kör jobbet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Action</span> — en återanvändbar, namngiven kodenhet som anropas från ett steg</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Hierarkin hänger ihop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hierarkin Hänger Ihop</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">workflow</span> innehåller ett eller flera <span class="highlight">jobb</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">jobb</span> körs på en runner och innehåller <span class="highlight">steg</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">steg</span> är antingen ett <code>run:</code>-skal eller ett <code>uses:</code>-action-anrop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jobb körs parallellt som standard; <code>needs:</code> <span class="highlight">kedjar dem sekventiellt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje jobb startar på en <span class="highlight">fräsch runner</span> — ingen rester från tidigare körningar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Triggers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Triggers: När Ett Workflow Körs</h2>
+
+                <div class="fragment info-box">
+                    <p><code>push</code> — körs på varje commit till en <span class="highlight">angiven branch</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>pull_request</code> — körs när en PR öppnas eller uppdateras; <span class="highlight">grinden</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>workflow_dispatch</code> — lägger till en manuell <span class="highlight">"Run workflow"-knapp</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>schedule</code> — körs på <span class="highlight">cron-uttryck</span> (nattliga tester, städjobb)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett workflow kan lyssna på <span class="highlight">flera triggers samtidigt</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Code review även för pipelinen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Code Review Även För Pipelinen</h2>
+
+                <div class="fragment info-box">
+                    <p>Pipeline-ändringar går genom <span class="highlight">samma PR-granskning</span> som applikationskod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Riskabla ändringar (nytt deploy-steg, roterade hemligheter) <span class="highlight">granskas</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Commit-historiken i <code>.github/workflows/</code> blir releaseprocessens <span class="highlight">revisionslogg</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En dålig pipeline-ändring är <span class="highlight">ett <code>git revert</code> bort</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Artefakter -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Artefakter: Filer Mellan Jobb</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">artefakt</span> är en fil eller filsamling som ett jobb producerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje jobb körs på en fräsch runner — <span class="highlight">disken följer inte med</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ladda upp</span> i build-jobbet, <span class="highlight">ladda ner</span> i test-jobbet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sparas på workflow run-sidan (<span class="highlight">90 dagar default</span>) för felsökning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Artefakter är interna i workflowet; <span class="highlight">Docker-images</span> är externa leverabler</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Konkret exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Minimalt CI-workflow</h2>
+
+                <div class="fragment info-box">
+                    <p><code>on: [push, pull_request]</code> — körs på commits till <span class="highlight">main</span> och PR:er</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tre jobb: <code>build</code>, <code>test</code>, <code>docker-build</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>needs:</code> kedjar dem; <span class="highlight">ett fel stoppar kedjan</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje jobb checkar ut källkoden på nytt — <span class="highlight">runners delar inget tillstånd</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>${{ secrets.DOCKERHUB_TOKEN }}</code> injiceras, <span class="highlight">syns aldrig i loggarna</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Avvägningen: YAML-drift -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Avvägningen: YAML-drift</h2>
+
+                <div class="fragment info-box">
+                    <p>Workflows växer förbi läsbarheten snabbt — <span class="highlight">30 rader blir 300</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Återanvändbara workflows</span> (<code>workflow_call</code>) bryter ut delad logik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Composite actions</span> packar stegsekvenser till en namngiven action</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Matrix-strategier</span> samlar "samma jobb per version" i en definition</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Refaktorera workflowet med <span class="highlight">samma instinkter som applikationskoden</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

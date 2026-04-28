@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Build, Test, and Smoke Gates</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BUILD, TEST,<br>
+                    AND SMOKE<br>
+                    GATES
+                </h1>
+
+                <p class="subtitle">Part VIII — DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: A pipeline without gates is a build script -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A Pipeline Without Gates Is A Build Script</h2>
+
+                <div class="fragment info-box">
+                    <p>CI only delivers value when each commit is <span class="highlight">verified</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automation that ships whatever was pushed <span class="highlight">is not CI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A change is "integrated" once the pipeline <span class="highlight">mechanically proves</span> it still works</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Three gates earn their keep on every container pipeline: <span class="highlight">build, test, smoke</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The build stage -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Build Stage</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">build stage</span> compiles source code into executable artifacts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cheapest question the pipeline can ask: <span class="highlight">"Does this form a valid program?"</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lint rides along — style and easy bug patterns caught for <span class="highlight">almost no cost</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Output is the <span class="highlight">artifact</span> later stages consume (binary, image, published dir)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fails fast</span> before any test or deploy runs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Unit tests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Unit Tests</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">unit test</span> verifies a single function or method in <span class="highlight">isolation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Test doubles replace databases, HTTP servers, <span class="highlight">message queues</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Defining property is <span class="highlight">speed</span> — hundreds of tests in seconds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Catches logical bugs inside a method: <span class="highlight">bad branching, off-by-one, null handling</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cannot catch failures that emerge from <span class="highlight">how units combine</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Integration tests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Integration Tests</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">integration test</span> exercises how multiple units interact end-to-end</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Real PostgreSQL container, real HTTP layer, <span class="highlight">real configuration binding</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Catches contract drift unit tests can't see — <span class="highlight">wrong SQL columns, JSON mismatches</span>, broken migrations</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cost is runtime — <span class="highlight">minutes per suite</span>, not seconds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runs <span class="highlight">after unit tests</span> so a cheap failure does not waste expensive cycles</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Smoke tests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Smoke Tests</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">smoke test</span> verifies the deployed application is alive and responding</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Targets the <span class="highlight">live FQDN</span> — runs against the artifact, not local code</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lightweight — typically <code>curl /healthz</code> and check the <span class="highlight">status code</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Does not promise correctness; promises the <span class="highlight">deployment landed</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">deployment gate</span> — final check before declaring success</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Gate ordering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Gate Ordering — Fail Fast</h2>
+
+                <div class="fragment info-box">
+                    <p>Order gates by cost: <span class="highlight">cheapest first, slowest last</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Build &rarr; unit &rarr; integration &rarr; image build &rarr; deploy &rarr; <span class="highlight">smoke</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each stage <code>needs:</code> the previous; pipeline <span class="highlight">halts on first failure</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A broken build should not spend <span class="highlight">20 minutes building containers</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Saves runner minutes and <span class="highlight">shortens feedback loop</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Test-result publishing -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Test-Result Publishing</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">test-result publisher</span> renders pass/fail counts and failures inline on the PR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet test --logger trx</code> + <code>dorny/test-reporter@v1</code> for <span class="highlight">.NET</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">JUnit XML</span> for TypeScript / Python</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Failed tests visible <span class="highlight">without expanding 5000-line job logs</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Gate is only as useful as its <span class="highlight">visibility</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example — dotnet test Then Smoke</h2>
+
+                <div class="fragment info-box">
+                    <p>Job 1: <code>dotnet test</code> with TRX logger; <span class="highlight">publishes results</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Job 2: <code>needs: test</code>, deploys with <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Job 3: <code>needs: deploy</code>, runs <code>curl --fail https://${FQDN}/healthz</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>--fail</code> exits non-zero on any non-2xx response &rarr; <span class="highlight">workflow fails red</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bonus check: assert the response body shows the <span class="highlight">new build SHA</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

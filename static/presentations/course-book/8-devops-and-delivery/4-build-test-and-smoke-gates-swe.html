@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Build, test och smoke-gates</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BUILD, TEST<br>
+                    OCH SMOKE-<br>
+                    GATES
+                </h1>
+
+                <p class="subtitle">Del VIII — DevOps och leverans</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: En pipeline utan gates är ett build-script -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">En Pipeline Utan Gates Är Ett Build-script</h2>
+
+                <div class="fragment info-box">
+                    <p>CI ger värde först när varje commit <span class="highlight">verifieras</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automation som skickar vad som än pushas <span class="highlight">är inte CI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En ändring är "integrerad" när pipelinen <span class="highlight">mekaniskt visar</span> att den fortfarande fungerar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tre gates återkommer i varje container-pipeline: <span class="highlight">build, test, smoke</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Build-steget -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Build-steget</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">build-steg</span> kompilerar källkoden till körbara artefakter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pipelinens billigaste fråga: <span class="highlight">"Är detta ett giltigt program?"</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Linting följer med — stilfel och enkla buggmönster fångas för <span class="highlight">nästan inget</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Output är <span class="highlight">artefakten</span> senare steg använder (binär, image, publicerad katalog)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fail fast</span> — stoppar innan något test eller deploy körs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Enhetstester -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Enhetstester (Unit Tests)</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">unit test</span> verifierar en enskild funktion eller metod i <span class="highlight">isolation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Test-dubbletter ersätter databaser, HTTP-servrar och <span class="highlight">meddelandeköer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Karaktäristisk egenskap är <span class="highlight">fart</span> — hundratals tester på sekunder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fångar logiska fel inuti en metod: <span class="highlight">fel grenar, off-by-one, null-hantering</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fångar inte fel som uppstår när <span class="highlight">enheter kombineras</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Integrationstester -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Integrationstester</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">integrationstest</span> kör flera enheter tillsammans, på riktigt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Riktig PostgreSQL-container, riktigt HTTP-lager, <span class="highlight">riktig konfigbindning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fångar kontraktsglapp som unit-tester missar — <span class="highlight">fel SQL-kolumner, JSON-skillnader</span>, trasiga migrationer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kostnaden är körtid — <span class="highlight">minuter</span>, inte sekunder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Körs <span class="highlight">efter unit-testerna</span> så en billig miss inte slösar dyra cykler</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Smoke-tester -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Smoke-tester</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">smoke-test</span> verifierar att den driftsatta applikationen lever och svarar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Riktas mot <span class="highlight">publik FQDN</span> — körs mot artefakten, inte mot lokal kod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lättviktigt — vanligen <code>curl /healthz</code> och <span class="highlight">statuskoll</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lovar inte korrekthet; lovar att <span class="highlight">driftsättningen landade</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Driftsättnings-gaten</span> — sista kontrollen innan pipelinen säger "klart"</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Ordning på gates -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Ordning På Gates — Fail Fast</h2>
+
+                <div class="fragment info-box">
+                    <p>Sortera gates efter kostnad: <span class="highlight">billigaste först, dyrast sist</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Build &rarr; unit &rarr; integration &rarr; image-bygge &rarr; deploy &rarr; <span class="highlight">smoke</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje steg <code>needs:</code> föregående; pipelinen <span class="highlight">stannar vid första felet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En trasig build ska inte spendera <span class="highlight">20 minuter på att bygga containrar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sparar runner-minuter och <span class="highlight">kortar feedback-loopen</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Test-resultat-publicering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Test-resultat-publicering</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">test-result publisher</span> renderar pass/fail och fel direkt på PR:en</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet test --logger trx</code> + <code>dorny/test-reporter@v1</code> för <span class="highlight">.NET</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">JUnit XML</span> för TypeScript / Python</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trasiga tester syns <span class="highlight">utan att expandera en 5000 raders logg</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En gate är bara så användbar som dess <span class="highlight">synlighet</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel — dotnet test Följt Av Smoke</h2>
+
+                <div class="fragment info-box">
+                    <p>Job 1: <code>dotnet test</code> med TRX-logger; <span class="highlight">publicerar resultat</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Job 2: <code>needs: test</code>, deployar med <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Job 3: <code>needs: deploy</code>, kör <code>curl --fail https://${FQDN}/healthz</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>--fail</code> ger non-zero på allt utom 2xx &rarr; <span class="highlight">workflow blir röd</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bonus: kontrollera att svaret innehåller <span class="highlight">nya build-SHA:n</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

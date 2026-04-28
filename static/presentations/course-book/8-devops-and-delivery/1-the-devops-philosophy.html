@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>The DevOps Philosophy</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    THE DEVOPS<br>
+                    PHILOSOPHY
+                </h1>
+
+                <p class="subtitle">Part VIII — DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The legacy split -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Legacy Split</h2>
+
+                <div class="fragment info-box">
+                    <p>Developers wrote code; <span class="highlight">operations</span> ran it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Quarterly releases, weekend cutovers, <span class="highlight">blame</span> after failures</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two teams optimised for <span class="highlight">opposing goals</span>: change vs. uptime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cost was hidden in <span class="highlight">batch size</span> and handoff queues</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What DevOps changed -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What DevOps Changed</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Shared ownership</span> — build it, run it, page on it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Blameless post-mortems</span> focus on missing guardrails, not people</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Automation as default</span> — anything done twice is scripted</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Culture comes first; <span class="highlight">tooling and metrics</span> follow</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The four DORA metrics -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Four DORA Metrics</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Lead time</span> — commit to production</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Deployment frequency</span> — how often code reaches users</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Mean time to recovery</span> — incident to restored service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Change-failure rate</span> — percentage of deploys causing incidents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two measure <span class="highlight">throughput</span>; two measure <span class="highlight">stability</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Throughput vs. stability -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Throughput vs. Stability</h2>
+
+                <div class="fragment info-box">
+                    <p>Throughput without stability = <span class="highlight">chaos pipeline</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stability without throughput = <span class="highlight">frozen release cycle</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Elite teams score high on <span class="highlight">all four</span> simultaneously</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Frequent <span class="highlight">rollback practice</span> drives MTTR down</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The value stream -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Value Stream</h2>
+
+                <div class="fragment info-box">
+                    <p>Sequence of steps from <span class="highlight">idea to running code</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Most time is <span class="highlight">waiting</span>, not working</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Waste hides in <span class="highlight">large batches</span> and manual handoffs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Map it, then <span class="highlight">automate the worst queue</span> first</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A Two-Year Arc</h2>
+
+                <div class="fragment info-box">
+                    <p>Before: quarterly deploys, <span class="highlight">8 h MTTR</span>, 30% change-failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>After: daily deploys, <span class="highlight">12 min MTTR</span>, 5% change-failure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cultural shift: <span class="highlight">shared on-call</span> + blameless review</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tool-chain shift: <code>GitHub Actions</code> + <code>Container Apps</code> + smoke tests</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: What Part VIII covers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Part VIII Covers</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CI vs. CD</span>, pipelines as code, gates, deployment strategies</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Secrets</span>, OIDC federation, Azure Container Apps as target</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each chapter answers: <span class="highlight">which DORA metric does this move?</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

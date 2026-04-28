@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Deployment Strategies</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DEPLOYMENT<br>
+                    STRATEGIES
+                </h1>
+
+                <p class="subtitle">Part VIII &mdash; DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a strategy is needed -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a Strategy is Needed</h2>
+
+                <div class="fragment info-box">
+                    <p>A deploy is the <span class="highlight">riskiest moment</span> &mdash; the new code has never carried real traffic</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strategies differ on <span class="highlight">cutover length</span>, <span class="highlight">blast radius</span>, and <span class="highlight">rollback speed</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Faster cutover usually means <span class="highlight">larger blast radius</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Safer rollout usually means <span class="highlight">more infrastructure</span> to maintain</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The manual gate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Manual Gate</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">manual gate</span> stops the pipeline until a human clicks <span class="highlight">Approve</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Continuous <span class="highlight">delivery</span> without continuous <span class="highlight">deployment</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Catches "wrong moment" failures &mdash; Friday deploy, customer demo, suspicious build</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: <span class="highlight">lead time</span> when the approver is unavailable</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Rolling deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Rolling Deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Replace replicas <span class="highlight">one batch at a time</span> behind the load balancer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Application stays available throughout the rollout</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>maxUnavailable</code> and <code>maxSurge</code> shape capacity during the window</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: a <span class="highlight">mixed-version window</span> can surface incompatibility bugs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Blue-green deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Blue-Green Deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Two identical environments &mdash; one <span class="highlight">active</span>, one <span class="highlight">idle</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Deploy to idle, smoke-test, then <span class="highlight">flip traffic atomically</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollback is one switch back &mdash; measured in seconds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: roughly <span class="highlight">2&times; infrastructure</span> during the deploy window</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Canary deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Canary Deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Route <span class="highlight">1&ndash;5%</span> of traffic to the new version first</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Watch error rate, latency, and KPIs against thresholds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ramp <span class="highlight">1% &rarr; 10% &rarr; 50% &rarr; 100%</span> if metrics stay green; revert if not</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Needs traffic-splitting + metric-driven promotion</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Feature flags -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Feature Flags</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">feature flag</span> turns a feature on or off at runtime, no redeploy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Decouples <span class="highlight">deploy</span> (install code) from <span class="highlight">release</span> (expose to users)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Combines with any deployment strategy &mdash; flag inside a canary build</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollback via flag flip is faster than redeploy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Choosing a strategy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Choosing a Strategy</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Manual gate</span> &mdash; low-frequency releases; humans add the missing signal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rolling</span> &mdash; stateless services; backwards-compatible changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Blue-green</span> &mdash; cutover-sensitive; incompatible changes with prior migration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Canary</span> &mdash; rich metrics; need real-traffic validation before full exposure</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example &mdash; Container Apps</h2>
+
+                <div class="fragment info-box">
+                    <p>The exercise's manual gate: push image, then click <span class="highlight">Create new revision</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automated form: <code>az containerapp update</code> + <code>curl --fail https://$FQDN/health</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A failing smoke test exits the workflow non-zero</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multi-revision mode + <code>traffic</code> weights gives a real <span class="highlight">canary</span> primitive</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Continuous Integration vs Continuous Deployment</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CI<br>
+                    VS CD
+                </h1>
+
+                <p class="subtitle">Part VIII — DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: CI/CD is three practices -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">CI/CD Is Three Practices, Not One</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Continuous integration</span> — daily merges to a shared trunk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Continuous delivery</span> — every green commit is releasable, gated by a human</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Continuous deployment</span> — every green commit ships, no human gate</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Treating them as one blob hides <span class="highlight">which step a team should adopt next</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The pain that motivated CI -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Pain That Motivated CI</h2>
+
+                <div class="fragment info-box">
+                    <p>Two-week feature branches <span class="highlight">drift hard</span> from the trunk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Renames, dependency upgrades, refactors <span class="highlight">collide at merge</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Integration risk compounds <span class="highlight">non-linearly</span> with branch age</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Three small daily merges beat <span class="highlight">one merge of three days</span> of work</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: What CI actually requires -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What CI Actually Requires</h2>
+
+                <div class="fragment info-box">
+                    <p>Every commit triggers <span class="highlight">build and test</span>, unconditionally</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every commit reaches a <span class="highlight">shared trunk</span> within hours</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A red build blocks <span class="highlight">everyone</span> until it is green again</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Discipline around the red build is <span class="highlight">what makes CI a practice</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Trunk-based development -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Trunk-based Development</h2>
+
+                <div class="fragment info-box">
+                    <p>Short-lived branches: <span class="highlight">hours to two days</span>, never weeks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Vertical slicing</span>: ship a migration first, then the endpoint, then the UI</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Feature flags</span> hide unfinished work behind a runtime switch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The trunk is <span class="highlight">always production-shaped</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The pull-request gate -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Pull-Request Gate</h2>
+
+                <div class="fragment info-box">
+                    <p>The trunk's quality bar moves to <span class="highlight">merge time</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Build green, tests green, lint clean, <span class="highlight">one peer review</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Different from a deployment gate — a PR gate <span class="highlight">protects the trunk itself</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fast pipeline (~minutes) is a <span class="highlight">precondition</span>, not a luxury</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: The spectrum -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Spectrum</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CI</span> — trunk is always buildable; deploy is a separate question</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Continuous delivery</span> — green commit could ship within minutes, human chooses when</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Continuous deployment</span> — green commit ships automatically, no button to click</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each step strictly assumes the <span class="highlight">previous one is already in place</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Branch vs Flag-Protected Trunk</h2>
+
+                <div class="fragment info-box">
+                    <p>Team A: <span class="highlight">9-day branch</span> → painful merge, two integration bugs, 14 days to prod</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Team B: <span class="highlight">5 small PRs</span> over 4 days, each green and shipped behind a flag</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Day 4: flag flipped <span class="highlight">5% canary</span> → 100% by end of day</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same feature, less integration risk, <span class="highlight">deploy decoupled from release</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Choosing CD vs continuous deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Choosing CD vs Continuous Deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>Regulated regime → human approval is mandated; pick <span class="highlight">delivery</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rollback faster than diagnosis → pick <span class="highlight">deployment</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No canary or flags yet → <span class="highlight">not ready</span> for deployment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Decision is <span class="highlight">operational maturity</span>, not technical capability</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

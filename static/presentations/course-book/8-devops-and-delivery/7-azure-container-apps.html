@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Azure Container Apps as a Deployment Target</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    AZURE<br>
+                    CONTAINER APPS<br>
+                    AS A TARGET
+                </h1>
+
+                <p class="subtitle">Part VIII &mdash; DevOps and Delivery</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a managed runtime -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a Managed Runtime</h2>
+
+                <div class="fragment info-box">
+                    <p>Stateless services need <span class="highlight">scaling, ingress, certificates</span> &mdash; but not a full cluster</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Plain VMs leave patching and load-balancing to the team</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A full <span class="highlight">Kubernetes</span> cluster adds nodes, RBAC, and ingress controllers to run</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Apps</span> sits in the gap &mdash; managed, serverless, opinionated</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The Container Apps model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Container Apps Model</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">Container App environment</span> is the network and observability boundary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">container app</span> is the deployable unit &mdash; image, env vars, ingress, scale</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">revision</span> is an immutable snapshot of one app's image and configuration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every change of substance produces a <span class="highlight">new revision</span> &mdash; never an in-place edit</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Single vs multiple revision mode -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Single vs Multiple Revision Mode</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Single-revision</span> mode replaces the active revision on every deploy</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Multiple-revision</span> mode keeps old revisions running for <span class="highlight">traffic splitting</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Multiple-revision is the substrate for <span class="highlight">canary</span> and <span class="highlight">blue-green</span> strategies</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stale revisions cost nothing at zero traffic, but clutter the revision list</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Ingress -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Ingress</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ingress</span> wires up the public <span class="highlight">FQDN</span>, HTTPS, and Layer-7 routing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Managed certificates &mdash; no manual cert lifecycle</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Custom domains</span> via CNAME plus platform-issued or uploaded certs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">mTLS</span> on the environment authenticates service-to-service calls</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Scale rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Scale Rules</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">HTTP concurrency</span> &mdash; scale on in-flight requests per replica</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CPU / memory</span> &mdash; scale on observed resource pressure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Custom KEDA scalers</span> &mdash; Service Bus queue depth, Kafka lag, cron</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scale to zero</span> with <code>--min-replicas 0</code> &mdash; pay nothing while idle</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: The deployment update flow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Deployment Update Flow</h2>
+
+                <div class="fragment info-box">
+                    <p><code>az containerapp update --image mycr.azurecr.io/cloudci:1.0</code> creates a new revision</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The platform never patches a running revision &mdash; always a <span class="highlight">new immutable snapshot</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>az containerapp revision list</code> shows the revision history per app</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A pipeline's smoke gate confirms the new revision is <span class="highlight">active</span> and healthy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Pulling from ACR with managed identity -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Pulling from ACR with Managed Identity</h2>
+
+                <div class="fragment info-box">
+                    <p>Naive: store registry username + password as app config</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Native: assign a <span class="highlight">managed identity</span> to the app, grant it <code>AcrPull</code> on the registry</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The runtime mints a <span class="highlight">short-lived ACR token</span> every pull &mdash; no stored secret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same primitive other Azure services use to read from ACR</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Composing with the rest of the Part -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Composing with the Rest of the Part</h2>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">pipeline</span> builds and pushes the image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">smoke gate</span> curls the FQDN after <code>az containerapp update</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">deployment strategy</span> picks single- or multiple-revision mode</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OIDC federation</span> lets the pipeline call <code>az containerapp update</code> with no secret</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
