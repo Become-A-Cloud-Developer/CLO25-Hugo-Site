@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Multi-Platform Builds</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    MULTI-PLATFORM<br>
+                    BUILDS
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The Mismatch Problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Mismatch Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Developer on <span class="highlight">Apple Silicon</span> (arm64) builds an image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pushes to registry, deploys to <span class="highlight">Azure VM</span> (amd64)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runtime fails with <code>exec format error</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Single-platform images assume <span class="highlight">build host = run host</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What a Platform Is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What a Platform Is</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Platform</span> = <code>os/architecture/variant</code> (e.g. <code>linux/amd64</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CPUs decode only their own <span class="highlight">instruction set</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Container images bundle <span class="highlight">compiled binaries</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>uname -m</code> reveals the host's architecture</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Architecture Matters Silently -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Architecture Matters Silently</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker build</code> defaults to <span class="highlight">host architecture</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No warning that the image is <span class="highlight">non-portable</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mismatch surfaces only at runtime, on a different host</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Errors: <code>exec format error</code>, missing executable</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Buildx as the Multi-Platform Builder -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Buildx as the Multi-Platform Builder</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Buildx</span> = Docker CLI extension using BuildKit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx build --platform linux/amd64,linux/arm64</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Builds the Dockerfile <span class="highlight">once per target platform</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Requires <code>--push</code> — local store cannot hold multi-arch</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: QEMU Enables Cross-Architecture Builds -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">QEMU Enables Cross-Architecture Builds</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">QEMU</span> emulates foreign instruction sets in user space</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kernel routes foreign binaries to QEMU via <code>binfmt_misc</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Builds AMD64 images on an ARM64 host <span class="highlight">transparently</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: emulated builds are <span class="highlight">5–10× slower</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Manifest List as the Indirection -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Manifest List as the Indirection</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Manifest list</span> = registry metadata mapping one tag to many digests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One tag → list → <span class="highlight">per-architecture image manifest</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Client pulls only the layers matching its host</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same <code>docker pull</code> command, different bytes per host</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: How the Registry Stores It -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How the Registry Stores It</h2>
+
+                <div class="fragment info-box">
+                    <p>Layers are <span class="highlight">content-addressed</span> by SHA256</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identical layers shared across architectures (rare for binaries)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OCI standard</span> — supported by Docker Hub, ACR, GHCR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx imagetools inspect</code> shows the structure</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked Example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx create --name multiarch --use</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx build --platform linux/amd64,linux/arm64 -t myimage:1.0 --push .</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ARM64 builds <span class="highlight">natively</span>; AMD64 emulated under QEMU</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Result: one tag, <span class="highlight">two architectures</span>, transparent pulls</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: When to Reach for It -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When to Reach for It</h2>
+
+                <div class="fragment info-box">
+                    <p>Mixed-architecture teams (Apple Silicon + amd64 cloud)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ARM cloud targets</span> (Graviton, Ampere) for cost</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Edge / IoT deployment alongside server deployment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Otherwise: <span class="highlight">single-platform</span> stays simpler and faster</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

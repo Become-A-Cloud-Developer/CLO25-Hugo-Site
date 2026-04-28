@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dockerfiles och multi-stage builds</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DOCKERFILES &amp;<br>
+                    MULTI-STAGE<br>
+                    BUILDS
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Imagen är driftsättningens enhet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Imagen Är Driftsättningens Enhet</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">Dockerfile</span> är det versionshanterade receptet som producerar en image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma indata, samma image — på <span class="highlight">vilken maskin som helst</span> med en Docker-daemon</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Källkod, beroenden, runtime och entrypoint <span class="highlight">följs åt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reproducerbarhet</span> är hela poängen med container-tekniken</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Dockerfile-instruktioner -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dockerfile-Instruktioner</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">FROM</span> — välj basimage; varje Dockerfile börjar här</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">WORKDIR</span> — sätt arbetskatalog för COPY och RUN</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">COPY</span> — hämta filer från build-kontexten in i imagen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">RUN</span> — kör ett skalkommando under build (skapar ett lager)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">EXPOSE / ENV / ARG</span> — dokumentera portar, sätt runtime- / build-variabler</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Build-kontexten -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Build-Kontexten</h2>
+
+                <div class="fragment info-box">
+                    <p>Den katalog som skickas till <code>docker build</code> — <span class="highlight">allt COPY kan nå</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CLI:n skickar hela kontexten till daemonen över ett socket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En uppsvälld kontext ger långsamma builds och <span class="highlight">läckta hemligheter</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">.dockerignore</span> utesluter mönster från kontexten (som <code>.gitignore</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Uteslut alltid <code>bin/</code>, <code>obj/</code>, <code>node_modules/</code>, <code>.git/</code>, <code>.env</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Lagercachen och instruktionsordning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lagercachen Och Instruktionsordning</h2>
+
+                <div class="fragment info-box">
+                    <p>Varje instruktion fingeravtrycks; <span class="highlight">oförändrade indata återanvänder</span> lagret</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cachen invalideras vid första ändrade steg — alla följande steg <span class="highlight">körs om</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kopiera beroendefiler <span class="highlight">före</span> källkod: <code>package.json</code> sedan <code>npm install</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Källkodsändringar triggar inte längre en full ominstallation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma trick för <code>*.csproj</code> + <code>dotnet restore</code>, <code>requirements.txt</code> + <code>pip install</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: ENTRYPOINT mot CMD -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ENTRYPOINT Mot CMD</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ENTRYPOINT</span> — den binär som alltid körs när en container startar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CMD</span> — standardargument, kan skrivas över på <code>docker run</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>App-imager: <span class="highlight">lås entrypoint</span> till binären — imagen är självdokumenterande</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verktygs-imager: lämna öppen, använd CMD för flexibilitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Använd alltid <span class="highlight">JSON-array-formen</span> så att <code>SIGTERM</code> når applikationen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Multi-stage-mönstret -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Multi-Stage-Mönstret</h2>
+
+                <div class="fragment info-box">
+                    <p>Byggverktyg (SDK, kompilator, pakethanterare) behövs <span class="highlight">inte vid körning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att packa med dem ökar imagestorlek och <span class="highlight">attackytan</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">multi-stage build</span> använder flera <code>FROM</code>-instruktioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tidiga stadier kompilerar och publicerar; sista stadiet håller <span class="highlight">bara runtime</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>COPY --from=build</code> flyttar artefakten över stadiegränsen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: .NET multi-stage-exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">.NET Multi-Stage-Exempel</h2>
+
+                <div class="fragment info-box">
+                    <p>Stadie 1: <code>FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet restore</code>, sedan <code>dotnet publish -c Release -o /app/publish</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stadie 2: <code>FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>COPY --from=build /app/publish .</code> — bara runtime + publicerade DLL:er</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slutlig image krymper från <span class="highlight">~1 GB till ~200 MB</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Praktik -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Praktik</h2>
+
+                <div class="fragment info-box">
+                    <p>Övning: <code>/exercises/20-docker/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Delövning 3 går igenom <span class="highlight">single-stage till multi-stage</span>-refaktoreringen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jämför imagestorlekar med <code>docker images</code> <span class="highlight">före och efter</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ändra en källkodsfil och se <span class="highlight">vilka lager som byggs om</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

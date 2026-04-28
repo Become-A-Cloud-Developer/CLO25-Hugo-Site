@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Container Registries</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONTAINER<br>
+                    REGISTRIES
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a Registry Exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a Registry Exists</h2>
+
+                <div class="fragment info-box">
+                    <p>A built image lives in <span class="highlight">one daemon's storage</span> until it is shipped somewhere</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Deployment targets — teammates, CI, production — need a <span class="highlight">shared place</span> to pull from</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">container registry</span> is that shared store, accessed over the OCI Distribution API</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same protocol for Docker Hub, ACR, GHCR, and every other registry</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: How a Registry Stores Images -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How a Registry Stores Images</h2>
+
+                <div class="fragment info-box">
+                    <p>Layers are <span class="highlight">content-addressable blobs</span> — keyed by SHA256</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">image manifest</span> lists the blobs that make up an image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repositories group versions of the same logical image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reference syntax: <code>host/repo:tag</code> (e.g. <code>mycr.azurecr.io/myapp:1.0</code>)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Tags vs Digests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tags vs Digests</h2>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">image tag</span> is a <span class="highlight">mutable</span> pointer — <code>:latest</code> can be reassigned</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An <span class="highlight">image digest</span> is a <span class="highlight">SHA256 hash</span> of the manifest — immutable</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A digest changes if even one byte of any layer changes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Production deploys should <span class="highlight">pin to a digest</span>, not a tag</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Push and Pull -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Push and Pull</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker push host/repo:tag</code> — uploads only the layers the registry lacks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker pull host/repo:tag</code> — downloads the manifest, then missing layers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Shared base layers transfer <span class="highlight">once</span> across many images</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Resumable at the layer level — a dropped connection retries one layer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Worked Example — Tag and Push -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example — Tag and Push</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker tag myapp:local mycr.azurecr.io/myapp:1.0</code> adds a <span class="highlight">second name</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker push mycr.azurecr.io/myapp:1.0</code> streams the layers to ACR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The tag tells the daemon <span class="highlight">where</span> to push — no rebuild happens</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Any authenticated machine can now <code>docker pull</code> the same bytes</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Public vs Private -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Public vs Private</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Hub</span> — default public registry; home of nginx, ubuntu, postgres</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonymous pulls are <span class="highlight">rate-limited</span> — CI runners hit the cap on shared IPs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Registry (ACR)</span> — private, Azure-identity-controlled</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Real systems mix both: pull base images from Hub, push apps to ACR</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Authenticating to the Registry -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Authenticating to the Registry</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Hub</span> — username + <span class="highlight">PAT</span> stored via <code>docker login</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR from a laptop</span> — <code>az acr login</code> exchanges Azure login for a short token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR from Azure compute</span> — <span class="highlight">managed identity</span> with the <code>AcrPull</code> role</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR from external CI</span> — <span class="highlight">OIDC federation</span>, no stored secret</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Security Scans -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Security Scans</h2>
+
+                <div class="fragment info-box">
+                    <p>Registries scan pushed images against public <span class="highlight">CVE</span> databases</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Findings attach to a specific <span class="highlight">digest</span> — the same image, scanned once</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A typical gate fails on <span class="highlight">Critical</span> CVEs, warns on High and below</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Scanning raises the floor; it does not replace careful base-image choice</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

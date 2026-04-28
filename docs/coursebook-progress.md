@@ -134,10 +134,18 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/20-docker/`
 **Studieguide week:** ACD week 2 (v.16)
 **Glossary file:** `docs/coursebook-mining/part-7-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part VII run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | Containers vs Virtual Machines | validated | 1948 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 2 | Images and Layers | validated | 1980 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 3 | Dockerfiles and Multi-Stage Builds | validated | 1908 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+| 4 | Multi-Platform Builds | validated | 1652 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 5 | Docker Compose | validated | 2065 | 12 / 12 | 2026-04-28 | All 10 gates pass |
+| 6 | Container Registries | validated | 2109 | 10 / 10 | 2026-04-28 | All 10 gates pass |
+
+**Part VII totals:** 6 chapters, 11,662 words of prose, 12 HTML slide decks. All chapters pass voice-check clean.
 
 ---
 

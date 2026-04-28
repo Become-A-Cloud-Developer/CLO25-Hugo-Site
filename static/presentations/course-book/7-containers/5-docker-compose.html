@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Docker Compose</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DOCKER<br>
+                    COMPOSE
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why Compose Exists -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Compose Exists</h2>
+
+                <div class="fragment info-box">
+                    <p>A real app is rarely <span class="highlight">a single container</span> — web + database + queue is three</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker run</code> for each piece becomes a long, fragile sequence of commands</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Order, flags, and hostnames have to match across every developer machine</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A second developer joining should not need that <span class="highlight">incantation</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Compose</span> collapses it into one file checked into the repository</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What Compose Is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Compose Is</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Compose</span> reads <code>docker-compose.yml</code> and orchestrates multi-container apps</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Targets the <span class="highlight">local development</span> workflow, not production</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automates networking, volume management, and environment setup</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One command — <code>docker compose up</code> — starts the whole stack</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same file drives <span class="highlight">integration tests</span> in CI</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The Compose File -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Compose File</h2>
+
+                <div class="fragment info-box">
+                    <p>A YAML document, conventionally <code>compose.yaml</code> at the repo root</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Three top-level keys: <span class="highlight">services</span>, <span class="highlight">volumes</span>, <span class="highlight">networks</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>services</code> is mandatory; the rest are optional</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose creates a <span class="highlight">default network</span> for the project automatically</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Modern Compose ignores the old <code>version:</code> key — leave it out</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Services -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Services</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">service</span> = a named, containerized application</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each service entry under <code>services:</code> becomes one container at runtime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The service name doubles as the <span class="highlight">DNS hostname</span> inside the project network</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Either <code>build: .</code> (local Dockerfile) or <code>image: mongo:7</code> (registry)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ports: ["8080:8080"]</code> publishes to host; service-to-service does not need it</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Named Networks and DNS -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Named Networks and DNS</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">named network</span> is created and managed by Compose</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Services on the same network resolve each other by <span class="highlight">service name</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose runs an <span class="highlight">embedded DNS server</span> inside the project network</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The web container reaches the database at <code>mongodb://db:27017</code> — no IP</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>New container, new IP — DNS lookup returns the new address</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Volumes -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Volumes</h2>
+
+                <div class="fragment info-box">
+                    <p>Containers are <span class="highlight">ephemeral</span> — <code>docker compose down</code> discards their writable layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">named volume</span> is a directory the Docker daemon manages on the host</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Survives container removal; reattaches on the next <code>docker compose up</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>volumes: { db-data: {} }</code> declares it; <code>[db-data:/data/db]</code> mounts it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bind mounts</span> are for source code, not for database state</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Environment Variables and .env -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Environment Variables and .env</h2>
+
+                <div class="fragment info-box">
+                    <p>Containerized apps read configuration from <span class="highlight">environment variables</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>environment:</code> sets variables inside one service</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.env</code> file is read automatically; values interpolated as <code>${VAR}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.env</code> is gitignored — <span class="highlight">secrets</span> stay out of the repo</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB__ConnectionString=mongodb://db:27017</code> is the .NET pattern</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Dependency Ordering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dependency Ordering</h2>
+
+                <div class="fragment info-box">
+                    <p><code>depends_on</code> declares one service should start <span class="highlight">after</span> another</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Does not guarantee the dependency is <span class="highlight">ready</span> — only that it has started</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pair with a <code>healthcheck</code> and <code>condition: service_healthy</code> for readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The healthcheck runs a probe inside the dependency container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Production-grade fix is <span class="highlight">retry logic</span> in the application</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Worked Example: web + db -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: web + db</h2>
+
+                <div class="fragment info-box">
+                    <p><code>web</code> service built from local Dockerfile, port 8080 published</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>db</code> service is <code>mongo:7</code>, volume <code>db-data</code> mounted at <code>/data/db</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both services on named network <span class="highlight">appnet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>web</code> waits for <code>db</code> healthcheck (<code>mongosh --eval ping</code>) to pass</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB__ConnectionString=mongodb://db:27017</code> resolves via Compose DNS</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Compose vs Production -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Compose vs Production</h2>
+
+                <div class="fragment info-box">
+                    <p>Compose runs on <span class="highlight">a single host</span> — no horizontal scaling, no self-healing</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Apps</span> for managed multi-host production</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kubernetes</span> for large-scale or complex topologies</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Service / volume / env-var concepts <span class="highlight">translate forward</span> — Part VIII develops them</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose is local-dev; production is a different runtime</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

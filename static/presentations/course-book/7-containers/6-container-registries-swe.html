@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Container Registries</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONTAINER<br>
+                    REGISTRIES
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför ett registry finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför ett registry finns</h2>
+
+                <div class="fragment info-box">
+                    <p>En byggd image ligger i <span class="highlight">en daemons lagring</span> tills den skickas vidare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Driftsmål — kollegor, CI, produktion — behöver en <span class="highlight">delad plats</span> att hämta från</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">container registry</span> är den delade lagringen, nås över OCI Distribution API</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma protokoll för Docker Hub, ACR, GHCR och alla andra register</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Hur ett registry lagrar images -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur ett registry lagrar images</h2>
+
+                <div class="fragment info-box">
+                    <p>Layers är <span class="highlight">innehållsadresserade blobs</span> — nycklade på SHA256</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">image manifest</span> listar de blobs som utgör en image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Repositories grupperar versioner av samma logiska image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Referenssyntax: <code>host/repo:tagg</code> (t.ex. <code>mycr.azurecr.io/myapp:1.0</code>)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Taggar mot digests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Taggar mot digests</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">tagg</span> är en <span class="highlight">muterbar</span> pekare — <code>:latest</code> kan omplaceras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">digest</span> är en <span class="highlight">SHA256-hash</span> av manifestet — oföränderlig</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Digesten ändras om en enda byte i någon layer ändras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Produktionsdeploys bör <span class="highlight">pinna mot en digest</span>, inte en tagg</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Push och pull -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Push och pull</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker push host/repo:tagg</code> — laddar upp bara de layers registryt saknar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker pull host/repo:tagg</code> — hämtar manifestet, sedan saknade layers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Delade bas-layers överförs <span class="highlight">en gång</span> över många images</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återupptagbart per layer — tappad anslutning gör om bara den layern</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Genomgång — tagga och pusha -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgång — tagga och pusha</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker tag myapp:local mycr.azurecr.io/myapp:1.0</code> lägger till ett <span class="highlight">andra namn</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker push mycr.azurecr.io/myapp:1.0</code> strömmar layers till ACR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Taggen talar om för daemonen <span class="highlight">var</span> den ska pusha — ingen ombyggnad sker</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vilken autentiserad maskin som helst kan nu <code>docker pull</code> samma bytes</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Publikt mot privat -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Publikt mot privat</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Hub</span> — det publika standard-registryt; hem för nginx, ubuntu, postgres</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Anonyma pulls är <span class="highlight">rate-limiterade</span> — CI-runners slår i taket på delade IP:n</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Registry (ACR)</span> — privat, åtkomst styrd av Azure-identitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Riktiga system blandar båda: bas-images från Hub, app-images till ACR</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Autentisera mot registryt -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Autentisera mot registryt</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Hub</span> — användarnamn + <span class="highlight">PAT</span> lagrat via <code>docker login</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR från laptop</span> — <code>az acr login</code> växlar Azure-login mot en kort token</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR från Azure-compute</span> — <span class="highlight">managed identity</span> med rollen <code>AcrPull</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ACR från extern CI</span> — <span class="highlight">OIDC-federation</span>, ingen lagrad hemlighet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Säkerhetsskanningar -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Säkerhetsskanningar</h2>
+
+                <div class="fragment info-box">
+                    <p>Register skannar pushade images mot publika <span class="highlight">CVE</span>-databaser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fynden hängs på en specifik <span class="highlight">digest</span> — samma image, skannad en gång</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En typisk gate faller på <span class="highlight">Critical</span> CVE:er, varnar för High och nedåt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skanning höjer golvet; det ersätter inte ett medvetet val av basimage</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

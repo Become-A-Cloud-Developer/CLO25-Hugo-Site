@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Multi-Plattformsbyggen</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    MULTI-<br>
+                    PLATTFORMSBYGGEN
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Problemet med felmatchning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problemet med felmatchning</h2>
+
+                <div class="fragment info-box">
+                    <p>Utvecklare på <span class="highlight">Apple Silicon</span> (arm64) bygger en image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pushar till register, driftsätter till <span class="highlight">Azure VM</span> (amd64)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Körningen misslyckas med <code>exec format error</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Single-plattform-images antar att <span class="highlight">byggvärd = körvärd</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en plattform är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad en plattform är</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Plattform</span> = <code>os/arkitektur/variant</code> (t.ex. <code>linux/amd64</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CPU:er avkodar endast sin egen <span class="highlight">instruktionsuppsättning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Container-images paketerar <span class="highlight">kompilerade binärer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>uname -m</code> avslöjar värdens arkitektur</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Arkitektur spelar roll i tysthet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Arkitektur spelar roll i tysthet</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker build</code> defaultar till <span class="highlight">värdens arkitektur</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen varning för att image:n är <span class="highlight">icke-portabel</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Felmatchning syns först vid körning på annan värd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fel: <code>exec format error</code>, saknad körbar fil</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Buildx som multi-plattformsbyggare -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Buildx som multi-plattformsbyggare</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Buildx</span> = Docker CLI-tillägg som använder BuildKit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx build --platform linux/amd64,linux/arm64</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bygger Dockerfile <span class="highlight">en gång per målplattform</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräver <code>--push</code> — lokala lagret hanterar inte multi-arkitektur</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: QEMU möjliggör korsbyggen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">QEMU möjliggör korsbyggen</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">QEMU</span> emulerar främmande instruktionsuppsättningar i userspace</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kärnan routar främmande binärer till QEMU via <code>binfmt_misc</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bygger AMD64-images på en ARM64-värd <span class="highlight">transparent</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: emulerade byggen är <span class="highlight">5–10× långsammare</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Manifest-listan som indirektion -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Manifest-listan som indirektion</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Manifest-lista</span> = register-metadata som mappar en tagg till flera digests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En tagg → lista → <span class="highlight">per-arkitektur image-manifest</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Klienten hämtar endast lagren som matchar dess värd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma <code>docker pull</code>, olika bytes per värd</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Hur registret lagrar det -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur registret lagrar det</h2>
+
+                <div class="fragment info-box">
+                    <p>Lager adresseras <span class="highlight">innehållsmässigt</span> via SHA256</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identiska lager delas mellan arkitekturer (ovanligt för binärer)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">OCI-standard</span> — stöds av Docker Hub, ACR, GHCR</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx imagetools inspect</code> visar strukturen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Genomarbetat exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomarbetat exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx create --name multiarch --use</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker buildx build --platform linux/amd64,linux/arm64 -t myimage:1.0 --push .</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>ARM64 byggs <span class="highlight">nativt</span>; AMD64 emuleras under QEMU</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Resultat: en tagg, <span class="highlight">två arkitekturer</span>, transparenta pulls</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: När det är värt det -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När det är värt det</h2>
+
+                <div class="fragment info-box">
+                    <p>Team med blandade arkitekturer (Apple Silicon + amd64 i molnet)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ARM-mål i molnet</span> (Graviton, Ampere) för kostnadseffektivitet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Edge / IoT-driftsättning parallellt med serverdriftsättning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Annars: <span class="highlight">single-plattform</span> förblir enklare och snabbare</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

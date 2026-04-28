@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Images och lager</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    IMAGES<br>
+                    OCH LAGER
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför images finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Images Finns</h2>
+
+                <div class="fragment info-box">
+                    <p>En container är en <span class="highlight">isolerad process</span> — men en process behöver filer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">image</span> är den oföränderliga filsystem-mallen som containern startar från</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Innehåller både <span class="highlight">bitarna</span> (binärer, bibliotek, konfiguration) och <span class="highlight">metadata</span> (entrypoint, env, portar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två containrar från samma image ser <span class="highlight">identiska filsystem</span> vid start</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad en image bär med sig -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad En Image Bär Med Sig</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">skrivskyddad ögonblicksbild</span> av applikationen och dess beroenden</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standard-<span class="highlight">ENTRYPOINT</span> och <span class="highlight">CMD</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Miljövariabler</span>, arbetskatalog, exponerade portar, körningsanvändare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En oföränderlig <span class="highlight">digest</span> som fingeravtrycker varje byte och varje konfigurationsfält</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Lagermodellen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lagermodellen</h2>
+
+                <div class="fragment info-box">
+                    <p>Varje Dockerfile-instruktion (<code>FROM</code>, <code>COPY</code>, <code>RUN</code>) skapar ett <span class="highlight">lager</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lager är <span class="highlight">skrivskyddade filsystems-ögonblicksbilder</span>, staplade via ett union-filsystem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Containern lägger till ett tunt <span class="highlight">skrivbart lager</span> ovanpå — slängs vid stopp</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Borttagningar tar inte bort bytes; de bara <span class="highlight">maskerar</span> dem i ett högre lager</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Innehållsadressering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Innehållsadressering</h2>
+
+                <div class="fragment info-box">
+                    <p>Varje lager identifieras av en <span class="highlight">SHA256-hash</span> av sitt innehåll</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identiskt innehåll ger <span class="highlight">identiska hashar</span> — över värdar, över byggen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Register lagrar varje lager <span class="highlight">en gång</span>, även när det delas av 100 images</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Build-cachen återanvänder ett lager när dess <span class="highlight">indata är oförändrade</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Lagerordning spelar roll -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Lagerordning Spelar Roll</h2>
+
+                <div class="fragment info-box">
+                    <p>En cache-miss <span class="highlight">kaskaderar</span>: varje lager nedanför måste köras om</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ordna instruktioner från <span class="highlight">minst till mest föränderliga</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>För .NET: kopiera <code>*.csproj</code> och kör <code>restore</code> <span class="highlight">innan</span> källkoden kopieras in</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Belöningen är byggen som tar <span class="highlight">sekunder</span>, inte minuter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Base image -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Base Image</h2>
+
+                <div class="fragment info-box">
+                    <p>Första <code>FROM</code>-instruktionen — ger <span class="highlight">OS, runtime, pakethanterare</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>mcr.microsoft.com/dotnet/aspnet:10.0</code> — Debian, ~220 MB, full runtime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>...:10.0-alpine</code> — Alpine + musl libc, ~110 MB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mindre bas: snabbare pull, mindre attackyta, ibland <span class="highlight">glibc/musl-friktion</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Image manifest -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Image Manifest</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett litet <span class="highlight">JSON-dokument</span> som listar lager, digests, storlekar, plattform</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En pull hämtar manifestet <span class="highlight">först</span>, sedan bara de saknade lagren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Manifestets egen SHA256 är imagens <span class="highlight">oföränderliga digest</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">manifest list</span> mappar en tag till flera plattformsspecifika manifest</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Inspektera en image -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Inspektera En Image</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker pull mcr.microsoft.com/dotnet/aspnet:10.0</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker history &lt;image&gt;</code> går igenom lagerstacken <span class="highlight">nedifrån och upp</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avslöjar <span class="highlight">bas-rootfs</span>, runtime-installation, .NET-kopia, metadata-lager</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Visar exakt <span class="highlight">var bytsen ligger</span> och vad som är värt att optimera</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

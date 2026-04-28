@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Containers vs Virtual Machines</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONTAINERS<br>
+                    VS VMS
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The "works on my machine" problem -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The "Works on My Machine" Problem</h2>
+
+                <div class="fragment info-box">
+                    <p>Same code, different environment, <span class="highlight">different result</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Drift hides in <span class="highlight">OS patches</span>, system libraries, runtime versions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reproducibility is an <span class="highlight">engineering cost</span>, not just a cliché</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Containers and VMs both attack the problem — at <span class="highlight">different layers</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: How a VM virtualizes hardware -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How a VM Virtualizes Hardware</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">hypervisor</span> sits between hardware and guests</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each VM runs its own <span class="highlight">kernel</span> and full operating system</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Image size in <span class="highlight">gigabytes</span>, boot time in tens of seconds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Strong isolation: <span class="highlight">no kernel sharing</span> across VMs</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: How a container isolates a process -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">How a Container Isolates a Process</h2>
+
+                <div class="fragment info-box">
+                    <p>One <span class="highlight">container runtime</span>, one shared host kernel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Namespaces</span> hide other processes, networks, mounts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">cgroups</span> cap CPU and memory per container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The application is the <span class="highlight">only thing</span> that starts</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: What each model gives up and gains -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Each Model Gives Up and Gains</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">VM</span>: stronger isolation, full OS flexibility, heavier footprint</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Container</span>: lighter, faster, but tied to the host kernel family</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>VMs portable across hypervisors; containers across hosts with the <span class="highlight">same kernel ABI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A kernel CVE is a <span class="highlight">fleet-wide problem</span> for containers</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Density and startup time -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Density and Startup Time</h2>
+
+                <div class="fragment info-box">
+                    <p>A VM cold-starts in <span class="highlight">30 s to minutes</span>; a container in <span class="highlight">milliseconds</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">10 VMs</span> per host vs <span class="highlight">100+ containers</span> on the same hardware</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each VM permanently carries its own <span class="highlight">kernel and OS services</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each container carries only the application's <span class="highlight">working set</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Worked example: dotnet run -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: dotnet run</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet run</code> ready to serve in <span class="highlight">~200 ms</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same app in a container: <span class="highlight">~200 ms</span> (runtime overhead negligible)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same app as a fresh VM: <span class="highlight">2–3 minutes</span> wall-clock</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The application is identical — the <span class="highlight">surrounding stack</span> is not</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: When each model fits -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">When Each Model Fits</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">VM</span>: legacy Windows app, regulated isolation, kernel-tuned databases</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Container</span>: stateless web service, queue worker, scheduled job</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cloud platforms compose both: containers run <span class="highlight">on</span> VMs</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Choose the <span class="highlight">trade-off</span>, not the trend</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

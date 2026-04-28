@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Images and Layers</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    IMAGES<br>
+                    AND LAYERS
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why images exist -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Images Exist</h2>
+
+                <div class="fragment info-box">
+                    <p>A container is an <span class="highlight">isolated process</span> — but a process needs files</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">image</span> is the immutable filesystem template the container starts from</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bundles both the <span class="highlight">bits</span> (binaries, libraries, config) and the <span class="highlight">metadata</span> (entrypoint, env, ports)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two containers from one image see <span class="highlight">identical filesystems</span> at start</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What an image carries -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What an Image Carries</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">read-only filesystem snapshot</span> of the application and its dependencies</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The default <span class="highlight">ENTRYPOINT</span> and <span class="highlight">CMD</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Environment variables</span>, working directory, exposed ports, runtime user</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>An immutable <span class="highlight">digest</span> that fingerprints every byte and every config field</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The layer model -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Layer Model</h2>
+
+                <div class="fragment info-box">
+                    <p>Each Dockerfile instruction (<code>FROM</code>, <code>COPY</code>, <code>RUN</code>) creates one <span class="highlight">layer</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Layers are <span class="highlight">read-only filesystem snapshots</span>, stacked via a union filesystem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The container adds a thin <span class="highlight">writable layer</span> on top — discarded on stop</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Deletes do not remove bytes; they just <span class="highlight">mask</span> them in a higher layer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Content addressing -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Content Addressing</h2>
+
+                <div class="fragment info-box">
+                    <p>Each layer is named by a <span class="highlight">SHA256 hash</span> of its contents</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Identical content produces <span class="highlight">identical hashes</span> — across hosts, across builds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Registries store each layer <span class="highlight">once</span>, even when shared by 100 images</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The build cache reuses a layer when its <span class="highlight">inputs are unchanged</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Layer ordering matters -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Layer Ordering Matters</h2>
+
+                <div class="fragment info-box">
+                    <p>A cache miss <span class="highlight">cascades</span>: every layer below must re-execute</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Order instructions from <span class="highlight">least to most volatile</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>For .NET: copy <code>*.csproj</code> and <code>restore</code> <span class="highlight">before</span> copying source code</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The reward is builds that finish in <span class="highlight">seconds</span>, not minutes</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: The base image -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Base Image</h2>
+
+                <div class="fragment info-box">
+                    <p>The first <code>FROM</code> instruction — provides <span class="highlight">OS, runtime, package manager</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>mcr.microsoft.com/dotnet/aspnet:10.0</code> — Debian, ~220 MB, full runtime</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>...:10.0-alpine</code> — Alpine + musl libc, ~110 MB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Smaller bases: faster pulls, smaller attack surface, occasional <span class="highlight">glibc/musl friction</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: The image manifest -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Image Manifest</h2>
+
+                <div class="fragment info-box">
+                    <p>A small <span class="highlight">JSON document</span> listing layers, digests, sizes, platform</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A pull fetches the manifest <span class="highlight">first</span>, then only the missing layers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The manifest's own SHA256 is the <span class="highlight">immutable digest</span> of the image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">manifest list</span> maps one tag to multiple platform-specific manifests</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Inspecting an image -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Inspecting an Image</h2>
+
+                <div class="fragment info-box">
+                    <p><code>docker pull mcr.microsoft.com/dotnet/aspnet:10.0</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker history &lt;image&gt;</code> walks the layer stack <span class="highlight">bottom-up</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reveals <span class="highlight">base rootfs</span>, runtime install, .NET copy, metadata layers</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tells you exactly <span class="highlight">where the bytes live</span> and what to optimize</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

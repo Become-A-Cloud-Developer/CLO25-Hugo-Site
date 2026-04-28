@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Containrar vs virtuella maskiner</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    CONTAINRAR<br>
+                    VS VM
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Problemet "fungerar på min maskin" -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Problemet "Fungerar På Min Maskin"</h2>
+
+                <div class="fragment info-box">
+                    <p>Samma kod, olika miljö, <span class="highlight">olika resultat</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Drift göms i <span class="highlight">OS-patchar</span>, systembibliotek och runtime-versioner</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Reproducerbarhet är en <span class="highlight">teknisk kostnad</span>, inte bara en klyscha</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Containrar och VM angriper problemet — på <span class="highlight">olika lager</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Hur en VM virtualiserar hårdvara -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur En VM Virtualiserar Hårdvara</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">hypervisor</span> ligger mellan hårdvaran och gästerna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje VM kör sin egen <span class="highlight">kärna</span> och fullständiga operativsystem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Image-storlek i <span class="highlight">gigabyte</span>, boot-tid i tiotals sekunder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stark isolering: <span class="highlight">ingen kärna delas</span> mellan VM</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Hur en container isolerar en process -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hur En Container Isolerar En Process</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">container runtime</span>, en delad värdkärna</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Namespaces</span> döljer andra processer, nätverk och mounts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">cgroups</span> sätter tak på CPU och minne per container</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationen är det <span class="highlight">enda</span> som startar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Vad varje modell offrar och vinner -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Varje Modell Offrar Och Vinner</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">VM</span>: starkare isolering, full OS-flexibilitet, tyngre fotavtryck</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Container</span>: lättare, snabbare, men bunden till värdens kärnafamilj</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>VM portabla mellan hypervisorer; containrar mellan värdar med <span class="highlight">samma kärna-ABI</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En kärna-CVE är ett problem för <span class="highlight">hela flottan</span> av containrar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Densitet och starttid -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Densitet Och Starttid</h2>
+
+                <div class="fragment info-box">
+                    <p>En VM kallstartar på <span class="highlight">30 s till minuter</span>; en container på <span class="highlight">millisekunder</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">10 VM</span> per värd vs <span class="highlight">100+ containrar</span> på samma hårdvara</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje VM bär permanent sin egen <span class="highlight">kärna och OS-tjänster</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje container bär endast applikationens <span class="highlight">arbetsuppsättning</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Genomgånget exempel: dotnet run -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel: dotnet run</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet run</code> redo att svara på <span class="highlight">~200 ms</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma app i en container: <span class="highlight">~200 ms</span> (overhead försumbar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma app som ny VM: <span class="highlight">2–3 minuter</span> klocktid</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Applikationen är identisk — <span class="highlight">stacken runt omkring</span> är det inte</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: När passar respektive modell -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">När Passar Respektive Modell</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">VM</span>: legacy Windows-app, reglerad isolering, kärna-tunade databaser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Container</span>: tillståndslös webbtjänst, kö-worker, schemalagt jobb</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Molnplattformar kombinerar båda: containrar körs <span class="highlight">på</span> VM</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj <span class="highlight">kompromissen</span>, inte trenden</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Dockerfiles and Multi-Stage Builds</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DOCKERFILES &amp;<br>
+                    MULTI-STAGE<br>
+                    BUILDS
+                </h1>
+
+                <p class="subtitle">Part VII — Containers</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: The image is the unit of deployment -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Image Is the Unit of Deployment</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">Dockerfile</span> is the version-controlled recipe that produces an image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same input, same image — on <span class="highlight">any machine</span> with a Docker daemon</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Source code, dependencies, runtime, and entrypoint <span class="highlight">travel together</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Reproducibility</span> is the entire point of containerization</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Dockerfile instructions -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dockerfile Instructions</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">FROM</span> — pick the base image; every Dockerfile starts here</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">WORKDIR</span> — set the working directory for COPY and RUN</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">COPY</span> — pull files from the build context into the image</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">RUN</span> — execute a shell command during build (creates a layer)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">EXPOSE / ENV / ARG</span> — document ports, set runtime / build-time variables</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The build context -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Build Context</h2>
+
+                <div class="fragment info-box">
+                    <p>The directory passed to <code>docker build</code> — <span class="highlight">everything COPY can reach</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The CLI ships the entire context to the daemon over a socket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A bloated context means slow builds and <span class="highlight">accidental leakage of secrets</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">.dockerignore</span> excludes patterns from the context (like <code>.gitignore</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Always exclude <code>bin/</code>, <code>obj/</code>, <code>node_modules/</code>, <code>.git/</code>, <code>.env</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The layer cache and instruction order -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Layer Cache and Instruction Order</h2>
+
+                <div class="fragment info-box">
+                    <p>Each instruction is fingerprinted; <span class="highlight">unchanged inputs reuse</span> the cached layer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cache invalidates on the first changed step — every later step <span class="highlight">reruns</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Copy dependency manifests <span class="highlight">before</span> source: <code>package.json</code> then <code>npm install</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Source edits no longer trigger a full reinstall</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same trick for <code>*.csproj</code> + <code>dotnet restore</code>, <code>requirements.txt</code> + <code>pip install</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: ENTRYPOINT versus CMD -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ENTRYPOINT versus CMD</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">ENTRYPOINT</span> — the executable that always runs when a container starts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">CMD</span> — default arguments, overridable on <code>docker run</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>App images: <span class="highlight">pin the entrypoint</span> to the binary — image is self-documenting</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tooling images: leave it open, use CMD for flexibility</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Always use the <span class="highlight">JSON array form</span> so <code>SIGTERM</code> reaches the application</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: The multi-stage pattern -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Multi-Stage Pattern</h2>
+
+                <div class="fragment info-box">
+                    <p>Build tools (SDK, compiler, package manager) are <span class="highlight">not needed at runtime</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bundling them inflates image size and widens the <span class="highlight">attack surface</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">multi-stage build</span> uses multiple <code>FROM</code> instructions</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Earlier stages compile and publish; later stage holds <span class="highlight">only the runtime</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>COPY --from=build</code> pulls the artifact across stage boundaries</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: .NET multi-stage example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">.NET Multi-Stage Example</h2>
+
+                <div class="fragment info-box">
+                    <p>Stage 1: <code>FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet restore</code>, then <code>dotnet publish -c Release -o /app/publish</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stage 2: <code>FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>COPY --from=build /app/publish .</code> — runtime + published DLLs only</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Final image drops from <span class="highlight">~1 GB to ~200 MB</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Practice -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Practice</h2>
+
+                <div class="fragment info-box">
+                    <p>Exercise: <code>/exercises/20-docker/</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Sub-exercise 3 walks through the <span class="highlight">single-stage to multi-stage</span> refactor</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compare image sizes with <code>docker images</code> <span class="highlight">before and after</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Try changing one source file and watch <span class="highlight">which layers rebuild</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

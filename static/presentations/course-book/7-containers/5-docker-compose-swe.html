@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Docker Compose</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    DOCKER<br>
+                    COMPOSE
+                </h1>
+
+                <p class="subtitle">Del VII — Containrar</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför Compose finns -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Compose finns</h2>
+
+                <div class="fragment info-box">
+                    <p>En riktig applikation är sällan <span class="highlight">en enda container</span> — webb + databas + kö är tre</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>docker run</code> för varje del blir en lång, ömtålig kommandosekvens</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ordning, flaggor och hostnamn måste stämma på varje utvecklarmaskin</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En ny utvecklare ska inte behöva den <span class="highlight">ramsan</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Compose</span> samlar allt i en fil som checkas in i repot</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad Compose är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Compose är</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Docker Compose</span> läser <code>docker-compose.yml</code> och orkestrerar fler-container-appar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Riktar sig mot <span class="highlight">lokal utveckling</span>, inte produktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Automatiserar nätverk, volymhantering och miljökonfiguration</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ett kommando — <code>docker compose up</code> — startar hela stacken</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma fil driver <span class="highlight">integrationstester</span> i CI</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Compose-filen -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Compose-filen</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett YAML-dokument, vanligtvis <code>compose.yaml</code> i repots rot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tre topp-nivå-nycklar: <span class="highlight">services</span>, <span class="highlight">volumes</span>, <span class="highlight">networks</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>services</code> är obligatorisk; övriga är valfria</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose skapar ett <span class="highlight">standardnätverk</span> för projektet automatiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Modern Compose ignorerar gamla <code>version:</code>-nyckeln — utelämna den</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Tjänster -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tjänster</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">tjänst</span> = en namngiven, containeriserad applikation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje post under <code>services:</code> blir en container vid körning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänstnamnet fungerar samtidigt som <span class="highlight">DNS-hostnamn</span> i projektnätverket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Antingen <code>build: .</code> (lokal Dockerfile) eller <code>image: mongo:7</code> (registry)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>ports: ["8080:8080"]</code> publicerar till hosten; tjänst-till-tjänst behöver det inte</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Named networks och DNS -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Named networks och DNS</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">named network</span> skapas och hanteras av Compose</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänster på samma nätverk hittar varandra via <span class="highlight">tjänstnamnet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose kör en <span class="highlight">inbäddad DNS-server</span> inne i projektnätverket</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Webb-containern når databasen via <code>mongodb://db:27017</code> — ingen IP</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ny container, ny IP — nästa DNS-uppslagning returnerar den nya adressen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Volymer -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Volymer</h2>
+
+                <div class="fragment info-box">
+                    <p>Containers är <span class="highlight">flyktiga</span> — <code>docker compose down</code> slänger deras skrivbara lager</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">namngiven volym</span> är en katalog som Docker-daemonen hanterar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Överlever container-borttagning; ansluts igen vid nästa <code>docker compose up</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>volumes: { db-data: {} }</code> deklarerar; <code>[db-data:/data/db]</code> monterar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Bind mounts</span> är till för källkod, inte för databastillstånd</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Miljövariabler och .env -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Miljövariabler och .env</h2>
+
+                <div class="fragment info-box">
+                    <p>Containeriserade applikationer läser konfiguration från <span class="highlight">miljövariabler</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>environment:</code> sätter variabler inne i en tjänst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.env</code>-filen läses automatiskt; värden interpoleras som <code>${VAR}</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>.env</code> är gitignored — <span class="highlight">hemligheter</span> stannar utanför repot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB__ConnectionString=mongodb://db:27017</code> är .NET-mönstret</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Beroendeordning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Beroendeordning</h2>
+
+                <div class="fragment info-box">
+                    <p><code>depends_on</code> anger att en tjänst ska starta <span class="highlight">efter</span> en annan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Garanterar inte att beroendet är <span class="highlight">redo</span> — bara att det har startat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kombinera med <code>healthcheck</code> och <code>condition: service_healthy</code> för readiness</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Healthcheck kör en probe inne i beroende-containern</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Produktionslösningen är <span class="highlight">retry-logik</span> i applikationen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Exempel: web + db -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Exempel: web + db</h2>
+
+                <div class="fragment info-box">
+                    <p><code>web</code>-tjänsten byggs från lokal Dockerfile, port 8080 publiceras</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>db</code>-tjänsten är <code>mongo:7</code>, volymen <code>db-data</code> monteras på <code>/data/db</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda tjänsterna i namngivna nätverket <span class="highlight">appnet</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>web</code> väntar på att <code>db</code>-healthcheck (<code>mongosh --eval ping</code>) ska passera</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>MongoDB__ConnectionString=mongodb://db:27017</code> löses upp via Compose-DNS</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Compose vs produktion -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Compose vs produktion</h2>
+
+                <div class="fragment info-box">
+                    <p>Compose kör på <span class="highlight">en enda host</span> — ingen horisontell skalning, ingen självläkning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Azure Container Apps</span> för hanterad fler-host-produktion</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kubernetes</span> för storskaliga eller komplexa topologier</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tjänst / volym / miljövariabel-koncepten <span class="highlight">översätts framåt</span> — Del VIII utvecklar dem</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Compose är lokal utveckling; produktion är en annan runtime</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
