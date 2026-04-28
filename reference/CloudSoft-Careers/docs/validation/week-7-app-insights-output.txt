@@ -1,0 +1,48 @@
+# Week 7 — App Insights / Log Analytics KQL transcripts
+# Captured on 2026-04-28T12:28:40Z
+# Workspace: workspace-rgcareersweek7dvVX (customerId 8acbc420-fe03-4326-bc3f-149d9970f5ea)
+
+## Q1: Requests by name and resultCode (last 30 min)
+
+AppRequests | where TimeGenerated > ago(30m) | summarize count() by Name, ResultCode | order by count_ desc
+
+Name                                                ResultCode    TableName      Count_
+--------------------------------------------------  ------------  -------------  --------
+GET Jobs/Index                                      200           PrimaryResult  4
+GET /health/live                                    404           PrimaryResult  4
+HEAD Jobs/Index                                     200           PrimaryResult  2
+GET Applications/Index                              200           PrimaryResult  2
+GET Jobs/Apply [id]                                 200           PrimaryResult  2
+GET /health/live                                    200           PrimaryResult  2
+GET Applications/Details [id]                       200           PrimaryResult  2
+GET /health/ready                                   200           PrimaryResult  1
+GET /health                                         200           PrimaryResult  1
+GET /CloudCiCareers.Web.styles.css                  200           PrimaryResult  1
+GET /js/site.js                                     200           PrimaryResult  1
+GET /lib/bootstrap/dist/js/bootstrap.bundle.min.js  200           PrimaryResult  1
+GET /lib/bootstrap/dist/css/bootstrap.min.css       200           PrimaryResult  1
+POST Jobs/Apply [id]                                302           PrimaryResult  1
+POST Jobs/Apply [id]                                200           PrimaryResult  1
+GET /css/site.css                                   200           PrimaryResult  1
+GET /lib/jquery/dist/jquery.min.js                  200           PrimaryResult  1
+
+## Q2: Dependencies by type and target (last 30 min) — auto-instrumented Cosmos + Blob calls
+
+AppDependencies | where TimeGenerated > ago(30m) | summarize count() by Type, Target | order by count_ desc
+
+TableName      Target                                                 Type             Count_
+-------------  -----------------------------------------------------  ---------------  --------
+PrimaryResult  cosmos-careers-797b40-northeurope.documents.azure.com  AppDependencies  8
+PrimaryResult  localhost:12356                                        AppDependencies  4
+PrimaryResult  stcareers797b40.blob.core.windows.net                  AppDependencies  3
+PrimaryResult  169.254.169.254                                        AppDependencies  2
+PrimaryResult  DefaultAzureCredential.GetToken                        AppDependencies  2
+PrimaryResult  cosmos-careers-797b40.documents.azure.com              AppDependencies  2
+PrimaryResult  BlobContainerClient.Exists                             AppDependencies  2
+PrimaryResult  BlobClient.Upload                                      AppDependencies  1
+
+## Q3: Exceptions (last 30 min)
+
+AppExceptions | where TimeGenerated > ago(30m) | summarize count() by Type | order by count_ desc
+
+

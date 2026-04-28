@@ -1,0 +1,65 @@
+name: build-and-deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  RESOURCE_GROUP: rg-careers-week7
+  CONTAINER_APP: ca-careers-week7
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sign in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Resolve ACR login server
+        run: |
+          echo "ACR_LOGIN_SERVER=${{ secrets.ACR_NAME }}.azurecr.io" \
+            >> "$GITHUB_ENV"
+
+      - name: Log in to ACR
+        run: az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./CloudCiCareers.Web
+          push: true
+          tags: |
+            ${{ env.ACR_LOGIN_SERVER }}/cloudci-careers:${{ github.sha }}
+            ${{ env.ACR_LOGIN_SERVER }}/cloudci-careers:latest
+
+      - name: Update Container App
+        run: |
+          az containerapp update \
+            -n "$CONTAINER_APP" -g "$RESOURCE_GROUP" \
+            --image "${{ env.ACR_LOGIN_SERVER }}/cloudci-careers:${{ github.sha }}"
+
+      - name: Smoke test
+        run: |
+          FQDN=$(az containerapp show \
+            -n "$CONTAINER_APP" -g "$RESOURCE_GROUP" \
+            --query properties.configuration.ingress.fqdn -o tsv)
+          for i in {1..20}; do
+            if curl -fsS "https://$FQDN/health/live" >/dev/null; then
+              echo "Smoke test passed."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Smoke test failed."
+          exit 1

@@ -1,0 +1,49 @@
+# Week 7 — Health Probe curl matrix
+# Captured against https://ca-careers-week7.ambitiousmoss-c5b20883.northeurope.azurecontainerapps.io/ on 2026-04-28T12:28:24Z
+
+## /health/live  (liveness — always Healthy if process responsive)
+$ curl -is https://<fqdn>/health/live
+HTTP/2 200 
+content-type: text/plain
+date: Tue, 28 Apr 2026 12:28:23 GMT
+server: Kestrel
+cache-control: no-store, no-cache
+expires: Thu, 01 Jan 1970 00:00:00 GMT
+pragma: no-cache
+request-context: appId=cid-v1:92560597-5383-41ca-9485-c8226a06190b
+
+Healthy
+## /health/ready  (readiness — Cosmos + Blob both reachable)
+$ curl -is https://<fqdn>/health/ready
+HTTP/2 200 
+content-type: text/plain
+date: Tue, 28 Apr 2026 12:28:24 GMT
+server: Kestrel
+cache-control: no-store, no-cache
+expires: Thu, 01 Jan 1970 00:00:00 GMT
+pragma: no-cache
+request-context: appId=cid-v1:92560597-5383-41ca-9485-c8226a06190b
+
+Healthy
+## /health  (diagnostic JSON breakdown)
+$ curl -s https://<fqdn>/health | jq .
+{
+    "status": "Healthy",
+    "checks": [
+        {
+            "name": "self",
+            "status": "Healthy",
+            "duration_ms": 0
+        },
+        {
+            "name": "cosmos",
+            "status": "Healthy",
+            "duration_ms": 25
+        },
+        {
+            "name": "blob",
+            "status": "Healthy",
+            "duration_ms": 4
+        }
+    ]
+}

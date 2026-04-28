@@ -1,0 +1,19 @@
+# Week 7 — Persistence survives revision rollover
+# Captured on 2026-04-28T12:29:38Z
+
+Submitted application via Playwright:
+  Name: Sigrid Larsson
+  Email: sigrid@example.com
+  Job: Cloud Engineer (Id 1)
+  CV: minimal valid PDF
+
+Bumped Container App revision via az containerapp update --revision-suffix bump1777379341
+
+After new revision became active:
+  curl https://$FQDN/Applications | grep 'Sigrid Larsson' →
+                <td>Sigrid Larsson<br/><small class="text-muted">sigrid@example.com</small></td>
+
+  /Applications/Details/<id> still shows 'Submitted' status.
+
+Conclusion: Cosmos + Blob persistence outlived the in-process state of the previous revision.
+Contrast: in Ex 7.1 (in-memory + local-file), the same bump would have wiped the application.

@@ -1,0 +1,20 @@
+@model IEnumerable<CloudCiCareers.Web.Models.Job>
+@{ ViewData["Title"] = "Open positions"; }
+
+<h1>Open positions</h1>
+<p class="lead">We're hiring across Platform and Engineering.</p>
+
+<div class="row">
+@foreach (var job in Model)
+{
+    <div class="col-md-6 mb-3">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">@job.Title</h5>
+            <h6 class="card-subtitle text-muted mb-2">@job.Department</h6>
+            <p class="card-text">@job.Description</p>
+            <a class="btn btn-primary" asp-action="Apply"
+               asp-route-id="@job.Id">Apply</a>
+        </div></div>
+    </div>
+}
+</div>

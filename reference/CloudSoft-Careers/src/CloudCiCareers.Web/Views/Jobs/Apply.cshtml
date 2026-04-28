@@ -1,0 +1,32 @@
+@model CloudCiCareers.Web.Models.ApplyForm
+@{
+    var job = (CloudCiCareers.Web.Models.Job)ViewData["Job"]!;
+    ViewData["Title"] = $"Apply for {job.Title}";
+}
+
+<h1>Apply for @job.Title</h1>
+<p class="text-muted">@job.Department</p>
+
+<form asp-action="Apply" asp-route-id="@job.Id"
+      method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Full name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="cv" class="form-label">CV (PDF)</label>
+        <input id="cv" name="cv" type="file" accept="application/pdf"
+               class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit application</button>
+</form>

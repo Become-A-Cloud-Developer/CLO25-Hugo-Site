@@ -1,0 +1,35 @@
+@model List<CloudCiCareers.Web.Models.Application>
+@{
+    ViewData["Title"] = "Applications";
+    var catalog = (CloudCiCareers.Web.Services.IJobCatalog)ViewData["Catalog"]!;
+}
+
+<h1>Applications</h1>
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No applications yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead><tr>
+            <th>Submitted</th><th>Job</th><th>Applicant</th>
+            <th>Status</th><th></th>
+        </tr></thead>
+        <tbody>
+        @foreach (var a in Model)
+        {
+            var job = catalog.GetById(a.JobId);
+            <tr>
+                <td>@a.SubmittedAt.LocalDateTime</td>
+                <td>@(job?.Title ?? "(unknown)")</td>
+                <td>@a.ApplicantName<br/><small class="text-muted">@a.ApplicantEmail</small></td>
+                <td><span class="badge bg-secondary">@a.Status</span></td>
+                <td><a class="btn btn-sm btn-outline-primary"
+                       asp-action="Details" asp-route-id="@a.Id">Open</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
