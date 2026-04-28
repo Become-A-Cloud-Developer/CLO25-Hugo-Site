@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Version Control with Git</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    VERSION CONTROL<br>
+                    WITH GIT
+                </h1>
+
+                <p class="subtitle">Part X — Collaboration and Process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why version control -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Version Control</h2>
+
+                <div class="fragment info-box">
+                    <p>A folder of code becomes unmanageable as soon as <span class="highlight">two people</span> edit it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Need: who changed what, when, and <span class="highlight">why</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Need: return to any earlier state without losing later work</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Need: parallel edits without <span class="highlight">destructive overwrite</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Solution: change is a <span class="highlight">first-class object</span>, not a side-effect</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Centralized vs. distributed -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Centralized vs. Distributed</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Centralized</span> (SVN, CVS): one server holds the history</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Distributed</span> (Git): every developer has a <span class="highlight">full copy</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Local commits are cheap; network is needed only to <span class="highlight">share</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branching and history-viewing are local and fast</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Git won because the data model is simple and durable</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: What a repository is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What a Repository Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A <code>.git/</code> directory at the project root</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Object database</span>: content-addressed snapshots (SHA-1 hashes)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Refs</span>: short names like <code>main</code> pointing to commits</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branches and tags are nothing more than <span class="highlight">refs</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Delete <code>.git/</code> and the project is no longer versioned</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The three states -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Three States</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Working tree</span> — visible, editable files on disk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Staging area</span> (index) — prepared changes for the next commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Committed</span> — recorded permanently in the repository</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add</code> crosses the first boundary</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit</code> crosses the second</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Commits and branches -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Commits and Branches</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">commit</span> is an immutable snapshot identified by a <span class="highlight">SHA hash</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each commit points to its <span class="highlight">parent(s)</span> — a directed acyclic graph</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">branch</span> is a movable pointer to a commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Creating a branch writes one tiny ref file; switching is fast</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>HEAD</code> names the branch you are currently on</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Remotes and synchronization -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Remotes and Synchronization</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">remote</span> is another copy of the repository (typically <code>origin</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git fetch</code> — download remote commits, do <span class="highlight">not</span> modify local branches</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git pull</code> — fetch <span class="highlight">plus</span> merge/rebase into the current branch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push</code> — upload local commits to the remote</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Symmetric pair: nothing is automatic, which enables <span class="highlight">offline work</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: The daily workflow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Daily Workflow</h2>
+
+                <div class="fragment info-box">
+                    <p><code>git status</code> — what is modified, staged, untracked</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add &lt;files&gt;</code> — stage selectively</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit -m "..."</code> — record on the current branch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push</code> — share with the team</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Small, frequent commits with descriptive messages</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example</h2>
+
+                <div class="fragment info-box">
+                    <p><code>git init</code> — create <code>.git/</code>, turn folder into a repo</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add .</code> — stage every file</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit -m "Initial commit"</code> — first snapshot, no parent</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git remote add origin &lt;url&gt;</code> — register GitHub as <code>origin</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push -u origin main</code> — upload and set upstream</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Where Git fits next -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Where Git Fits Next</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branches</span> become the basis for pull requests and code review</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Remotes</span> become the link between local work and CI/CD</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Commit discipline</span> underpins clean history and reverts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The CLI is rough; the <span class="highlight">data model</span> is simple and correct</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

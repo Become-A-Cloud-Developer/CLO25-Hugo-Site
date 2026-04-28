@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Working with Jira</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    WORKING<br>
+                    WITH JIRA
+                </h1>
+
+                <p class="subtitle">Part X — Collaboration and Process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why a digital tracker -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why a Digital Tracker</h2>
+
+                <div class="fragment info-box">
+                    <p>A whiteboard works only when everyone sits in <span class="highlight">one room</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Remote and split-office teams cannot share a physical board</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The tracker has to be readable and editable from anywhere</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jira is the standard answer across professional software teams</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: What Jira is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What Jira Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">database of work items</span> with a project structure on top</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Project → issues → workflow status (the three layers)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each issue has a key like <code>PROJ-123</code> — the load-bearing identifier</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Views like sprint board and backlog are filters over the database</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The issue type hierarchy -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Issue Type Hierarchy</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Epic</span> — quarter-scale theme, owned by product</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Story</span> — user-facing feature, fits in one or two sprints</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Task</span> — internal work that does not deliver user value directly</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sub-task</span> — the day-or-two unit a developer picks up</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: The workflow as a state machine -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Workflow as a State Machine</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workflow</span> — sequence of statuses an issue moves through</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Default: <code>TO DO → IN PROGRESS → IN REVIEW → DONE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Teams customise — QA gates, deployment gates, etc.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Every added state is added friction; most teams stop at four to six</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The sprint board -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Sprint Board</h2>
+
+                <div class="fragment info-box">
+                    <p>A visual board with columns per workflow status</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Makes <span class="highlight">work-in-progress visible</span> during the daily standup</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Long <code>IN PROGRESS</code> column → too much in flight</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stuck <code>IN REVIEW</code> column → reviews are not getting done</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Git integration through branch names -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Git Integration Through Branch Names</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branch naming convention</span> encodes the issue ID into the branch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pattern: <code>feature/PROJ-123-add-login</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jira watches commits and PRs for matching keys, auto-links them</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Workflow rule transitions the issue to <code>DONE</code> when the PR merges</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Worked example: epic to merged PR -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: Epic to Merged PR</h2>
+
+                <div class="fragment info-box">
+                    <p>Epic <code>PROJ-100: User authentication</code> → 2 stories → 6 tasks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Developer picks <code>PROJ-104</code>, drags card to <code>IN PROGRESS</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branch: <code>feature/PROJ-104-login-endpoint</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>PR title <code>PROJ-104: Implement login endpoint</code> — Jira links everything</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Comment hygiene and estimation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Comment Hygiene and Estimation</h2>
+
+                <div class="fragment info-box">
+                    <p>One issue is <span class="highlight">one conversation</span> — durable record beats Slack threads</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Story points</span> for stories — abstract effort, calibrated to velocity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Hours</span> for tasks where the duration is already known</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mixing the two on the same backlog produces meaningless aggregates</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: The honest truth about Jira -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Honest Truth About Jira</h2>
+
+                <div class="fragment info-box">
+                    <p>Jira works only as well as the team's <span class="highlight">hygiene</span> around it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A board that lies is worse than no board — false confidence</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Daily updates, branch IDs, PR linkage = a tracker that tells the truth</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The discipline is the value, not the tool itself</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

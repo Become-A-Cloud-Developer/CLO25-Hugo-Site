@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Inner loop kontra yttre loop</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    INNER LOOP<br>
+                    KONTRA YTTRE LOOP
+                </h1>
+
+                <p class="subtitle">Del X — Samarbete och process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Produktivitet är återkopplingsfördröjning -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Produktivitet Är Återkopplingsfördröjning</h2>
+
+                <div class="fragment info-box">
+                    <p>Varje kodändring väntar på ett svar — väntan styr arbetsdagen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Två distinkta cykler producerar svaret i mycket olika hastigheter</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Den snabba körs på laptopen; den långsamma på delad infrastruktur</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Båda behövs; var och en fångar problem som den andra inte ser</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att veta vilken loop som äger vilken kontroll är en <span class="highlight">ingenjörsbedömning</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Inner loop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Inner Loop</h2>
+
+                <div class="fragment info-box">
+                    <p>Cykeln <span class="highlight">edit-build-run-test</span> på utvecklarens egen maskin</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Körs på <span class="highlight">sekunder till några få minuter</span>, helst osynligt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Svarar på smala frågor: kompilerar det, är JSON-formen rätt, går testet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Körs hundratals gånger per dag och utvecklare</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inget lämnar laptopen förrän utvecklaren är nöjd</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Yttre loop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Yttre Loop</h2>
+
+                <div class="fragment info-box">
+                    <p>Cykeln <span class="highlight">commit-push-CI-deploy</span> på delad infrastruktur</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Körs på <span class="highlight">minuter</span>, triggas av <code>git push</code> eller en pull request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Svarar på integrativa frågor: ren build, riktig databas, lyckad driftsättning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Definierad som kod i repot; styr om merge till <code>main</code> får ske</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Teamets gemensamma skyddsnät, inte en ersättning för lokalt arbete</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Varför inner loop är värd att optimera -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Inner Loop Är Värd Att Optimera</h2>
+
+                <div class="fragment info-box">
+                    <p>Sparade sekunder ackumuleras över <span class="highlight">tusentals iterationer per vecka</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Långsamma cykler bryter koncentrationen — kostnaden är omorientering</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Snabb feedback bär test-först-disciplin; långsam feedback urholkar den tyst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Billig iteration uppmuntrar utforskning — tre ansatser istället för en</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inner loop-snabbhet är, indirekt, en investering i kodkvalitet</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Hot reload -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hot Reload</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet watch run</code> övervakar källträdet och laddar om vid spara</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slår samman <span class="highlight">spara → stoppa → kör</span> till ett enda steg</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Webbläsaren blir en levande spegel av källfilen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Faller tillbaka på full rebuild för ändringar som inte kan patchas</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Bästa avkastningen för UI-tunga iterationer</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Snabba enhetstester -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Snabba Enhetstester</h2>
+
+                <div class="fragment info-box">
+                    <p>Tusen snabba tester kan köras på <span class="highlight">under fem sekunder</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Hålls snabba genom att undvika I/O — ingen disk, inget nätverk, ingen riktig DB</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kör hela sviten vid spara; behandla varje rött test som omedelbar signal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kan inte validera integration — det är yttre loopens jobb</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inner loopen äger korrektheten hos enskilda enheter</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: In-memory-databaser för tester -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">In-Memory-Databaser För Tester</h2>
+
+                <div class="fragment info-box">
+                    <p>EF Core <code>InMemoryDatabase</code> eller SQLite <code>:memory:</code> — snabbt nog för spara-trigger</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fångar <span class="highlight">query-formsbuggar</span>: fel join, saknad <code>Include</code>, dålig LINQ</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inte produktionsdatabasen — JSON-kolumner och leverantörs-SQL beter sig olika</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En användbar mellansignal, inte ersättare för riktig-DB-test i yttre loopen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lyfter en del integrationstäckning in i inner loopen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Dev container -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dev Container</h2>
+
+                <div class="fragment info-box">
+                    <p>Deklarerar hela verktygskedjan — runtime, DB, linters — i en repo-fil</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Eliminerar "fungerar på min maskin" genom att containern <span class="highlight">är</span> maskinen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Onboarding krymper från en dags installation till ett Reopen-in-Container-klick</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>För inner loop-verktyg till valfri IDE som talar protokollet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Avvägning: indirektionen kan lägga till latens på långsamma maskiner</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Gränssamtalet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Gränssamtalet</h2>
+
+                <div class="fragment info-box">
+                    <p>Standard: tryck varje kontroll mot inner loop tills något tvingar ut den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Yttre loop förtjänar sin plats när en kontroll kräver <span class="highlight">delad infrastruktur</span>, är <span class="highlight">för långsam</span> för spara, eller validerar en <span class="highlight">produktionslik egenskap</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ompröva gränsen när kodbasen växer — långsamma tester smyger sig inåt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Teamets gemensamma bedömning är i sig ett stycke ingenjörspraktik</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

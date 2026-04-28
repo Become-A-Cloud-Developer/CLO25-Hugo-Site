@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Branching, Pull requests och kodgranskning</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BRANCHING,<br>
+                    PULL REQUESTS<br>
+                    OCH KODGRANSKNING
+                </h1>
+
+                <p class="subtitle">Del X — Samarbete och process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför inte pusha till main -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Inte Pusha Till Main</h2>
+
+                <div class="fragment info-box">
+                    <p>Inget <span class="highlight">andra par ögon</span> innan koden landar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Ingen CI-kontroll mellan commit och delad historik</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kunskapen stannar hos den ursprungliga författaren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Återställning kräver att publik historik skrivs om</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Flödet med topic-branch -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Flödet Med Topic-Branch</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branch</span> från en uppdaterad <code>main</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Push</span> topic-branchen till GitHub</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Öppna</span> en pull request mot <code>main</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Granska</span> diffen, <span class="highlight">merge</span> och ta bort branchen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Vad en pull request är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad En Pull Request Är</h2>
+
+                <div class="fragment info-box">
+                    <p>Ett <span class="highlight">förslag</span> att merge:a en branch in i en annan</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En diff med inline-kontroller för granskning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">diskussionstråd</span> kopplad till förslaget</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">CI-statuspanel</span> med resultat från automatiska kontroller</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En bestående artefakt långt efter att branchen är borta</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Branch protection rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Branch Protection Rules</h2>
+
+                <div class="fragment info-box">
+                    <p>Kräv en <span class="highlight">pull request</span> innan merge</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräv <span class="highlight">N godkända granskningar</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräv att <span class="highlight">statuskontroller</span> (CI) går grönt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräv <span class="highlight">linjär historik</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Kräv att branchen är <span class="highlight">uppdaterad</span> mot <code>main</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Tre merge-strategier -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Tre Merge-Strategier</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Merge commit</span> — bevarar topic-commits och branch-form</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Squash</span> — slår ihop hela PR:en till en ren commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rebase</span> — spelar upp commits linjärt, ingen merge commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Välj en, upprätthåll den, sluta diskutera den</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Konflikter och draft PR -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Konflikter Och Draft PR</h2>
+
+                <div class="fragment info-box">
+                    <p>Git stannar vid konfliktmarkörerna; <span class="highlight">utvecklaren avgör avsikt</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Korta branches ger färre konflikter än långa</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">draft PR</span> signalerar pågående arbete</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Samma diff, samma CI, men ingen merge-knapp och inga pings</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Kodgranskning som hantverk -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kodgranskning Som Hantverk</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Små PR:er</span> får riktig genomläsning; stora får gummistämpel</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Fråga, hävda inte</span> — bjud in till dialog</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Skilj <span class="highlight">blockerande</span> feedback från <code>nit:</code>-stilkommentarer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vänlig i ton, rigorös i standard</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

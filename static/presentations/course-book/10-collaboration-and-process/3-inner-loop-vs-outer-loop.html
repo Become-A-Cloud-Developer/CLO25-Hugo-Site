@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Inner Loop vs Outer Loop</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    INNER LOOP<br>
+                    VS OUTER LOOP
+                </h1>
+
+                <p class="subtitle">Part X — Collaboration and Process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Productivity is feedback latency -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Productivity Is Feedback Latency</h2>
+
+                <div class="fragment info-box">
+                    <p>Every code change waits for an answer — that wait governs the day</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Two distinct cycles produce that answer at very different speeds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The fast one runs on the laptop; the slow one runs on shared infrastructure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Both are necessary; each catches problems the other cannot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Knowing which loop owns which check is an <span class="highlight">engineering judgement</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The inner loop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Inner Loop</h2>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">edit-build-run-test</span> cycle on the developer's own machine</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runs in <span class="highlight">seconds to single-digit minutes</span>, ideally invisible</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Answers narrow questions: does it compile, does the test pass, is the JSON right</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runs hundreds of times a day per developer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Nothing leaves the laptop until the developer is satisfied</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: The outer loop -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Outer Loop</h2>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">commit-push-CI-deploy</span> cycle on shared infrastructure</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Runs in <span class="highlight">minutes</span>, triggered by <code>git push</code> or a pull request</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Answers integrative questions: clean build, real database, deploy succeeds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Defined as code in the repository; gates the merge to <code>main</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The team's shared safety net, not a substitute for local work</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Why optimizing the inner loop matters -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Optimizing the Inner Loop Matters</h2>
+
+                <div class="fragment info-box">
+                    <p>Saved seconds compound across <span class="highlight">thousands of iterations a week</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Slow cycles break concentration — the real cost is re-orientation, not the wait</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fast feedback enables test-first discipline; slow feedback quietly erodes it</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cheap iteration encourages exploration — three approaches instead of one</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Inner-loop speed is, indirectly, code-quality investment</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Hot reload -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Hot Reload</h2>
+
+                <div class="fragment info-box">
+                    <p><code>dotnet watch run</code> monitors the source tree and reloads on save</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Collapses <span class="highlight">save → stop → run</span> into one step</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The browser becomes a live mirror of the source file</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Falls back to a full rebuild for changes it cannot patch in place</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Best return on effort for UI-heavy iteration</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Fast unit tests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Fast Unit Tests</h2>
+
+                <div class="fragment info-box">
+                    <p>A thousand fast tests can run in <span class="highlight">under five seconds</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Stay fast by avoiding I/O — no disk, no network, no real database</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Run the whole suite on save; treat any red as an immediate signal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Cannot validate integration — that is the outer loop's job</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The inner loop owns correctness of individual units</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: In-memory databases for tests -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">In-Memory Databases for Tests</h2>
+
+                <div class="fragment info-box">
+                    <p>EF Core <code>InMemoryDatabase</code> or SQLite <code>:memory:</code> — fast enough to run on save</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Catches <span class="highlight">query-shape bugs</span>: wrong joins, missing <code>Include</code>, bad LINQ</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Not the production database — JSON columns and vendor SQL behave differently</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A useful intermediate signal, not a substitute for a real-DB outer-loop test</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Promotes some integration coverage into the inner loop</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Dev containers -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Dev Containers</h2>
+
+                <div class="fragment info-box">
+                    <p>Declare the entire toolchain — runtimes, DBs, linters — in one repo file</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Eliminates "works on my machine" by making the container <span class="highlight">be</span> the machine</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Onboarding shrinks from a day of installs to a Reopen-in-Container click</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Brings inner-loop tooling to any IDE that speaks the protocol</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Trade-off: the indirection layer can add latency on slow machines</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: The boundary conversation -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Boundary Conversation</h2>
+
+                <div class="fragment info-box">
+                    <p>Default: push every check toward the inner loop until something forces it out</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Outer loop earns its slot when a check needs <span class="highlight">shared infra</span>, runs <span class="highlight">too slow</span> for save, or validates a <span class="highlight">production-like property</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Re-visit the boundary as the codebase grows — slow tests creep inward</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The team's shared judgement is itself a piece of engineering practice</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

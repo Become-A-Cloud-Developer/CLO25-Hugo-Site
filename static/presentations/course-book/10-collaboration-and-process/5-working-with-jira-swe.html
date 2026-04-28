@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Att arbeta med Jira</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    ATT ARBETA<br>
+                    MED JIRA
+                </h1>
+
+                <p class="subtitle">Del X — Samarbete och process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför ett digitalt verktyg -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Ett Digitalt Verktyg</h2>
+
+                <div class="fragment info-box">
+                    <p>En whiteboard fungerar bara när alla sitter i <span class="highlight">samma rum</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Distribuerade och fjärr-team kan inte dela en fysisk tavla</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Verktyget måste kunna läsas och uppdateras varifrån som helst</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jira är standardsvaret bland professionella mjukvaruteam</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Vad Jira är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad Jira Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">databas av arbetsobjekt</span> med en projektstruktur ovanpå</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Projekt → issues → workflow-status (de tre lagren)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje issue har en nyckel som <code>PROJ-123</code> — den bärande identifieraren</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Vyer som sprint board och backlog är filter över databasen</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Issue-hierarkin -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Issue-Hierarkin</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Epic</span> — kvartalsstor temaenhet, ägs av produkt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Story</span> — användarvänd funktion, ryms i en eller två sprints</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Task</span> (uppgift) — internt arbete utan direkt användarvärde</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sub-task</span> — dag-eller-två-enheten en utvecklare plockar upp</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Workflow som tillståndsmaskin -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Workflow Som Tillståndsmaskin</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Workflow</span> — sekvens av statusar en issue rör sig genom</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Standard: <code>TO DO → IN PROGRESS → IN REVIEW → DONE</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Team anpassar — QA-grindar, driftsättningsgrindar, etc.</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje extra status är extra friktion; oftast fyra till sex stycken</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Sprint board -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sprint Board</h2>
+
+                <div class="fragment info-box">
+                    <p>En visuell tavla med kolumner per workflow-status</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Gör <span class="highlight">pågående arbete synligt</span> under det dagliga standup-mötet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lång <code>IN PROGRESS</code>-kolumn → för mycket i flykten</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Fast <code>IN REVIEW</code>-kolumn → granskningar görs inte</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Git-integration via branch-namn -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Git-Integration Via Branch-Namn</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branch-namnkonvention</span> kodar in issue-ID i branchen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Mönster: <code>feature/PROJ-123-add-login</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Jira ser commits och PR:er med matchande nyckel, länkar automatiskt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Workflow-regel flyttar issue till <code>DONE</code> när PR:n mergas</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Genomgånget exempel: epic till mergad PR -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel: Epic Till Mergad PR</h2>
+
+                <div class="fragment info-box">
+                    <p>Epic <code>PROJ-100: User authentication</code> → 2 stories → 6 tasks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Utvecklare tar <code>PROJ-104</code>, drar kortet till <code>IN PROGRESS</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branch: <code>feature/PROJ-104-login-endpoint</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>PR-titel <code>PROJ-104: Implement login endpoint</code> — Jira länkar allt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Kommentardisciplin och estimering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Kommentardisciplin Och Estimering</h2>
+
+                <div class="fragment info-box">
+                    <p>En issue är <span class="highlight">en konversation</span> — varaktig logg slår Slack-trådar</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Story points</span> för stories — abstrakt insats, kalibrerat mot velocity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Timmar</span> för tasks där varaktigheten redan är känd</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att blanda de två i samma backlog ger meningslösa aggregat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Den ärliga sanningen om Jira -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Den Ärliga Sanningen Om Jira</h2>
+
+                <div class="fragment info-box">
+                    <p>Jira fungerar bara så bra som teamets <span class="highlight">hygien</span> runt det</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En board som ljuger är värre än ingen board — falsk trygghet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Dagliga uppdateringar, branch-ID, PR-länkar = en sann tavla</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Disciplinen är värdet, inte verktyget i sig</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

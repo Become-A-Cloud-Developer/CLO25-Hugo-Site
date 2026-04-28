@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Versionshantering med Git</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    VERSIONSHANTERING<br>
+                    MED GIT
+                </h1>
+
+                <p class="subtitle">Del X — Samarbete och process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Varför versionshantering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Varför Versionshantering</h2>
+
+                <div class="fragment info-box">
+                    <p>En kodmapp blir ohanterbar så snart <span class="highlight">två personer</span> redigerar den</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Behov: vem ändrade vad, när och <span class="highlight">varför</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Behov: återgå till valfritt tidigare läge utan att förlora senare arbete</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Behov: parallella ändringar utan <span class="highlight">destruktiv överskrivning</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lösning: förändring blir ett <span class="highlight">förstaklassobjekt</span>, inte en bieffekt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Centraliserat vs. distribuerat -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Centraliserat vs. Distribuerat</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Centraliserat</span> (SVN, CVS): en server håller historiken</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Distribuerat</span> (Git): varje utvecklare har en <span class="highlight">fullständig kopia</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Lokala commits är billiga; nätverk behövs bara för att <span class="highlight">dela</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branching och historikvisning sker lokalt och snabbt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Git vann för att datamodellen är enkel och hållbar</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Vad en repository är -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Vad En Repository Är</h2>
+
+                <div class="fragment info-box">
+                    <p>En <code>.git/</code>-katalog i projektets rot</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Objektdatabas</span>: innehållsadresserade snapshots (SHA-1-hashar)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Refs</span>: korta namn som <code>main</code> som pekar på commits</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Branches och taggar är inget annat än <span class="highlight">refs</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Tar du bort <code>.git/</code> är projektet inte längre versionshanterat</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: De tre tillstånden -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">De Tre Tillstånden</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Working tree</span> — synliga, redigerbara filer på disk</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Staging area</span> (index) — förberedda ändringar för nästa commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Committed</span> — permanent registrerat i repositoryt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add</code> korsar första gränsen</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit</code> korsar den andra</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Commits och branches -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Commits Och Branches</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">commit</span> är en oföränderlig snapshot identifierad av en <span class="highlight">SHA-hash</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Varje commit pekar på sin <span class="highlight">förälder/föräldrar</span> — en riktad acyklisk graf</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">branch</span> är en flyttbar pekare till en commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Att skapa en branch skriver en liten ref-fil; att byta är snabbt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>HEAD</code> namnger den branch du arbetar på just nu</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Remotes och synkronisering -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Remotes Och Synkronisering</h2>
+
+                <div class="fragment info-box">
+                    <p>En <span class="highlight">remote</span> är en annan kopia av repositoryt (oftast <code>origin</code>)</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git fetch</code> — hämta commits från remote, ändra <span class="highlight">inte</span> lokala branches</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git pull</code> — fetch <span class="highlight">plus</span> merge/rebase in i nuvarande branch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push</code> — ladda upp lokala commits till remote</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Symmetriskt par: inget sker automatiskt — vilket möjliggör <span class="highlight">offlinearbete</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Det dagliga flödet -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Det Dagliga Flödet</h2>
+
+                <div class="fragment info-box">
+                    <p><code>git status</code> — vad är ändrat, staged, ospårat</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add &lt;filer&gt;</code> — staga selektivt</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit -m "..."</code> — registrera på nuvarande branch</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push</code> — dela med teamet</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Små, frekventa commits med beskrivande meddelanden</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Genomgånget exempel -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Genomgånget Exempel</h2>
+
+                <div class="fragment info-box">
+                    <p><code>git init</code> — skapa <code>.git/</code>, gör mappen till en repo</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git add .</code> — staga alla filer</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git commit -m "Initial commit"</code> — första snapshot, ingen förälder</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git remote add origin &lt;url&gt;</code> — registrera GitHub som <code>origin</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><code>git push -u origin main</code> — ladda upp och sätt upstream</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Var Git passar in -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Var Git Passar In</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branches</span> blir grunden för pull requests och kodgranskning</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Remotes</span> blir länken mellan lokalt arbete och CI/CD</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Commit-disciplin</span> ligger bakom ren historik och reverts</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>CLI:t är knöligt; <span class="highlight">datamodellen</span> är enkel och korrekt</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

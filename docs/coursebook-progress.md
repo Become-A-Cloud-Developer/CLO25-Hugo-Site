@@ -198,10 +198,37 @@ The persistent progress tracker for the CLO25 Course Book. The orchestrator skil
 **Companion exercise:** `content/exercises/15-code-collaboration/`
 **Studieguide week:** ACD week 1 (v.15)
 **Glossary file:** `docs/coursebook-mining/part-10-glossary.md`
+**Run completed:** 2026-04-28
 
-| # | Title | Status | Words | Slides EN/SWE | Reviewer | Last gate | Notes |
-|---|-------|--------|-------|---------------|----------|-----------|-------|
-| _(populated during Part X run)_ | | | | | | | |
+| # | Title | Status | Words | Slides EN/SWE | Last gate | Notes |
+|---|-------|--------|-------|---------------|-----------|-------|
+| 1 | Version Control with Git | validated | 2367 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 2 | Branching, Pull Requests, and Code Review | validated | 2519 | 9 / 9 | 2026-04-28 | All 10 gates pass |
+| 3 | Inner Loop vs Outer Loop | validated | 2296 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 4 | Agile, Sprints, and User Stories | validated | 2057 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+| 5 | Working with Jira | validated | 2336 | 11 / 11 | 2026-04-28 | All 10 gates pass |
+
+**Part X totals:** 5 chapters, 11,575 words of prose, 10 HTML slide decks. All chapters pass voice-check clean.
+
+---
+
+## Course Book — completion summary (2026-04-28)
+
+**All 8 content Parts (III–X) validated end-to-end.** Plus the migrated Parts I and II.
+
+| Part | Chapters | Words |
+|------|----------|-------|
+| III — Application Development | 6 | 11,772 |
+| IV — Data Access | 4 | 9,144 |
+| V — Identity & Security | 8 | 17,035 |
+| VI — Services and APIs | 6 | 12,293 |
+| VII — Containers | 6 | 11,662 |
+| VIII — DevOps and Delivery | 7 | 15,641 |
+| IX — Operations & Observability | 6 | 13,427 |
+| X — Collaboration & Process | 5 | 11,575 |
+| **Total new content** | **48** | **102,549** |
+
+Final Hugo build clean. All chapters cross-link to companion exercises. Glossary contracts respected across all eight Parts. Voice-check exits 0 on every chapter.
 
 ---
 

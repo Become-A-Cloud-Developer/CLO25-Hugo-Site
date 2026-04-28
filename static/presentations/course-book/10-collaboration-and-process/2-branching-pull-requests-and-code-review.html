@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Branching, Pull Requests, and Code Review</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    BRANCHING,<br>
+                    PULL REQUESTS,<br>
+                    AND CODE REVIEW
+                </h1>
+
+                <p class="subtitle">Part X — Collaboration and Process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why not push to main -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Not Push to Main</h2>
+
+                <div class="fragment info-box">
+                    <p>No <span class="highlight">second pair of eyes</span> before code lands</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>No CI checkpoint between commit and shared history</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Knowledge stays trapped with the original author</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Rolling back requires rewriting public history</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The topic-branch flow -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Topic-Branch Flow</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Branch</span> from an up-to-date <code>main</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Push</span> the topic branch to GitHub</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Open</span> a pull request against <code>main</code></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Review</span> the diff, then <span class="highlight">merge</span> and delete the branch</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: What a pull request is -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">What a Pull Request Is</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">proposal</span> to merge one branch into another</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A diff rendered with inline review controls</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">discussion thread</span> attached to the proposal</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">CI status panel</span> showing automated check results</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A durable artifact long after the branch is gone</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Branch protection rules -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Branch Protection Rules</h2>
+
+                <div class="fragment info-box">
+                    <p>Require a <span class="highlight">pull request</span> before merging</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Require <span class="highlight">N approving reviews</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Require <span class="highlight">status checks</span> (CI) to pass</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Require <span class="highlight">linear history</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Require the branch to be <span class="highlight">up to date</span> with <code>main</code></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Three merge strategies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Merge Strategies</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Merge commit</span> — preserves topic commits and branch shape</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Squash</span> — collapses the PR into one clean commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Rebase</span> — replays commits linearly, no merge commit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pick one, enforce it, stop debating it</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Conflicts and draft PRs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Conflicts and Draft PRs</h2>
+
+                <div class="fragment info-box">
+                    <p>Git stops at the conflict markers; the <span class="highlight">developer decides intent</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Short branches conflict less than long ones</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">draft PR</span> signals work-in-progress</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Same diff, same CI, but no merge button and no review pings</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Code review as a craft -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Code Review as a Craft</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Small PRs</span> get real reads; large PRs get rubber stamps</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Ask, do not assert</span> — invite a conversation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Separate <span class="highlight">blocking</span> feedback from <code>nit:</code> style notes</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Be kind in tone, rigorous in standard</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

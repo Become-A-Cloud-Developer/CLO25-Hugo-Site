@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agile, Sprints, and User Stories</title>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="../../../swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: Hero Slide -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <h1 class="main-title">
+                    AGILE, SPRINTS,<br>
+                    AND USER STORIES
+                </h1>
+
+                <p class="subtitle">Part X — Collaboration and Process</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- SLIDE 2: Why iterative delivery -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Why Iterative Delivery</h2>
+
+                <div class="fragment info-box">
+                    <p>Waterfall plans <span class="highlight">collapse</span> when requirements change mid-project</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Iterative delivery treats <span class="highlight">change as the default</span>, not an exception</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Short cycles bound the cost of a wrong direction</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each iteration is a real chance to learn and re-prioritize</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: The four agile values -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Four Agile Values</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Individuals and interactions</span> over processes and tools</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Working software</span> over comprehensive documentation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Customer collaboration</span> over contract negotiation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Responding to change</span> over following a plan</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Scrum and the sprint -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Scrum and the Sprint</h2>
+
+                <div class="fragment info-box">
+                    <p>A <span class="highlight">sprint</span> is a fixed time-box, usually 1–2 weeks</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Time-box is non-negotiable — unfinished work returns to the backlog</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Honest signal each iteration about real team capacity</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Roles: product owner, Scrum master, development team</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Sprint ceremonies -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Sprint Ceremonies</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sprint planning</span> — commit to a goal and a backlog</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Daily sync</span> — fifteen-minute alignment, not a status report</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Sprint review</span> — demonstrate working software to stakeholders</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Retrospective</span> — improve the process, not the product</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: The user story format -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The User Story Format</h2>
+
+                <div class="fragment info-box">
+                    <p>Format: "As a <span class="highlight">role</span>, I want a <span class="highlight">capability</span>, so that an <span class="highlight">outcome</span>"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Role exposes which user is being served</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Capability stays at user-visible behavior, not implementation</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Outcome links work to user value for prioritization</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Acceptance criteria -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Acceptance Criteria</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Story-specific</span>, testable conditions for "this story is done"</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Each criterion is observable — pass or fail</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Recorded outcome of the team's conversation about the story</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Does not include cross-cutting concerns like coverage or deploy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Definition of done -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Definition of Done</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Cross-cutting</span> quality contract for every story</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Typical items: tests pass, PR merged, deployed to staging</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Pairs with acceptance criteria — both must be satisfied to ship</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Encodes what the team has agreed counts as professional output</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Worked example: sign-up form -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Worked Example: Sign-Up Form</h2>
+
+                <div class="fragment info-box">
+                    <p>Story: "As a prospective customer, I want to create an account..."</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>AC1: duplicate email rejected with a visible error</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>AC2: password under 10 characters rejected before submit</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>AC3: verification email sent within 60 seconds</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>DoD gate: tests, reviewed PR, healthy staging deploy</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Scrum compared with Kanban -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Scrum Compared With Kanban</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Scrum</span>: fixed-length sprints, committed batch, full ceremony set</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Kanban</span>: continuous flow, WIP limits per column</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Scrum fits feature work; Kanban fits operational queues</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Many teams blend the two — adopt what produces useful feedback</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Closing Slide -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Questions</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>
