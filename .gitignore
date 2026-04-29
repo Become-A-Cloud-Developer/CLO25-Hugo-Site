@@ -36,3 +36,4 @@ sample-ebook/
 static/books/*-build-report.txt
 static/books/*/*-build-report.txt
 .claude/skills/publish-ebook/scripts/__pycache__/
+.claude/skills/publish-ebook/tests/__pycache__/
