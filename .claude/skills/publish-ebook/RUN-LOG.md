@@ -129,3 +129,47 @@ Build results:
 
 Test results: 38 tests, 38 passing.
 
+---
+
+## 2026-04-29 04:05 — PR 3 (Tier 3 developer experience)
+
+Status: completed
+
+- New `scripts/cache.py` with content-hash incremental build (book
+  config + scripts + assets + source `*.md` files).
+- `build.py` gained four flags: `--check`, `--strict`, `--quiet`, `--force`.
+  Cache hit short-circuits the whole build with one summary line.
+- `--highlight-style=tango` → `--syntax-highlighting=tango` everywhere
+  (Pandoc deprecation gone).
+- `bin/publish-ebook` shell wrapper at the repo root, PATH-friendly.
+- `static/books/*/.build-hash` added to `.gitignore`.
+- 5 new cache tests (43 total).
+- SKILL.md updated with the new flag table and file inventory.
+
+Decisions made during run:
+
+- The cache file lives inside the book's output dir
+  (`<output>/.build-hash`) rather than a separate state dir; gitignored.
+
+Verification of plan success criteria:
+
+- `bin/publish-ebook --list` → ok.
+- `bin/publish-ebook course-book` then again → second run completes in
+  ~0.1s with `✓ up to date` (32s → 0.1s).
+- `bin/publish-ebook course-book --force` → re-runs the full pipeline.
+- `bin/publish-ebook exercise-book --strict --force` → exits 1
+  (because of the 2 missing images).
+- `bin/publish-ebook --check sample-ebook` → exits 0 without rewriting
+  artefacts; `--check exercise-book` → exits 1.
+- `--quiet` collapses the per-pandoc-command echo into bare
+  `→ HTML`/`→ PDF`/`→ EPUB` markers.
+- No more "Deprecated: --highlight-style" warning from Pandoc.
+
+Build results:
+
+- All three books rebuilt cleanly under `--force --quiet`.
+- course-book.pdf 692p, exercise-book.pdf 902p, sample-ebook.pdf 24p
+  (no change vs PR 2 — DX-only PR).
+
+Test results: 43 tests, 43 passing.
+

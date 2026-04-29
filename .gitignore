@@ -35,5 +35,6 @@ sample-ebook/
 # publish-ebook build artefacts
 static/books/*-build-report.txt
 static/books/*/*-build-report.txt
+static/books/*/.build-hash
 .claude/skills/publish-ebook/scripts/__pycache__/
 .claude/skills/publish-ebook/tests/__pycache__/

@@ -27,13 +27,32 @@ Do **not** invoke this skill for slide presentations (use
 
 ## How invocation maps to action
 
-| User asks                                       | Run                                  |
-|-------------------------------------------------|--------------------------------------|
-| "publish the course book"                       | `python3 .claude/skills/publish-ebook/scripts/build.py course-book` |
-| "rebuild the exercise book"                     | `python3 .claude/skills/publish-ebook/scripts/build.py exercise-book` |
-| "build all e-books"                             | `python3 .claude/skills/publish-ebook/scripts/build.py all` |
-| "list books"  /  "what e-books are configured?" | `python3 .claude/skills/publish-ebook/scripts/build.py --list` |
-| "rebuild the sample"                            | `python3 .claude/skills/publish-ebook/scripts/build.py sample-ebook` |
+There is a thin wrapper at `bin/publish-ebook` (PATH-friendly). All
+invocations below also work as `python3 .claude/skills/publish-ebook/scripts/build.py …`.
+
+| User asks                                       | Run                              |
+|-------------------------------------------------|----------------------------------|
+| "publish the course book"                       | `bin/publish-ebook course-book`   |
+| "rebuild the exercise book"                     | `bin/publish-ebook exercise-book` |
+| "build all e-books"                             | `bin/publish-ebook all`           |
+| "list books"  /  "what e-books are configured?" | `bin/publish-ebook --list`        |
+| "rebuild the sample"                            | `bin/publish-ebook sample-ebook`  |
+| "force a fresh build"                           | `bin/publish-ebook <id> --force`  |
+| "preflight the exercise book"                   | `bin/publish-ebook --check exercise-book` |
+| "fail on warnings"                              | `bin/publish-ebook <id> --strict` |
+| "quiet output"                                  | `bin/publish-ebook <id> --quiet`  |
+
+Flags:
+
+- `--force` — ignore the `<output>/.build-hash` cache and rebuild.
+- `--check` — preflight (validate + preprocess) without writing PDF/EPUB.
+  Exits 1 if the build report contains warnings, 2 if `books.yaml`
+  is invalid.
+- `--strict` — exit 1 after a successful build if the report contains
+  unknown shortcodes or missing images. Empty chapters and drafts
+  do not trigger strict.
+- `--quiet` — suppress per-command echo and the report dump; keep
+  the summary lines.
 
 After a successful build, surface the output paths so the user can
 open the files. Apple Books opens `.epub`; Preview opens `.pdf`.
@@ -99,11 +118,17 @@ font files in `assets/fonts/` and switch the `@import` in
 ├── SKILL.md                       this file
 ├── scripts/
 │   ├── build.py                   orchestrator (entry point)
-│   └── preprocessor.py            hugo-tree → flat markdown (v1 stub)
-└── assets/
-    ├── print.css                  PDF stylesheet (CSS Paged Media)
-    ├── epub.css                   EPUB stylesheet (reflowable)
-    └── pandoc-html.template       suppresses Pandoc's auto title-block
+│   ├── cache.py                   incremental-build hash
+│   └── preprocessor.py            hugo-tree → flat markdown
+├── assets/
+│   ├── cover.svg.template         type-driven cover, palette-coloured
+│   ├── print.css                  PDF stylesheet (CSS Paged Media)
+│   ├── epub.css                   EPUB stylesheet (reflowable)
+│   └── pandoc-html.template       suppresses Pandoc's auto title-block
+└── tests/
+    ├── run.sh                     stdlib unittest runner
+    ├── preprocessor_test.py       unit + smoke tests
+    └── fixtures/                  small Hugo trees for tests
 ```
 
 ## Design decisions worth knowing
@@ -195,6 +220,6 @@ fixing in the source markdown rather than in the skill.
   are not rewritten; they will appear as plain text or broken
   links. Within-book section anchors do work.
 - **Hugo blockquote-style callouts** (`> i Concept Deep Dive`) are
-  rendered as ordinary blockquotes, not as the structured
-  Note/Tip/Warning callout boxes. Authors who want the box
-  treatment should use Pandoc fenced divs (`::: {.callout-tip}`).
+  now rewritten into Pandoc fenced divs and pick up the structured
+  Note / Tip / Warning / Concept callout boxes automatically. Authors
+  can still write fenced divs directly when they want explicit control.

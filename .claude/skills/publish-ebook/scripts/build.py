@@ -100,8 +100,12 @@ def _write_metadata_yaml(book: dict, target: Path, meta: dict) -> None:
     target.write_text(yaml.safe_dump(md, sort_keys=False, allow_unicode=True))
 
 
+QUIET = False
+
+
 def _run(cmd: list[str], **kw) -> None:
-    print("  $ " + " ".join(str(c) for c in cmd))
+    if not QUIET:
+        print("  $ " + " ".join(str(c) for c in cmd))
     subprocess.run(cmd, check=True, **kw)
 
 
@@ -173,7 +177,14 @@ def build_meta() -> dict:
 # Build
 # ──────────────────────────────────────────────────────────────────────
 
-def build_book(book: dict) -> None:
+def build_book(book: dict, *, force: bool = False, strict: bool = False,
+               check_only: bool = False) -> int:
+    """Build one book.
+
+    Returns an exit code:
+      0  success (or up-to-date cache hit, or check-only with no warnings)
+      1  built / preflighted with warnings under --strict
+    """
     book_id = book["id"]
     src = (PROJECT_ROOT / book["source"]).resolve()
     out = (PROJECT_ROOT / book["output"]).resolve()
@@ -185,13 +196,22 @@ def build_book(book: dict) -> None:
         raise SystemExit(f"[{book_id}] source directory does not exist: {src}")
 
     print(f"\n=== Building '{book_id}' ===")
-    print(f"  source: {src}")
-    print(f"  output: {out}")
-    print(f"  palette: {book.get('palette', 'blue')}")
+    if not QUIET:
+        print(f"  source: {src}")
+        print(f"  output: {out}")
+        print(f"  palette: {book.get('palette', 'blue')}")
     print(f"  build:   {meta['build_version']}")
 
-    # 1. Preprocess source tree → single concatenated markdown.
+    # Cache check — skip the whole build if nothing changed.
     sys.path.insert(0, str(SCRIPT_DIR))
+    from cache import compute_build_hash, cached, write_cache  # noqa: E402
+
+    build_hash = compute_build_hash(book, PROJECT_ROOT, SCRIPT_DIR, ASSETS)
+    if not check_only and not force and cached(out, build_hash):
+        print(f"  ✓ up to date ({build_hash[:12]})")
+        return 0
+
+    # 1. Preprocess source tree → single concatenated markdown.
     from preprocessor import preprocess  # noqa: E402
     md_text, report = preprocess(
         src,
@@ -200,6 +220,14 @@ def build_book(book: dict) -> None:
         book=book,
         project_root=PROJECT_ROOT,
     )
+
+    if check_only:
+        report_path = out / f"{book_id}-build-report.txt"
+        report_path.write_text(report.render(), encoding="utf-8")
+        print(report.render())
+        warnings = bool(report.unknown_shortcodes or report.missing_images
+                        or any("parse error" in n.lower() for n in report.notes))
+        return 1 if warnings else 0
 
     with tempfile.TemporaryDirectory(prefix=f"publish-ebook-{book_id}-") as tmp_s:
         tmp = Path(tmp_s)
@@ -239,7 +267,7 @@ def build_book(book: dict) -> None:
             "--toc", "--toc-depth=2",
             "--metadata-file", str(meta_yml),
             "--css",           str(PRINT_CSS),
-            "--highlight-style=tango",
+            "--syntax-highlighting=tango",
             "--include-before-body", str(cover_include),
             "--output",        str(html_path),
             str(md_path),
@@ -258,7 +286,7 @@ def build_book(book: dict) -> None:
             "--toc", "--toc-depth=2",
             "--metadata-file", str(meta_yml),
             "--css",           str(EPUB_CSS),
-            "--highlight-style=tango",
+            "--syntax-highlighting=tango",
             "--epub-cover-image", str(cover_svg),
             "--output",        str(epub_path),
             str(md_path),
@@ -267,11 +295,19 @@ def build_book(book: dict) -> None:
     # 5. Write build report alongside the artefacts.
     report_path = out / f"{book_id}-build-report.txt"
     report_path.write_text(report.render(), encoding="utf-8")
-    print(report.render())
+    if not QUIET:
+        print(report.render())
+
+    write_cache(out, build_hash)
 
     print(f"  ✓ {epub_path.relative_to(PROJECT_ROOT)}")
     print(f"  ✓ {pdf_path.relative_to(PROJECT_ROOT)}")
     print(f"  ✓ {report_path.relative_to(PROJECT_ROOT)}")
+
+    if strict and (report.unknown_shortcodes or report.missing_images):
+        print(f"  ✗ strict mode: book has warnings — exit 1")
+        return 1
+    return 0
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -326,30 +362,54 @@ def main() -> None:
                    help="book id, or 'all', or omit to use --list")
     p.add_argument("--list", action="store_true",
                    help="list available book ids from books.yaml")
+    p.add_argument("--check", action="store_true",
+                   help="run preflight (validate + preprocess) and exit "
+                        "without writing PDF/EPUB; exits 1 on warnings")
+    p.add_argument("--strict", action="store_true",
+                   help="exit 1 if the build report contains unknown "
+                        "shortcodes or missing images")
+    p.add_argument("--quiet", action="store_true",
+                   help="suppress per-command echo and report dump; "
+                        "keep summary lines")
+    p.add_argument("--force", action="store_true",
+                   help="ignore cached build hash and rebuild")
     args = p.parse_args()
+
+    global QUIET
+    QUIET = args.quiet
 
     books = _load_books()
     by_id = {b["id"]: b for b in books}
 
-    if args.list or not args.target:
+    if args.list or (not args.target and not args.check):
         print(f"books defined in {BOOKS_YAML.relative_to(PROJECT_ROOT)}:")
         for b in books:
             print(f"  · {b['id']:<16} {b['title']}")
         return
 
-    _ensure_tools()
+    if not args.target:
+        raise SystemExit("--check requires a target book id (or 'all')")
 
-    if args.target == "all":
-        for b in books:
-            build_book(b)
-        return
+    if not args.check:
+        _ensure_tools()
 
-    if args.target not in by_id:
+    targets = books if args.target == "all" else [by_id.get(args.target)]
+    if targets[0] is None:
         raise SystemExit(
             f"unknown book id: {args.target}\n"
             f"  known ids: {', '.join(by_id)}"
         )
-    build_book(by_id[args.target])
+
+    rc = 0
+    for b in targets:
+        rc = max(rc, build_book(
+            b,
+            force=args.force,
+            strict=args.strict,
+            check_only=args.check,
+        ))
+    if rc != 0:
+        sys.exit(rc)
 
 
 if __name__ == "__main__":

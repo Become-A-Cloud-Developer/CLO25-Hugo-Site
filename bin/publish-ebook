@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Thin wrapper around the publish-ebook build script.
+# Always invoked from the repo root.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+exec python3 "$ROOT/.claude/skills/publish-ebook/scripts/build.py" "$@"

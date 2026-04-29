@@ -38,6 +38,7 @@ from build import (  # noqa: E402
     make_cover_svg,
     validate_books,
 )
+from cache import compute_build_hash  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -433,6 +434,63 @@ class PrefaceTests(unittest.TestCase):
                 book=book, project_root=root,
             )
         self.assertNotIn("::: {.preface}", md)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# PR 3 — Build cache
+# ──────────────────────────────────────────────────────────────────────
+
+class CacheTests(unittest.TestCase):
+    """Verify the cache hash is sensitive to all the inputs we care about."""
+
+    def setUp(self):
+        import tempfile
+        self.tmp = Path(tempfile.mkdtemp(prefix="cache-test-"))
+        self.scripts = self.tmp / "scripts"
+        self.assets = self.tmp / "assets"
+        self.scripts.mkdir()
+        self.assets.mkdir()
+        (self.scripts / "build.py").write_text("# build script v1\n")
+        (self.scripts / "preprocessor.py").write_text("# preprocessor v1\n")
+        (self.assets / "print.css").write_text("/* css v1 */\n")
+        # Source tree.
+        src = self.tmp / "src"
+        src.mkdir()
+        (src / "_index.md").write_text("# Hello\n")
+        self.book = {
+            "id": "x", "title": "x", "author": "a",
+            "source": "src", "output": "out", "palette": "blue",
+        }
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _hash(self):
+        return compute_build_hash(self.book, self.tmp, self.scripts, self.assets)
+
+    def test_unchanged_returns_same_hash(self):
+        self.assertEqual(self._hash(), self._hash())
+
+    def test_changed_source_invalidates(self):
+        h1 = self._hash()
+        (self.tmp / "src" / "_index.md").write_text("# Hello edited\n")
+        self.assertNotEqual(h1, self._hash())
+
+    def test_changed_book_config_invalidates(self):
+        h1 = self._hash()
+        self.book["palette"] = "red"
+        self.assertNotEqual(h1, self._hash())
+
+    def test_changed_assets_invalidates(self):
+        h1 = self._hash()
+        (self.assets / "print.css").write_text("/* css v2 */\n")
+        self.assertNotEqual(h1, self._hash())
+
+    def test_changed_script_invalidates(self):
+        h1 = self._hash()
+        (self.scripts / "build.py").write_text("# build script v2\n")
+        self.assertNotEqual(h1, self._hash())
 
 
 if __name__ == "__main__":
