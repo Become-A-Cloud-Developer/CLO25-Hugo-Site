@@ -14,7 +14,7 @@ Weekly breakdown of course content, theory, and exercises. Select your course be
 
 ## Select Your Course
 
-| Course | Description |
-|--------|-------------|
-| [**BCD** - Basic Cloud Development](/week-by-week/bcd/) | 10 weeks: servers, IaC, web dev, networking, storage, CI/CD, monitoring |
-| [**ACD** - Advanced Cloud Development](/week-by-week/acd/) | Upcoming — weekly materials will be added as the course starts |
+| Course | Period | Description |
+|--------|--------|-------------|
+| [**BCD** — Basic Cloud Development](/week-by-week/bcd/) | v.5–v.14 (26 Jan – 5 Apr 2026) | 10 weeks: servers, IaC, web dev, networking, storage, CI/CD, secrets, monitoring |
+| [**ACD** — Advanced Cloud Development](/week-by-week/acd/) | v.15–v.22 (6 Apr – 29 May 2026) | 8 weeks: agile workflow, Docker, auth, CI/CD, observability, REST APIs, blob storage |

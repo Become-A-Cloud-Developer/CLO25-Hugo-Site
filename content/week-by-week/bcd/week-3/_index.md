@@ -1,29 +1,30 @@
 +++
-title = "Week 3"
+title = "Week 3 (v.7)"
 program = "CLO"
 cohort = "25"
 courses = ["BCD"]
-description = "Web development: .NET Core, MVC architecture, and HTTP fundamentals"
+description = "Web development with .NET Core: HTTP fundamentals, the .NET platform, and the MVC pattern"
 weight = 3
 +++
 
-# Week 3: Web Development
+# Week 3 (v.7) — Web Development
 
-This week introduces web application development with .NET Core and the MVC architecture pattern. You will build your first web application and learn about HTTP fundamentals.
+Build your first ASP.NET Core MVC application and learn how HTTP, the .NET platform, and the MVC pattern fit together.
 
 ## Theory
 
-- HTTP protocol fundamentals and request/response cycle
-- .NET Core and the MVC pattern
+- [Part III — Application Development](/course-book/3-application-development/) — overview
+  - [HTTP Fundamentals](/course-book/3-application-development/1-http-fundamentals/http-fundamentals/)
+  - [The .NET Platform](/course-book/3-application-development/2-the-dotnet-platform/the-dotnet-platform/)
+  - [The MVC Pattern](/course-book/3-application-development/3-the-mvc-pattern/the-mvc-pattern/)
 
 ## Practice
 
-Build web applications with .NET:
-
-- [Webapp Development — Presentation Layer](/exercises/webapp-development/presentation-layer/) - Hello World MVC, forms, validation, and styling
+- [Webapp Development — Presentation Layer](/exercises/10-webapp-development/1-presentation-layer/) — Hello World MVC, forms, helper tags, model binding, validation, Bootstrap styling
 
 ## Preparation
 
+- Install the [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - Read up on .NET Core and the MVC pattern
 
 ## Reflection Questions
@@ -31,3 +32,8 @@ Build web applications with .NET:
 - What is MVC architecture and why is it used?
 - How does the HTTP protocol work?
 - What is the difference between GET and POST?
+
+## Links
+
+- [.NET Documentation](https://learn.microsoft.com/dotnet)
+- [ASP.NET Core MVC](https://learn.microsoft.com/aspnet/core/mvc/overview)
