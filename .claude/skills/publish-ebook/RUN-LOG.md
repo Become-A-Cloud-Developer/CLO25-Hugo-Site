@@ -231,3 +231,100 @@ Build results:
 
 Test results: 43 tests, 43 passing.
 
+---
+
+## 2026-04-29 04:35 — PR 6 (Intra-book link rewriting)
+
+Status: completed (descoped: cross-book refs not handled, per plan §1).
+
+- New `build_anchor_index(source)` walks a book's source tree once
+  and produces `{ rel-md-path: sec-<slug-of-title> }`.
+- New `rewrite_intrabook_links()` scans each section body for
+  `[text](rel/path/to/sibling.md)` and rewrites to `[text](#sec-...)`
+  when the target resolves to a known section. External URLs and
+  unresolved targets are left as-is (the latter logged in the report).
+- Wired into both the single-section and multi-section handler paths
+  in `preprocess()`.
+- 4 new tests (47 total).
+
+Build results:
+
+- All 3 books rebuild cleanly. Page counts unchanged (course-book
+  692, exercise-book 902, sample-ebook 23) — the existing corpora
+  don't contain raw `.md` links between sections today, so this PR
+  pays off only when authors start writing them.
+
+Test results: 47 tests, 47 passing.
+
+---
+
+## Final summary
+
+Run start: 2026-04-29 03:19
+Run end:   2026-04-29 04:40 (≈ 80 minutes wall clock)
+
+**PRs completed: all 8 in plan order.**
+
+| #  | Title                                          | Result    |
+|---:|------------------------------------------------|-----------|
+| 0a | Test infrastructure                            | completed |
+| 0b | books.yaml schema validation                   | completed |
+| 1  | Tier 1 content fidelity                        | completed |
+| 2  | Tier 2 textbook completeness                   | completed |
+| 3  | Tier 3 developer experience                    | completed |
+| 4  | Page-bottom footnotes                          | completed |
+| 5  | Outer-margin marginalia (stretch)              | completed |
+| 6  | Intra-book link rewriting (stretch)            | completed |
+
+PRs skipped: none.
+Commits: 8 (one per PR), all on `main`. **Not pushed**, per global memory.
+Branch state: ahead of `origin/main` by 11 commits (3 prior + 8 from this run).
+
+### Books rebuilt
+
+| Book              | Before | After | Δ    |
+|-------------------|-------:|------:|-----:|
+| course-book.pdf   |    688 |   692 |  +4  |
+| exercise-book.pdf |    940 |   902 | -38  |
+| sample-ebook.pdf  |     22 |    23 |  +1  |
+
+EPUBs and PDFs all current at `v2026.04.29-c963c2c`. Build cache
+populated, so a no-op rebuild for any book completes in <0.1 s.
+
+### Tests
+
+47 unit tests across `preprocessor.py`, `build.py` (cover, schema)
+and `cache.py`. Run with `bash .claude/skills/publish-ebook/tests/run.sh`.
+
+### What changed under the hood
+
+- `scripts/preprocessor.py`: blockquote→callout, numeric-prefix
+  stripping, smarter single-section, Preface emission, intra-book
+  link rewriting.
+- `scripts/build.py`: cover SVG + build-version, four CLI flags
+  (`--check`, `--strict`, `--quiet`, `--force`), incremental cache,
+  Pandoc deprecation fix.
+- `scripts/cache.py`: new — build-hash logic.
+- `assets/cover.svg.template`: new — type-driven cover.
+- `assets/footnotes-inline.lua`: new — inlines Note elements for
+  WeasyPrint's `float: footnote`.
+- `assets/print.css`: cover page, page-bottom footnotes, position-
+  absolute marginalia.
+- `bin/publish-ebook`: new — top-level wrapper.
+- `tests/`: new — 6 fixture trees + 47-test suite.
+
+### Next steps for the user
+
+- Open the rebuilt PDFs and verify visual results match expectations:
+  cover styling, exercise-book callout boxes, sample-ebook's
+  page-bottom footnotes and outer-margin marginalia.
+- If happy, push `main` (8 unpushed commits) to deploy. The plan's
+  global-memory rule prevented the run from pushing; that's still
+  yours to trigger.
+- Author intra-book links (Markdown `[text](../path/section.md)`)
+  in the next round of content authoring — they'll resolve to
+  in-book anchors automatically (PR 6).
+- Cross-book references (Course → Exercise) remain a known
+  limitation. Worth a follow-up only if the books cross-reference
+  frequently in practice.
+
