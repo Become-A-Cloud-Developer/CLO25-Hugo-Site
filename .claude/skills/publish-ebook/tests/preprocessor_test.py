@@ -30,6 +30,7 @@ from preprocessor import (  # noqa: E402
     strip_leading_h1_matching_title,
     to_roman,
 )
+from build import validate_books  # noqa: E402
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -231,6 +232,34 @@ class EndToEndTests(unittest.TestCase):
         self.assertIn("Part I", md)
         # The chapter title should appear.
         self.assertIn("Hello World", md)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# books.yaml schema
+# ──────────────────────────────────────────────────────────────────────
+
+class SchemaTests(unittest.TestCase):
+    def _ok_book(self, **over):
+        b = {"id": "x", "title": "t", "author": "a",
+             "source": "s", "output": "o", "palette": "blue"}
+        b.update(over)
+        return b
+
+    def test_valid_books_no_errors(self):
+        self.assertEqual(validate_books([self._ok_book()]), [])
+
+    def test_missing_required_keys(self):
+        errs = validate_books([{"id": "x"}])
+        self.assertTrue(any("missing keys" in e for e in errs))
+
+    def test_invalid_palette(self):
+        errs = validate_books([self._ok_book(palette="green")])
+        self.assertTrue(any("palette" in e for e in errs))
+
+    def test_duplicate_id(self):
+        errs = validate_books([self._ok_book(id="dup"),
+                                self._ok_book(id="dup")])
+        self.assertTrue(any("duplicate id" in e for e in errs))
 
 
 if __name__ == "__main__":

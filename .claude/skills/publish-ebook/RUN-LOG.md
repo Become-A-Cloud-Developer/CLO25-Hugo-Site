@@ -42,3 +42,16 @@ Decisions made during run:
 Test results: 18 tests, 18 passing.
 Build results: not run this step.
 
+---
+
+## 2026-04-29 03:25 — Pre-flight 2b (books.yaml schema)
+
+Status: completed
+
+- `validate_books()` added to `scripts/build.py`; called in `_load_books()`.
+- Errors written to stderr; exits 2 on any schema problem.
+- 4 schema tests added (valid, missing keys, bad palette, duplicate id).
+- Existing `books.yaml` still passes (`build.py --list` clean).
+
+Test results: 22 tests, 22 passing.
+

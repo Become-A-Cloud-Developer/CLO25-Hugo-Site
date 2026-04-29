@@ -191,12 +191,45 @@ def build_book(book: dict) -> None:
 # Entry
 # ──────────────────────────────────────────────────────────────────────
 
+_REQUIRED_BOOK_KEYS = {"id", "title", "author", "source", "output", "palette"}
+_ALLOWED_PALETTES = {"blue", "red"}
+
+
+def validate_books(books: list[dict]) -> list[str]:
+    """Return a list of human-readable schema errors, empty if config is valid."""
+    errors: list[str] = []
+    seen_ids: set[str] = set()
+    for i, b in enumerate(books):
+        prefix = f"books[{i}] ({b.get('id', '?')})"
+        missing = _REQUIRED_BOOK_KEYS - b.keys()
+        if missing:
+            errors.append(f"{prefix}: missing keys: {sorted(missing)}")
+        palette = b.get("palette")
+        if palette not in _ALLOWED_PALETTES:
+            errors.append(
+                f"{prefix}: palette must be one of {sorted(_ALLOWED_PALETTES)}, "
+                f"got {palette!r}"
+            )
+        bid = b.get("id")
+        if bid in seen_ids:
+            errors.append(f"{prefix}: duplicate id {bid!r}")
+        if bid is not None:
+            seen_ids.add(bid)
+    return errors
+
+
 def _load_books() -> list[dict]:
     with BOOKS_YAML.open() as f:
         cfg = yaml.safe_load(f) or {}
     books = cfg.get("books", [])
     if not books:
         raise SystemExit(f"no books defined in {BOOKS_YAML}")
+    errors = validate_books(books)
+    if errors:
+        sys.stderr.write(f"books.yaml schema errors in {BOOKS_YAML}:\n")
+        for e in errors:
+            sys.stderr.write(f"  - {e}\n")
+        raise SystemExit(2)
     return books
 
 
