@@ -173,3 +173,39 @@ Build results:
 
 Test results: 43 tests, 43 passing.
 
+---
+
+## 2026-04-29 04:20 — PR 4 (Page-bottom footnotes via Lua filter)
+
+Status: completed
+
+- New `assets/footnotes-inline.lua` rewrites every `Note` element into
+  an inline `<span class="footnote">` at the call site. Uses
+  `pandoc.write(... 'html')` to preserve inline formatting (em, strong,
+  code, links) instead of the lossy `stringify`.
+- Wired into the **PDF** Pandoc invocation only via `--lua-filter`;
+  the EPUB invocation keeps default endnote rendering (conventional
+  for reflowable readers).
+- `print.css` updated: removed the `section.footnotes` endnote block,
+  added `span.footnote { float: footnote }` plus `::footnote-call`,
+  `::footnote-marker` and `@page { @footnote { … } }` rules.
+
+Build results:
+
+- sample-ebook.pdf: 24 → 23 pages — the trailing "NOTES" section is
+  gone; footnotes now appear at the bottom of the page where the
+  reference is. Spot-checked at the page where footnotes were
+  expected and the float worked under WeasyPrint 68 (no
+  `BlockReplacedBox` assertion).
+- course-book.pdf, exercise-book.pdf: unchanged (no footnotes in
+  current corpus, so the filter is a no-op).
+
+Test results: 43 tests, 43 passing.
+
+Decisions made during run:
+
+- Did not need the marginalia escape-hatch: WeasyPrint 68 happily
+  renders `float: footnote` next to the existing column-bound
+  marginalia float used in the sample. Marginalia stay column-bound
+  for now; PR 5 may push them out into the page margin.
+

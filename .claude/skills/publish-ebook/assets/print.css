@@ -568,43 +568,38 @@ li { margin-bottom: 0.2em; text-indent: 0; }
 li > p { text-indent: 0; margin-bottom: 0.3em; }
 
 /* ---------- 14. Footnotes -------------------------------- */
-/* Pandoc emits a <section class="footnotes" role="doc-endnotes">
-   at the end of the document. We render those endnotes simply,
-   in a smaller serif. Page-bottom footnotes via CSS `float: footnote`
-   require Pandoc to inline them (it does not by default), so we
-   leave that for a later iteration. */
-a.footnote-ref {
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.72em;
+/* The PDF path uses a Pandoc Lua filter to rewrite each footnote into
+   an inline <span class="footnote"> at the call site; CSS Paged Media
+   then floats it down to the bottom of the page. The EPUB path keeps
+   Pandoc's default endnote rendering (which is conventional for
+   reflowable readers and a no-op here). */
+span.footnote {
+  float: footnote;
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+::footnote-call {
+  font-size: 0.7em;
   vertical-align: super;
   line-height: 0;
   color: var(--accent);
   font-weight: 600;
-  text-decoration: none;
 }
-section.footnotes,
-section[role="doc-endnotes"] {
-  page-break-before: always;
-  margin-top: 1in;
-  font-size: 9pt;
-  line-height: 1.45;
-  color: var(--ink-soft);
-  border-top: 0.4pt solid var(--rule);
-  padding-top: 0.4em;
-}
-section.footnotes::before,
-section[role="doc-endnotes"]::before {
-  content: "Notes";
+::footnote-marker {
   font-family: 'IBM Plex Sans', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 9pt;
-  color: var(--ink-mute);
-  display: block;
-  margin-bottom: 0.6em;
+  font-size: 8pt;
+  font-weight: 600;
+  color: var(--accent);
 }
-section.footnotes ol { padding-left: 1.5em; }
-section.footnotes li { margin-bottom: 0.5em; text-indent: 0; }
+@page {
+  @footnote {
+    border-top: 0.4pt solid var(--rule);
+    padding-top: 4pt;
+    margin-top: 8pt;
+  }
+}
 
 /* ---------- 15. ToC -------------------------------------- */
 nav#TOC, nav.toc, #table-of-contents, .toc {

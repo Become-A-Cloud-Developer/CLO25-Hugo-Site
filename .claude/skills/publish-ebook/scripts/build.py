@@ -39,6 +39,7 @@ ASSETS     = SKILL_DIR / "assets"
 PRINT_CSS  = ASSETS / "print.css"
 EPUB_CSS   = ASSETS / "epub.css"
 TEMPLATE   = ASSETS / "pandoc-html.template"
+FOOTNOTE_LUA = ASSETS / "footnotes-inline.lua"
 
 # Project root is the first ancestor that contains books.yaml.
 def _find_project_root(start: Path) -> Path:
@@ -255,7 +256,10 @@ def build_book(book: dict, *, force: bool = False, strict: bool = False,
         epub_path = out / f"{book_id}.epub"
         pdf_path  = out / f"{book_id}.pdf"
 
-        # 2. Markdown → HTML (intermediate for PDF).
+        # 2. Markdown → HTML (intermediate for PDF). The Lua filter
+        # rewrites Pandoc's endnote section into inline floats so
+        # WeasyPrint's CSS Paged Media `float: footnote` can place
+        # them at the bottom of the page where the ref appears.
         print("  → HTML (intermediate)")
         _run([
             "pandoc",
@@ -268,6 +272,7 @@ def build_book(book: dict, *, force: bool = False, strict: bool = False,
             "--metadata-file", str(meta_yml),
             "--css",           str(PRINT_CSS),
             "--syntax-highlighting=tango",
+            "--lua-filter",    str(FOOTNOTE_LUA),
             "--include-before-body", str(cover_include),
             "--output",        str(html_path),
             str(md_path),
