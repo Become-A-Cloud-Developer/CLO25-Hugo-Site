@@ -31,3 +31,8 @@ sample-ebook/
 
 # Claude Code runtime state (per-machine, per-session)
 .claude/scheduled_tasks.lock
+
+# publish-ebook build artefacts
+static/books/*-build-report.txt
+static/books/*/*-build-report.txt
+.claude/skills/publish-ebook/scripts/__pycache__/

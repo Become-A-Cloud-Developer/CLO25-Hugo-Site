@@ -1,0 +1,70 @@
+# Configuration for the publish-ebook skill.
+#
+# Each entry under `books:` declares one buildable volume. To build:
+#   /publish-ebook <id>            build a single book
+#   /publish-ebook all             build every book in this file
+#   /publish-ebook --list          list available book ids
+#
+# Field reference
+# ───────────────
+#   id              short identifier; the argument to /publish-ebook
+#   title           book title (appears on cover, title page, PDF metadata)
+#   subtitle        optional subtitle
+#   author          author or editor
+#   source          path (relative to project root) to walk for content
+#   output          path (relative to project root) for the EPUB + PDF
+#   palette         "blue" (Course Book) or "red" (Exercise Book)
+#   eyebrow-prefix  short label on chapter openers (e.g. "Part", "Lab")
+#   chapter-prefix  small-caps line above chapter title (e.g. "Chapter")
+#   parts           true = 3-level Hugo tree (Part/Chapter/Section);
+#                   false = 2-level (Chapter/Section)
+#   relref-mode     how to handle Hugo {{< relref >}} links:
+#                     drop-link   keep the link text, drop the URL
+#                     footnote    convert to a footnote citation
+#                     keep        keep as a plain external link
+#   skip-preprocess true to bypass front-matter/shortcode handling
+#                   (use for hand-authored sources without Hugo markup)
+#   language        BCP-47 language tag for EPUB metadata
+#   rights          copyright line for the front matter
+
+books:
+  - id: course-book
+    title: "Cloud Developers — Course Book"
+    subtitle: "Foundations to Operations"
+    author: "Lars Appel"
+    source: content/course-book
+    output: static/books/course-book
+    palette: blue
+    eyebrow-prefix: "Part"
+    chapter-prefix: "Chapter"
+    parts: true
+    relref-mode: drop-link
+    language: en-GB
+    rights: "© 2026 Lars Appel"
+
+  - id: exercise-book
+    title: "Cloud Developers — Exercise Book"
+    subtitle: "Hands-on Labs"
+    author: "Lars Appel"
+    source: content/exercises
+    output: static/books/exercise-book
+    palette: red
+    eyebrow-prefix: "Part"
+    chapter-prefix: "Exercise"
+    parts: true
+    relref-mode: drop-link
+    language: en-GB
+    rights: "© 2026 Lars Appel"
+
+  - id: sample-ebook
+    title: "Designing Reliable Cloud Systems"
+    subtitle: "Course Book — Sample Edition"
+    author: "Lars Appel"
+    source: sample-ebook/content
+    output: sample-ebook/build
+    palette: blue
+    parts: false
+    relref-mode: drop-link
+    skip-preprocess: true
+    language: en-GB
+    rights: "© 2026 Lars Appel. Sample edition for design evaluation."

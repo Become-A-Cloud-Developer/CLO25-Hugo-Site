@@ -1,0 +1,621 @@
+/* ============================================================
+   Designing Reliable Cloud Systems — Print stylesheet
+   For WeasyPrint (CSS Paged Media)
+   ============================================================ */
+
+/* ---------- 1. Fonts (Google Fonts via @import) ----------- */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ---------- 2. Colour palette ----------------------------- */
+:root {
+  --ink:        #1f2933;
+  --ink-soft:   #3e4c59;
+  --ink-mute:   #52606d;
+  --rule:       #cbd2d9;
+  --rule-soft:  #e4e7eb;
+  --paper:      #ffffff;
+  --paper-tint: #faf8f3;     /* warm code/quote tint */
+
+  --accent:     #2a6f8f;     /* primary teal-blue */
+  --accent-deep:#1d4f66;
+  --note:       #2a6f8f;     /* blue */
+  --tip:        #387a5a;     /* green */
+  --warn:       #b86a00;     /* amber */
+  --concept:    #5b4a8c;     /* purple */
+  --exercise:   #a23a4f;     /* warm red, only in Exercise Book opener */
+}
+
+/* ---------- 3. Page geometry ------------------------------ */
+@page {
+  size: 6in 9in;
+  margin: 0.7in 1.0in 0.85in 0.6in;     /* top, OUTER, bottom, INNER */
+  @top-left  { content: none; }
+  @top-right { content: none; }
+  @bottom-center {
+    content: counter(page);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 9pt;
+    color: var(--ink-mute);
+  }
+}
+
+/* Verso (left): chapter title runs in the header */
+@page :left {
+  margin: 0.7in 0.6in 0.85in 1.0in;     /* mirrored: outer is left */
+  @top-left {
+    content: string(chapter-title);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+}
+
+/* Recto (right): section title runs in the header */
+@page :right {
+  @top-right {
+    content: string(section-title);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+}
+
+/* Front-matter: no header, roman page numbers (we just blank top) */
+@page frontmatter {
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-center {
+    content: counter(page, lower-roman);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 9pt;
+    color: var(--ink-mute);
+  }
+}
+
+/* Chapter opener page: no headers */
+@page chapter {
+  @top-left  { content: none; }
+  @top-right { content: none; }
+  @bottom-center { content: counter(page); }
+}
+
+/* ---------- 4. Base typography ---------------------------- */
+html { color: var(--ink); }
+body {
+  font-family: 'IBM Plex Serif', Charter, 'Iowan Old Style', Georgia, serif;
+  font-size: 10.5pt;
+  line-height: 1.52;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  widows: 2;
+  orphans: 2;
+}
+
+p { margin: 0; text-indent: 1.1em; }
+p + p { margin-top: 0; }
+h1 + p, h2 + p, h3 + p,
+.dropcap-paragraph,
+.callout-note > p:first-child,
+.callout-tip > p:first-child,
+.callout-warning > p:first-child,
+.callout-concept > p:first-child,
+.callout-prereq > p:first-child,
+.expected-output > p:first-child,
+.checkpoint > p:first-child,
+.reflection > p:first-child,
+.exercise-overview > p:first-child,
+blockquote > p:first-child { text-indent: 0; }
+
+/* Headings */
+h1, h2, h3, h4 {
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  hyphens: manual;
+  page-break-after: avoid;
+}
+h1 { font-size: 22pt; margin: 0 0 0.6em; letter-spacing: -0.01em; }
+h2 { font-size: 14pt; margin: 1.6em 0 0.5em; }
+h3 { font-size: 11.5pt; margin: 1.3em 0 0.35em; }
+h4 { font-size: 10.5pt; font-style: italic; font-family: 'IBM Plex Serif', serif;
+     margin: 1.1em 0 0.25em; font-weight: 500; }
+
+/* Section numbering — auto-generated. The chapter counter is bumped
+   by .chapter-eyebrow, which is the first element on a chapter page. */
+body { counter-reset: chapter; }
+.chapter-eyebrow {
+  counter-increment: chapter;
+  counter-reset: section subsection figure listing tbl;
+}
+h2:not(.unnumbered) {
+  counter-reset: subsection;
+}
+h2:not(.unnumbered)::before {
+  counter-increment: section;
+  content: counter(chapter) "." counter(section) "  ";
+  color: var(--accent);
+  font-weight: 500;
+}
+h3:not(.unnumbered)::before {
+  counter-increment: subsection;
+  content: counter(chapter) "." counter(section) "." counter(subsection) "  ";
+  color: var(--ink-mute);
+  font-weight: 500;
+  font-size: 0.9em;
+}
+h2:not(.unnumbered) { string-set: section-title content(); }
+
+/* Links — subdued, underlined only on hover (n/a in print but kept) */
+a { color: var(--accent-deep); text-decoration: none; }
+
+/* ---------- 5. Front matter ------------------------------- */
+.half-title, .title-page, .copyright-page, .dedication, .preface {
+  page: frontmatter;
+}
+.half-title  { page-break-after: always; text-align: center; padding-top: 3in; }
+.half-title h1 { font-size: 13pt; font-weight: 400; letter-spacing: 0.18em;
+                 text-transform: uppercase; color: var(--ink-mute); }
+
+.title-page  { page-break-after: always; page-break-before: right;
+               display: flex; flex-direction: column; justify-content: space-between;
+               min-height: 7in; text-align: center; }
+.title-block { padding-top: 1.4in; }
+.title-page h1 { font-size: 28pt; line-height: 1.15; font-weight: 600;
+                 letter-spacing: -0.015em; margin: 0 0 0.4em; }
+.title-page h2 { font-size: 13pt; font-weight: 400; font-style: italic;
+                 color: var(--ink-mute); margin: 0 0 1.2em; }
+.title-page h2::before { content: none; }
+.title-page p { text-indent: 0; font-family: 'IBM Plex Sans', sans-serif;
+                font-size: 11pt; color: var(--ink-soft); }
+.publisher { font-family: 'IBM Plex Sans', sans-serif; font-size: 9pt;
+             letter-spacing: 0.1em; text-transform: uppercase;
+             color: var(--ink-mute); padding-bottom: 0.5in; }
+
+.copyright-page { page-break-after: always; padding-top: 5in; font-size: 9pt; }
+.copyright p { text-indent: 0; font-size: 9pt; line-height: 1.5;
+               color: var(--ink-soft); margin-bottom: 0.6em; }
+
+.dedication { page-break-after: always; page-break-before: right;
+              text-align: center; padding-top: 3.2in;
+              font-style: italic; font-size: 11.5pt; color: var(--ink-soft); }
+.dedication p { text-indent: 0; margin-bottom: 0.8em; }
+
+/* Preface heading + bring back arabic page numbers */
+.preface { page-break-before: right; }
+.preface h1 { margin-top: 1.5in; font-size: 18pt; }
+.preface { string-set: chapter-title "Preface"; }
+
+/* ---------- 5b. Part divider ------------------------------ */
+/* A full recto page introducing each Part, used when the source
+   is a 3-level Hugo tree (parts:true in books.yaml). */
+.part-divider {
+  page: chapter;
+  page-break-before: right;
+  page-break-after: always;
+  text-align: center;
+  padding-top: 2.4in;
+}
+.part-divider .part-eyebrow {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11pt;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.45in;
+}
+.part-divider .part-eyebrow p { margin: 0; text-indent: 0; }
+h1.part-title {
+  font-size: 30pt;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  margin: 0 auto 0.45in;
+  border: none;
+  padding: 0;
+  max-width: 4.4in;
+  text-align: center;
+  color: var(--ink);
+}
+h1.part-title::before { content: none; }
+.part-divider .part-body {
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  font-size: 11.5pt;
+  color: var(--ink-soft);
+  max-width: 3.8in;
+  margin: 0 auto;
+  line-height: 1.55;
+  text-align: center;
+}
+.part-divider .part-body p {
+  text-indent: 0;
+  margin: 0 0 0.6em;
+}
+
+/* ---------- 6. Chapter opener ----------------------------- */
+/* The chapter "opener" is now a flat sequence of three blocks:
+     .chapter-eyebrow  → forces the recto page break and adds top space
+     .chapter-number   → small caps line above the title
+     h1.chapter-title  → the big chapter title
+   Pandoc keeps H1s in the ToC because nothing wraps them. */
+.chapter-eyebrow {
+  page: chapter;
+  page-break-before: right;
+  padding-top: 1.8in;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 9pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 0.55in;
+  text-align: left;
+}
+.chapter-eyebrow.exercise-eyebrow { color: var(--exercise); }
+.chapter-eyebrow p { text-indent: 0; margin: 0; }
+
+.chapter-number {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 11pt;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 0.15in;
+  text-align: left;
+}
+.chapter-number p { text-indent: 0; margin: 0; }
+
+h1.chapter-title {
+  font-size: 32pt;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.45in;
+  text-align: left;
+  color: var(--ink);
+  border-bottom: 2pt solid var(--accent);
+  padding-bottom: 0.2in;
+  max-width: 4.5in;
+  string-set: chapter-title content();
+}
+h1.chapter-title::before { content: none; }
+h1.chapter-title.exercise-title { border-bottom-color: var(--exercise); }
+
+.chapter-objectives {
+  border-left: 2pt solid var(--accent);
+  padding: 0.12in 0.2in;
+  background: var(--paper-tint);
+  font-size: 9.5pt;
+  line-height: 1.5;
+  margin: 0.2in 0 0;
+  break-inside: avoid;
+  page-break-after: always;       /* end of chapter opener page */
+}
+.chapter-objectives p:first-child {
+  font-family: 'IBM Plex Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 8.5pt;
+  color: var(--accent-deep);
+  margin-bottom: 0.4em;
+}
+.chapter-objectives ul { margin: 0; padding-left: 1.2em; }
+.chapter-objectives li { margin-bottom: 0.3em; text-indent: 0; }
+
+.exercise-meta {
+  margin: 0.2in 0 0;
+  font-size: 9.5pt;
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-top: 1pt solid var(--rule);
+  border-bottom: 1pt solid var(--rule);
+  padding: 0.12in 0;
+  break-inside: avoid;
+  page-break-after: always;
+}
+.exercise-meta table { width: 100%; border-collapse: collapse; }
+.exercise-meta td { padding: 3pt 0; vertical-align: top; }
+.exercise-meta td:first-child {
+  width: 1.2in; color: var(--ink-mute);
+  text-transform: uppercase; letter-spacing: 0.08em; font-size: 8.5pt;
+}
+
+/* ---------- 7. Drop cap ----------------------------------- */
+/* Pure CSS ::first-letter { float: left } crashes WeasyPrint when
+   combined with target-counter() in the ToC, so we use an explicit
+   span — the markdown writes [F]{.dropcap} for the drop cap. */
+.dropcap-paragraph { text-indent: 0; }
+.dropcap {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 3.4em;
+  line-height: 0.86;
+  float: left;
+  padding: 0.04em 0.08em 0 0;
+  margin-top: 0.05em;
+  color: var(--accent-deep);
+}
+
+/* ---------- 8. Callouts ---------------------------------- */
+.callout-note, .callout-tip, .callout-warning, .callout-concept,
+.callout-prereq, .expected-output, .checkpoint, .reflection,
+.exercise-overview {
+  margin: 0.9em 0;
+  padding: 8pt 12pt 8pt 14pt;
+  background: var(--paper-tint);
+  border-left: 3pt solid var(--rule);
+  font-size: 9.8pt;
+  line-height: 1.48;
+  break-inside: avoid;
+}
+.callout-note     { border-left-color: var(--note);     }
+.callout-tip      { border-left-color: var(--tip);      }
+.callout-warning  { border-left-color: var(--warn);     }
+.callout-concept  { border-left-color: var(--concept);  background: #f6f3fa; }
+.callout-prereq   { border-left-color: var(--exercise); }
+.expected-output  { border-left-color: var(--ink-mute); background: #f5f6f7; }
+.checkpoint       { border-left-color: var(--exercise); background: #fbf2f4; }
+.reflection       { border-left-color: var(--accent);   background: #f1f6f9; }
+.exercise-overview{ border-left-color: var(--exercise); background: #fbf2f4;
+                    margin-top: 0.4in; }
+
+.callout-note    > p:first-child > strong:first-child,
+.callout-tip     > p:first-child > strong:first-child,
+.callout-warning > p:first-child > strong:first-child,
+.callout-concept > p:first-child > strong:first-child,
+.callout-prereq  > p:first-child > strong:first-child,
+.expected-output > p:first-child > strong:first-child,
+.checkpoint      > p:first-child > strong:first-child,
+.reflection      > p:first-child > strong:first-child,
+.exercise-overview > p:first-child > strong:first-child {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 9pt;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.3em;
+}
+.callout-note    > p:first-child > strong:first-child { color: var(--note); }
+.callout-tip     > p:first-child > strong:first-child { color: var(--tip); }
+.callout-warning > p:first-child > strong:first-child { color: var(--warn); }
+.callout-concept > p:first-child > strong:first-child { color: var(--concept); }
+.callout-prereq  > p:first-child > strong:first-child { color: var(--exercise); }
+.expected-output > p:first-child > strong:first-child { color: var(--ink-mute); }
+.checkpoint      > p:first-child > strong:first-child { color: var(--exercise); }
+.reflection      > p:first-child > strong:first-child { color: var(--accent); }
+.exercise-overview > p:first-child > strong:first-child { color: var(--exercise); }
+
+/* Task labels (Exercise Book) */
+.task {
+  border-left: 2pt solid var(--exercise);
+  padding: 4pt 10pt;
+  background: #fff;
+  margin: 1em 0 0.4em;
+  break-after: avoid;
+}
+.task p { text-indent: 0; }
+.task strong:first-child {
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--exercise);
+  letter-spacing: 0.06em;
+}
+
+/* ---------- 9. Code listings ----------------------------- */
+pre {
+  font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+  font-size: 8.7pt;
+  line-height: 1.45;
+  background: var(--paper-tint);
+  border-top:    0.6pt solid var(--rule);
+  border-bottom: 0.6pt solid var(--rule);
+  padding: 8pt 10pt;
+  margin: 0.6em 0 1em;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  text-indent: 0;
+  break-inside: avoid;
+}
+code {
+  font-family: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+  font-size: 0.92em;
+}
+p code, li code, td code {
+  background: var(--rule-soft);
+  padding: 0.5pt 3pt;
+  border-radius: 2pt;
+}
+pre code { background: none; padding: 0; }
+
+/* Listing caption — Pandoc puts data-caption on the wrapping
+   <div class="sourceCode"> (the .listing-caption class lives on
+   the inner <pre>). */
+div.sourceCode[data-caption]::before {
+  display: block;
+  content: attr(data-caption);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-mute);
+  margin: 0.4em 0 4pt;
+}
+
+/* ---------- 10. Figures and tables ----------------------- */
+.figure-block {
+  margin: 1em 0 1.4em;
+  break-inside: avoid;
+  text-align: center;
+}
+.figure-caption-top, .figure-caption {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 8.8pt;
+  color: var(--ink-mute);
+  text-align: left;
+  margin: 0 0 0.4em;
+}
+.book-figure {
+  width: 100%;
+  max-width: 4.4in;
+  height: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8em 0 0.4em;
+  font-size: 9.5pt;
+  break-inside: avoid;
+}
+th, td {
+  text-align: left;
+  padding: 5pt 8pt 5pt 0;
+  vertical-align: top;
+  text-indent: 0;
+}
+thead th {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 8.8pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border-bottom: 0.8pt solid var(--ink);
+  padding-bottom: 4pt;
+}
+tbody tr { border-bottom: 0.4pt solid var(--rule-soft); }
+tbody tr:last-child { border-bottom: 0.6pt solid var(--ink-soft); }
+caption {
+  caption-side: bottom;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 8.6pt;
+  font-style: italic;
+  color: var(--ink-mute);
+  text-align: left;
+  margin-top: 0.3em;
+}
+
+/* ---------- 11. Marginalia ------------------------------- */
+/* Sized to sit on the right edge of the text column. WeasyPrint's
+   true outer-margin floats (negative margins) are fragile with
+   footnote floats on the same page, so we keep the marginalia
+   inside the column for the sample. */
+.marginnote {
+  float: right;
+  clear: right;
+  width: 1.5in;
+  margin: 4pt 0 8pt 12pt;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 8.2pt;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  border-left: 0.6pt solid var(--accent);
+  padding-left: 8pt;
+}
+.marginnote p { text-indent: 0; margin: 0 0 0.4em; }
+.marginnote strong { color: var(--accent-deep); font-weight: 600; }
+
+/* ---------- 12. Block quote / pull quote ----------------- */
+blockquote {
+  margin: 1em 0.4in 1.1em;
+  padding: 0 0 0 0.2in;
+  border-left: 1.5pt solid var(--accent);
+  font-family: 'IBM Plex Serif', serif;
+  font-style: italic;
+  font-size: 11pt;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  break-inside: avoid;
+}
+blockquote p { text-indent: 0; }
+
+/* ---------- 13. Lists ------------------------------------ */
+ul, ol {
+  padding-left: 1.4em;
+  margin: 0.4em 0 0.6em;
+}
+li { margin-bottom: 0.2em; text-indent: 0; }
+li > p { text-indent: 0; margin-bottom: 0.3em; }
+
+/* ---------- 14. Footnotes -------------------------------- */
+/* Pandoc emits a <section class="footnotes" role="doc-endnotes">
+   at the end of the document. We render those endnotes simply,
+   in a smaller serif. Page-bottom footnotes via CSS `float: footnote`
+   require Pandoc to inline them (it does not by default), so we
+   leave that for a later iteration. */
+a.footnote-ref {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+section.footnotes,
+section[role="doc-endnotes"] {
+  page-break-before: always;
+  margin-top: 1in;
+  font-size: 9pt;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  border-top: 0.4pt solid var(--rule);
+  padding-top: 0.4em;
+}
+section.footnotes::before,
+section[role="doc-endnotes"]::before {
+  content: "Notes";
+  font-family: 'IBM Plex Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 9pt;
+  color: var(--ink-mute);
+  display: block;
+  margin-bottom: 0.6em;
+}
+section.footnotes ol { padding-left: 1.5em; }
+section.footnotes li { margin-bottom: 0.5em; text-indent: 0; }
+
+/* ---------- 15. ToC -------------------------------------- */
+nav#TOC, nav.toc, #table-of-contents, .toc {
+  page: frontmatter;
+  page-break-before: right;
+  page-break-after: always;
+}
+nav#TOC h1, nav.toc h1, .toc > h1 {
+  font-size: 18pt; margin-top: 1.5in; margin-bottom: 0.6in;
+}
+nav#TOC ul, nav.toc ul, .toc ul { list-style: none; padding-left: 0; }
+nav#TOC li, nav.toc li, .toc li {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 10pt;
+  margin: 0.5em 0;
+  display: flex;
+  justify-content: space-between;
+  break-inside: avoid;
+}
+nav#TOC a, nav.toc a, .toc a { color: var(--ink); }
+nav#TOC a::after, nav.toc a::after, .toc a::after {
+  content: leader('. ') target-counter(attr(href), page);
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+}
+nav#TOC ul ul li, nav.toc ul ul li, .toc ul ul li {
+  font-size: 9.5pt; padding-left: 0.6em; color: var(--ink-mute);
+}
+nav#TOC ul ul a, nav.toc ul ul a, .toc ul ul a { color: var(--ink-soft); }
+
+/* ---------- 16. Misc ------------------------------------- */
+hr {
+  border: none;
+  border-top: 0.4pt solid var(--rule);
+  margin: 1em 4em;
+}
+strong { font-weight: 600; }
+em { font-style: italic; }
