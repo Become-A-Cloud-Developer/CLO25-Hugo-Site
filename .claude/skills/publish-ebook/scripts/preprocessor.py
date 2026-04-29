@@ -200,6 +200,168 @@ def _anchor(s: str) -> str:
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Blockquote → callout conversion
+# ──────────────────────────────────────────────────────────────────────
+
+# Patterns are matched against the first non-blank line of a blockquote
+# block (after stripping the leading `> `). Each entry is:
+#   (regex, callout-class, leading-icon-chars-to-strip)
+# The icon (ℹ / ⚠ / ✓) is removed before re-emission so CSS coloured
+# bars render cleanly without doubled-up Unicode glyphs.
+# Patterns are matched against the first non-blank line of a blockquote
+# block (after stripping the leading `> `). Each entry is:
+#   (regex, callout-class, leading-icon-chars-to-strip)
+# `\*{0,2}` keeps the bold markers optional so prose written either as
+# `**Concept Deep Dive**` or `Concept Deep Dive:` matches.
+_CALLOUT_PATTERNS = [
+    (re.compile(r"^\s*[ℹi]\s*\*{0,2}\s*(?:Concept|Note)\b", re.I),
+        "callout-concept", "ℹi"),
+    (re.compile(r"^\s*\*{0,2}\s*Concept\b", re.I),
+        "callout-concept", ""),
+    (re.compile(r"^\s*\*{0,2}\s*Key takeaway[:\.\*]", re.I),
+        "callout-tip", ""),
+    (re.compile(r"^\s*[⚠️]+\s*\*{0,2}\s*(?:Warning|Common Mistakes|Gotcha|Caveat)\b", re.I),
+        "callout-warning", "⚠️"),
+    (re.compile(r"^\s*\*{0,2}\s*(?:Warning|Common Mistakes|Gotcha|Caveat)\b", re.I),
+        "callout-warning", ""),
+    (re.compile(r"^\s*✓\s*\*{0,2}\s*(?:Quick check|Verify|Checkpoint|Tip)\b", re.I),
+        "callout-tip", "✓"),
+    (re.compile(r"^\s*✦?\s*\*{0,2}\s*Tip\b", re.I),
+        "callout-tip", ""),
+    (re.compile(r"^\s*\*{0,2}\s*(?:What you[’']?ll learn|Learning objectives|Objectives)\b", re.I),
+        "exercise-overview", ""),
+    (re.compile(r"^\s*\*{0,2}\s*(?:Before starting|Prerequisites|Requirements)\b", re.I),
+        "callout-prereq", ""),
+    (re.compile(r"^\s*📝?\s*\*{0,2}\s*Note\b", re.I),
+        "callout-note", ""),
+]
+
+
+def convert_blockquote_callouts(body: str) -> str:
+    """Walk markdown line by line; group consecutive `> ` lines into
+    blockquote blocks. If the block's first non-empty content line
+    matches a callout pattern, rewrite the block as a fenced div
+    (Pandoc syntax) so it lands on the same CSS path as native callouts.
+    Lines inside fenced code (``` / ~~~) are left alone."""
+    lines = body.splitlines(keepends=True)
+    out: list[str] = []
+    i = 0
+    in_fence = False
+    while i < len(lines):
+        stripped = lines[i].lstrip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            out.append(lines[i])
+            i += 1
+            continue
+        if in_fence or not lines[i].lstrip().startswith(">"):
+            out.append(lines[i])
+            i += 1
+            continue
+
+        # Collect a contiguous blockquote block (allow blank lines
+        # between quoted lines as long as the next non-blank line is
+        # also a quote line).
+        block: list[str] = []
+        j = i
+        while j < len(lines):
+            ln = lines[j]
+            if ln.lstrip().startswith(">"):
+                block.append(ln)
+                j += 1
+                continue
+            if block and ln.strip() == "":
+                # Lookahead: is the next non-blank line a quote line?
+                k = j + 1
+                while k < len(lines) and lines[k].strip() == "":
+                    k += 1
+                if k < len(lines) and lines[k].lstrip().startswith(">"):
+                    block.append(ln)
+                    j += 1
+                    continue
+            break
+        # Strip trailing blanks from the captured block.
+        while block and block[-1].strip() == "":
+            block.pop()
+
+        # Strip the leading `>` (and one optional space) from each line
+        # to recover the inner content.
+        inner_lines = []
+        for ln in block:
+            stripped_ln = ln.lstrip()
+            if stripped_ln.startswith(">"):
+                rest = stripped_ln[1:]
+                if rest.startswith(" "):
+                    rest = rest[1:]
+                inner_lines.append(rest)
+            else:
+                inner_lines.append(ln)
+        first = next((s.rstrip("\n") for s in inner_lines if s.strip()), "")
+        match = next(
+            ((pat, k, strip) for pat, k, strip in _CALLOUT_PATTERNS
+             if pat.match(first)),
+            None,
+        )
+        if match:
+            _, klass, strip_chars = match
+            # Drop a single leading icon glyph from the first content
+            # line (e.g. ℹ, ⚠, ✓) so rendered output is not double-iconed.
+            if strip_chars:
+                for idx, ln in enumerate(inner_lines):
+                    if ln.strip():
+                        new = re.sub(
+                            rf"^(\s*)[{strip_chars}]\s*",
+                            r"\1",
+                            ln,
+                            count=1,
+                        )
+                        inner_lines[idx] = new
+                        break
+            out.append(f"::: {{.{klass}}}\n")
+            out.extend(inner_lines)
+            if not (inner_lines and inner_lines[-1].endswith("\n")):
+                out.append("\n")
+            out.append(":::\n\n")
+        else:
+            out.extend(block)
+            out.append("\n")
+        i = j
+    return "".join(out)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Chapter-title normalisation
+# ──────────────────────────────────────────────────────────────────────
+
+_NUMERIC_PREFIX = re.compile(r"^\d+\.\s+(?=[A-Za-z])")
+
+
+def normalize_chapter_title(raw: str) -> str:
+    """Strip a leading '1. ' / '2. ' from a chapter title — the book
+    auto-numbers chapters, so the manual prefix is redundant in print.
+    Falls back to the original string if the result would be too short
+    to be a useful title."""
+    candidate = _NUMERIC_PREFIX.sub("", raw.strip(), count=1)
+    return candidate if len(candidate) >= 4 else raw.strip()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Single-section detection
+# ──────────────────────────────────────────────────────────────────────
+
+_SHORTCODE_ONLY = re.compile(r"\{\{<.*?>\}\}", re.DOTALL)
+
+
+def is_chapter_index_effectively_empty(idx_body: str) -> bool:
+    """A chapter `_index.md` body that is just shortcodes plus an
+    optional title heading should be treated as empty for layout
+    purposes: the chapter's real content lives in the section file."""
+    s = _SHORTCODE_ONLY.sub("", idx_body)
+    s = re.sub(r"^\s*#.*$", "", s, flags=re.MULTILINE)
+    return len(s.strip()) < 80
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Heading manipulation
 # ──────────────────────────────────────────────────────────────────────
 
@@ -450,7 +612,11 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
             return
 
         has_index = (chapter_dir / "_index.md").exists()
-        single_section = not has_index and len(sections) == 1
+        _, idx_body = read_index(chapter_dir) if has_index else (None, "")
+        single_section = (
+            len(sections) == 1
+            and (not has_index or is_chapter_index_effectively_empty(idx_body))
+        )
 
         chapter_num += 1
         report.chapters += 1
@@ -466,12 +632,15 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
                 part_roman=part_roman,
                 part_topic=part_topic,
                 chapter_num=chapter_num,
-                chapter_title=sole_fm.title,
+                chapter_title=normalize_chapter_title(sole_fm.title),
             ))
+            body = convert_blockquote_callouts(sole_body)
             body = handle_shortcodes(
-                sole_body, relref_mode=relref_mode, report=report,
+                body, relref_mode=relref_mode, report=report,
                 path=sole_path,
             )
+            if project_root is not None:
+                body = rewrite_image_paths(body, project_root, report)
             out.append(body.strip() + "\n\n")
             report.sections += 1
             return
@@ -483,9 +652,10 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
             part_roman=part_roman,
             part_topic=part_topic,
             chapter_num=chapter_num,
-            chapter_title=chapter_fm.title,
+            chapter_title=normalize_chapter_title(chapter_fm.title),
         ))
         for fm, path, body in sections:
+            body = convert_blockquote_callouts(body)
             body = handle_shortcodes(
                 body, relref_mode=relref_mode, report=report, path=path,
             )

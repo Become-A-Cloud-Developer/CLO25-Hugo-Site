@@ -21,7 +21,10 @@ sys.path.insert(0, str(SCRIPTS))
 import preprocessor  # noqa: E402
 from preprocessor import (  # noqa: E402
     BuildReport,
+    convert_blockquote_callouts,
     handle_shortcodes,
+    is_chapter_index_effectively_empty,
+    normalize_chapter_title,
     parse_frontmatter,
     parse_part_title,
     preprocess,
@@ -260,6 +263,71 @@ class SchemaTests(unittest.TestCase):
         errs = validate_books([self._ok_book(id="dup"),
                                 self._ok_book(id="dup")])
         self.assertTrue(any("duplicate id" in e for e in errs))
+
+
+# ──────────────────────────────────────────────────────────────────────
+# PR 1 — Tier 1 content fidelity
+# ──────────────────────────────────────────────────────────────────────
+
+class CalloutTests(unittest.TestCase):
+    def test_concept_blockquote_becomes_concept_callout(self):
+        body = "> Concept: Cloud computing is a deployment model.\n"
+        out = convert_blockquote_callouts(body)
+        self.assertIn("::: {.callout-concept}", out)
+        self.assertIn("Cloud computing", out)
+
+    def test_warning_blockquote_becomes_warning_callout(self):
+        body = "> ⚠️ Warning: this destroys data\n"
+        out = convert_blockquote_callouts(body)
+        self.assertIn("::: {.callout-warning}", out)
+
+    def test_key_takeaway_becomes_tip_callout(self):
+        body = "> Key takeaway: prefer reliability over novelty\n"
+        out = convert_blockquote_callouts(body)
+        self.assertIn("::: {.callout-tip}", out)
+
+    def test_unmatched_blockquote_left_alone(self):
+        body = "> Just some quoted prose\n> with no marker\n"
+        out = convert_blockquote_callouts(body)
+        self.assertNotIn(":::", out)
+        # original `>` lines should still be present
+        self.assertIn("> Just", out)
+
+    def test_blockquote_inside_fence_left_alone(self):
+        body = "```\n> Concept: this is code, not a callout\n```\n"
+        out = convert_blockquote_callouts(body)
+        self.assertNotIn(":::", out)
+        self.assertIn("> Concept", out)
+
+
+class NormalizeTitleTests(unittest.TestCase):
+    def test_strips_numeric_prefix(self):
+        self.assertEqual(normalize_chapter_title("1. Hello World"), "Hello World")
+        self.assertEqual(normalize_chapter_title("12. Networking Deep Dive"),
+                         "Networking Deep Dive")
+
+    def test_keeps_short_result_intact(self):
+        self.assertEqual(normalize_chapter_title("1. AB"), "1. AB")
+
+    def test_keeps_non_numeric(self):
+        self.assertEqual(normalize_chapter_title("Hello World"), "Hello World")
+
+
+class IndexEmptyTests(unittest.TestCase):
+    def test_empty_when_only_children_shortcode(self):
+        body = "{{< children sort=\"weight\" />}}"
+        self.assertTrue(is_chapter_index_effectively_empty(body))
+
+    def test_empty_when_heading_plus_shortcode(self):
+        body = "# Chapter\n\n{{< children />}}\n"
+        self.assertTrue(is_chapter_index_effectively_empty(body))
+
+    def test_not_empty_when_real_intro_paragraph(self):
+        body = (
+            "Cloud platforms have changed how applications are deployed and "
+            "operated. This chapter walks through the foundational concepts.\n"
+        )
+        self.assertFalse(is_chapter_index_effectively_empty(body))
 
 
 if __name__ == "__main__":

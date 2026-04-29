@@ -55,3 +55,40 @@ Status: completed
 
 Test results: 22 tests, 22 passing.
 
+---
+
+## 2026-04-29 03:35 — PR 1 (Tier 1 content fidelity)
+
+Status: completed
+
+- `convert_blockquote_callouts()` now rewrites `> Concept Deep Dive`,
+  `> Common Mistakes`, `> Quick check`, `> Before starting`, etc. into
+  fenced divs with the existing `.callout-*` / `.exercise-overview` /
+  `.callout-prereq` classes. Patterns are tolerant of optional bold
+  markers and leading icon glyphs (ℹ ⚠ ✓), and the icon is stripped
+  before re-emission so CSS doesn't double-paint.
+- `normalize_chapter_title()` strips a leading "1. " from the chapter
+  title — the layout already auto-numbers chapters.
+- `is_chapter_index_effectively_empty()` lets a chapter with one
+  section file and a near-empty `_index.md` (just `{{< children />}}`)
+  collapse into a single-section chapter that uses the section's title.
+- 11 new tests covering the above (33 total).
+
+Decisions made during run:
+
+- The plan's literal patterns had to be widened: actual corpus uses
+  `**Concept Deep Dive**` with leading `ℹ`, not bare `Concept`.
+- 3-level fixture got a second section so it still exercises the
+  multi-section path after the new single-section detection.
+
+Build results:
+
+- course-book.pdf: 688 pages, 2.1 MB (no change — course content
+  has no labelled callouts yet, no numeric prefixes).
+- exercise-book.pdf: 898 pages, 3.2 MB (was 940 — 42-page saving
+  from callout boxes replacing endnote-style quote blocks plus
+  prefix stripping).
+- sample-ebook.pdf: 22 pages, 111 KB (no change — passthrough mode).
+
+Test results: 33 tests, 33 passing.
+
