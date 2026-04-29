@@ -209,3 +209,25 @@ Decisions made during run:
   marginalia float used in the sample. Marginalia stay column-bound
   for now; PR 5 may push them out into the page margin.
 
+---
+
+## 2026-04-29 04:25 — PR 5 (Outer-margin marginalia)
+
+Status: completed
+
+- `.marginnote` switched from `float: right` to
+  `position: absolute; right: -1.7in` riding on a relatively-positioned
+  paragraph parent.
+- Verso (left) pages mirror with `left: -1.7in` plus a flipped border
+  so the note sits in the outer margin on every spread.
+
+Build results:
+
+- All 3 books still build cleanly under `--force`.
+- No `BlockReplacedBox` crash from WeasyPrint 68 with the new
+  position-absolute rule sharing pages with `float: footnote`.
+- sample-ebook.pdf: 23 pages (unchanged); marginalia escape the
+  text column visually but page flow is unchanged.
+
+Test results: 43 tests, 43 passing.
+

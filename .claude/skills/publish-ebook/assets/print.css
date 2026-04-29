@@ -526,15 +526,20 @@ caption {
 }
 
 /* ---------- 11. Marginalia ------------------------------- */
-/* Sized to sit on the right edge of the text column. WeasyPrint's
-   true outer-margin floats (negative margins) are fragile with
-   footnote floats on the same page, so we keep the marginalia
-   inside the column for the sample. */
+/* The marginnote rides in the outer page margin via position-absolute
+   relative to its containing paragraph. Negative-`right` pushes it
+   beyond the text column on a recto page; on verso pages we mirror
+   to negative-`left`. This avoids the BlockReplacedBox crash that
+   `float: right + negative margins` triggers when combined with
+   `float: footnote` on the same page. */
+p { position: relative; }
+
 .marginnote {
-  float: right;
-  clear: right;
+  position: absolute;
   width: 1.5in;
-  margin: 4pt 0 8pt 12pt;
+  right: -1.7in;
+  top: 0;
+  margin: 0;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 8.2pt;
   line-height: 1.4;
@@ -542,8 +547,21 @@ caption {
   border-left: 0.6pt solid var(--accent);
   padding-left: 8pt;
 }
-.marginnote p { text-indent: 0; margin: 0 0 0.4em; }
+.marginnote p { text-indent: 0; margin: 0 0 0.4em; position: static; }
 .marginnote strong { color: var(--accent-deep); font-weight: 600; }
+
+/* Mirror to the inner edge on verso (left) pages so the marginnote
+   sits in the outer margin on every spread. */
+@page :left {
+  .marginnote {
+    right: auto;
+    left: -1.7in;
+    border-left: none;
+    border-right: 0.6pt solid var(--accent);
+    padding-left: 0;
+    padding-right: 8pt;
+  }
+}
 
 /* ---------- 12. Block quote / pull quote ----------------- */
 blockquote {
