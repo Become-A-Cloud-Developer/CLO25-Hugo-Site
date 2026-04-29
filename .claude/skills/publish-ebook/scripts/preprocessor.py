@@ -598,6 +598,37 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
     chapter_num = 0
     out: list[str] = []
 
+    # Preface: emit the source root `_index.md` body as a fenced
+    # `.preface` div, if it has any prose to show. The shortcode
+    # `{{< children />}}` and the redundant H1 are stripped; what's
+    # left is the author's intro paragraph(s).
+    root_idx = source / "_index.md"
+    if root_idx.exists():
+        try:
+            root_fm, root_body = parse_frontmatter(
+                root_idx.read_text(encoding="utf-8"), root_idx,
+            )
+        except ValueError as e:
+            report.notes.append(str(e))
+        else:
+            root_body = strip_leading_h1_matching_title(root_body, root_fm.title)
+            root_body = handle_shortcodes(
+                root_body, relref_mode=relref_mode, report=report,
+                path=root_idx,
+            )
+            if project_root is not None:
+                root_body = rewrite_image_paths(root_body, project_root, report)
+            if root_body.strip():
+                # Demote the body's H2/H3 by one so the chapter-numbering
+                # auto-counter doesn't fire on Preface subsections.
+                shifted = shift_headings(root_body, by=1).strip()
+                out.append(
+                    "::: {.preface}\n"
+                    "# Preface {.unnumbered #preface}\n\n"
+                    f"{shifted}\n"
+                    ":::\n\n"
+                )
+
     def _handle_chapter(chapter_dir: Path, *,
                         part_roman: str | None, part_topic: str | None) -> None:
         nonlocal chapter_num

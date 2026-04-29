@@ -33,7 +33,11 @@ from preprocessor import (  # noqa: E402
     strip_leading_h1_matching_title,
     to_roman,
 )
-from build import validate_books  # noqa: E402
+from build import (  # noqa: E402
+    _split_title,
+    make_cover_svg,
+    validate_books,
+)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -328,6 +332,107 @@ class IndexEmptyTests(unittest.TestCase):
             "operated. This chapter walks through the foundational concepts.\n"
         )
         self.assertFalse(is_chapter_index_effectively_empty(body))
+
+
+# ──────────────────────────────────────────────────────────────────────
+# PR 2 — Cover + Preface
+# ──────────────────────────────────────────────────────────────────────
+
+class CoverTests(unittest.TestCase):
+    def test_split_title_short_returns_one_line(self):
+        line1, line2 = _split_title("Short Title")
+        self.assertEqual(line1, "Short Title")
+        self.assertEqual(line2, "")
+
+    def test_split_title_long_splits_at_word_boundary(self):
+        line1, line2 = _split_title(
+            "Cloud Developers — Course Book Foundations"
+        )
+        self.assertGreater(len(line1), 0)
+        self.assertGreater(len(line2), 0)
+        # Each side has at least one word, no half-broken word.
+        self.assertNotIn("—", line2[:1])
+
+    def test_make_cover_svg_substitutes_placeholders(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp_s:
+            tmp = Path(tmp_s)
+            book = {
+                "title": "A Long Book Title For Testing",
+                "subtitle": "A Subtitle",
+                "author": "An Author",
+                "palette": "blue",
+            }
+            svg = make_cover_svg(book, "v2026.04.29-abc1234", tmp).read_text()
+        # The title is split across two SVG lines for visual balance,
+        # so each half should appear separately.
+        self.assertIn("A Long Book", svg)
+        self.assertIn("Title For Testing", svg)
+        self.assertIn("A Subtitle", svg)
+        self.assertIn("An Author", svg)
+        self.assertIn("v2026.04.29-abc1234", svg)
+        self.assertIn("#2a6f8f", svg)  # blue palette
+        # Placeholders replaced.
+        self.assertNotIn("{{", svg)
+
+
+class PrefaceTests(unittest.TestCase):
+    def test_emits_preface_when_root_index_has_body(self):
+        import tempfile
+        # Build a fixture on the fly: 2-level book with a non-empty
+        # root _index.md.
+        with tempfile.TemporaryDirectory() as tmp_s:
+            root = Path(tmp_s)
+            (root / "_index.md").write_text(
+                "+++\ntitle = \"Book\"\n+++\n\n"
+                "# Book\n\n"
+                "An introductory paragraph for the preface that has "
+                "more than the empty-detection threshold of words to "
+                "make sure it survives the empty-check.\n"
+            )
+            chap = root / "1-foo"
+            chap.mkdir()
+            (chap / "_index.md").write_text(
+                "+++\ntitle = \"Foo\"\n+++\n\n{{< children />}}\n"
+            )
+            (chap / "1-section.md").write_text(
+                "+++\ntitle = \"Sec\"\n+++\n\nbody\n"
+            )
+            book = {"id": "x", "title": "x", "author": "a", "source": ".",
+                    "output": ".", "palette": "blue", "parts": False,
+                    "eyebrow-prefix": "Part", "chapter-prefix": "Chapter"}
+            md, _ = preprocess(
+                root, skip_preprocess=False, relref_mode="drop-link",
+                book=book, project_root=root,
+            )
+        self.assertIn("::: {.preface}", md)
+        self.assertIn("# Preface", md)
+        self.assertIn("introductory paragraph", md)
+
+    def test_skips_preface_when_root_index_only_shortcode(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp_s:
+            root = Path(tmp_s)
+            (root / "_index.md").write_text(
+                "+++\ntitle = \"Exercises\"\n+++\n\n"
+                "{{< children />}}\n"
+            )
+            chap = root / "1-foo"
+            chap.mkdir()
+            (chap / "_index.md").write_text(
+                "+++\ntitle = \"Foo\"\n+++\n"
+            )
+            (chap / "1-section.md").write_text(
+                "+++\ntitle = \"Sec\"\n+++\n\nbody\n"
+            )
+            book = {"id": "x", "title": "x", "author": "a", "source": ".",
+                    "output": ".", "palette": "blue", "parts": False,
+                    "eyebrow-prefix": "Part", "chapter-prefix": "Chapter"}
+            md, _ = preprocess(
+                root, skip_preprocess=False, relref_mode="drop-link",
+                book=book, project_root=root,
+            )
+        self.assertNotIn("::: {.preface}", md)
 
 
 if __name__ == "__main__":

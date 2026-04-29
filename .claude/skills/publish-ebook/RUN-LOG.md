@@ -92,3 +92,40 @@ Build results:
 
 Test results: 33 tests, 33 passing.
 
+---
+
+## 2026-04-29 03:50 — PR 2 (Tier 2 textbook completeness)
+
+Status: completed
+
+- Cover SVG template at `assets/cover.svg.template` with placeholders
+  for title, subtitle, author, palette accent and build version.
+- `make_cover_svg()` in build.py renders the template per book.
+- WeasyPrint 68 dropped `--format png`, so the plan's PNG conversion
+  is skipped. EPUB takes the SVG directly via `--epub-cover-image`,
+  PDF embeds it as the first page via `--include-before-body`.
+- New `.cover-page` CSS rule + `@page :first { margin: 0 }` so the
+  cover fills the page without margins or running heads.
+- `build_meta()` produces a `vYYYY.MM.DD-<sha>` build version that is
+  baked into the cover SVG and exposed in Pandoc metadata.
+- `preprocess()` now emits the source root `_index.md` body (with H1
+  stripped and shortcodes resolved) as a `.preface` fenced div in
+  course-book; exercise-book's root index is shortcode-only so no
+  preface is emitted (correct).
+- 5 new tests (38 total).
+
+Decisions made during run:
+
+- Cover image format: SVG only, no PNG raster step. Removes a
+  potential blocker (no working PNG output in WeasyPrint 68) and
+  keeps the cover cleanly vector-rendered in PDF and EPUB readers.
+
+Build results:
+
+- course-book.pdf: 692 pages, 2.1 MB (+4: cover + preface)
+- exercise-book.pdf: 902 pages, 3.2 MB (+4: cover, no preface)
+- sample-ebook.pdf: 24 pages, 113 KB (+2: cover; passthrough mode
+  skips preface logic).
+
+Test results: 38 tests, 38 passing.
+

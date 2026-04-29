@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900"
+     width="600" height="900" preserveAspectRatio="xMidYMid meet">
+  <rect x="0" y="0" width="600" height="900" fill="#ffffff"/>
+  <rect x="0" y="0" width="600" height="120" fill="{{ACCENT}}"/>
+  <text x="60" y="80" font-family="IBM Plex Sans, Helvetica, sans-serif"
+        font-size="22" font-weight="500" letter-spacing="6" fill="#ffffff">
+    CLOUD DEVELOPERS
+  </text>
+  <text x="60" y="380" font-family="IBM Plex Sans, Helvetica, sans-serif"
+        font-size="44" font-weight="600" fill="#1f2933">
+    {{TITLE_LINE_1}}
+  </text>
+  <text x="60" y="430" font-family="IBM Plex Sans, Helvetica, sans-serif"
+        font-size="44" font-weight="600" fill="#1f2933">
+    {{TITLE_LINE_2}}
+  </text>
+  <text x="60" y="490" font-family="IBM Plex Serif, Georgia, serif"
+        font-size="20" font-style="italic" fill="#52606d">
+    {{SUBTITLE}}
+  </text>
+  <line x1="60" y1="780" x2="540" y2="780" stroke="{{ACCENT}}" stroke-width="2"/>
+  <text x="60" y="820" font-family="IBM Plex Sans, Helvetica, sans-serif"
+        font-size="14" letter-spacing="2" fill="#52606d">
+    {{AUTHOR}}
+  </text>
+  <text x="60" y="850" font-family="IBM Plex Sans, Helvetica, sans-serif"
+        font-size="11" letter-spacing="3" fill="#52606d">
+    {{BUILD_VERSION}}
+  </text>
+</svg>

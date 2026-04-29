@@ -156,6 +156,30 @@ h2:not(.unnumbered) { string-set: section-title content(); }
 /* Links — subdued, underlined only on hover (n/a in print but kept) */
 a { color: var(--accent-deep); text-decoration: none; }
 
+/* ---------- 4b. Cover page -------------------------------- */
+/* The cover SVG is dropped in via Pandoc --include-before-body as the
+   very first element of the body. We give it its own page with no
+   margins or running headers, then page-break before the front matter. */
+@page :first {
+  margin: 0;
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-center { content: none; }
+}
+.cover-page {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  page-break-after: always;
+  text-align: center;
+}
+.cover-page img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* ---------- 5. Front matter ------------------------------- */
 .half-title, .title-page, .copyright-page, .dedication, .preface {
   page: frontmatter;

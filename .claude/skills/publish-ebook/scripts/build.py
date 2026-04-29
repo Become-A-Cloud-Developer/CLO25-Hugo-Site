@@ -19,6 +19,8 @@ shell wrapper; running it directly works too.
 from __future__ import annotations
 
 import argparse
+import datetime
+import html
 import shutil
 import subprocess
 import sys
@@ -77,7 +79,7 @@ def _ensure_tools() -> None:
         )
 
 
-def _write_metadata_yaml(book: dict, target: Path) -> None:
+def _write_metadata_yaml(book: dict, target: Path, meta: dict) -> None:
     """Write the per-book Pandoc metadata file."""
     md = {
         "title":       book["title"],
@@ -89,9 +91,11 @@ def _write_metadata_yaml(book: dict, target: Path) -> None:
             "scheme": "uuid",
             "text":   f"publish-ebook-{book['id']}",
         },
-        "description": book.get("subtitle", ""),
-        "toc":         True,
-        "toc-depth":   2,
+        "description":   book.get("subtitle", ""),
+        "toc":           True,
+        "toc-depth":     2,
+        "build-version": meta["build_version"],
+        "build-date":    meta["build_date"],
     }
     target.write_text(yaml.safe_dump(md, sort_keys=False, allow_unicode=True))
 
@@ -99,6 +103,70 @@ def _write_metadata_yaml(book: dict, target: Path) -> None:
 def _run(cmd: list[str], **kw) -> None:
     print("  $ " + " ".join(str(c) for c in cmd))
     subprocess.run(cmd, check=True, **kw)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Cover image
+# ──────────────────────────────────────────────────────────────────────
+
+PALETTE_HEX = {"blue": "#2a6f8f", "red": "#a23a4f"}
+
+
+def _split_title(title: str) -> tuple[str, str]:
+    """Break a long title into two visually balanced lines for the cover."""
+    if len(title) <= 22:
+        return title, ""
+    words = title.split()
+    midpoint = len(title) // 2
+    line1 = ""
+    for w in words:
+        if len(line1) + len(w) + 1 <= midpoint:
+            line1 = (line1 + " " + w).strip()
+        else:
+            break
+    if not line1:
+        line1, line2 = title, ""
+    else:
+        line2 = title[len(line1):].strip()
+    return line1, line2
+
+
+def make_cover_svg(book: dict, build_version: str, tmp: Path) -> Path:
+    template = (ASSETS / "cover.svg.template").read_text()
+    line1, line2 = _split_title(book["title"])
+    accent = PALETTE_HEX.get(book.get("palette", "blue"), "#2a6f8f")
+    svg = (
+        template
+        .replace("{{TITLE_LINE_1}}", html.escape(line1))
+        .replace("{{TITLE_LINE_2}}", html.escape(line2))
+        .replace("{{SUBTITLE}}", html.escape(book.get("subtitle", "")))
+        .replace("{{AUTHOR}}", html.escape(book.get("author", "")))
+        .replace("{{BUILD_VERSION}}", html.escape(build_version))
+        .replace("{{ACCENT}}", accent)
+    )
+    svg_path = tmp / "cover.svg"
+    svg_path.write_text(svg, encoding="utf-8")
+    return svg_path
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Build version
+# ──────────────────────────────────────────────────────────────────────
+
+def build_meta() -> dict:
+    try:
+        sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=PROJECT_ROOT,
+            stderr=subprocess.DEVNULL,
+        ).decode().strip()
+    except Exception:
+        sha = "uncommitted"
+    today = datetime.date.today()
+    return {
+        "build_version": f"v{today:%Y.%m.%d}-{sha}",
+        "build_date":    today.isoformat(),
+    }
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -111,6 +179,8 @@ def build_book(book: dict) -> None:
     out = (PROJECT_ROOT / book["output"]).resolve()
     out.mkdir(parents=True, exist_ok=True)
 
+    meta = build_meta()
+
     if not src.is_dir():
         raise SystemExit(f"[{book_id}] source directory does not exist: {src}")
 
@@ -118,6 +188,7 @@ def build_book(book: dict) -> None:
     print(f"  source: {src}")
     print(f"  output: {out}")
     print(f"  palette: {book.get('palette', 'blue')}")
+    print(f"  build:   {meta['build_version']}")
 
     # 1. Preprocess source tree → single concatenated markdown.
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -136,7 +207,21 @@ def build_book(book: dict) -> None:
         meta_yml = tmp / "metadata.yaml"
 
         md_path.write_text(md_text, encoding="utf-8")
-        _write_metadata_yaml(book, meta_yml)
+        _write_metadata_yaml(book, meta_yml, meta)
+
+        # Cover SVG (used for both PDF first page and EPUB cover image).
+        cover_svg = make_cover_svg(book, meta["build_version"], tmp)
+
+        # PDF cover include — a stand-alone HTML fragment that drops the
+        # cover SVG on its own page before the rest of the body.
+        cover_include = tmp / "cover-include.html"
+        cover_include.write_text(
+            f'<div class="cover-page">'
+            f'  <img src="{cover_svg}" alt="cover"'
+            f'       style="width:100%;height:auto;display:block;"/>'
+            f'</div>\n',
+            encoding="utf-8",
+        )
 
         html_path = tmp / "book.html"
         epub_path = out / f"{book_id}.epub"
@@ -155,6 +240,7 @@ def build_book(book: dict) -> None:
             "--metadata-file", str(meta_yml),
             "--css",           str(PRINT_CSS),
             "--highlight-style=tango",
+            "--include-before-body", str(cover_include),
             "--output",        str(html_path),
             str(md_path),
         ])
@@ -173,6 +259,7 @@ def build_book(book: dict) -> None:
             "--metadata-file", str(meta_yml),
             "--css",           str(EPUB_CSS),
             "--highlight-style=tango",
+            "--epub-cover-image", str(cover_svg),
             "--output",        str(epub_path),
             str(md_path),
         ])
