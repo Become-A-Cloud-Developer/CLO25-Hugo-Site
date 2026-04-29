@@ -362,6 +362,65 @@ def is_chapter_index_effectively_empty(idx_body: str) -> bool:
 
 
 # ──────────────────────────────────────────────────────────────────────
+# Intra-book link rewriting
+# ──────────────────────────────────────────────────────────────────────
+
+# Markdown link to a `.md` target relative to the link's source file.
+# We deliberately exclude absolute URLs (anything containing `://`).
+_INTRABOOK_LINK = re.compile(
+    r"\[(?P<text>[^\]]+)\]\((?P<path>(?!https?://|mailto:|#)[^)\s#]+\.md)(?P<frag>#[^)]+)?\)"
+)
+
+
+def build_anchor_index(source: Path) -> dict[str, str]:
+    """Walk `source` and return a mapping of `<rel-md-path>` to the
+    in-book anchor that corresponds to that section. Anchors are the
+    `sec-<slug>` form `render_section()` emits."""
+    index: dict[str, str] = {}
+    for md in source.rglob("*.md"):
+        if md.name == "_index.md":
+            continue
+        try:
+            fm, _ = parse_frontmatter(md.read_text(encoding="utf-8"), md)
+        except ValueError:
+            continue
+        if fm.draft or fm.hidden or fm.type == "slide":
+            continue
+        rel = str(md.relative_to(source))
+        index[rel] = f"sec-{_anchor(fm.title)}"
+    return index
+
+
+def rewrite_intrabook_links(body: str, *, source_dir: Path,
+                            book_root: Path,
+                            index: dict[str, str],
+                            report: "BuildReport") -> str:
+    """Rewrite `[text](path/to/section.md)` to `[text](#sec-...)` when
+    the target resolves to a known section in the same book. Targets
+    that don't resolve are left alone and noted in the report."""
+
+    def _replace(m: re.Match) -> str:
+        text = m.group("text")
+        path = m.group("path")
+        # Resolve relative to the link's source file's directory.
+        candidate = (source_dir / path).resolve()
+        try:
+            rel = str(candidate.relative_to(book_root.resolve()))
+        except ValueError:
+            return m.group(0)
+        anchor = index.get(rel)
+        if anchor is None:
+            report.notes.append(
+                f"intra-book link target not found: {path} (from "
+                f"{source_dir.name})"
+            )
+            return m.group(0)
+        return f"[{text}](#{anchor})"
+
+    return _INTRABOOK_LINK.sub(_replace, body)
+
+
+# ──────────────────────────────────────────────────────────────────────
 # Heading manipulation
 # ──────────────────────────────────────────────────────────────────────
 
@@ -597,6 +656,7 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
     parts_mode = bool(book.get("parts", False))
     chapter_num = 0
     out: list[str] = []
+    anchor_index = build_anchor_index(source)
 
     # Preface: emit the source root `_index.md` body as a fenced
     # `.preface` div, if it has any prose to show. The shortcode
@@ -670,6 +730,10 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
                 body, relref_mode=relref_mode, report=report,
                 path=sole_path,
             )
+            body = rewrite_intrabook_links(
+                body, source_dir=sole_path.parent, book_root=source,
+                index=anchor_index, report=report,
+            )
             if project_root is not None:
                 body = rewrite_image_paths(body, project_root, report)
             out.append(body.strip() + "\n\n")
@@ -689,6 +753,10 @@ def preprocess(source: Path, *, skip_preprocess: bool, relref_mode: str,
             body = convert_blockquote_callouts(body)
             body = handle_shortcodes(
                 body, relref_mode=relref_mode, report=report, path=path,
+            )
+            body = rewrite_intrabook_links(
+                body, source_dir=path.parent, book_root=source,
+                index=anchor_index, report=report,
             )
             if project_root is not None:
                 body = rewrite_image_paths(body, project_root, report)
