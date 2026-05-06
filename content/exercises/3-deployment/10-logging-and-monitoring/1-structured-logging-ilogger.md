@@ -42,7 +42,7 @@ In this exercise you will make the logging *deliberate*. You will inject `ILogge
 
 1. **Open the project and confirm the starting state**
 2. **Observe what ASP.NET Core logs by default**
-3. **Inject ILogger&lt;HomeController&gt; into the controller**
+3. **Move the rendering logic into the controller and inject ILogger&lt;HomeController&gt;**
 4. **Add a structured Information log line in Index()**
 5. **Add a Warning when BUILD_SHA is missing**
 6. **Run locally and inspect the captured fields**
@@ -63,18 +63,20 @@ Before changing anything, prove that the app you finished the previous chapter w
     cd CloudCi
     ```
 
-2. **Run** the app in the foreground:
+2. **Run** the app in the foreground, pinning the URL so every later step can reference `http://localhost:5000` consistently:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
-3. **Open** the URL the host prints (typically `<http://localhost:5000>` or a similar 5xxx port).
+3. **Open** `http://localhost:5000` in your browser.
 
 4. **Confirm** that the homepage renders two badges in the layout — `build: local` (or whatever the fallback is) and `host: <your-machine-name>`.
 
 5. **Stop** the app with `Ctrl+C` once verified.
 
+> ℹ **Why the env var?** By default, `dotnet run` reads `Properties/launchSettings.json`, which assigns a random 5xxx port at scaffold time (yours might be `5185`, `5223`, anything). Setting `ASPNETCORE_URLS` overrides that and pins the listener to `:5000`, so the `curl` commands and expected outputs in the rest of this exercise match what you actually see. You can also `export` it once for the session and drop the prefix on every command — either way works.
+>
 > ✓ **Quick check:** The homepage renders both badges. `git status` shows no pending changes.
 
 ### **Step 2:** Observe what ASP.NET Core logs by default
@@ -84,7 +86,7 @@ The framework already logs. The question is *what*. Knowing the baseline matters
 1. **Run** the app again and watch the terminal carefully:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
 2. **Make** a single request from another terminal:
@@ -96,10 +98,16 @@ The framework already logs. The question is *what*. Knowing the baseline matters
 3. **Read** the output in the first terminal. You will see lines like:
 
     ```text
+    warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+          No XML encryptor configured. Key {...} may be persisted to storage in unencrypted form.
     info: Microsoft.Hosting.Lifetime[14]
           Now listening on: http://localhost:5000
     info: Microsoft.Hosting.Lifetime[0]
           Application started. Press Ctrl+C to shut down.
+    info: Microsoft.Hosting.Lifetime[0]
+          Hosting environment: Development
+    info: Microsoft.Hosting.Lifetime[0]
+          Content root path: /path/to/your/CloudCi
     info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
           Request starting HTTP/1.1 GET http://localhost:5000/ - - -
     info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
@@ -107,6 +115,8 @@ The framework already logs. The question is *what*. Knowing the baseline matters
     ```
 
 4. **Stop** the app with `Ctrl+C`.
+
+> ℹ **About the `DataProtection` warning.** That `warn:` line at startup is normal in Development. ASP.NET Core's data-protection subsystem (used for cookie encryption, anti-forgery tokens, etc.) generates a key the first time it runs and writes it to your user profile **unencrypted**, because no encryptor is configured. In a deployed environment you would configure key persistence — for a local Development run it is harmless and you can ignore it for this exercise. The two `Hosting environment` and `Content root path` info lines are similarly cosmetic — they confirm where the app is running from.
 
 > ℹ **Concept Deep Dive**
 >
@@ -116,18 +126,24 @@ The framework already logs. The question is *what*. Knowing the baseline matters
 >
 > ✓ **Quick check:** You see at least one `Microsoft.Hosting.Lifetime` line and one `Microsoft.AspNetCore.Hosting.Diagnostics` line per request, and zero lines with `CloudCi` in the category.
 
-### **Step 3:** Inject ILogger&lt;HomeController&gt; into the controller
+### **Step 3:** Move the rendering logic into the controller and inject ILogger&lt;HomeController&gt;
 
-`ILogger<T>` is the canonical logging abstraction in ASP.NET Core. The hosting model registers it as a generic service: ask for `ILogger<HomeController>` in a constructor, and the DI container hands you a logger whose **category** is automatically `CloudCi.Controllers.HomeController` — exactly the string `appsettings.json` will use to filter levels later.
+Right now the homepage reads `BUILD_SHA` and the machine name **inside the view** (`Views/Home/Index.cshtml`). That worked for the previous chapter — the badges rendered, the pipeline proved itself — but a Razor view is the wrong place to log from. Logging belongs to the controller, where you can inject services and reason about the request as a unit of work.
 
-1. **Open** the existing controller at `Controllers/HomeController.cs`.
+This step does two moves. First, shift the env-var reads from the view into `Index()` so the controller owns the values; the view just renders what it is given via `ViewData`. Second, inject `ILogger<HomeController>` into the controller so subsequent steps have a logger to call. No log lines yet — that comes in Step 4.
 
-2. **Locate** the class declaration. The default `dotnet new mvc` template produces something close to this — your `Index()` already pulls `BUILD_SHA` and `HOSTNAME` from the environment to render the two badges, so keep that logic and just add a logger field and constructor parameter:
+> **From this step onward**, only the `Index()` method (and the constructor / fields you add) are shown in the snippets. The `Privacy()` and `Error()` actions that come from the `dotnet new mvc` scaffold are unchanged throughout this exercise — leave them alone.
+
+#### 3a. Move the env-var reads from the view into the controller
+
+1. **Open** the existing controller at `Controllers/HomeController.cs`. The scaffold from `dotnet new mvc` produced this — `Index()` is bare, the env vars are not here:
 
     > `Controllers/HomeController.cs` *(before)*
 
     ```csharp
+    using System.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
+    using CloudCi.Models;
 
     namespace CloudCi.Controllers;
 
@@ -135,24 +151,80 @@ The framework already logs. The question is *what*. Knowing the baseline matters
     {
         public IActionResult Index()
         {
-            var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
-            var hostName = Environment.MachineName;
-            ViewData["BuildSha"] = buildSha;
-            ViewData["HostName"] = hostName;
             return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
     ```
 
-3. **Replace** the class with the version that takes an injected logger:
+2. **Replace** the body of `Index()` so the controller reads the env vars and stashes them in `ViewData`. Leave `Privacy()` and `Error()` exactly as they are:
 
-    > `Controllers/HomeController.cs` *(after)*
+    > `Controllers/HomeController.cs` *(Index only — Privacy and Error unchanged)*
 
     ```csharp
-    using Microsoft.AspNetCore.Mvc;
+    public IActionResult Index()
+    {
+        var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
+        var hostName = Environment.MachineName;
+        ViewData["BuildSha"] = buildSha;
+        ViewData["HostName"] = hostName;
+        return View();
+    }
+    ```
 
-    namespace CloudCi.Controllers;
+3. **Open** `Views/Home/Index.cshtml`. The previous chapter wrote the env-var reads inline at the top of the view; replace that file with a version that reads the values from `ViewData` instead:
 
+    > `Views/Home/Index.cshtml`
+
+    ```html
+    @{
+        ViewData["Title"] = "Home";
+    }
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Hello from CloudCi.</p>
+
+        <div class="mt-4">
+            <span class="badge bg-secondary" data-testid="build-sha">
+                build: @ViewData["BuildSha"]
+            </span>
+            <span class="badge bg-secondary" data-testid="host-name">
+                host: @ViewData["HostName"]
+            </span>
+        </div>
+    </div>
+    ```
+
+4. **Run** the app once and confirm the two badges still render exactly as before — same values, same layout, just sourced through `ViewData` now:
+
+    ```bash
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
+    ```
+
+    Hit `http://localhost:5000`, see `build: local` and `host: <your-machine-name>`, then stop with `Ctrl+C`.
+
+> ℹ **Why move it?**
+>
+> Views are for rendering, not for collecting data. Once `Index()` owns the values, you can log them, decide based on them, or inject services to fetch them — none of which is appropriate inside a Razor template. This is the standard MVC split, and the rest of the exercise depends on it.
+
+#### 3b. Inject `ILogger<HomeController>`
+
+1. **Add** a logger field and a constructor that receives the logger via DI. `Index()` stays exactly as you just wrote it; `Privacy()` and `Error()` stay exactly as the scaffold left them:
+
+    > `Controllers/HomeController.cs` *(constructor + field — rest of class unchanged)*
+
+    ```csharp
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -170,10 +242,12 @@ The framework already logs. The question is *what*. Knowing the baseline matters
             ViewData["HostName"] = hostName;
             return View();
         }
+
+        // Privacy() and Error() unchanged
     }
     ```
 
-4. **Save** the file. Do not run yet — the next step adds the actual log line.
+2. **Save** the file. Do not run yet — the next step adds the actual log line.
 
 > ℹ **Concept Deep Dive**
 >
@@ -187,7 +261,7 @@ The framework already logs. The question is *what*. Knowing the baseline matters
 > - Using `ILogger` (non-generic) works at runtime but loses the category — log lines come out under `Microsoft.Extensions.Logging.Logger`, which makes per-category filtering impossible.
 > - Newing up `Logger<HomeController>` by hand defeats the DI system and produces a logger with no providers attached. Always inject.
 >
-> ✓ **Quick check:** `dotnet build` succeeds with no warnings about unused fields.
+> ✓ **Quick check:** `dotnet build` succeeds with no warnings about unused fields. `dotnet run` still serves both badges; `Privacy()` and `Error()` still compile and route correctly.
 
 ### **Step 4:** Add a structured Information log line in Index()
 
@@ -243,20 +317,21 @@ The first real log line. The whole point of structured logging is that this line
 
 A Warning is for an event that is not an error but is worth noticing. "We rendered the homepage with the literal string `local` because no build SHA was set" is a perfect example: the app works, but in production this almost certainly means the deployment forgot to inject the env var.
 
+The detection is direct. Step 4's `var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";` collapses *both* "env var unset" and "env var set to empty string" into the literal value `"local"`. A real CI/CD pipeline produces a Git commit SHA — a 40-character hex string — and never the literal text `local`. So `buildSha == "local"` is a reliable signal that the fallback fired.
+
 1. **Open** `Controllers/HomeController.cs`.
 
-2. **Replace** the body of `Index()` with the version that distinguishes the missing-env-var case:
+2. **Add** a Warning block immediately before the existing `LogInformation` call. Keep the variables and the rest of `Index()` exactly as you wrote them in Step 4:
 
-    > `Controllers/HomeController.cs`
+    > `Controllers/HomeController.cs` *(Index only — Privacy and Error unchanged)*
 
     ```csharp
     public IActionResult Index()
     {
-        var buildShaEnv = Environment.GetEnvironmentVariable("BUILD_SHA");
-        var buildSha = buildShaEnv ?? "local";
+        var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
         var hostName = Environment.MachineName;
 
-        if (buildShaEnv is null)
+        if (buildSha == "local")
         {
             _logger.LogWarning(
                 "BUILD_SHA environment variable is not set; falling back to {Fallback}",
@@ -289,13 +364,13 @@ A Warning is for an event that is not an error but is worth noticing. "We render
 >
 > A category's effective minimum level is the highest of: the framework default (`Information`), the value in `appsettings.json`, and the value in `appsettings.{Environment}.json`. Lines below the threshold are *cheap to ignore* — the logging infrastructure short-circuits before formatting placeholders, so a disabled `LogDebug` call costs roughly the price of a virtual call and a comparison. You can leave Debug lines in production code with no measurable cost.
 >
-> ✓ **Quick check:** The Warning is conditional on `buildShaEnv is null`; the Information line runs unconditionally.
+> ✓ **Quick check:** The Warning is conditional on `buildSha == "local"` (the fallback string); the Information line runs unconditionally.
 
 ### **Step 6:** Run locally and inspect the captured fields
 
-Time to see the new log lines in action. The default console formatter prints them as plain text, but the structure is already there underneath — Step 9 will make the structure visible by switching formatters.
+Time to see the new log lines in action. With the trigger from Step 5 (`buildSha == "local"`), the Warning will fire whenever the env var is unset and stay silent whenever it carries a real value. The default console formatter prints both lines as plain text, but the structure is already there underneath — Step 9 will make the structure visible by switching formatters.
 
-1. **Make sure** `BUILD_SHA` is *not* set in your shell. On macOS / Linux:
+1. **Make sure** `BUILD_SHA` is *not* set in your shell, so the `?? "local"` fallback fires and `buildSha == "local"` becomes true. On macOS / Linux:
 
     ```bash
     unset BUILD_SHA
@@ -304,7 +379,7 @@ Time to see the new log lines in action. The default console formatter prints th
 2. **Run** the app:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
 3. **Hit** the homepage from another terminal:
@@ -324,17 +399,17 @@ Time to see the new log lines in action. The default console formatter prints th
 
 5. **Stop** the app with `Ctrl+C`.
 
-6. **Set** `BUILD_SHA` and re-run, confirming the Warning disappears:
+6. **Set** `BUILD_SHA` to any non-`local` value and re-run. `buildSha` now holds `manual-test`, so the `if (buildSha == "local")` branch is skipped and the Warning disappears:
 
     ```bash
-    BUILD_SHA=manual-test dotnet run
+    BUILD_SHA=manual-test ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
-    Hit `/` once more. The Information line now reports `build manual-test`; no Warning is emitted.
+    Hit `http://localhost:5000` once more. The Information line now reports `build manual-test`; no Warning is emitted.
 
 7. **Stop** the app.
 
-> ✓ **Quick check:** Without `BUILD_SHA`, you see one Warning and one Information per request from your category. With `BUILD_SHA` set, you see only the Information line.
+> ✓ **Quick check:** Without `BUILD_SHA`, `buildSha` falls back to `"local"`, the `if` branch fires, and you see one Warning + one Information per request from your category. With `BUILD_SHA` set, `buildSha` holds the env value, the `if` branch is skipped, and you see only the Information line.
 
 ### **Step 7:** Tune log levels per category via appsettings.json
 
@@ -386,10 +461,10 @@ Until now you have been at the mercy of the default level (`Information`). To co
     }
     ```
 
-4. **Run** the app and hit `/`:
+4. **Run** the app and hit `http://localhost:5000`:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
 5. **Confirm** all three lines now appear for your category — the Debug, the Warning (if `BUILD_SHA` is unset), and the Information. The framework categories still emit only Warning and above, because their entry (`Microsoft.AspNetCore: Warning`) takes precedence over `Default: Information`.
@@ -439,10 +514,10 @@ The fastest way to feel that the filter is doing real work is to crank it up to 
 2. **Restart** the app:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
-3. **Hit** `/` once. Confirm that:
+3. **Hit** `http://localhost:5000` once. Confirm that:
 
     - the Debug line is gone,
     - the Information line is gone,
@@ -506,10 +581,10 @@ The default console formatter prints lines for humans. The JSON formatter prints
     }
     ```
 
-3. **Run** the app and hit `/`:
+3. **Run** the app and hit `http://localhost:5000`:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
 4. **Inspect** the new output. Each line is now a JSON object on its own line:
@@ -642,7 +717,7 @@ Walk through the full chain end-to-end and confirm every layer behaves as design
 1. **Verify** the app runs locally and emits your structured Information line on every request:
 
     ```bash
-    dotnet run
+    ASPNETCORE_URLS=http://localhost:5000 dotnet run
     ```
 
     In another terminal:
@@ -655,9 +730,9 @@ Walk through the full chain end-to-end and confirm every layer behaves as design
 
 2. **Stop** the app.
 
-3. **Verify** category filtering. Set the category to `Warning` in `appsettings.json`, restart, hit `/`, and confirm the Information line is suppressed while a Warning (when `BUILD_SHA` is unset) still flows. Restore the override to `Information` afterwards.
+3. **Verify** category filtering. Set the category to `Warning` in `appsettings.json`, restart, hit `http://localhost:5000`, and confirm the Information line is suppressed while a Warning (when `BUILD_SHA` is unset) still flows. Restore the override to `Information` afterwards.
 
-4. **Verify** the JSON formatter under Development. Re-run `dotnet run`, hit `/`, and confirm one log line per request comes out as a JSON object with `HostName` and `BuildSha` as discrete keys.
+4. **Verify** the JSON formatter under Development. Re-run with `ASPNETCORE_URLS=http://localhost:5000 dotnet run`, hit `http://localhost:5000`, and confirm one log line per request comes out as a JSON object with `HostName` and `BuildSha` as discrete keys.
 
 5. **Verify** the container path:
 
