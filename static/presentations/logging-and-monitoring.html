@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Logs You Can Actually Query</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-50TPJY0FZH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-50TPJY0FZH');
+    </script>
+
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
+
+    <!-- Swedish Tech Slides CSS -->
+    <link rel="stylesheet" href="swedish-tech-slides.css">
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ========================================
+                 SLIDE 1: Hero
+                 ======================================== -->
+            <section class="hero-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="course-badge">
+                    <span>ACD &bull; Week 5</span>
+                </div>
+
+                <h1 class="main-title">
+                    LOGS<br>
+                    YOU CAN<br>
+                    ACTUALLY QUERY
+                </h1>
+
+                <p class="subtitle">From <em>Console.WriteLine</em> to centralised observability</p>
+                <p class="course-info">Advanced Cloud Development &bull; 2026</p>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+            <!-- ========================================
+                 ACT 1 — SETUP
+                 ======================================== -->
+
+            <!-- SLIDE 2: You can't watch production logs -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">You Can't Watch Production Logs</h2>
+
+                <div class="fragment info-box">
+                    <p>"What broke at 14:32 yesterday?" &mdash; <span class="highlight">there is no terminal scrollback</span> in production</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Replicas come and go &mdash; <span class="highlight">their stdout disappears with them</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The questions you actually need to answer &mdash; about users, deploys, time windows &mdash; need a <span class="highlight">query engine</span>, not a scroll</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Three jumps -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Jumps From <em>Console.WriteLine</em></h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Structured</span> &mdash; log calls record <em>named fields</em>, not formatted strings</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Centralised</span> &mdash; every container's stdout streams to <em>one queryable store</em></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Correlated</span> &mdash; every log line in one request shares <em>one handle</em></p>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 ACT 2 — STRUCTURED AT THE SOURCE
+                 ======================================== -->
+
+            <!-- SLIDE 4: ILogger as recording contract -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">ILogger&lt;T&gt; &mdash; Record, Don't Print</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Inject by type</span> &mdash; the type parameter becomes the <em>category</em>, your filtering handle</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Pick a level + a template + values</span> &mdash; the framework records all three so a query engine can pull any of them back</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Calls also inherit <span class="highlight">ambient fields</span> from any enclosing scope (we'll see scopes in Act&nbsp;4)</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: DIAGRAM — Template vs interpolation -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Template vs Interpolation</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 600" xmlns="http://www.w3.org/2000/svg" aria-label="Comparison of message template versus string interpolation. Template preserves the placeholder names as discrete fields; interpolation collapses everything into a single opaque string." preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead-yellow-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#FECC00"/>
+                            </marker>
+                            <marker id="arrowhead-grey-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#94A3B8"/>
+                            </marker>
+                        </defs>
+
+                        <!-- LEFT COLUMN: TEMPLATE (good) -->
+                        <text x="380" y="50" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="22" font-weight="800">TEMPLATE</text>
+                        <line x1="280" y1="65" x2="480" y2="65" stroke="#FECC00" stroke-width="2"/>
+
+                        <!-- Template input -->
+                        <g>
+                            <rect x="80" y="105" width="600" height="110" rx="12" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="380" y="150" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17">"Home page rendered for {HostName} build {BuildSha}"</text>
+                            <text x="380" y="185" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14" font-style="italic">+ args: hostName, buildSha</text>
+                        </g>
+
+                        <line x1="380" y1="225" x2="380" y2="275" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow-2)"/>
+
+                        <!-- Template result (structure preserved) -->
+                        <g>
+                            <rect x="80" y="285" width="600" height="170" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="380" y="320" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="18" font-weight="700">Structured payload</text>
+                            <line x1="160" y1="338" x2="600" y2="338" stroke="#00D9FF" stroke-width="2"/>
+                            <text x="380" y="370" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="17" font-weight="700">HostName = "abc"</text>
+                            <text x="380" y="398" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="17" font-weight="700">BuildSha = "a1b2c3"</text>
+                            <text x="380" y="430" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="14" font-style="italic">+ template preserved</text>
+                        </g>
+
+                        <text x="380" y="500" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="18" font-weight="700">Queryable downstream</text>
+                        <text x="380" y="528" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13" font-style="italic">formatter is just presentation</text>
+
+                        <!-- RIGHT COLUMN: INTERPOLATION (bad) -->
+                        <text x="1220" y="50" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="22" font-weight="800">INTERPOLATION</text>
+                        <line x1="1100" y1="65" x2="1340" y2="65" stroke="#94A3B8" stroke-width="2"/>
+
+                        <!-- Interpolation input -->
+                        <g>
+                            <rect x="920" y="105" width="600" height="110" rx="12" fill="#0A0E27" stroke="#94A3B8" stroke-width="3"/>
+                            <text x="1220" y="150" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17">$"Home page rendered for {hostName} build {buildSha}"</text>
+                            <text x="1220" y="185" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14" font-style="italic">interpolation happens at the call site</text>
+                        </g>
+
+                        <line x1="1220" y1="225" x2="1220" y2="275" stroke="#94A3B8" stroke-width="3" marker-end="url(#arrowhead-grey-2)"/>
+
+                        <!-- Interpolation result (structure destroyed) -->
+                        <g>
+                            <rect x="920" y="285" width="600" height="170" rx="12" fill="#0A0E27" stroke="#94A3B8" stroke-width="3"/>
+                            <text x="1220" y="320" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18" font-weight="700">Frozen string</text>
+                            <line x1="1000" y1="338" x2="1440" y2="338" stroke="#94A3B8" stroke-width="2"/>
+                            <text x="1220" y="380" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="15">"Home page rendered for abc build a1b2c3"</text>
+                            <text x="1220" y="425" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14" font-style="italic">no fields, no template</text>
+                        </g>
+
+                        <text x="1220" y="500" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="18" font-weight="700">Regex-only downstream</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 ACT 3 — CENTRALISED IN THE MIDDLE
+                 ======================================== -->
+
+            <!-- SLIDE 6: DIAGRAM — Where stdout actually goes -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Where Stdout Actually Goes</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 580" xmlns="http://www.w3.org/2000/svg" aria-label="Container stdout streams through the Container Apps log driver into a Log Analytics workspace, where it becomes queryable via KQL." preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead-cyan-3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Stage 1: Container stdout -->
+                        <g>
+                            <rect x="40" y="220" width="240" height="160" rx="12" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="160" y="280" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">stdout</text>
+                            <text x="160" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">your container</text>
+                            <text x="160" y="338" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">writes here</text>
+                        </g>
+
+                        <line x1="285" y1="300" x2="365" y2="300" stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead-cyan-3)"/>
+
+                        <!-- Stage 2: Log driver -->
+                        <g>
+                            <rect x="350" y="220" width="260" height="160" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="480" y="275" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">Container Apps</text>
+                            <text x="480" y="302" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">log driver</text>
+                            <text x="480" y="338" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13">batched</text>
+                        </g>
+
+                        <line x1="615" y1="300" x2="695" y2="300" stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead-cyan-3)"/>
+
+                        <!-- Stage 3: Log Analytics workspace -->
+                        <g>
+                            <rect x="700" y="220" width="260" height="160" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="830" y="275" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">Log Analytics</text>
+                            <text x="830" y="302" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">workspace</text>
+                            <text x="830" y="338" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13">queryable store</text>
+                        </g>
+
+                        <line x1="965" y1="300" x2="1045" y2="300" stroke="#00D9FF" stroke-width="3" marker-end="url(#arrowhead-cyan-3)"/>
+
+                        <!-- Stage 4: KQL -->
+                        <g>
+                            <rect x="1050" y="220" width="200" height="160" rx="12" fill="#0A0E27" stroke="#00D9FF" stroke-width="3"/>
+                            <text x="1150" y="280" text-anchor="middle" fill="#00D9FF" font-family="Segoe UI" font-size="22" font-weight="800">KQL</text>
+                            <text x="1150" y="320" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13">queries</text>
+                        </g>
+
+                        <text x="700" y="450" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="18" font-weight="700">You wrote no code for this &mdash; platform default.</text>
+                        <text x="700" y="478" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="15" font-style="italic">You write the call on the left and the query on the right.</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: DIAGRAM — KQL pipeline -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">KQL Reads Like A Recipe</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 580" xmlns="http://www.w3.org/2000/svg" aria-label="KQL is a pipeline language. A source table flows through where, project, summarize, take." preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead-yellow-7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#FECC00"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Source -->
+                        <g>
+                            <rect x="120" y="220" width="200" height="160" rx="12" fill="#006AA7" stroke="#0090E3" stroke-width="3"/>
+                            <text x="220" y="280" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="20" font-weight="700">source table</text>
+                            <text x="220" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">millions of</text>
+                            <text x="220" y="338" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">log records</text>
+                        </g>
+
+                        <line x1="325" y1="300" x2="385" y2="300" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow-7)"/>
+
+                        <!-- where -->
+                        <g>
+                            <rect x="390" y="240" width="220" height="120" rx="10" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="500" y="285" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">where</text>
+                            <text x="500" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">filter rows</text>
+                        </g>
+
+                        <line x1="615" y1="300" x2="675" y2="300" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow-7)"/>
+
+                        <!-- project -->
+                        <g>
+                            <rect x="680" y="240" width="220" height="120" rx="10" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="790" y="285" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">project</text>
+                            <text x="790" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">pick columns</text>
+                        </g>
+
+                        <line x1="905" y1="300" x2="965" y2="300" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow-7)"/>
+
+                        <!-- summarize -->
+                        <g>
+                            <rect x="970" y="240" width="220" height="120" rx="10" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="1080" y="285" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">summarize</text>
+                            <text x="1080" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">group + aggregate</text>
+                        </g>
+
+                        <line x1="1195" y1="300" x2="1255" y2="300" stroke="#FECC00" stroke-width="3" marker-end="url(#arrowhead-yellow-7)"/>
+
+                        <!-- take -->
+                        <g>
+                            <rect x="1260" y="240" width="220" height="120" rx="10" fill="#0A0E27" stroke="#FECC00" stroke-width="3"/>
+                            <text x="1370" y="285" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">take</text>
+                            <text x="1370" y="315" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="14">limit rows</text>
+                        </g>
+
+                        <text x="800" y="450" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="18" font-weight="700">Each step hands a smaller table down the pipe.</text>
+                        <text x="800" y="478" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="15" font-style="italic">No nested SELECT-FROM-WHERE &mdash; just steps, top to bottom.</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: Three filters -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Three Filters Carry Every Query</h2>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Time</span> &mdash; <em>where TimeGenerated &gt; ago(N)</em> bounds the window</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">App</span> &mdash; <em>where ContainerAppName == "..."</em> narrows to one workload in the environment</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p><span class="highlight">Match</span> &mdash; <em>where Log_s has "..."</em> finds the line you care about</p>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 ACT 4 — CORRELATED ACROSS THE REQUEST
+                 ======================================== -->
+
+            <!-- SLIDE 9: One request, many lines -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">One Request, Many Log Lines</h2>
+
+                <div class="fragment info-box">
+                    <p>A real request <span class="highlight">fans out</span> &mdash; controller, database, an external API call, the response</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>Eight log lines from eight categories &mdash; <span class="highlight">a pile, not a story</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>To tell the story end-to-end, every line in the request needs <span class="highlight">the same handle</span></p>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: DIAGRAM — Scope stack -->
+            <section class="diagram-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">The Scope Inherits Down</h2>
+
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1600 580" xmlns="http://www.w3.org/2000/svg" aria-label="A correlation-id scope wraps the request; every log call inside the scope inherits the field." preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <marker id="arrowhead-cyan-10" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#00D9FF"/>
+                            </marker>
+                        </defs>
+
+                        <!-- Outer scope -->
+                        <rect x="120" y="80" width="1280" height="380" rx="20" fill="none" stroke="#FECC00" stroke-width="3" stroke-dasharray="10 6"/>
+                        <text x="160" y="125" fill="#FECC00" font-family="Segoe UI" font-size="20" font-weight="800">scope: { CorrelationId = abc123... }</text>
+                        <text x="160" y="155" fill="#94A3B8" font-family="Segoe UI" font-size="15" font-style="italic">middleware pushes this on every request</text>
+
+                        <!-- Log call 1 -->
+                        <g>
+                            <rect x="180" y="200" width="320" height="100" rx="10" fill="#006AA7" stroke="#0090E3" stroke-width="2"/>
+                            <text x="340" y="235" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">controller log call</text>
+                            <text x="340" y="265" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13" font-style="italic">"Home page rendered"</text>
+                        </g>
+
+                        <!-- Log call 2 -->
+                        <g>
+                            <rect x="590" y="200" width="320" height="100" rx="10" fill="#006AA7" stroke="#0090E3" stroke-width="2"/>
+                            <text x="750" y="235" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">database query log</text>
+                            <text x="750" y="265" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13" font-style="italic">"SELECT took 12 ms"</text>
+                        </g>
+
+                        <!-- Log call 3 -->
+                        <g>
+                            <rect x="990" y="200" width="300" height="100" rx="10" fill="#006AA7" stroke="#0090E3" stroke-width="2"/>
+                            <text x="1140" y="235" text-anchor="middle" fill="#fff" font-family="Segoe UI" font-size="17" font-weight="700">HTTP client log</text>
+                            <text x="1140" y="265" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="13" font-style="italic">"POST /api 200"</text>
+                        </g>
+
+                        <!-- Inheritance arrows -->
+                        <line x1="340" y1="305" x2="340" y2="370" stroke="#00D9FF" stroke-width="2" marker-end="url(#arrowhead-cyan-10)"/>
+                        <line x1="750" y1="305" x2="750" y2="370" stroke="#00D9FF" stroke-width="2" marker-end="url(#arrowhead-cyan-10)"/>
+                        <line x1="1140" y1="305" x2="1140" y2="370" stroke="#00D9FF" stroke-width="2" marker-end="url(#arrowhead-cyan-10)"/>
+
+                        <!-- Inherited tag row -->
+                        <g>
+                            <rect x="180" y="375" width="320" height="50" rx="6" fill="#0A0E27" stroke="#FECC00" stroke-width="2"/>
+                            <text x="340" y="408" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="15" font-weight="700">CorrelationId = abc123...</text>
+                        </g>
+                        <g>
+                            <rect x="590" y="375" width="320" height="50" rx="6" fill="#0A0E27" stroke="#FECC00" stroke-width="2"/>
+                            <text x="750" y="408" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="15" font-weight="700">CorrelationId = abc123...</text>
+                        </g>
+                        <g>
+                            <rect x="990" y="375" width="300" height="50" rx="6" fill="#0A0E27" stroke="#FECC00" stroke-width="2"/>
+                            <text x="1140" y="408" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="15" font-weight="700">CorrelationId = abc123</text>
+                        </g>
+
+                        <text x="760" y="500" text-anchor="middle" fill="#FECC00" font-family="Segoe UI" font-size="18" font-weight="700">No call-site changes &mdash; the field rides along.</text>
+                        <text x="760" y="528" text-anchor="middle" fill="#94A3B8" font-family="Segoe UI" font-size="15" font-style="italic">Scope pops when the request ends; the next request gets its own.</text>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: A correlation ID is portable -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">A Correlation ID Is Portable</h2>
+
+                <div class="fragment info-box">
+                    <p>One ID per request, generated at the edge &mdash; rides every log line in the request via the <span class="highlight">log scope</span></p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The wider ecosystem &mdash; Application Insights, OpenTelemetry &mdash; <span class="highlight">builds on the same idea</span> with richer semantics</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>One pivot in the query engine &mdash; <span class="highlight">find every line for one CorrelationId</span> &mdash; and you have the full request story</p>
+                </div>
+            </section>
+
+            <!-- ========================================
+                 ACT 5 — CLOSING
+                 ======================================== -->
+
+            <!-- SLIDE 12: Where logs end -->
+            <section class="bullet-slide" data-background-color="#0A0E27">
+                <h2 class="slide-header">Where Logs End</h2>
+
+                <div class="fragment info-box">
+                    <p>"What's the <span class="highlight">p95 latency</span> over the last hour?" &mdash; needs <em>metrics</em>, sampled at intervals</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>"Show me the <span class="highlight">request waterfall</span> across services" &mdash; needs <em>traces</em>, with parent/child spans</p>
+                </div>
+
+                <div class="fragment info-box">
+                    <p>The <span class="highlight">next exercise</span> wires those in via Application Insights &mdash; same workspace, richer signal</p>
+                </div>
+            </section>
+
+            <!-- SLIDE 13: Closing — Frågor -->
+            <section class="closing-slide" data-background-color="#0A0E27">
+                <div class="geometric-bg"></div>
+                <div class="corner-accent"></div>
+
+                <div class="centered-content">
+                    <div class="big-symbol">?</div>
+                    <p class="big-text">Frågor</p>
+                </div>
+
+                <div class="bottom-accent"></div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Core JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            center: false,
+            transition: 'slide',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            history: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.0
+        });
+    </script>
+</body>
+</html>

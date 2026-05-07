@@ -11,6 +11,10 @@ weight = 5
 
 Make the deployed application observable. Emit structured logs with `ILogger<T>`, ship them to Log Analytics, and query them with KQL via Application Insights and Azure Monitor.
 
+## Presentation
+
+- [Logs You Can Actually Query](/presentations/logging-and-monitoring.html) — concept-only lecture covering structured logging, formatters, Log Analytics, KQL fundamentals, and request correlation IDs (sets up the lab exercises)
+
 ## Theory
 
 - [Part IX — Operations and Observability](/course-book/9-operations-and-observability/)

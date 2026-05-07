@@ -193,7 +193,7 @@ A single line registers the SDK with the dependency injection container. By defa
    //     middleware from the previous exercise — leave it in place.
    ```
 
-   Leave the correlation-ID middleware from the previous exercise in place. `AddApplicationInsightsTelemetry()` reads `ILogger` scope state automatically, so the `RequestId` you push onto the scope appears as a custom property on every telemetry item without any extra wiring.
+   Leave the correlation-ID middleware from the previous exercise in place. `AddApplicationInsightsTelemetry()` reads `ILogger` scope state automatically, so the `CorrelationId` you push onto the scope appears as a custom property on every telemetry item without any extra wiring.
 
 > ℹ **Concept Deep Dive**
 >
@@ -398,7 +398,7 @@ App Insights ingestion is not instant. The Live Metrics channel is real-time, bu
 
 2. **Inspect** the **Operations** tab — one row for `GET Home/Boom` with five failed requests and 100% failure rate. Click the **Exceptions** tab — one row for `System.InvalidOperationException` with five occurrences.
 
-3. **Drill** in by clicking the exception row, then "View N more" or "Examine samples." A side panel opens showing the exception type, the message, the full stack trace, the request URL, the timestamp, and the operation ID — the same correlation ID you've been using to trace requests through `ILogger`.
+3. **Drill** in by clicking the exception row, then "View N more" or "Examine samples." A side panel opens showing the exception type, the message, the full stack trace, the request URL, the timestamp, and the operation ID. Scroll to **Custom Properties** on the same panel — the `CorrelationId` you've been pushing onto the `ILogger` scope appears here, so the same token you've used in KQL also pivots the App Insights view.
 
 > ℹ **Concept Deep Dive**
 >
@@ -435,7 +435,11 @@ Requests, dependencies, and exceptions are auto-instrumented. Custom metrics are
        // client-side and ships one-minute summaries. Cheap at any volume.
        _telemetry.GetMetric("home-page-views").TrackValue(1);
 
-       // ...your existing Index code below
+       // Keep the existing Index logic from the previous exercises:
+       //   the BUILD_SHA / hostName resolution, the _logger.LogWarning /
+       //   LogDebug / LogInformation calls, the ViewData assignments, and
+       //   the final return View(). Only the GetMetric line is new.
+       // ...
        return View();
    }
    ```
