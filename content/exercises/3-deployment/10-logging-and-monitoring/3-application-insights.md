@@ -45,16 +45,17 @@ This exercise ends the chapter and the live cloud lab that has run since Week 4.
 2. **Provision the Application Insights component in workspace-based mode**
 3. **Add the SDK to the project**
 4. **Wire it up in `Program.cs`**
-5. **Inject the connection string as a Container Apps secret**
-6. **Reference the secret as an environment variable**
-7. **Push and deploy**
-8. **Open Live Metrics in the Portal**
-9. **Explore the Application Map**
-10. **Induce an exception with `/Home/Boom`**
-11. **Find the exception in the Failures blade**
-12. **Add a custom metric for home-page views**
-13. **Test Your Implementation**
-14. **Tear down the cloud resources**
+5. **Configure the connection string for local development with user-secrets**
+6. **Inject the connection string as a Container Apps secret**
+7. **Reference the secret as an environment variable**
+8. **Push and deploy**
+9. **Open Live Metrics in the Portal**
+10. **Explore the Application Map**
+11. **Induce an exception with `/Home/Boom`**
+12. **Find the exception in the Failures blade**
+13. **Add a custom metric for home-page views**
+14. **Test Your Implementation**
+15. **Tear down the cloud resources**
 
 ### **Step 1:** What Application Insights gives you that raw logs do not
 
@@ -197,16 +198,99 @@ A single line registers the SDK with the dependency injection container. By defa
 
 > ℹ **Concept Deep Dive**
 >
-> `AddApplicationInsightsTelemetry()` does several things in one call: it registers the `TelemetryClient` (used for custom telemetry in step 12), wires up an `ITelemetryInitializer` that stamps every item with role name and instance id, hooks into the request pipeline to produce request telemetry, and adds an `ILoggerProvider` so log lines become trace telemetry. For ASP.NET Core in Container Apps, this single call is everything you need.
+> `AddApplicationInsightsTelemetry()` does several things in one call: it registers the `TelemetryClient` (used for custom telemetry in Step 13), wires up an `ITelemetryInitializer` that stamps every item with role name and instance id, hooks into the request pipeline to produce request telemetry, and adds an `ILoggerProvider` so log lines become trace telemetry. For ASP.NET Core in Container Apps, this single call is everything you need.
 >
 > ⚠ **Common Mistakes**
 >
 > - Calling `AddApplicationInsightsTelemetry(connectionString: "...")` with a hard-coded string. This works in development but bakes the connection string into the image, which is exactly what the secret injection in the next step is designed to avoid.
 > - Adding the call after `var app = builder.Build()`. Service registration must happen on `builder.Services` *before* `Build()`. After `Build()`, the DI container is frozen.
 >
-> ✓ **Quick check:** The project still builds. The Container App is not yet sending telemetry — without the connection string env var, the SDK silently does nothing. That changes in Step 6.
+> ✓ **Quick check:** The project still builds. Telemetry will not flow yet — the SDK has no connection string. Local development is wired up next (Step 5); the Container App is wired up in Steps 6–7.
 
-### **Step 5:** Inject the connection string as a Container Apps secret
+### **Step 5:** Configure the connection string for local development with user-secrets
+
+`AddApplicationInsightsTelemetry()` reads its connection string from two places, in this order: the environment variable `APPLICATIONINSIGHTS_CONNECTION_STRING`, then `ApplicationInsights:ConnectionString` from `IConfiguration`. In production, the Container App will inject the env var via `secretref:` (Steps 6–7). For local development you want the *same* SDK code path to work without baking the connection string into source. The pattern is two pieces: a placeholder in `appsettings.json` (committed; documents the binding key), and the real value via **user-secrets** (machine-local, never committed).
+
+1. **Add** an `ApplicationInsights:ConnectionString` placeholder to `appsettings.json`. The literal value is intentionally not a valid connection string — if a developer forgets to override it, the SDK fails fast instead of silently sending telemetry to the wrong place:
+
+   > `appsettings.json`
+
+   ```json
+   {
+     "Logging": {
+       "LogLevel": {
+         "Default": "Information",
+         "Microsoft.AspNetCore": "Warning"
+       },
+       "Console": {
+         "FormatterName": "json",
+         "FormatterOptions": {
+           "IncludeScopes": true
+         }
+       }
+     },
+     "AllowedHosts": "*",
+     "ApplicationInsights": {
+       "ConnectionString": "<set via dotnet user-secrets or APPLICATIONINSIGHTS_CONNECTION_STRING env var>"
+     }
+   }
+   ```
+
+   Leave the `Logging` section as you had it from the previous exercise — only the `ApplicationInsights` block is new.
+
+2. **Initialize** user-secrets for the project. This adds a `UserSecretsId` GUID to the `.csproj` and creates a per-machine secrets store outside the source tree:
+
+   ```bash
+   dotnet user-secrets init
+   ```
+
+3. **Set** the connection string via user-secrets. Use the `$CONN` you captured in Step 2:
+
+   ```bash
+   dotnet user-secrets set "ApplicationInsights:ConnectionString" "$CONN"
+   ```
+
+   The double-colon in the key matches the JSON nesting (`ApplicationInsights:ConnectionString` ↔ `"ApplicationInsights": { "ConnectionString": ... }`).
+
+4. **Confirm** the secret is registered:
+
+   ```bash
+   dotnet user-secrets list
+   ```
+
+   Expected: one entry, `ApplicationInsights:ConnectionString = InstrumentationKey=...;IngestionEndpoint=...`.
+
+5. **Run** the app locally and exercise it. The SDK now picks up the connection string and starts sending telemetry to the same `cloudci-insights` component you'll deploy to in the next steps:
+
+   ```bash
+   ASPNETCORE_URLS=http://localhost:5000 dotnet run
+   ```
+
+   In another terminal, hit the home page a few times:
+
+   ```bash
+   for i in {1..10}; do curl -s "http://localhost:5000/" >/dev/null; done
+   ```
+
+   In the Azure Portal, open Application Insights `cloudci-insights` → **Live Metrics**. Within a couple of seconds you should see incoming requests appear — proof that the SDK is wired up correctly *before* you push anything to the cloud.
+
+> ℹ **Concept Deep Dive**
+>
+> `IConfiguration` stacks providers in a fixed order: `appsettings.json` → `appsettings.<Environment>.json` → user-secrets (Development only) → environment variables. Later providers override earlier ones. So locally, user-secrets overrides the placeholder; in Container Apps the env var injected via `secretref:` wins outright over everything in source control.
+>
+> Why a placeholder rather than nothing at all: a future contributor scanning `appsettings.json` immediately sees the binding key and the override mechanism. The alternative — leaving the key out of the committed config entirely — works at runtime but hides the contract.
+>
+> User-secrets store the values as plain JSON in a per-user directory (`~/.microsoft/usersecrets/<UserSecretsId>/secrets.json` on macOS/Linux, `%APPDATA%\Microsoft\UserSecrets\<UserSecretsId>\secrets.json` on Windows). They are not encrypted — the security boundary is the user account, not the file. This is the right tool for *development* secrets, not for production credentials.
+>
+> ⚠ **Common Mistakes**
+>
+> - Pasting the connection string directly into `appsettings.json` to "make it work locally." That commits a credential to source control. Use user-secrets.
+> - Setting only user-secrets and skipping the placeholder. Works on your machine; breaks the moment a teammate clones the repo and runs `dotnet run` without realising they need to set anything.
+> - Using `__` (double underscore) in the user-secrets key. The double-underscore convention is for environment variables on Linux; user-secrets keys use the colon form (`ApplicationInsights:ConnectionString`).
+>
+> ✓ **Quick check:** `dotnet user-secrets list` shows the key. `ASPNETCORE_URLS=http://localhost:5000 dotnet run` followed by a few `curl http://localhost:5000/` calls produces blips in the Live Metrics view of `cloudci-insights` within seconds. Stop the app with `Ctrl+C` before continuing.
+
+### **Step 6:** Inject the connection string as a Container Apps secret
 
 The connection string is sensitive: it grants write access to your App Insights component. The wrong way to deliver it to the running container is to set it as a plain environment variable on the Container App. Plain env vars are visible in the output of `az containerapp show`, in the Portal's overview blade, and to anyone with `Reader` role on the resource. That is fine for non-sensitive configuration; it is not fine for credentials. The right way is to store the value as a Container Apps **secret** and reference the secret from an environment variable.
 
@@ -241,7 +325,7 @@ The connection string is sensitive: it grants write access to your App Insights 
 >
 > ✓ **Quick check:** `az containerapp secret list` shows `appinsights-connstr` and no other unexpected entries.
 
-### **Step 6:** Reference the secret as an environment variable
+### **Step 7:** Reference the secret as an environment variable
 
 The container reads configuration from environment variables, not from Container Apps secrets directly. To bridge the two, you set an environment variable whose *value* is the literal string `secretref:<secret-name>`. The Container Apps runtime intercepts that prefix and substitutes the actual secret value when the container starts. Inside the container, the env var looks like a normal env var.
 
@@ -284,14 +368,14 @@ The container reads configuration from environment variables, not from Container
 >
 > ✓ **Quick check:** The JSON output above shows the env var with `secretRef` (not a `value`). The Container App revision is in `RunningStatus: Running`.
 
-### **Step 7:** Push and deploy
+### **Step 8:** Push and deploy
 
-The SDK changes from Steps 3 and 4 are still only on your local machine. The pipeline from the previous chapter rebuilds and updates the Container App on every push to `main`, so commit and push to roll the new SDK into the running container.
+The SDK changes from Steps 3–5 are still only on your local machine. The pipeline from the previous chapter rebuilds and updates the Container App on every push to `main`, so commit and push to roll the new SDK into the running container.
 
 1. **Commit and push:**
 
    ```bash
-   git add CloudCi.csproj Program.cs
+   git add CloudCi.csproj Program.cs appsettings.json
    git commit -m "Add Application Insights SDK"
    git push
    gh run watch
@@ -313,7 +397,7 @@ The SDK changes from Steps 3 and 4 are still only on your local machine. The pip
 
 > ✓ **Quick check:** Workflow green, a new revision active with 100% traffic, home page returns `200`.
 
-### **Step 8:** Open Live Metrics in the Portal
+### **Step 9:** Open Live Metrics in the Portal
 
 Live Metrics proves the SDK is wired correctly. Unlike the rest of Application Insights — which has a one-to-three-minute ingestion delay — Live Metrics streams telemetry over a separate channel with one-second latency. If your container is sending telemetry, you see it within a second.
 
@@ -333,16 +417,16 @@ Live Metrics proves the SDK is wired correctly. Unlike the rest of Application I
 >
 > ⚠ **Common Mistakes**
 >
-> - Live Metrics shows "Not available" — almost always means the Container App can't reach the live-diagnostics endpoint, or the SDK isn't loaded, or the env var isn't set. Re-check the secretref wiring from Step 6.
+> - Live Metrics shows "Not available" — almost always means the Container App can't reach the live-diagnostics endpoint, or the SDK isn't loaded, or the env var isn't set. Re-check the secretref wiring from Step 7.
 > - Confusing Live Metrics with the Metrics blade. They are different screens. Metrics is for historical charts over your aggregated data. Live Metrics is for *now*.
 >
 > ✓ **Quick check:** Live Metrics shows incoming requests spiking when you run the curl loop, and falling to zero when you stop.
 
-### **Step 9:** Explore the Application Map
+### **Step 10:** Explore the Application Map
 
 The Application Map is built from the request and dependency streams. With one app and no dependencies it is the most boring possible map: one node. That is fine — opening it now establishes the empty starting state, so the day you add a database call or a downstream HTTP API you immediately recognise the new nodes that appear.
 
-1. **Click** **Application Map** in the left navigation. Wait a minute or two for the map to draw itself; if it says "No data," re-run the curl loop from Step 8 and refresh.
+1. **Click** **Application Map** in the left navigation. Wait a minute or two for the map to draw itself; if it says "No data," re-run the curl loop from Step 9 and refresh.
 
 2. **Inspect** the single node — labelled with the role name (typically the Container App name) — showing request count, failure rate, and average duration over the selected time range. Click the node to open a side panel with URL breakdowns, slowest requests, and failed requests.
 
@@ -352,7 +436,7 @@ The Application Map is built from the request and dependency streams. With one a
 >
 > ✓ **Quick check:** The Application Map shows exactly one node with a non-zero request count.
 
-### **Step 10:** Induce an exception with `/Home/Boom`
+### **Step 11:** Induce an exception with `/Home/Boom`
 
 Production exceptions are interesting precisely because they're rare and unpredictable. To see how the Failures blade looks when there's something to look at, you need to throw an exception on purpose. Add a controller action that throws unconditionally; you will hit it a few times, then look at how App Insights presents the result.
 
@@ -390,7 +474,7 @@ Production exceptions are interesting precisely because they're rare and unpredi
 >
 > ✓ **Quick check:** Five `500` responses from `/Home/Boom`. The home page (`/`) still returns `200` — only `/Home/Boom` throws.
 
-### **Step 11:** Find the exception in the Failures blade
+### **Step 12:** Find the exception in the Failures blade
 
 App Insights ingestion is not instant. The Live Metrics channel is real-time, but everything indexed for query — including Failures — takes one to three minutes to appear. Wait for ingestion, then explore.
 
@@ -411,7 +495,7 @@ App Insights ingestion is not instant. The Live Metrics channel is real-time, bu
 >
 > ✓ **Quick check:** Failures blade shows exactly one exception type (`InvalidOperationException`) with five occurrences, all originating from `GET Home/Boom`.
 
-### **Step 12:** Add a custom metric for home-page views
+### **Step 13:** Add a custom metric for home-page views
 
 Requests, dependencies, and exceptions are auto-instrumented. Custom metrics are not — they are the first telemetry where you write code. Inject `TelemetryClient`, call `GetMetric("name").TrackValue(value)` wherever the event happens; the SDK aggregates client-side and ships per-minute summaries, cheap even at high volume.
 
@@ -444,7 +528,7 @@ Requests, dependencies, and exceptions are auto-instrumented. Custom metrics are
    }
    ```
 
-   Leave the `Boom` action from Step 10 unchanged.
+   Leave the `Boom` action from Step 11 unchanged.
 
 2. **Commit, push, and generate traffic** once the new revision is running:
 
@@ -471,7 +555,7 @@ Requests, dependencies, and exceptions are auto-instrumented. Custom metrics are
 >
 > ✓ **Quick check:** The Metrics chart shows a non-zero `home-page-views` count over the last 30 minutes that roughly matches how many times you curled the home page.
 
-### **Step 13:** Test Your Implementation
+### **Step 14:** Test Your Implementation
 
 Walk through every signal you've wired up, end to end.
 
@@ -520,7 +604,7 @@ Walk through every signal you've wired up, end to end.
 > - ☐ `home-page-views` custom metric appears in the Metrics blade
 > - ☐ The pipeline still deploys cleanly on push to `main`
 
-### **Step 14:** Tear down the cloud resources
+### **Step 15:** Tear down the cloud resources
 
 This is the last exercise of the chapter and the last exercise that uses the Week 4 cloud resources. Nothing later in the course needs `rg-cicd-week4`, the Container App, the ACR, the Log Analytics workspace, the Application Insights component, or the Entra app registration created for OIDC federation. Tear all of it down so you finish with no resources running and no orphaned tenant-level identities.
 
@@ -581,7 +665,7 @@ The work splits into two homes — the Azure subscription holds the running reso
 >
 > **No telemetry anywhere — Live Metrics, Application Map, Metrics all empty:** The Container App didn't receive the connection string. Re-check `az containerapp show ... --query 'properties.template.containers[0].env'` for `APPLICATIONINSIGHTS_CONNECTION_STRING` with a `secretRef` field, and `az containerapp secret list` for the underlying secret.
 >
-> **Telemetry works but the connection string is plainly visible in `az containerapp show`:** You set the env var as a literal string instead of `secretref:`. Remove the env var (`--remove-env-vars`), confirm the secret is set, then re-set with the `secretref:` form from Step 6.
+> **Telemetry works but the connection string is plainly visible in `az containerapp show`:** You set the env var as a literal string instead of `secretref:`. Remove the env var (`--remove-env-vars`), confirm the secret is set, then re-set with the `secretref:` form from Step 7.
 >
 > **Failures blade empty after hitting `/Home/Boom`:** Either ingestion delay (wait 1–3 minutes) or `ASPNETCORE_ENVIRONMENT=Development` is letting `DeveloperExceptionPage` swallow the exception in the dev pipeline. Container Apps default to Production.
 >
