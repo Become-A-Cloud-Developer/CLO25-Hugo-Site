@@ -52,7 +52,7 @@
 }
 
 .reveal h1 { font-size: 5em; }
-.reveal h2 { font-size: 28em; }
+.reveal h2 { font-size: 2.8em; }
 .reveal h3 { font-size: 2.8em; }
 
 .reveal p {
@@ -449,9 +449,14 @@
    SVG DIAGRAM SLIDE
    =================== */
 
+/* Reveal.js renders slides in a 1920x1080 logical box and applies a transform
+   to fit the viewport. vh units inside that box resolve to the real browser
+   height, not 1080, so they break the layout at any viewport that isn't 1080
+   tall. Use the slide's own logical height. */
 .diagram-slide {
     padding: var(--space-xl);
-    height: 100vh;
+    height: 1080px;
+    box-sizing: border-box;
     display: flex !important;
     flex-direction: column;
 }
@@ -466,6 +471,7 @@
 
 .diagram-slide .diagram-container {
     flex: 1;
+    min-height: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -475,7 +481,9 @@
 .diagram-slide svg {
     width: 100%;
     height: auto;
-    max-height: 75vh;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
 }
 
 /* ===================
