@@ -771,7 +771,45 @@ Same pattern as the logging and monitoring chapter — a workspace-based App Ins
    builder.Services.AddApplicationInsightsTelemetry();
    ```
 
-3. **Inject** the connection string as a Container Apps secret and bind it to the env var:
+3. **Configure** the connection string for local development. `AddApplicationInsightsTelemetry()` reads from the env var `APPLICATIONINSIGHTS_CONNECTION_STRING` first, falling back to `ApplicationInsights:ConnectionString` in `IConfiguration`. In Container Apps the env var injected via `secretref:` wins (next sub-step); locally you want the same SDK path to work without committing the connection string. The pattern is two pieces — a placeholder in `appsettings.json` (committed; documents the binding key) and the real value in user-secrets (machine-local, never committed).
+
+   Add the `ApplicationInsights` block to `appsettings.json`. The literal value is intentionally not a valid connection string so the SDK fails fast if a developer forgets to override it:
+
+   > `appsettings.json`
+
+   ```json
+   {
+     "Logging": {
+       "LogLevel": {
+         "Default": "Information",
+         "Microsoft.AspNetCore": "Warning"
+       }
+     },
+     "AllowedHosts": "*",
+     "ApplicationInsights": {
+       "ConnectionString": "<set via dotnet user-secrets or APPLICATIONINSIGHTS_CONNECTION_STRING env var>"
+     }
+   }
+   ```
+
+   Then initialise user-secrets and set the real value from the `$CONN` you captured in sub-step 1:
+
+   ```bash
+   dotnet user-secrets init
+   dotnet user-secrets set "ApplicationInsights:ConnectionString" "$CONN"
+   ```
+
+   `dotnet user-secrets init` adds a `UserSecretsId` GUID to `CloudCiApi.csproj` and creates a per-user store outside the source tree — safe to commit the GUID, but the values never leave your machine. The colon in the key matches the JSON nesting (`ApplicationInsights:ConnectionString` ↔ `"ApplicationInsights": { "ConnectionString": ... }`); do **not** use the `__` double-underscore form here, that convention is for env vars on Linux.
+
+   Verify locally before moving on:
+
+   ```bash
+   dotnet run --launch-profile http
+   ```
+
+   In another terminal, generate a few requests, then open Application Insights `cloudci-api-insights` → **Live Metrics**. Requests should appear within seconds, proving the SDK is wired up before any cloud changes. Stop the server with `Ctrl+C`.
+
+4. **Inject** the connection string as a Container Apps secret and bind it to the env var:
 
    ```bash
    az containerapp secret set \
@@ -783,16 +821,16 @@ Same pattern as the logging and monitoring chapter — a workspace-based App Ins
      --set-env-vars APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connstr
    ```
 
-4. **Commit and push** the SDK changes:
+5. **Commit and push** the SDK changes. The `appsettings.json` placeholder is committed; the user-secrets file is not (it lives outside the repo):
 
    ```bash
-   git add CloudCiApi.csproj Program.cs
+   git add CloudCiApi.csproj Program.cs appsettings.json
    git commit -m "Add Application Insights SDK"
    git push
    gh run watch
    ```
 
-5. **Generate** traffic and look at Live Metrics in the Portal:
+6. **Generate** traffic and look at Live Metrics in the Portal:
 
    ```bash
    for i in {1..30}; do curl -s "https://$FQDN/api/quotes" >/dev/null; sleep 0.3; done
@@ -800,7 +838,7 @@ Same pattern as the logging and monitoring chapter — a workspace-based App Ins
 
    Open Application Insights `cloudci-api-insights` → **Live Metrics** in the Azure Portal. You should see incoming requests within seconds.
 
-> ✓ **Quick check:** Live Metrics shows incoming requests when you run the curl loop. `az containerapp show -g rg-api-week6 -n ca-api-week6 --query 'properties.template.containers[0].env'` shows `APPLICATIONINSIGHTS_CONNECTION_STRING` with a `secretRef`, not a literal value.
+> ✓ **Quick check:** `dotnet user-secrets list` shows `ApplicationInsights:ConnectionString` with the real value. `appsettings.json` carries the placeholder, not the real string. Live Metrics shows incoming requests both when you run locally and when you run the curl loop against the deployed FQDN. `az containerapp show -g rg-api-week6 -n ca-api-week6 --query 'properties.template.containers[0].env'` shows `APPLICATIONINSIGHTS_CONNECTION_STRING` with a `secretRef`, not a literal value.
 
 ### **Step 12:** Test Your Implementation
 
