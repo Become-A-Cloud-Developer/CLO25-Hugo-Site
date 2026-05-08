@@ -4,7 +4,7 @@ program = "CLO"
 cohort = "25"
 courses = ["ACD"]
 description = "Replace the API key with JWT bearer authentication. Add a tokens endpoint that issues signed JWTs against an in-memory user list, mark the quotes endpoints with [Authorize], and rewire Swagger UI's Authorize button to accept Bearer tokens. Tear down the resource group and the Entra OIDC app to finish the chapter cleanly."
-weight = 3
+weight = 4
 draft = false
 +++
 

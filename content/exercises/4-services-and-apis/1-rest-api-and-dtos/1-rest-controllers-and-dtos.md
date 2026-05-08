@@ -941,4 +941,4 @@ You have a controllers-based ASP.NET Core Web API with a clean entity-vs-DTO spl
 
 ## Done!
 
-The API runs in the cloud. Anyone with the FQDN can list quotes, fetch one by id, and create new ones — there is no authentication of any kind. That is fine for a learning artifact; it is not fine for anything you want to charge for, rate-limit, or hold accountable. The next exercise closes that gap by gating every request behind a shared API key, the simplest possible authentication scheme that's still better than nothing.
+The API runs in the cloud. Anyone with the FQDN can list quotes, fetch one by id, and create new ones — there is no authentication of any kind. That is fine for a learning artifact; it is not fine for anything you want to charge for, rate-limit, or hold accountable. Before getting to authentication, the next exercise lets a browser-based client talk to the deployed API and walks through the CORS handshake that ASP.NET Core's defaults explicitly forbid; the two exercises after that close the open-to-the-world gap with a shared API key, then with JWT bearer tokens.

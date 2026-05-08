@@ -4,7 +4,7 @@ program = "CLO"
 cohort = "25"
 courses = ["ACD"]
 description = "Add a custom ASP.NET Core middleware that demands an X-Api-Key header on every request, with the production key delivered via Container Apps secrets and the development key in appsettings.Development.json. Wire Swagger UI's Authorize button so the in-browser exploration still works."
-weight = 2
+weight = 3
 draft = false
 +++
 
