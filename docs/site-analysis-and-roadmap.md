@@ -42,6 +42,8 @@ After all eight reports returned, the most striking quantitative claims were re-
 
 A **three-agent independent review of this document** is scheduled as a final step (see §8).
 
+A **v3 amendment pass (2026-05-09)** then resolved several findings against context the original audit didn't have: the prior-course assumed background, the deliberate scope of CLO25 within a four-course program, and the central pedagogical thesis of the course. Those amendments are integrated into §3.5, §3.6, §4.6, §5, §6, §7, and the new §9 "Deliberately deferred", and logged at the end of §8.
+
 ---
 
 ## 3. Cross-cutting strengths
@@ -56,6 +58,76 @@ These deserve to be named so they survive any rewrite.
 - **Cost discipline in exercises.** Exercises remind students to deprovision; serverless Cosmos and small SKUs are chosen by default; no hidden tier-1 SKU traps.
 - **Week-by-week scaffolding is consistent.** Every week has Preparation → Theory → Practice → Reflection. Students always know what shape the week takes.
 - **Strong week-page → content cross-linking.** Weeks point to specific course-book chapters and exercises; minimal orphan stubs.
+
+---
+
+## 3.5 Prior-course context (added v3, 2026-05-09)
+
+The original audit read the site as if it were standalone. It isn't — it is the cloud half of a four-course sequence in the Cloud Developers program. Knowing what students bring with them is essential for judging what is "missing" vs "intentionally absent".
+
+**Students arrive with:**
+
+- A C# fundamentals course
+- An object-oriented programming course
+- A small test-driven-development course (xUnit basics, AAA pattern)
+- A very basic architecture introduction
+- An EF Core course where they used **SQLite locally**
+
+**Crucially, all of that is on the laptop.** Students have never connected to anything over a real network. No SSH. No HTTP across machines. No remote database. No external dependency that lives somewhere they don't fully control. CLO25 is the first time the network becomes a participant in their code.
+
+**Implications for the roadmap:**
+
+- Several items the original audit listed as "missing .NET craft" are actually upstream prerequisites — EF Core, migrations, SQL, xUnit basics, OO. The CLO25 site is not the place to teach them.
+- The MongoDB / Cosmos choice is not a gap; it is *deliberate NoSQL novelty* added on top of the EF Core + SQLite background students already have. It also keeps infrastructure rollout clean (no `dotnet ef database update` step, no migration drift between revisions) and avoids the Azure-SQL-serverless cold-start trap (auto-pause + 30–60s warmup forces students to learn transient-fault retry patterns *before* they have seen a happy-path round-trip — exactly the wrong sequencing).
+- The remaining "test craft" gap is narrower than the original audit suggested: `WebApplicationFactory` and ASP.NET-specific integration testing are likely still genuinely missing (the prior course did not have a web app to test against), but generic xUnit + Moq is upstream.
+- A **`getting-started/prior-knowledge.md` page** that names this assumed background explicitly is one of the highest-leverage additions to the site. It would have prevented the original audit's mistake and prevents future students from feeling lost.
+
+## 3.6 The network-novelty thesis (added v3, 2026-05-09)
+
+CLO25 has a strong central pedagogical thesis that the audit only saw in fragments. Naming it once, here, makes the rest of the document make sense.
+
+**The thesis.** Students arrive having only ever programmed *against themselves*. Every dependency they have ever talked to was reachable without leaving the machine. The job of CLO25 BCD is *the moment that ends.* The course is — at the design level — a curated sequence of first encounters with the network as a place where things go wrong: latency, partition, identity, schema-on-the-other-side, signal that has to leave the process to be observed. Each week introduces one new network boundary, each new boundary introduces one new failure mode, the cloud platform is the *medium* through which these are taught — not the subject.
+
+**The four-course arc.** CLO25 sits in the middle of a deliberate sequence:
+
+```
+Pre-CLO25:  local dev — the world ends at the laptop
+            (C#, OOP, TDD, basic architecture, EF Core + SQLite)
+
+CLO25 BCD:  your first network — cloud as "traditional IT, but reachable"
+            transferable mindset: this also describes on-prem
+
+CLO25 ACD:  leave the server behind — containers as the unit of thought
+            first serious cloud-native step
+
+Post-CLO25: leave the cluster behind — scale, serverless, orchestration
+            (AKS, Static Web Apps, Functions)
+```
+
+BCD's IaaS-first design is therefore not nostalgic; it is the *bridge* from local-laptop dev to cloud, going through "real but traditional-feeling" infrastructure first. VMs feel like the laptop the students know but bigger. Networks force them to confront the network boundary. *Then* containerisation in ACD lifts them off on-prem entirely. That is why App Service and Static Web Apps and Functions are deliberately absent: App Service is an off-ramp from this ladder ("upload zip; it runs"), and the others are the next course's job.
+
+**Per-week network-boundary mapping.** Once the thesis is named, the 16 active weeks cohere as a sequence of *first encounters with one network thing*:
+
+| # | Week | First network thing met |
+| --- | --- | --- |
+| 1 | BCD-1 | SSH — *the machine is over there, not under your fingers* |
+| 2 | BCD-2 | The Azure control plane — *your code (Bicep) reaches into a remote datacentre* |
+| 3 | BCD-3 | HTTP between a browser and a process you don't own anymore |
+| 4 | BCD-4 | The network as topology — subnets, NSGs, bastions, packets that can be denied |
+| 5 | BCD-5 | A database connection that *traverses the network*, not the filesystem |
+| 6 | BCD-6 | Cloud data services — managed dependencies you don't run |
+| 7 | BCD-7 | The CI/CD network — your repo reaching across to your cloud |
+| 8 | BCD-8 | The identity network — Key Vault, managed identity, RBAC as a remote authority |
+| 9 | BCD-9 | The telemetry network — logs leaving your process to live somewhere else |
+| 10 | ACD-1 | (dev environment / agile — preparation week, not a new boundary) |
+| 11 | ACD-2 | Container registries — image pull as a network operation |
+| 12 | ACD-3 | Identity tokens crossing the network (cookies, JWTs) |
+| 13 | ACD-4 | Image-pull identity from registry, OIDC federation in CI/CD |
+| 14 | ACD-5 | Structured telemetry beyond simple logs — KQL across a remote workspace |
+| 15 | ACD-6 | Public APIs and DTOs as the negotiated boundary |
+| 16 | ACD-7 | Resilience patterns — health probes, feature flags, MI from the platform side |
+
+The thesis is currently *invisible on the site*. Students never read this paragraph; they meet each week's network novelty without the through-line being named. Surfacing it (a one-line "this week's new network boundary" callout per week page; a "why this course is shaped this way" piece in `getting-started/`) is the single most valuable framing change the site could make. It costs almost nothing and changes how students hold the whole 18 weeks together.
 
 ---
 
@@ -169,23 +241,25 @@ The site uses a clean four-tree model — Course Book, Exercises, Week-by-week, 
 
 ### 4.6 .NET / C# / Azure technology coverage
 
-The site is *Azure-platform deep* and *.NET-application shallow*.
+**This section was rewritten in v3 (2026-05-09).** The original audit was framed as a gap analysis. After elaboration with the course author it became clear that most of the "gaps" are deliberately bounded scope (taught upstream in prior courses, or downstream in following courses, or off-ramps from a deliberate maturity ladder). The revised framing below is a *scope statement*, not a gap list. The original gap-analysis table is preserved in the v3 changelog at the end of §8.
 
-**Framing note (post-review).** The course teaches a clean maturity ladder of compute targets — VM (IaaS) → App Service (PaaS) → Container Apps (PaaS-with-containers) → Functions (FaaS). The ladder *as taught* compresses the App Service rung almost to zero (5 mentions, no exercise) and over-emphasises the Container Apps rung (≈225 mentions, 9 exercises). The kursplan describes BCD as "IaaS / PaaS" focused; "PaaS" in the Swedish junior-developer market is overwhelmingly App Service. The course is structurally right but emphasis-inverted: a BCD graduate currently goes from VM straight to Container Apps, skipping the rung most likely to appear in their first job. The fix in §5 Theme F is to *restore* the App Service rung, not to deprioritise Container Apps.
+**The deliberate scope.** CLO25 is positioned as the cloud half of a four-course program (see §3.6). The .NET stack is taught in two waves: pre-CLO25 (C#, OOP, TDD, EF Core + SQLite, basic architecture, all local) and CLO25 itself (.NET as the language used to *talk to the network*). Several technologies the original audit listed as "missing" are intentionally outside this wave:
 
-| Cluster | Strength |
-| --- | --- |
-| **Containers, ACR, GitHub Actions OIDC, Bicep, Managed Identity, Key Vault, Application Insights, KQL, Container Apps** | Strong end-to-end |
-| **ASP.NET Core MVC, Web API controllers, DTOs, REST principles, async/await, ILogger, Cosmos DB, Azure SQL** | Solid theoretical and exercise coverage |
-| **Entity Framework Core practice, LINQ, model binding, validation** | Mentioned in 14 files but no dedicated end-to-end migration exercise; a junior will hit EF in their first week of work |
-| **Razor Pages** | **0 mentions** |
-| **xUnit, NUnit, integration testing, Moq/NSubstitute** | xUnit appears in 1 file; Moq absent; WebApplicationFactory ~2 references |
-| **Azure App Service** | 5 mentions, no exercise — most juniors deploy here before they touch Container Apps |
-| **Azure Functions** | 5 mentions, no exercise |
-| **Background services / IHostedService, SignalR, Event Grid, Static Web Apps** | Absent |
-| **Azure DevOps, API Management, Front Door** | Mentioned only |
+| Technology | Status | Reasoning |
+| --- | --- | --- |
+| Containers, ACR, GitHub Actions OIDC, Bicep, Managed Identity, Key Vault, Application Insights, KQL, Container Apps | Strong end-to-end coverage | The cloud-native spine of the course |
+| ASP.NET Core MVC, Web API, DTOs, REST, async/await, ILogger, Cosmos DB | Solid theoretical + exercise coverage | The "talk to the network" half of the .NET stack |
+| Entity Framework Core, LINQ, SQL, migrations, repository pattern, xUnit basics, OO | **Upstream — taught in prior course** (SQLite, local) | Adding it here would be remedial, not new |
+| MongoDB / NoSQL | Deliberately introduced as new content on top of the EF Core + SQLite background | Adds a new database paradigm; sidesteps the Azure-SQL-serverless cold-start retry-pattern trap (auto-pause + 30–60s warmup forces transient-fault retry *before* a happy-path round-trip — wrong sequencing for beginners); keeps infrastructure rollout clean (no migration step in CI) |
+| Razor Pages | Out of scope | Pattern-within-.NET, not a transferable concept; MVC + Web API + DTOs covers the same range with concepts that survive outside .NET |
+| Azure App Service | Out of scope | Pedagogically thin ("upload zip; it runs"); off-ramp from the maturity ladder rather than a step on it; teaches Azure-form-literacy rather than transferable platform thinking |
+| Static Web Apps, Azure Functions, AKS | **Downstream — taught in next course** | Belong on the post-CLO25 cloud-native / scalability arc |
+| App-specific integration testing (`WebApplicationFactory`) | Likely a real gap | Prior course had no web app to test against; this is the one test-craft item that plausibly belongs here. Confirm against prior-course syllabus before authoring |
+| AI-assisted development | Real gap; named *kompetensmål* in the ACD kursplan, taught nowhere | Must be added (see §5 Theme F + Phase 0) |
+| Background services / IHostedService, SignalR, Event Grid | Out of scope | Same downstream / off-ramp logic; not on the through-line |
+| Retry / transient-fault patterns (Polly etc.) | Deliberately deferred this year (see §9) | Was on the schedule in prior years; was the topic that had to be shaved this year. Strong candidate for re-introduction in ACD W7 (Resilience patterns) |
 
-The bias is intelligible: the course was deliberately designed around containers and IaC. But the consequence is that a graduate who lands at a typical Swedish .NET shop on a brownfield ASP.NET app will be missing exactly the local-dev craft (Razor Pages, EF migrations, xUnit + Moq, App Service) that they will need on day 1.
+**The compute maturity ladder, reframed.** The ladder taught is intentional: VM (IaaS, traditional-IT roots) → Containers (Docker as packaging) → Container Apps (PaaS-with-containers; halfway scenario to Kubernetes) → next course (AKS / SWA / Functions). Each rung teaches concepts the next rung depends on. App Service does not fit on this ladder; including it would dilute the through-line. **The original audit's "missing rung" framing has been retracted.**
 
 ### 4.7 Cross-cutting
 
@@ -225,6 +299,7 @@ These are concrete, actionable ideas. Each is sized as **S** (≤2h), **M** (2�
 | Add a one-line "exercise numbering" note to `content/exercises/_index.md` explaining why 7–9, 11–14, 16–19 are skipped | S | P2 |
 | Add a `static/presentations/index.html` (or Hugo page) listing all 155 decks by Part with EN/SV toggle and 1-line descriptions | M | P1 |
 | Add a `_glossary.md` for the Course Book; cross-link key terms (DTO, CIDR, OIDC, DORA, KQL, sampling) from chapters | M | P2 |
+| **Add a one-line "this week's new network boundary" callout to each week page (per the §3.6 mapping table) — names the through-line of the course** | S | P1 |
 
 ### Theme B — Onboarding and prerequisites
 
@@ -234,6 +309,9 @@ These are concrete, actionable ideas. Each is sized as **S** (≤2h), **M** (2�
 | Create `content/getting-started/support.md` with class channel, office hours, FAQ, Jira board | S | P0 |
 | Expand `content/getting-started/acd/_index.md` from placeholder to a real onboarding page | S | P1 |
 | Add a "Before you start" callout at the top of week-1 BCD and week-1 ACD pointing at prerequisites + support pages | S | P0 |
+| **Add `getting-started/prior-knowledge.md` listing what students bring from prior courses (C#, OOP, TDD, EF Core + SQLite, basic architecture). Prevents the audit-mistake of treating upstream content as missing** | S | P1 |
+| **Add `getting-started/why-this-shape.md` (one screen) articulating the four-course arc, the network-novelty thesis, the maturity ladder, and the transferability promise (cloud here also describes on-prem). Make the pedagogy visible** | S | P1 |
+| **Add a "Out of scope (taught in the next course)" line on the homepage and getting-started — App Service, AKS, Static Web Apps, Functions. Saves five Slack questions per cohort and prevents students feeling something is missing** | S | P1 |
 
 ### Theme C — Tutorials gap-fill
 
@@ -276,16 +354,19 @@ Five high-leverage tutorials would unblock weekly Slack questions:
 
 ### Theme F — .NET / C# tech-coverage gap-fill
 
+**Scope reduced in v3.** The original audit listed seven additions; four are now retracted as upstream / out-of-scope (see §4.6 and the §8 v3 changelog). The remaining items are the genuine gaps.
+
 | Idea | Size | Priority |
 | --- | --- | --- |
-| Add an EF Core *migrations workflow* exercise — `dotnet ef migrations add`, `database update`, schema-change scenarios (rename column, add constraint), rollback. Specifically the migrations workflow, not just generic "EF Core hands-on" | M | P0 |
-| Add a unit-testing exercise — xUnit + Moq for the service layer, integrated into a CI pipeline gate | M | P0 |
-| **Add an integration-testing exercise — `WebApplicationFactory` + in-memory or test-container DB; tests the controller→service→repository slice** (currently 0 references; the next layer of the test pyramid above unit tests) | M | P0 |
-| Add an App Service deployment progression — (1) deploy via CLI / portal, (2) provision via Bicep. Restores the missing rung in the compute-maturity ladder | M | P1 |
-| Add a Razor Pages *chapter* (decision-tree: when MVC, when Web API, when Razor Pages, when Minimal APIs); a separate exercise is optional | S | P2 |
-| Add an Azure Functions stretch exercise (e.g. queue trigger + Cosmos change feed) for ACD | M | P2 |
+| **Teach AI-assisted development explicitly** — short chapter (Part X or Part III) on three patterns: good use, bad use, verification pattern. Cannot be deferred — the ACD kursplan lists it as a kompetensmål ("Instruera AI-assistenter/agenter…") and ACD-1 grades it | M | P0 |
+| Add an integration-testing exercise — `WebApplicationFactory` + in-memory or test-container DB; tests the controller→service→repository slice. Likely the only test-craft item that belongs here (xUnit + Moq + AAA are upstream); confirm against prior-course syllabus before authoring | M | P1 |
+| ~~Add an EF Core *migrations workflow* exercise~~ | — | **Retracted (v3)** — taught upstream with SQLite |
+| ~~Add a unit-testing exercise (xUnit + Moq for service layer)~~ | — | **Retracted (v3)** — xUnit basics taught in prior TDD course |
+| ~~Add an App Service deployment progression~~ | — | **Retracted (v3)** — App Service is an off-ramp from the maturity ladder, not a step on it (see §4.6) |
+| ~~Add a Razor Pages chapter / exercise~~ | — | **Retracted (v3)** — pattern-within-.NET; not on the transferable-concepts ladder |
+| Reintroduce **retry / transient-fault patterns** (Polly, `EnableRetryOnFailure`, idempotent retries) — was deliberately deferred this year; natural home is ACD W7 "Resilience patterns" alongside health probes, feature flags, MI | M | P2 (next year) |
+| Add an Azure Functions stretch exercise — kept as P2, but lower confidence after v3 framing: Functions are explicitly downstream (next course). Defer unless a clear in-scope use case appears | M | P3 |
 | Add a Background Services / IHostedService chapter or example | S | P2 |
-| **Teach AI-assisted development explicitly** — short chapter (Part X or Part III) on three patterns: good use, bad use, verification pattern. *Not optional* — the ACD kursplan lists it as a kompetensmål ("Instruera AI-assistenter/agenter…"), so removing the assignment criterion is not on the table | M | P1 |
 
 ### Theme G — Presentations gap-fill
 
@@ -304,18 +385,18 @@ Five high-leverage tutorials would unblock weekly Slack questions:
 | Rebalance BCD-2 VG criteria — make Bicep aspirational rather than required; G should be "repeatable, documented provisioning with any tool" | S | P1 |
 | Add a deliverable spec + exam rubric to BCD week 10 and ACD week 8 wrap-ups | M | P0 |
 
-### Theme J — Pedagogy infrastructure (added post-review)
+### Theme J — Pedagogy infrastructure (added post-review, revised v3)
 
-The original analysis treated content depth and exercise design but under-weighted the *pedagogical scaffolding* a beginner needs.
+The original analysis treated content depth and exercise design but under-weighted the *pedagogical scaffolding* a beginner needs. v3 retracted two items that conflicted with the prior-course context.
 
 | Idea | Size | Priority |
 | --- | --- | --- |
-| Add a "C# warm-up" page or short chapter (interfaces, async/await semantics, LINQ basics, AAA test pattern) — closes the gap between "tiny bit of C#" and what BCD week 3 actually demands | M | P1 |
+| ~~Add a "C# warm-up" page (interfaces, async/await, LINQ, AAA)~~ | — | **Retracted (v3)** — superseded by §3.5 prior-knowledge framing; what would actually help is the *"What you'll meet for the first time"* page (in Theme B), not a C# refresher |
 | Add a "Testing Strategy in Three Tiers" chapter (unit / integration / end-to-end) under Part III — explains the test pyramid before the exercises ask students to add tests | S | P1 |
-| Add a "Choosing your web framework" decision-tree page (MVC / Web API / Razor Pages / Minimal APIs) — turns single-pattern muscle memory into informed choice | S | P1 |
+| Add a "Choosing your web framework" decision-tree page (MVC / Web API / Minimal APIs / where Razor Pages fits) — turns single-pattern muscle memory into informed choice | S | P2 |
 | Add worked rubric examples in Part VIII — show the same deployment at G-level and at VG-level so students see what "professional-grade" means *before* they're graded | M | P1 |
 | Add a per-chapter "Check your understanding" block (3–5 retrieval-practice questions, ungraded) — beats mere exposure for novice learners | M | P2 |
-| Resolve the EF Core ↔ MongoDB driver split in Exercise 10 — either teach EF Core in Part IV and use it in Exercise 10 with MongoDB shown as a NoSQL contrast, or commit to MongoDB driver and frame Part IV's repository pattern around it | M | P1 |
+| ~~Resolve the EF Core ↔ MongoDB driver split in Exercise 10~~ | — | **Retracted (v3)** — there is no split to resolve. EF Core is upstream; MongoDB is the deliberate NoSQL counterpoint chosen in CLO25 (see §3.5 and §4.6) |
 
 ### Theme I — Cross-cutting quality
 
@@ -356,6 +437,13 @@ Goal: *help current students; nothing structural that risks breakage.*
 
 **Phase 0 risk note.** Enabling `description="true"` on 47 children calls requires every child `_index.md` to have a `description` field. Verify with `hugo serve` before merge — partial backfill renders blank tiles on the homepage.
 
+**v3 amendment to Phase 0 (2026-05-09).** Add three more low-cost, high-leverage onboarding pages while we're already touching the homepage:
+- `getting-started/prior-knowledge.md` — what students bring from prior courses (S, P1).
+- `getting-started/why-this-shape.md` — the four-course arc, the network-novelty thesis, the maturity ladder, the transferability promise (S, P1).
+- A "Out of scope (taught in next course)" line on the homepage and on `getting-started/` — App Service, AKS, SWA, Functions (S, P1).
+
+These three pages collectively *name the pedagogy* for the first time. The cost is one screen of prose each; the benefit is a coherent course identity that students, future analysts (human or AI), and the author all share.
+
 ### Phase 1 — Post-ACD25 cooling period (v.22 → v.35, June–August 2026)
 
 Goal: *fix the structural and content-depth issues while there's no live cohort.*
@@ -368,10 +456,9 @@ This is the biggest window of the year and where the bulk of the work lands.
 3. Rewrite Part I stubs and fix the numbering bug (M, P1).
 4. Expand Part VIII deployment-strategies + Container Apps health-checks; expand Part VII container-registries (M, P1).
 
-**1b — Tech-coverage gap-fill:**
-5. Author the EF Core exercise + the unit-testing exercise — these are P0 because they unblock day-1 employment (L, P0).
-6. Author the Razor Pages chapter + exercise (M, P1).
-7. Author the App Service deployment exercise + tutorial (M, P1).
+**1b — Tech-coverage gap-fill (substantially reduced in v3):**
+5. Author the integration-testing exercise (`WebApplicationFactory` + in-memory or test-container DB) — confirm against prior-course syllabus first (M, P1).
+6. ~~Author the EF Core / unit-testing / Razor Pages / App Service items~~ — **all retracted in v3** (upstream or out-of-scope; see §4.6 and §5 Theme F).
 
 **1c — Exercises hygiene:**
 8. Split the 1281-line and 1596-line monster exercises (M, P1).
@@ -380,7 +467,8 @@ This is the biggest window of the year and where the bulk of the work lands.
 
 **1d — Presentations & onboarding:**
 11. Author Part I presentation deck set (4–6 bilingual decks) — closes the only Part with no decks (L, P1).
-12. Author the five Theme C tutorials (.NET install, Azure CLI, Git workflow, Docker basics, App Service deploy) — five short tutorials, ~one day each (M, P1).
+12. Author the four remaining Theme C tutorials (.NET install, Azure CLI, Git workflow, Docker basics) — *App Service deploy tutorial dropped in v3* (M, P1).
+13. Author the v3 onboarding pages: `prior-knowledge.md`, `why-this-shape.md`, the "out of scope" homepage line. These name the pedagogy and prevent the audit-mistake of treating upstream/downstream content as missing (S each, P1).
 
 **1e — Quality gates:**
 13. Add CI checks: H1 hierarchy, alt-text presence, language tags, dead `{{< ref >}}` (M, P1).
@@ -388,7 +476,11 @@ This is the biggest window of the year and where the bulk of the work lands.
 15. Surface all assignments on the site; convert BCD-3 to rubric format; rebalance BCD-2 (M, P0).
 16. Declare language policy + build EN/SV glossary (S, P1).
 
-**Phase 1 total effort.** The original estimate was "~6–8 weeks of focused work". The feasibility review pushed back hard on this: Part I's bilingual deck set is 50–100% under-budgeted (a single Reveal.js deck at the existing visual-polish level is closer to 8h than 4h, and there are 10–12 of them), the two monster-exercise splits are ≈65% under-budgeted (each is effectively 5 sub-exercises and breaks all incoming `{{< ref >}}` links), and the CI lint pass is 30% under. **The realistic Phase 1 budget is 10–13 weeks at ~20 hours/week** — which still fits the v.22→v.35 (June–August) window with 12% slippage margin, but only if the work is sequenced and batched intelligently:
+**Phase 1 total effort.** The original estimate was "~6–8 weeks of focused work". The feasibility review pushed back hard on this: Part I's bilingual deck set is 50–100% under-budgeted (a single Reveal.js deck at the existing visual-polish level is closer to 8h than 4h, and there are 10–12 of them), the two monster-exercise splits are ≈65% under-budgeted (each is effectively 5 sub-exercises and breaks all incoming `{{< ref >}}` links), and the CI lint pass is 30% under. **The realistic Phase 1 budget is 10–13 weeks at ~20 hours/week** — which still fits the v.22→v.35 (June–August) window with 12% slippage margin, but only if the work is sequenced and batched intelligently.
+
+**v3 reduction.** Phase 1 shrinks meaningfully after the retractions in §5 Theme F (EF Core migrations, xUnit, Razor Pages, App Service items all retracted) and in §5 Theme J (C# warm-up, EF↔MongoDB disconnect retracted). The realistic budget after v3 is closer to **8–10 weeks at ~20 hours/week**, with the saved time available for the new Phase 0 onboarding pages and any reintroduction work in Phase 3.
+
+The sequencing guidance still applies:
 
 1. Front-load week 1 on `description="true"` rollout + description backfill (a single batch task on all 242 `_index.md` files; saves task-switching).
 2. Batch all theory-depth rewrites (Parts I, VII, VIII, IX, IaC chapter expansion) in weeks 2–3 — same voice, same examples, catches cross-Part redundancy in one pass.
@@ -413,27 +505,31 @@ Goal: *polish, validate, and add the medium-priority content.*
 
 Goal: *enrichment, not catch-up.*
 
-- Author the Azure Functions stretch exercise (M, P2).
+- **Reintroduce retry / transient-fault patterns** (Polly, `EnableRetryOnFailure`) into ACD W7 alongside health probes, feature flags, managed identity. This was the topic deliberately shaved this year — the candidate slot is held (see §9) (M, P2).
 - Author Background Services / IHostedService chapter (S, P2).
-- Author the additional missing exercises (EF migrations stretch, observability alert + KQL exercise, secrets-rotation exercise) (L, P2).
+- Author the additional observability exercises (alert + KQL exercise, secrets-rotation exercise) (L, P2).
 - Add Theme A glossary cross-linking once content is stable (M, P2).
 - Add a `static/presentations/` index page (M, P1 if not already done).
 - Build a per-Part diagrams set under `static/diagrams/` and reference from chapters (L, P2).
+- Audit the Course Book architecture-flavoured chapters (Parts I, III, IV, VI) against the prior course's "very basic architecture" content for overlap; trim or rebadge as needed (S, P2).
 
 ---
 
 ## 7. Open questions
 
-These need a human decision before the roadmap can be fully committed.
+These need a human decision before the roadmap can be fully committed. v3 resolved Q1, Q2 and Q3 from the original list.
 
-1. **Razor Pages: in or out?** It's missing entirely. Including it means another chapter+exercise. Excluding it means the course is explicitly Web API + MVC only. The kursplan does not mandate Razor Pages; the labour market arguably does. (Recommendation: include a short chapter; one CRUD exercise.)
-2. **App Service vs Container Apps — resolved post-review: maturity ladder.** The teaching arc should be VM → App Service → Container Apps → Functions, with App Service as the missing rung that most BCD graduates will land on at their first job. Add a short App Service exercise sequence (CLI deploy → Bicep) under Part VIII; do not deprioritise Container Apps.
-3. **AI-assisted development — resolved post-review: must be taught.** The ACD kursplan lists it as a *kompetensmål* ("Instruera AI-assistenter / agenter för att nå värdmålet"). Dropping the assignment criterion is not allowed by the formal course plan. We must add a short chapter (the *good use / bad use / verification pattern* triad) and surface it before ACD-1 is due.
+1. ~~**Razor Pages: in or out?**~~ **Resolved (v3): out.** Pattern-within-.NET, not a transferable concept. A short paragraph in the framework-decision-tree page (Theme J) is sufficient.
+2. ~~**App Service vs Container Apps weighting?**~~ **Resolved (v3): App Service out.** Pedagogically thin; off-ramp from the maturity ladder; teaches Azure-form-literacy rather than transferable platform thinking. Container Apps is the right primary target precisely because its concepts (revisions, traffic, probes, MI-pulled images) survive into AKS in the next course.
+3. ~~**AI-assisted development as a taught topic?**~~ **Resolved (post-review): teach explicitly.** Kompetensmål in the kursplan; cannot be dropped.
 4. **Exercise numbering scheme.** Renumber to sequential (1–9), or document the gap-leaving scheme as intentional (capacity for future inserts). The current state is ambiguous to students.
-5. **BCD-2 calibration.** Bicep+bastion+GHA in weeks 4–6 — keep or relax? The current rubric demands Bicep mastery from learners three weeks into web development.
+5. **BCD-2 calibration.** Bicep + bastion + GHA in weeks 4–6 — keep, or relax to "any IaC tool" at G level?
 6. **Language policy.** Pure English content + bilingual slides? Or mirror to full Swedish? The current implicit answer (English) is fine but should be declared.
 7. **Tutorials section's role.** As-built it's an orphan. Reposition as the "how do I install / set up X" reference area, with clear cross-links from week-1 prerequisites and from the early exercises that need each tool.
 8. **Legacy folders.** `2-infrastructure/compute/legacy/` and similar — archive into a separate non-rendered folder, delete, or mark `draft = true`?
+9. **(New, v3) Confirm what the prior course actually covers.** Specifically: how deep does the prior TDD course go on xUnit + AAA? Does it cover Moq / NSubstitute? Does it cover async testing? The integration-testing item in §5 Theme F depends on this answer.
+10. **(New, v3) Audit architecture overlap with the prior course.** The prior course teaches "very basic architecture" and the Course Book has substantial architecture content (Parts I, III, IV, VI). Worth a one-pass check by someone who knows both syllabi.
+11. **(New, v3) Where to host the "deliberately deferred" register?** Inline in §9 of this doc, or as a standalone `docs/deliberately-deferred.md` that next year's planning can write into directly?
 
 ---
 
@@ -488,6 +584,44 @@ Three independent reviewers — pedagogical, feasibility/PM, and .NET-technical 
 
 **Open dissents (not resolved by v2):**
 
-- The pedagogical reviewer's strongest claim — that EF Core and xUnit content should ship *before May 29* "for the current cohort" — partially conflates BCD25 (already graduated v.14, April 5) with ACD25 (running now). EF Core / xUnit content is genuinely P0 for BCD26, not for the current cohort. v2 keeps these in Phase 1, not Phase 0.
-- The pedagogical reviewer wants Razor Pages elevated (taught early, decision-tree); the .NET-technical reviewer wants it downgraded (niche in 2026). v2 splits the difference: a short *chapter* on framework choice (Theme J) but no large exercise (Theme F downgraded to P2 chapter-only).
+- The pedagogical reviewer's strongest claim — that EF Core and xUnit content should ship *before May 29* "for the current cohort" — partially conflates BCD25 (already graduated v.14, April 5) with ACD25 (running now). EF Core / xUnit content is genuinely P0 for BCD26, not for the current cohort. v2 keeps these in Phase 1, not Phase 0. **v3 update: both items retracted entirely — they are upstream prior-course content (see §3.5 and §4.6).**
+- The pedagogical reviewer wants Razor Pages elevated (taught early, decision-tree); the .NET-technical reviewer wants it downgraded (niche in 2026). v2 splits the difference: a short *chapter* on framework choice (Theme J) but no large exercise (Theme F downgraded to P2 chapter-only). **v3 update: Razor Pages exercise retracted entirely; only a paragraph in the framework-decision-tree page remains.**
 - The feasibility reviewer recommended dropping the BCD-2 Bicep G-criterion to VG. The pedagogical reviewer pushed back: the kursplan's G/VG distinction does not specify Bicep, and dropping it to VG dilutes the maturity ladder taught in weeks 4–6. v2 follows the pedagogical reviewer: keep Bicep at G but accept "any IaC tool" (Bicep, Terraform, Pulumi).
+
+### v3 elaboration changelog (2026-05-09)
+
+After the three-agent review, three further elaboration turns with the course author surfaced context the original audit didn't have. The amendments below are the difference between v2 and v3.
+
+| Turn | Insight | What changed in the document |
+| --- | --- | --- |
+| 1 — App Service / Container Apps | App Service is pedagogically thin ("upload zip; it runs") and is an *off-ramp* from the maturity ladder, not a step on it. The deliberate ladder is VM → Containers → Container Apps → next course. | Retracted §5 Theme F App Service progression item; rewrote §4.6 framing as scope statement; resolved §7 Q2; downgraded Razor Pages to a paragraph in the framework-decision-tree page; added "out of scope (next course)" homepage line as a Theme B item |
+| 2 — Prior-course context + MongoDB | Students arrive having taken C#, OOP, TDD, basic architecture, and EF Core + SQLite — all local. MongoDB is the deliberate NoSQL novelty added on top. Skipping migrations keeps infrastructure rollout clean and avoids the Azure-SQL-serverless cold-start retry-pattern trap. | Added new §3.5 "Prior-course context"; retracted §5 Theme F EF Core migrations and xUnit items as upstream; retracted §5 Theme J "C# warm-up" and "EF↔MongoDB disconnect" items; rewrote §4.6 from gap analysis to scope statement; added new Theme B item for `prior-knowledge.md` page |
+| 3 — Network-novelty thesis + four-course arc | The course's central pedagogical thesis is *first encounters with the network*. CLO25 sits in a four-course arc: local dev → traditional-IT-in-cloud (BCD) → cloud-native (ACD) → scale/serverless (next). Retry patterns were deliberately deferred this year. | Added new §3.6 "Network-novelty thesis" with the per-week boundary mapping; added Theme A item for per-week network-boundary callout; added two new Theme B onboarding pages (`why-this-shape.md`, "out of scope" line); added new §9 "Deliberately deferred" register; added Q9, Q10, Q11 in §7 |
+
+**Net effect of v3:** the roadmap shrinks ~25% (six retractions, ten new framing items), the document moves from "what's missing" to "what's deliberately bounded", and the previously-implicit pedagogical thesis is named for the first time. Phase 1 budget drops to 8–10 weeks; Phase 0 grows by three small onboarding pages.
+
+---
+
+## 9. Deliberately deferred (added v3, 2026-05-09)
+
+A register of topics that were considered for CLO25 and were deliberately not included this year. Maintained so that:
+
+1. The course author does not have to remember the candidate list at next planning round.
+2. Future analysts (human or AI) do not mistake "intentionally absent" for "accidentally missing" — the original audit made exactly that error before this register existed.
+3. Students who ask *"why isn't X here?"* can be pointed at the explicit reasoning rather than receiving an ad-hoc answer.
+
+| Topic | Why considered | Why deferred this year | Re-introduction candidate slot |
+| --- | --- | --- | --- |
+| **Retry / transient-fault patterns** (Polly, `EnableRetryOnFailure`, idempotent retries) | Real production necessity; was on the schedule in prior years | Had to shave something this year to keep the schedule honest; this was the one that stood back. Not a permanent removal | ACD W7 ("Resilience patterns" — already has health probes, feature flags, MI; retry patterns are the natural fourth) |
+| Razor Pages | Common in Swedish brownfield .NET shops | Not on the transferable-concepts ladder; pattern-within-.NET only; the framework-decision-tree page in §5 Theme J names it without teaching it | A short paragraph in the decision-tree page is the maximum scope envisioned |
+| Azure App Service | Common in Swedish junior-developer first jobs | Pedagogically thin ("upload zip; it runs"); off-ramp from the maturity ladder; teaches Azure-form-literacy rather than transferable platform thinking | None envisioned for CLO25 |
+| Static Web Apps, Azure Functions, AKS | Standard cloud-native targets | Belong on the post-CLO25 cloud-native / scalability arc | The next course |
+| Azure DevOps (as alternative to GitHub Actions) | Some Swedish shops use it | Adds a parallel toolchain without adding a transferable concept beyond what GHA already teaches | None envisioned |
+| SignalR / real-time | Real-world feature for many apps | Not on the network-novelty through-line; would land as an island | If it earns a slot, ACD or next course |
+| gRPC | Increasingly common for microservices | Same as SignalR; isolated from the through-line | If it earns a slot, next course |
+| Background services / IHostedService | Real production necessity | Off the through-line; small enough to add as P2 if a slot opens | Phase 3 enrichment if room |
+| Front Door / API Management | Production traffic patterns | Beyond beginner scope | Next course |
+
+**How to use this register.** Add an entry whenever a topic is considered and dropped, with the four columns filled in honestly. The "re-introduction candidate slot" column is the single most useful field — it turns "we don't teach X" into "we don't teach X *yet*; here's the slot we'd put it in if it earns one".
+
+**An open question (also in §7 Q11):** keep this register inline here, or split it into a standalone `docs/deliberately-deferred.md`. Standalone is easier to write into during planning; inline keeps the rationale next to the analysis that established it. No strong default either way.
