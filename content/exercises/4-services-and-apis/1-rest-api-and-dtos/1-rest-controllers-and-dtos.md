@@ -534,13 +534,16 @@ The pipeline you'll set up next builds a Docker image and pushes it to ACR — t
 
 The federated credential you create in the next step authenticates from a specific repo on a specific branch — the repo must exist before the credential. Create it now and push.
 
-1. **Initialize** a git repo and make a first commit:
+1. **Initialize** a git repo and make a first commit. Add a `.gitignore` first so `bin/`, `obj/`, and user-secrets don't end up in version control:
 
    ```bash
+   dotnet new gitignore
    git init
    git add .
    git commit -m "Scaffold CloudCiApi with Quotes controller and Dockerfile"
    ```
+
+   The `dotnet new gitignore` template is the same one Visual Studio adds to new solutions — it covers `bin/`, `obj/`, IDE folders, and the `secrets.json` user-secrets file.
 
 2. **Create** the GitHub repository and push (substitute your GitHub username for `<your-username>`):
 
@@ -635,10 +638,10 @@ You set this up in detail in the deployment chapter — a fresh resource group, 
          id-token: write
          contents: read
        steps:
-         - uses: actions/checkout@v4
+         - uses: actions/checkout@v5
 
          - name: Sign in to Azure
-           uses: azure/login@v2
+           uses: azure/login@v3
            with:
              client-id: ${{ secrets.AZURE_CLIENT_ID }}
              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -821,6 +824,8 @@ Same pattern as the logging and monitoring chapter — a workspace-based App Ins
      --set-env-vars APPLICATIONINSIGHTS_CONNECTION_STRING=secretref:appinsights-connstr
    ```
 
+   The CLI prints `Containerapp 'ca-api-week6' must be restarted in order for secret changes to take effect` after the first command. You can ignore that — the immediately-following `az containerapp update --set-env-vars` produces a new revision that picks up the secret on first start. There is no manual restart step.
+
 5. **Commit and push** the SDK changes. The `appsettings.json` placeholder is committed; the user-secrets file is not (it lives outside the repo):
 
    ```bash
@@ -865,7 +870,10 @@ End-to-end check against the live deployment.
    curl -i -X POST "https://$FQDN/api/quotes" \
      -H "Content-Type: application/json" \
      -d '{"author":"Bjarne Stroustrup","text":"Within C++, there is a much smaller and cleaner language struggling to get out."}'
-   # expect 201 with Location: https://$FQDN/api/Quotes/5
+   # expect 201 with Location: http://$FQDN/api/Quotes/5
+   # (the scheme is http, not https — Container Apps terminates TLS at the edge,
+   # so Kestrel sees the request as plain http and emits the Location accordingly.
+   # Browsers follow it without complaint because they upgrade to https on redirect.)
 
    # Validation failure
    curl -i -X POST "https://$FQDN/api/quotes" \

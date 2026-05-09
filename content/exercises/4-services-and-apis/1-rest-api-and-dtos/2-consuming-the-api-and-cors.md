@@ -370,7 +370,7 @@ A `GET /api/quotes` is what the spec calls a "simple request" — `GET`, no cust
    - The first row says **Method: OPTIONS, Status: 204** (No Content). That is the preflight. Click it and look at:
 
      - **Request headers**: `Access-Control-Request-Method: POST` and `Access-Control-Request-Headers: content-type`
-     - **Response headers**: `access-control-allow-origin: http://localhost:3000`, `access-control-allow-methods: *`, `access-control-allow-headers: *`
+     - **Response headers**: `access-control-allow-origin: http://localhost:3000`, `access-control-allow-methods: POST`, `access-control-allow-headers: content-type`. ASP.NET Core's `.AllowAnyMethod()` and `.AllowAnyHeader()` *echo back the requested values* rather than returning a literal `*` — this is the form the W3C CORS spec requires when credentials may be involved, and the browser accepts it as if it were `*`.
 
    - The second row says **Method: POST, Status: 201**. That is the real request, sent only because the preflight succeeded. The response is the new `QuoteDto`.
 
