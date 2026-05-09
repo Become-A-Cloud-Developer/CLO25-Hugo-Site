@@ -128,11 +128,17 @@ Registering the JWT bearer handler is two API calls: one to add the authenticati
    builder.Services.AddAuthorization();
    ```
 
-4. **Add** the authentication and authorization middleware after `app.UseRouting()` (if present) and before `app.MapControllers()`:
+4. **Add** the authentication and authorization middleware after `app.UseRouting()` (if present) and before `app.MapControllers()`. If you completed Exercise 2, `app.UseCors(...)` from that chapter must stay **before** `app.UseAuthentication()` so OPTIONS preflights short-circuit at CORS without getting a 401 from the missing `Authorization` header — same constraint that applied to the API-key middleware in Exercise 3:
 
    > `Program.cs`
 
    ```csharp
+   app.UseHttpsRedirection();
+
+   // CORS first (from Exercise 2). Browser preflights carry no Authorization header,
+   // so they must reach the CORS handler — not the auth pipeline — to get a 204.
+   app.UseCors(LocalDevCorsPolicy);
+
    app.UseAuthentication();
    app.UseAuthorization();
 
@@ -393,7 +399,9 @@ This is where the API issues the JWT. The action takes a username and password, 
 >
 > The **header** is a tiny JSON object — `{"alg":"HS256","typ":"JWT"}` — base64url-encoded. It says how the signature was produced.
 >
-> The **payload** is another JSON object — `{"sub":"alice","name":"alice","role":"admin","iss":"cloudci-api-dev","aud":"cloudci-api-clients-dev","exp":1714312345,"nbf":1714308745,"iat":1714308745}` — base64url-encoded. The `iss` (issuer), `aud` (audience), `exp` (expiry as Unix seconds), `nbf` (not-before), and `iat` (issued-at) claims are the standard ones the validator checks; `sub`, `name`, and `role` are the per-user identity. Anyone can decode the payload — paste a token into <https://jwt.io> and read it. There is no secrecy in a JWT.
+> The **payload** is another JSON object — `{"sub":"alice","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"alice","http://schemas.microsoft.com/ws/2008/06/identity/claims/role":"admin","iss":"cloudci-api-dev","aud":"cloudci-api-clients-dev","exp":1714312345,"nbf":1714308745,"iat":1714308745}` — base64url-encoded. The `iss` (issuer), `aud` (audience), `exp` (expiry as Unix seconds), `nbf` (not-before), and `iat` (issued-at) claims are the standard ones the validator checks; `sub`, the long-URI `name` claim, and the long-URI `role` claim are the per-user identity. Anyone can decode the payload — paste a token into <https://jwt.io> and read it. There is no secrecy in a JWT.
+>
+> Why the URI claim names? `ClaimTypes.Name` and `ClaimTypes.Role` are .NET-internal constants that resolve to `http://schemas.xmlsoap.org/...` URIs — a legacy WS-* convention `JwtSecurityTokenHandler` uses by default. They work for `[Authorize]` and `[Authorize(Roles="admin")]` because the inbound mapping reverses them. If you want short `name` and `role` claims in the wire format (cleaner for non-.NET consumers), construct the claims with literal strings: `new Claim("name", user.Username)`, `new Claim("role", user.Role)`, and clear the inbound map at startup with `JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();` so authorization still finds them.
 >
 > The **signature** is `HMAC-SHA256(base64url(header) + "." + base64url(payload), key)` — the entire signed string is the first two segments concatenated with the dot, hashed with the shared key. Anyone holding the key can produce the signature; anyone holding the key can also forge tokens. The signature is the *integrity* check, not a secrecy mechanism. The token is tamper-evident: change one byte of the payload and the signature stops matching.
 >
@@ -663,7 +671,7 @@ Walk through the flow end to end one more time, both locally and against the dep
      -d '{"username":"alice","password":"alice123"}'
    ```
 
-   Expected: `{"token":"eyJ...","expiresAt":"2026-..."}`. Decode the `eyJ...` portion at <https://jwt.io> and confirm the payload contains `sub: "alice"`, `name: "alice"`, `role: "admin"`, `iss: "cloudci-api-dev"`, `aud: "cloudci-api-clients-dev"`, and an `exp` ~1 hour in the future.
+   Expected: `{"token":"eyJ...","expiresAt":"2026-..."}`. Decode the `eyJ...` portion at <https://jwt.io> and confirm the payload contains `sub: "alice"`, `iss: "cloudci-api-dev"`, `aud: "cloudci-api-clients-dev"`, and an `exp` ~1 hour in the future. The `name` and `role` claims will appear under their full WS-* URI keys (`http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name` and `http://schemas.microsoft.com/ws/2008/06/identity/claims/role`) — that is `ClaimTypes.Name`/`ClaimTypes.Role` doing legacy outbound mapping. See the Step 6 Concept Deep Dive for the why and the one-line fix if you want short `name`/`role` keys instead.
 
 4. **Bad credentials return 401:**
 
