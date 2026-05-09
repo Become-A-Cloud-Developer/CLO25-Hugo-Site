@@ -138,7 +138,7 @@ The middleware reads `ApiKey:Value` from `IConfiguration` in its constructor —
    using CloudCiApi.Middleware;
    ```
 
-3. **Insert** the `UseMiddleware` call between `UseHttpsRedirection()` and `MapControllers()` — keep the Swagger middleware exactly where the previous exercise left it, so `/swagger` stays available in production:
+3. **Insert** the `UseMiddleware` call between `UseHttpsRedirection()` and `MapControllers()` — and crucially, **after** `UseCors()` from the previous exercise, so OPTIONS preflights short-circuit at the CORS middleware and don't get a 401 from the API-key gate. Keep the Swagger middleware exactly where the previous exercise left it, so `/swagger` stays available in production:
 
    > `Program.cs`
 
@@ -146,11 +146,17 @@ The middleware reads `ApiKey:Value` from `IConfiguration` in its constructor —
    var app = builder.Build();
 
    // Swagger stays on in BOTH Development and Production for this course
-   // (set up in the previous exercise).
+   // (set up in the first exercise).
    app.UseSwagger();
    app.UseSwaggerUI();
 
    app.UseHttpsRedirection();
+
+   // CORS must come BEFORE the API-key gate. Browser preflights (OPTIONS) are
+   // sent without an X-Api-Key header — without UseCors short-circuiting them
+   // first, the API-key middleware would 401 every preflight and every browser
+   // POST would fail even though the right key is supplied on the real request.
+   app.UseCors(LocalDevCorsPolicy);
 
    // Gate every endpoint behind the API key.
    app.UseMiddleware<ApiKeyMiddleware>();
@@ -171,8 +177,9 @@ The middleware reads `ApiKey:Value` from `IConfiguration` in its constructor —
 >
 > - Putting `UseMiddleware<ApiKeyMiddleware>()` **after** `MapControllers()`. `MapControllers` is a terminal call that builds the endpoint dataset; middleware after it never runs for those routes.
 > - Putting it **before** `UseHttpsRedirection()`. Functionally fine for our case, but pushing it past routing keeps the door open for endpoint-aware exemptions later.
+> - Putting it **before** `UseCors()`. The browser sends an OPTIONS preflight without an `X-Api-Key` header (preflights are unauthenticated by definition); the API-key middleware would respond `401`, the preflight fails, and the browser refuses to send the real `POST` with the key. CORS must run first so its preflight handler short-circuits the `OPTIONS` before the gate sees it. Same lesson as Exercise 2's CORS-vs-`UseAuthorization` ordering.
 >
-> ✓ **Quick check:** `dotnet build` succeeds. The middleware class is referenced exactly once in `Program.cs`. The Swagger middleware lines remain un-gated so `/swagger` keeps working in production.
+> ✓ **Quick check:** `dotnet build` succeeds. The middleware class is referenced exactly once in `Program.cs`. The Swagger middleware lines remain un-gated so `/swagger` keeps working in production. `app.UseCors(LocalDevCorsPolicy)` sits before `app.UseMiddleware<ApiKeyMiddleware>()`.
 
 ### **Step 3:** Add the local placeholder to `appsettings.Development.json`
 
@@ -570,6 +577,8 @@ Walk every signal end to end so you finish knowing the gate works in production 
 > **Swagger Authorize button accepts the key but every Try-it-out still 401s.** You called `AddSecurityDefinition` but forgot `AddSecurityRequirement`.
 >
 > **Anonymous calls return 200, not 401.** The middleware isn't running. Either you forgot `app.UseMiddleware<ApiKeyMiddleware>()`, or you placed it after `app.MapControllers()` (terminal for matched endpoints).
+>
+> **Browser POSTs from the Exercise-2 page now fail.** Two cases. Case one: you placed `app.UseMiddleware<ApiKeyMiddleware>()` **before** `app.UseCors(...)` — the OPTIONS preflight gets a 401 because preflights carry no `X-Api-Key`, the browser then refuses to send the real POST. Move `UseCors` above the API-key middleware. Case two: the browser page itself doesn't send the key — that's expected, the page from Exercise 2 has no key wired in, and modifying it is out of scope here. Use Swagger UI's **Authorize** flow for browser-side calls.
 >
 > **`az containerapp update` fails with "secret not found."** The `secretref:` value must match an existing secret. Run `az containerapp secret list` first.
 >
